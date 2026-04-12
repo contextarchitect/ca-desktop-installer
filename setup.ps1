@@ -67,55 +67,64 @@ Write-Host "Locating Claude Desktop config..." -ForegroundColor Yellow
 
 $CLAUDE_CONFIG_FILE = $null
 
-# Search order: most common locations for claude_desktop_config.json
-$searchPaths = @()
+# Search for existing claude_desktop_config.json across all possible locations
+# Use Get-ChildItem to find the ACTUAL file wherever it lives
+$searchRoots = @(
+    "$env:LOCALAPPDATA\Packages",
+    "$env:APPDATA",
+    "$env:LOCALAPPDATA"
+)
 
-# 1. Standard install path
-$searchPaths += "$env:APPDATA\Claude\claude_desktop_config.json"
-
-# 2. Microsoft Store sandboxed path (search for Claude package)
-$storeBase = "$env:LOCALAPPDATA\Packages"
-if (Test-Path $storeBase) {
-    Get-ChildItem -Path $storeBase -Directory -Filter "Claude*" -ErrorAction SilentlyContinue | ForEach-Object {
-        $searchPaths += Join-Path $_.FullName "LocalCache\Roaming\Claude\claude_desktop_config.json"
-    }
-}
-
-# 3. Also check LocalAppData directly
-$searchPaths += "$env:LOCALAPPDATA\Claude\claude_desktop_config.json"
-
-# Find the first existing config file
-foreach ($path in $searchPaths) {
-    if (Test-Path $path) {
-        $CLAUDE_CONFIG_FILE = $path
-        break
-    }
-}
-
-# If no existing config found, check which Claude directory exists
-if (-not $CLAUDE_CONFIG_FILE) {
-    foreach ($path in $searchPaths) {
-        $dir = Split-Path $path -Parent
-        if (Test-Path $dir) {
-            $CLAUDE_CONFIG_FILE = $path
-            break
+$foundFiles = @()
+foreach ($root in $searchRoots) {
+    if (Test-Path $root) {
+        Get-ChildItem -Path $root -Recurse -Filter "claude_desktop_config.json" -ErrorAction SilentlyContinue | ForEach-Object {
+            $foundFiles += $_.FullName
         }
     }
 }
 
-# Last resort: use standard path
-if (-not $CLAUDE_CONFIG_FILE) {
-    $CLAUDE_CONFIG_FILE = "$env:APPDATA\Claude\claude_desktop_config.json"
+if ($foundFiles.Count -gt 0) {
+    # Use the first found file
+    $CLAUDE_CONFIG_FILE = $foundFiles[0]
+    Write-Host "  Found config at:" -ForegroundColor Green
+    Write-Host "  $CLAUDE_CONFIG_FILE"
+    if ($foundFiles.Count -gt 1) {
+        Write-Host ""
+        Write-Host "  Also found at (not using these):" -ForegroundColor Yellow
+        for ($i = 1; $i -lt $foundFiles.Count; $i++) {
+            Write-Host "  $($foundFiles[$i])"
+        }
+    }
+} else {
+    # No existing config found - look for the Claude directory to create one
+    # Check Microsoft Store path first
+    $storeDir = $null
+    $storeBase = "$env:LOCALAPPDATA\Packages"
+    if (Test-Path $storeBase) {
+        $claudePkg = Get-ChildItem -Path $storeBase -Directory -Filter "Claude*" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($claudePkg) {
+            $storeDir = Join-Path $claudePkg.FullName "LocalCache\Roaming\Claude"
+        }
+    }
+
+    if ($storeDir -and (Test-Path (Split-Path $storeDir -Parent))) {
+        $CLAUDE_CONFIG_FILE = Join-Path $storeDir "claude_desktop_config.json"
+    } else {
+        $CLAUDE_CONFIG_FILE = "$env:APPDATA\Claude\claude_desktop_config.json"
+    }
+    Write-Host "  No existing config found. Will create at:" -ForegroundColor Yellow
+    Write-Host "  $CLAUDE_CONFIG_FILE"
 }
 
-$CLAUDE_CONFIG_DIR = Split-Path $CLAUDE_CONFIG_FILE -Parent
-Write-Host "  Found: $CLAUDE_CONFIG_DIR" -ForegroundColor Green
 Write-Host ""
 
 # -------------------------------------------------------
-# Configure GitHub MCP in Claude Desktop config
+# Configure GitHub MCP
 # -------------------------------------------------------
 Write-Host "Configuring GitHub MCP..." -ForegroundColor Yellow
+
+$CLAUDE_CONFIG_DIR = Split-Path $CLAUDE_CONFIG_FILE -Parent
 
 if (-not (Test-Path $CLAUDE_CONFIG_DIR)) {
     New-Item -ItemType Directory -Path $CLAUDE_CONFIG_DIR -Force | Out-Null
@@ -138,7 +147,7 @@ $configJson = @'
 if (Test-Path $CLAUDE_CONFIG_FILE) {
     $content = Get-Content $CLAUDE_CONFIG_FILE -Raw
     if ($content -match '"github"') {
-        Write-Host "  !   GitHub MCP already configured." -ForegroundColor Yellow
+        Write-Host "  !   GitHub MCP already configured at this location." -ForegroundColor Yellow
         Write-Host "      To update your token, edit:"
         Write-Host "      $CLAUDE_CONFIG_FILE"
     } else {

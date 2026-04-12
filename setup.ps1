@@ -71,8 +71,8 @@ if (-not (Test-Path $CLAUDE_CONFIG_DIR)) {
     New-Item -ItemType Directory -Path $CLAUDE_CONFIG_DIR -Force | Out-Null
 }
 
-# The mcpServers block to inject
-$mcpBlock = @'
+$configJson = @'
+{
   "mcpServers": {
     "github": {
       "command": "npx",
@@ -82,14 +82,8 @@ $mcpBlock = @'
       }
     }
   }
-'@
-
-# Fresh config (used when no file exists)
-$freshConfig = @"
-{
-$mcpBlock
 }
-"@
+'@
 
 if (Test-Path $CLAUDE_CONFIG_FILE) {
     $content = Get-Content $CLAUDE_CONFIG_FILE -Raw
@@ -98,28 +92,13 @@ if (Test-Path $CLAUDE_CONFIG_FILE) {
         Write-Host "      To update your token, edit:"
         Write-Host "      $CLAUDE_CONFIG_FILE"
     } else {
-        # Existing config without GitHub - insert mcpServers via string manipulation
-        Write-Host "  !   Existing config found. Backing up to .backup" -ForegroundColor Yellow
         Copy-Item $CLAUDE_CONFIG_FILE "$CLAUDE_CONFIG_FILE.backup"
-
-        # Trim whitespace, find the last }, insert mcpServers before it
-        $trimmed = $content.Trim()
-        if ($trimmed.EndsWith("}")) {
-            # Remove the final }
-            $withoutLastBrace = $trimmed.Substring(0, $trimmed.Length - 1).TrimEnd()
-            # Add comma after existing content, then mcpServers block, then close
-            $newContent = $withoutLastBrace + ",`r`n" + $mcpBlock + "`r`n}"
-            Set-Content -Path $CLAUDE_CONFIG_FILE -Value $newContent -Encoding UTF8 -NoNewline
-            Write-Host "  OK  GitHub MCP added to existing config" -ForegroundColor Green
-        } else {
-            # Can't parse structure - overwrite with fresh
-            Write-Host "  !   Could not parse existing config. Writing fresh config." -ForegroundColor Yellow
-            Set-Content -Path $CLAUDE_CONFIG_FILE -Value $freshConfig -Encoding UTF8 -NoNewline
-            Write-Host "  OK  GitHub MCP configured with placeholder token" -ForegroundColor Green
-        }
+        Write-Host "  !   Existing config backed up to .backup" -ForegroundColor Yellow
+        Set-Content -Path $CLAUDE_CONFIG_FILE -Value $configJson -Encoding UTF8
+        Write-Host "  OK  Config replaced with GitHub MCP (placeholder token)" -ForegroundColor Green
     }
 } else {
-    Set-Content -Path $CLAUDE_CONFIG_FILE -Value $freshConfig -Encoding UTF8 -NoNewline
+    Set-Content -Path $CLAUDE_CONFIG_FILE -Value $configJson -Encoding UTF8
     Write-Host "  OK  GitHub MCP configured with placeholder token" -ForegroundColor Green
 }
 

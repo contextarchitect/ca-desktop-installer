@@ -6,8 +6,6 @@
 $ErrorActionPreference = "Stop"
 
 $SKILLS_DIR = "$env:USERPROFILE\.claude\skills\context-architect"
-$CLAUDE_CONFIG_DIR = "$env:APPDATA\Claude"
-$CLAUDE_CONFIG_FILE = "$CLAUDE_CONFIG_DIR\claude_desktop_config.json"
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Cyan
@@ -60,6 +58,58 @@ if ($skillCount -eq 0) {
 
 Write-Host ""
 Write-Host "$skillCount skills installed." -ForegroundColor Green
+Write-Host ""
+
+# -------------------------------------------------------
+# Find Claude Desktop config file
+# -------------------------------------------------------
+Write-Host "Locating Claude Desktop config..." -ForegroundColor Yellow
+
+$CLAUDE_CONFIG_FILE = $null
+
+# Search order: most common locations for claude_desktop_config.json
+$searchPaths = @()
+
+# 1. Standard install path
+$searchPaths += "$env:APPDATA\Claude\claude_desktop_config.json"
+
+# 2. Microsoft Store sandboxed path (search for Claude package)
+$storeBase = "$env:LOCALAPPDATA\Packages"
+if (Test-Path $storeBase) {
+    Get-ChildItem -Path $storeBase -Directory -Filter "Claude*" -ErrorAction SilentlyContinue | ForEach-Object {
+        $searchPaths += Join-Path $_.FullName "LocalCache\Roaming\Claude\claude_desktop_config.json"
+    }
+}
+
+# 3. Also check LocalAppData directly
+$searchPaths += "$env:LOCALAPPDATA\Claude\claude_desktop_config.json"
+
+# Find the first existing config file
+foreach ($path in $searchPaths) {
+    if (Test-Path $path) {
+        $CLAUDE_CONFIG_FILE = $path
+        break
+    }
+}
+
+# If no existing config found, check which Claude directory exists
+if (-not $CLAUDE_CONFIG_FILE) {
+    foreach ($path in $searchPaths) {
+        $dir = Split-Path $path -Parent
+        if (Test-Path $dir) {
+            $CLAUDE_CONFIG_FILE = $path
+            break
+        }
+    }
+}
+
+# Last resort: use standard path
+if (-not $CLAUDE_CONFIG_FILE) {
+    $CLAUDE_CONFIG_FILE = "$env:APPDATA\Claude\claude_desktop_config.json"
+}
+
+$CLAUDE_CONFIG_DIR = Split-Path $CLAUDE_CONFIG_FILE -Parent
+Write-Host "  Found: $CLAUDE_CONFIG_DIR" -ForegroundColor Green
 Write-Host ""
 
 # -------------------------------------------------------

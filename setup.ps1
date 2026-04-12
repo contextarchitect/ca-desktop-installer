@@ -20,7 +20,6 @@ Write-Host ""
 # -------------------------------------------------------
 Write-Host "Checking prerequisites..." -ForegroundColor Yellow
 
-# Check for Node.js / npx
 try {
     $null = Get-Command npx -ErrorAction Stop
     Write-Host "  OK  Node.js / npx available" -ForegroundColor Green
@@ -72,14 +71,25 @@ if (-not (Test-Path $CLAUDE_CONFIG_DIR)) {
     New-Item -ItemType Directory -Path $CLAUDE_CONFIG_DIR -Force | Out-Null
 }
 
-# GitHub MCP server definition
-$githubServer = @{
-    command = "npx"
-    args = @("-y", "@modelcontextprotocol/server-github")
-    env = @{
-        GITHUB_PERSONAL_ACCESS_TOKEN = "YOUR_GITHUB_PAT_HERE"
+# The mcpServers block to inject
+$mcpBlock = @'
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT_HERE"
+      }
     }
+  }
+'@
+
+# Fresh config (used when no file exists)
+$freshConfig = @"
+{
+$mcpBlock
 }
+"@
 
 if (Test-Path $CLAUDE_CONFIG_FILE) {
     $content = Get-Content $CLAUDE_CONFIG_FILE -Raw
@@ -88,34 +98,28 @@ if (Test-Path $CLAUDE_CONFIG_FILE) {
         Write-Host "      To update your token, edit:"
         Write-Host "      $CLAUDE_CONFIG_FILE"
     } else {
-        # Existing config without GitHub - merge it in
+        # Existing config without GitHub - insert mcpServers via string manipulation
         Write-Host "  !   Existing config found. Backing up to .backup" -ForegroundColor Yellow
         Copy-Item $CLAUDE_CONFIG_FILE "$CLAUDE_CONFIG_FILE.backup"
 
-        try {
-            $config = $content | ConvertFrom-Json
-
-            # Ensure mcpServers exists
-            if (-not $config.mcpServers) {
-                $config | Add-Member -NotePropertyName "mcpServers" -NotePropertyValue ([PSCustomObject]@{})
-            }
-
-            # Add github server
-            $config.mcpServers | Add-Member -NotePropertyName "github" -NotePropertyValue ([PSCustomObject]$githubServer)
-
-            $config | ConvertTo-Json -Depth 10 | Set-Content -Path $CLAUDE_CONFIG_FILE -Encoding UTF8
+        # Trim whitespace, find the last }, insert mcpServers before it
+        $trimmed = $content.Trim()
+        if ($trimmed.EndsWith("}")) {
+            # Remove the final }
+            $withoutLastBrace = $trimmed.Substring(0, $trimmed.Length - 1).TrimEnd()
+            # Add comma after existing content, then mcpServers block, then close
+            $newContent = $withoutLastBrace + ",`r`n" + $mcpBlock + "`r`n}"
+            Set-Content -Path $CLAUDE_CONFIG_FILE -Value $newContent -Encoding UTF8 -NoNewline
             Write-Host "  OK  GitHub MCP added to existing config" -ForegroundColor Green
-        } catch {
+        } else {
+            # Can't parse structure - overwrite with fresh
             Write-Host "  !   Could not parse existing config. Writing fresh config." -ForegroundColor Yellow
-            $freshConfig = @{ mcpServers = @{ github = $githubServer } }
-            $freshConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $CLAUDE_CONFIG_FILE -Encoding UTF8
+            Set-Content -Path $CLAUDE_CONFIG_FILE -Value $freshConfig -Encoding UTF8 -NoNewline
             Write-Host "  OK  GitHub MCP configured with placeholder token" -ForegroundColor Green
         }
     }
 } else {
-    # No config file - create fresh
-    $freshConfig = @{ mcpServers = @{ github = $githubServer } }
-    $freshConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $CLAUDE_CONFIG_FILE -Encoding UTF8
+    Set-Content -Path $CLAUDE_CONFIG_FILE -Value $freshConfig -Encoding UTF8 -NoNewline
     Write-Host "  OK  GitHub MCP configured with placeholder token" -ForegroundColor Green
 }
 

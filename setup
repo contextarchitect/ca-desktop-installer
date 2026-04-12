@@ -3,26 +3,45 @@
 # ============================================================================
 # ContextArchitect Skills - Setup Script
 # Configures Claude Desktop with all skills and GitHub MCP
-# Works on macOS (run from Terminal)
+# Works on macOS (Terminal) and Windows (Git Bash)
 # ============================================================================
 
 set -e
 
-SKILLS_DIR="$HOME/.claude/skills/context-architect"
-CLAUDE_CONFIG_DIR="$HOME/Library/Application Support/Claude"
+# Detect OS and set paths
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    OS="mac"
+    SKILLS_DIR="$HOME/.claude/skills/context-architect"
+    CLAUDE_CONFIG_DIR="$HOME/Library/Application Support/Claude"
+elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ -n "$WINDIR" ]]; then
+    OS="windows"
+    SKILLS_DIR="$USERPROFILE/.claude/skills/context-architect"
+    CLAUDE_CONFIG_DIR="$APPDATA/Claude"
+else
+    OS="linux"
+    SKILLS_DIR="$HOME/.claude/skills/context-architect"
+    CLAUDE_CONFIG_DIR="$HOME/.config/Claude"
+fi
+
 CLAUDE_CONFIG_FILE="$CLAUDE_CONFIG_DIR/claude_desktop_config.json"
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
+# Colors (disable on Windows if not supported)
+if [[ "$OS" == "windows" ]] && ! echo -e "\033[0m" 2>/dev/null | grep -q "\[0m" 2>/dev/null; then
+    RED='' GREEN='' YELLOW='' BLUE='' NC=''
+else
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    NC='\033[0m'
+fi
 
 echo ""
 echo -e "${BLUE}============================================================${NC}"
 echo -e "${BLUE}  ContextArchitect - Claude Desktop Setup${NC}"
 echo -e "${BLUE}============================================================${NC}"
+echo ""
+echo -e "  Detected OS: $OS"
 echo ""
 
 # -------------------------------------------------------
@@ -31,25 +50,41 @@ echo ""
 echo -e "${YELLOW}Checking prerequisites...${NC}"
 
 # Check for Claude Desktop
-if [ -d "/Applications/Claude.app" ]; then
-    echo -e "  ${GREEN}✓${NC} Claude Desktop installed"
-else
-    echo -e "  ${YELLOW}!${NC} Claude Desktop not found in /Applications."
-    echo "    Download it from: https://claude.ai/download"
-    echo "    Install it, then re-run this setup."
-    exit 1
+if [[ "$OS" == "mac" ]]; then
+    if [ -d "/Applications/Claude.app" ]; then
+        echo -e "  ${GREEN}OK${NC} Claude Desktop installed"
+    else
+        echo -e "  ${YELLOW}!${NC} Claude Desktop not found in /Applications."
+        echo "    Download it from: https://claude.ai/download"
+        echo "    Install it, then re-run this setup."
+        exit 1
+    fi
+elif [[ "$OS" == "windows" ]]; then
+    if [ -d "$LOCALAPPDATA/AnthropicClaude" ] || [ -d "$LOCALAPPDATA/Programs/claude-desktop" ] || command -v claude 2>/dev/null; then
+        echo -e "  ${GREEN}OK${NC} Claude Desktop detected"
+    else
+        echo -e "  ${YELLOW}!${NC} Claude Desktop may not be installed."
+        echo "    Download it from: https://claude.ai/download"
+        echo "    If it IS installed, you can continue anyway."
+    fi
 fi
 
 # Check for Node.js / npx (required for GitHub MCP)
 if command -v npx &> /dev/null; then
-    echo -e "  ${GREEN}✓${NC} Node.js / npx available"
+    echo -e "  ${GREEN}OK${NC} Node.js / npx available"
 else
     echo -e "${RED}ERROR: Node.js is not installed (npx not found).${NC}"
     echo ""
     echo "  Install Node.js first, then re-run this setup."
     echo ""
-    echo "  Option 1: brew install node"
-    echo "  Option 2: Download from https://nodejs.org (LTS version)"
+    if [[ "$OS" == "mac" ]]; then
+        echo "  Option 1: brew install node"
+        echo "  Option 2: Download from https://nodejs.org (LTS version)"
+    else
+        echo "  Download from https://nodejs.org (LTS version)"
+        echo "  Make sure 'Add to PATH' is checked during installation."
+        echo "  Then CLOSE and REOPEN Git Bash before re-running this setup."
+    fi
     echo ""
     exit 1
 fi
@@ -67,7 +102,7 @@ SKILL_COUNT=0
 for skill_dir in "$SKILLS_DIR"/*/; do
     if [ -f "$skill_dir/SKILL.md" ]; then
         skill_name=$(basename "$skill_dir")
-        echo -e "  ${GREEN}✓${NC} $skill_name"
+        echo -e "  ${GREEN}OK${NC} $skill_name"
         SKILL_COUNT=$((SKILL_COUNT + 1))
     fi
 done
@@ -91,7 +126,8 @@ mkdir -p "$CLAUDE_CONFIG_DIR"
 if [ -f "$CLAUDE_CONFIG_FILE" ]; then
     if grep -q '"github"' "$CLAUDE_CONFIG_FILE" 2>/dev/null; then
         echo -e "  ${YELLOW}!${NC} GitHub MCP already configured."
-        echo "    To update your token, edit: $CLAUDE_CONFIG_FILE"
+        echo "    To update your token, edit:"
+        echo "    $CLAUDE_CONFIG_FILE"
     else
         echo -e "  ${YELLOW}!${NC} Existing config found. Backing up."
         cp "$CLAUDE_CONFIG_FILE" "${CLAUDE_CONFIG_FILE}.backup"
@@ -112,7 +148,7 @@ else
   }
 }
 CONFIGEOF
-    echo -e "  ${GREEN}✓${NC} GitHub MCP configured with placeholder token"
+    echo -e "  ${GREEN}OK${NC} GitHub MCP configured with placeholder token"
 fi
 
 echo ""
@@ -135,7 +171,11 @@ echo "     Replace with the token from your admin (keep the quotes)."
 echo "     Save and close the file."
 echo ""
 echo -e "  ${BLUE}2. Restart Claude Desktop:${NC}"
-echo "     Quit Claude Desktop completely (Command + Q)."
+if [[ "$OS" == "mac" ]]; then
+    echo "     Quit Claude Desktop completely (Command + Q)."
+else
+    echo "     Right-click the Claude icon in the system tray and Quit."
+fi
 echo "     Reopen it."
 echo ""
 echo -e "${GREEN}You're all set! The skills are available in every conversation.${NC}"

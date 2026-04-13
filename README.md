@@ -46,6 +46,7 @@ Requires [Git for Windows](https://git-scm.com) (includes Git Bash).
 | funnel-builder | Creative | Advertorial and listicle funnel pages |
 | nano-banana-prompting | Creative | AI image generation prompts |
 | video-prompting-guide | Creative | AI video prompts for ad production |
+| video-script-generator | Creative | AI video scripts with beat framework |
 | product-deep-research | Strategy | Product portfolio and expansion research |
 
 ### GitHub MCP

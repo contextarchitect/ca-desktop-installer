@@ -277,6 +277,88 @@ Read brand-specific image rules from configuration before writing any prompts.
 
 **For Stage 3B (Lovable Implementation):** Wait for user confirmation ("Images ready" / "Images generated") before proceeding.
 
+---
+
+## Kie MCP Integration (Optional)
+
+When using the Kie MCP tools (`kie-ai:nano_banana_image`, `kie-ai:get_task_status`) for image generation instead of manual Nano Banana, follow these additional specifications.
+
+### Output Format by Destination
+
+| Use Case | Output Format | Rationale |
+|----------|---------------|-----------|
+| Funnel pages | `output_format: "jpg"` | Page speed priority, smaller file size |
+| Web pages / email | `output_format: "jpg"` | Page load optimization |
+| Ad creatives | `output_format: "png"` | Quality priority, platform compression will handle size |
+
+**Note:** Kie API supports `png` and `jpg` only. WebP requires post-download conversion.
+
+### Kie MCP Workflow Steps
+
+1. **Build Three-Layer prompt** per nano-banana-prompting skill (Visible Layer + Constraint Layer + Exclusion Layer)
+2. **Submit via `kie-ai:nano_banana_image`:**
+   - Include reference image URL in `image_input` array (use public GitHub URLs for product reference images)
+   - Set `output_format` based on destination (jpg for funnels, png for ads)
+   - Set `aspect_ratio` as needed (typically `16:9` for hero images, `1:1` for product shots)
+3. **Capture `taskId`** from response
+4. **Poll `kie-ai:get_task_status`** every ~15 seconds until status = "success"
+5. **Extract download URL** from `result_urls` array
+6. **Present to user** with descriptive filename
+
+### Temporary URL Handling (CRITICAL for Lovable)
+
+Kie returns temporary URLs from `tempfile.aiquickdraw.com` that **expire within approximately 3 days**. These URLs MUST NOT be used directly in production code.
+
+**For Lovable Implementation Prompts:**
+
+When generating images via Kie MCP for use in a Lovable funnel, the Lovable implementation prompt MUST include explicit download instructions:
+
+```
+CRITICAL - IMAGE HANDLING:
+These image URLs are TEMPORARY and will expire within days.
+For each image:
+1. Download from its temp URL during build
+2. Save to /public/images/[descriptive-filename].jpg
+3. Reference via local path only (/images/[filename].jpg)
+
+NEVER use tempfile.aiquickdraw.com URLs in production code.
+
+Image Assets:
+- hero-image.jpg: [temp URL]
+- root-cause-diagram.jpg: [temp URL]
+- product-shot.jpg: [temp URL]
+[etc.]
+```
+
+**For Pipeline Deploy (Stage 3A):**
+
+The Funnel Factory pipeline handles image hosting automatically. No special handling required.
+
+### Reference Image URL Format
+
+When passing product reference images to Kie MCP, use publicly accessible URLs:
+
+```
+https://raw.githubusercontent.com/[org]/[repo]/main/[path]/[filename]
+```
+
+Example (UltimaPeak):
+```
+https://raw.githubusercontent.com/contextarchitect/brand-assets/main/ultimapeak/product-images/PG_B1.png
+```
+
+### Generation Time Expectations
+
+| Mode | Typical Duration |
+|------|------------------|
+| Generate (no reference) | 30-90 seconds |
+| Edit (with 1 reference) | 90-200 seconds |
+| Edit (with multiple references) | 200-500 seconds |
+
+Plan polling intervals accordingly. For complex multi-reference edits, initial polls can be spaced further apart (20-30 seconds).
+
+---
+
 ### Stage 3: Output
 
 **Stage 3 has two output modes. Stage 3A (Pipeline Deploy) is the default. Stage 3B (Lovable Prompt) is available on explicit request.**
@@ -423,6 +505,8 @@ Generate a single, complete Lovable prompt containing:
 - UTM passthrough script in `<head>` section (MANDATORY, see reference framework)
 - Technical requirements (responsive, accessible, performant)
 
+**If images were generated via Kie MCP:** Include the temporary URL download instructions block (see "Kie MCP Integration" section above) at the top of the Lovable prompt.
+
 **Output format:** Any Lovable prompt over 500 words must be delivered as a single downloadable markdown file using `create_file` + `present_files`. Never break long prompts into multiple copyable sections in chat.
 
 ## Quality Assurance
@@ -470,6 +554,7 @@ After Stage 3, verify against this checklist:
 - [ ] **Stage 3B:** Tracking pixels included in `<head>` (all configured platforms)
 - [ ] **Stage 3B:** UTM passthrough script included in `<head>` (MANDATORY)
 - [ ] **Stage 3B:** All images referenced by correct filename
+- [ ] **Stage 3B (if Kie MCP used):** Temp URL download instructions included at top of Lovable prompt
 - [ ] Video embeds responsive and properly placed (if applicable)
 - [ ] Mobile responsive design specified
 - [ ] Sticky mobile CTA specified
@@ -492,7 +577,7 @@ After Stage 3, verify against this checklist:
 
 ## What This Skill Does NOT Do
 
-- Does not generate images (Stage 3A: pipeline generates from prompts automatically; Stage 3B: user generates from Nano Banana prompts externally)
+- Does not generate images (Stage 3A: pipeline generates from prompts automatically; Stage 3B: user generates from Nano Banana prompts externally or via Kie MCP)
 - Does not generate videos (accepts user-provided video assets for placement)
 - Does not handle brand visual identity for pipeline deployment (pipeline extracts colors/fonts from brand-guidelines.md automatically)
 - Does not create brand strategy (reads previous phase outputs)

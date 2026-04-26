@@ -7,7 +7,7 @@ description: "Generate high-converting direct-response video ad scripts using th
 
 ## Metadata
 - **Skill Name:** video-script-generator
-- **Version:** 1.2.0
+- **Version:** 1.3.0
 - **Category:** Creative / Copywriting
 - **Dependencies:** None (standalone) | Enhanced with: avatar-research, brand-analyzer, copywriting-guide, angle-roadmap
 - **Triggers:** "video script", "ad script", "write a script", "yap script", "voiceover script", "podcast script", "AI slop", "video ad", "talking head script", "UGC script"
@@ -20,7 +20,7 @@ Generate high-converting direct-response video ad scripts using the Video Script
 
 **Core principle:** Awareness stage determines script structure. A problem-unaware script is structurally different from a product-aware script. Get the stage right first, then select format.
 
-This skill is **brand-agnostic** and applies to any product category: physical products, supplements, skincare, SaaS, services, coaching, etc.
+This skill is **brand-agnostic** and applies to any product category: physical products, supplements, skincare, SaaS, services, coaching, etc. The skill provides structural frameworks; the user provides brand-specific content.
 
 ---
 
@@ -89,6 +89,7 @@ Before generating any script, ensure you have ALL of these. If any are missing, 
 - Guarantee details (for product-aware scripts)
 - Payment/pricing details (for product-aware scripts)
 - Benefit timeframe (e.g., "results in 2 weeks", "see difference in 30 days")
+- Key differentiators to emphasize (user may have 2-3 to choose from per script)
 
 ---
 
@@ -154,6 +155,23 @@ Before generating any script, ensure you have ALL of these. If any are missing, 
 | Fitness | "You're filling the bathtub, but the drain is open. No matter how much you pour in, it keeps draining out." |
 
 **Product entry:** 60-65% mark.
+
+#### Problem-Aware Sub-Pattern: Frustration-to-Eureka Arc
+
+A powerful structure for problem-aware scripts that emphasizes emotional validation before the reveal:
+
+```
+[QUALIFYING CONTEXT: Who this is for] ->
+[FRUSTRATION ACKNOWLEDGMENT: "You have every right to be frustrated"] ->
+[EFFORT VALIDATION: List specific things they've tried - be detailed] ->
+[SENSORY MOMENTS: Relatable snapshots of their experience] ->
+[PIVOT: "Here's what I need you to understand"] ->
+[REFRAME: "You didn't fail. You were solving the wrong problem."] ->
+[EUREKA: "This is the part that's going to make everything click."] ->
+[VILLAIN REVEAL with mechanism] -> [Product] -> [CTA]
+```
+
+The key is converting frustration into a eureka moment - the instant when the real cause clicks.
 
 ---
 
@@ -222,6 +240,52 @@ Before generating any script, ensure you have ALL of these. If any are missing, 
 
 ---
 
+## Angle Variation Framework
+
+**One villain can generate many scripts.** The entry point changes based on what false solution the avatar tried.
+
+This is critical for producing multiple scripts from the same core insight without repeating yourself.
+
+### How It Works
+
+Take ONE villain/mechanism and create MANY angle variations by changing:
+- What false solution they tried first
+- Which aspect of their experience you enter through
+- Which emotional state you lead with
+
+### Example: Same Villain, Different Entry Points
+
+**Villain:** Blocked follicles preventing absorption
+
+| Entry Point | Angle | Hook Direction |
+|------------|-------|----------------|
+| Tried topical treatment | "Why your [treatment] isn't reaching the follicle" | Treatment lands on surface, can't penetrate |
+| Tried supplements | "Why your vitamins aren't working" | Nutrients circulating with nowhere to go |
+| Tried competitor product | "Why their serum just sits on top" | Product designed for different conditions |
+| Tried environmental fix | "Why your [fix] didn't solve it" | Addresses symptom, not accumulated damage |
+| Tried lifestyle change | "Why clean living isn't enough" | Internal optimization blocked by external problem |
+| Emotional state | "Breaking the frustration cycle" | Convert frustration to eureka moment |
+| Nostalgia | "Looking at old photos" | What changed between then and now |
+
+### Pattern for Creating Variations
+
+1. **Identify the core villain** - The one true cause your product addresses
+2. **List all false solutions** avatar might have tried
+3. **For each false solution**, write a script explaining why it failed
+4. **The mechanism explanation stays the same** - only the entry point changes
+
+### Script Length Variations
+
+Same angle can have short and long versions:
+
+- **Short (30-45s):** Hook → Villain reveal → Product → CTA
+- **Medium (60-75s):** Hook → False solution elimination → Analogy → Villain → Mechanism → CTA
+- **Long (90-120s):** Full emotional journey with sensory details, technical education, extended mechanism
+
+When user asks for "shorter version, same angle" - cut the fat, keep the core.
+
+---
+
 ## Hook Construction Rules
 
 **The hook must create an open loop the viewer cannot close without watching.**
@@ -246,6 +310,264 @@ Ask: "Does this hook make a promise AND withhold the answer?"
 - If yes -> good hook
 - If no -> rewrite
 
+### Hook Iteration Pattern
+
+When refining hooks, offer 2-3 options with different approaches:
+
+```
+Option 1: [Hook version A - e.g., curiosity-driven]
+Option 2: [Hook version B - e.g., validation-driven]
+Option 3: [Hook version C - e.g., direct accusation]
+
+Which direction feels right?
+```
+
+Let the user choose, then build the full script from their selection.
+
+---
+
+## Early Context Establishment
+
+**Establish qualifying context early** - but what that context is depends entirely on the brand and angle.
+
+### The Principle
+
+Viewers need to know "Is this for me?" within the first few lines. The qualifying context answers this question.
+
+### What Qualifies as Qualifying Context
+
+This varies by brand. Common types:
+
+| Type | Example | Best For |
+|------|---------|----------|
+| Geographic | "If you live in [region]..." | Products designed for specific conditions |
+| Demographic | "If you're over [age]..." | Age-specific products/services |
+| Situational | "If you [specific situation]..." | Context-dependent problems |
+| Behavioral | "If you've tried [category]..." | Solution-aware audiences |
+| Professional | "If you manage a team of [size]..." | B2B/professional services |
+| Identity | "If you're the kind of person who..." | Lifestyle/values-based products |
+
+### Rule
+
+Ask the user: "What's the qualifying context for this script - who exactly is this for?"
+
+Do NOT assume geographic context is always the answer. Let the user specify based on their brand's positioning and the specific angle being explored.
+
+---
+
+## Sensory Snapshot Moments
+
+**Every script needs 2-3 relatable sensory moments that make the avatar feel seen.**
+
+These are specific visual/experiential details that create emotional resonance.
+
+### What Makes a Good Sensory Moment
+
+- **Specific:** Not "you feel frustrated" but "that moment when [specific experience]"
+- **Visual:** Something they can see in their mind
+- **Private:** Often something they haven't told anyone
+- **Universal to avatar:** Most people in this situation experience this
+
+### How to Generate Sensory Moments
+
+Pull from:
+- Avatar research (if available)
+- Customer reviews and testimonials
+- Reddit posts and forum discussions
+- User's description of their customer
+
+Ask the user: "What are the small, specific moments your customers experience with this problem? The things they notice but don't talk about?"
+
+### Examples by Category
+
+| Category | Sensory Moment |
+|----------|----------------|
+| Hair care | "That moment when the light hits at that angle and you just stop. And stare." |
+| Sleep | "3am again. Same ceiling. Same thoughts." |
+| Productivity | "That sinking feeling when you open your inbox and it's worse than yesterday." |
+| Fitness | "Catching your reflection and not recognizing who's looking back." |
+| Finance | "The mental math you do before every purchase." |
+| Parenting | "The guilt when you snap at them for something small." |
+
+### Placement
+
+Sensory moments work best:
+- Early, after establishing who this is for (creates connection)
+- During frustration acknowledgment (validates their experience)
+- Before the pivot to solution (emotional peak before relief)
+
+---
+
+## Logic Flow Rule
+
+**Every line must connect logically to the next. No jumping steps.**
+
+### The Problem
+
+Scripts fail when they skip logical steps - the viewer gets confused or loses trust.
+
+### Bad Example (Skips Logic)
+```
+Minoxidil works by increasing blood flow.
+But if your follicles are blocked, it can't reach them.
+That's why we created [Product].
+```
+
+**What's missing:** WHY would follicles be blocked? For whom? How does that happen?
+
+### Good Example (Connected Logic)
+```
+Minoxidil works by increasing blood flow to your scalp.
+More blood flow means more oxygen and nutrients reaching your follicles.
+And when your follicles get what they need, they grow hair.
+
+But here's what changes everything if you live in [context].
+
+Your follicles might be blocked.
+And if they're blocked, minoxidil can't reach them.
+
+Here's why.
+
+[Explanation of how blocking happens in their specific context]
+```
+
+### Connection Phrases
+
+Use transitional phrases that connect ideas:
+- "Here's why."
+- "But here's what changes everything..."
+- "And that means..."
+- "Which brings us to the real problem."
+- "So what does that mean for you?"
+
+### Test
+
+Read the script line by line. After each line, ask: "Does the next line logically follow from this one?"
+
+If you need to add explanation for the jump to make sense, add it.
+
+---
+
+## No Meta-Commentary Rule
+
+**Delete lines that describe what you're explaining instead of explaining it.**
+
+### Forbidden Patterns
+
+| Pattern | Why It's Bad | Fix |
+|---------|--------------|-----|
+| "That's the mechanism." | Tells instead of shows | Delete - let explanation speak for itself |
+| "Here's how it works." | Unnecessary setup | Delete or replace with direct explanation |
+| "Let me explain." | Creates distance | Delete - just explain |
+| "The science is simple." | Evaluative, not informative | Delete |
+| "This is the important part." | If it's important, it should be obvious | Delete |
+
+### The Principle
+
+If you've explained something clearly, you don't need to tell the viewer you've explained it. The explanation IS the point.
+
+### Exception
+
+Pivot phrases are okay when they signal emotional shift:
+- "Here's what I need you to understand." (signals reframe)
+- "This is the part that's going to make everything click." (signals eureka)
+
+These serve emotional function, not explanatory function.
+
+---
+
+## Partial Solution Framing
+
+**When the avatar has tried something that partially works, acknowledge it as smart before showing its limits.**
+
+### The Pattern
+
+```
+1. Acknowledge the partial solution as "smart" or "good instinct"
+2. Explain why it works (validates their reasoning)
+3. Introduce the limitation: "But here's where it falls short"
+4. Quantify if possible: "It only solves [X]% of the problem"
+5. List what it doesn't address
+6. Position your product as "the complete answer"
+```
+
+### Example Structure
+
+```
+Some people have started [partial solution].
+
+And honestly, it works.
+
+[Evidence it works - what improves]
+
+And when you understand why it works, everything clicks.
+
+[Explanation of mechanism]
+
+Smart.
+
+But here's where it falls short.
+
+It only solves [portion] of the problem.
+
+Because [what it doesn't address].
+
+[List remaining problems]
+
+[Partial solution] stops the problem getting worse.
+
+It doesn't fix the damage that's already done.
+
+[Product] does both.
+```
+
+### Why This Works
+
+- Respects the viewer's intelligence (they were onto something)
+- Builds trust (you're not dismissing their efforts)
+- Creates clear gap for your product to fill
+
+---
+
+## Technical Education Option
+
+**Some scripts benefit from technical depth. Use when the audience values understanding the "why."**
+
+### When to Add Technical Depth
+
+- Audience is educated/research-oriented
+- Product has genuine scientific differentiation
+- Competing products make vague claims
+- "Skeptical" avatar who needs proof
+
+### How to Add Technical Depth Without Losing Humanity
+
+1. **Explain in accessible language first**
+2. **Add technical detail as reinforcement**
+3. **Connect back to their experience**
+
+### Example
+
+```
+[Accessible version first]
+Shower filters catch the big stuff - chlorine and sediment.
+
+[Technical detail]
+But calcium and magnesium minerals are ionic.
+Dissolved directly into the water at a molecular level.
+No standard carbon or KDF filter on the market can remove them.
+
+[Back to experience]
+So while your filter is doing its job perfectly,
+the minerals destroying your hair are flowing through completely untouched.
+```
+
+### Technical Education Triggers
+
+- User says "make it more technical" or "add more science"
+- Avatar profile indicates research-oriented buyer
+- Product differentiation is technical in nature
+
 ---
 
 ## Product Introduction Sequence
@@ -254,6 +576,7 @@ When introducing the product, follow this order:
 
 1. **Product name + unique positioning**
    - Emphasize the USP - what makes this product different from others in the category
+   - The user may have 2-3 USPs to choose from - ask which to emphasize for this script
    - Examples: "first [category] designed for [specific context]", "only [product type] that [unique capability]", "built specifically for [audience/situation]"
 
 2. **Credibility anchor**
@@ -275,6 +598,95 @@ When introducing the product, follow this order:
 5. **Benefit timeframe**
    - When will they see/feel results?
    - Examples: "Most people notice [result] within [timeframe]"
+
+---
+
+## External Content → Angle Conversion
+
+**Real customer language (Reddit posts, reviews, support tickets) can inspire authentic angles.**
+
+### How to Convert External Content to Angles
+
+1. **Extract the insight, not the person**
+   - Don't make the script about the Reddit user
+   - Extract what they discovered or experienced
+
+2. **Identify the entry point**
+   - What did they try?
+   - What did they discover?
+   - What's their unique framing?
+
+3. **Generalize to the avatar**
+   - "Some people have discovered..." or "Here's something nobody talks about..."
+
+### Example
+
+**Source:** Reddit post about using bottled water for hair
+
+**Wrong:** Script about the Reddit user and their discovery
+
+**Right:** Script about bottled water as partial solution, using their insight as the entry point
+
+```
+Some people have started rinsing their hair with bottled water.
+And honestly, it works.
+...
+But it only solves part of the problem.
+```
+
+### Where to Find Angle Inspiration
+
+- Reddit threads about the problem
+- Amazon reviews of competitor products
+- Support tickets and customer emails
+- Facebook group discussions
+- YouTube comments on related content
+
+---
+
+## Output Format
+
+### Default: Script Only
+
+Unless the user asks for visual direction, deliver ONLY the narrator script:
+
+```markdown
+## SCRIPT: [BRAND]_[FORMAT]_[AWARENESS]_V[N]
+
+**Format:** [Format name]
+**Length:** [Target duration]
+**Awareness stage:** [Stage + one-line description of avatar state]
+**Avatar:** [One-line description]
+**Villain:** [Named villain]
+**Hook type:** [From taxonomy]
+**CTA:** [User-specified CTA]
+
+---
+
+[SCRIPT CONTENT HERE]
+[Line breaks as breath beats]
+[No timestamps unless animation studio delivery]
+[CHARACTER: dialogue for animation/podcast]
+[Separated blocks for AI Slop]
+
+---
+```
+
+### With Visual Direction (On Request)
+
+If user asks for visual notes, add at the end:
+
+```markdown
+---
+
+#### Visual Direction Notes
+
+[Beat-by-beat visual guidance]
+[What's on screen for each major section]
+[Keep brief and practical]
+```
+
+**Note:** Do NOT include separate "Pacing Notes" sections. Line breaks handle pacing.
 
 ---
 
@@ -317,7 +729,7 @@ The most common and versatile format. No on-camera talent required.
 **Structure:**
 - No timestamps, no columns
 - Line breaks = breath beats (no separate pacing notes needed)
-- Visual Direction Notes at END in separate block
+- Visual Direction Notes optional, at END only if requested
 - Narrator speaks as knowledgeable insider, not as avatar
 
 **Line break rule:** If the script is written correctly, line breaks ARE the pacing. Short lines = slow down. Flowing sentences = speed up. Do NOT include separate "Pacing Notes" sections.
@@ -401,42 +813,6 @@ When integrating the user's CTA into the script:
 
 ---
 
-## Output Format
-
-Deliver scripts in this structure:
-
-```markdown
-## SCRIPT: [BRAND]_[FORMAT]_[AWARENESS]_V[N]
-
-**Format:** [Format name]
-**Length:** [Target duration]
-**Awareness stage:** [Stage + one-line description of avatar state]
-**Avatar:** [One-line description]
-**Villain:** [Named villain]
-**Hook type:** [From taxonomy]
-**CTA:** [User-specified CTA]
-
----
-
-[SCRIPT CONTENT HERE]
-[Line breaks as breath beats]
-[No timestamps unless animation studio delivery]
-[CHARACTER: dialogue for animation/podcast]
-[Separated blocks for AI Slop]
-
----
-
-#### Visual Direction Notes
-
-[Beat-by-beat visual guidance]
-[What's on screen for each major section]
-[Keep brief and practical]
-```
-
-**Note:** Do NOT include separate "Pacing Notes" sections. Line breaks handle pacing.
-
----
-
 ## Quality Checklist (Run Before Delivery)
 
 Every script must pass ALL of these:
@@ -459,7 +835,17 @@ Every script must pass ALL of these:
 - [ ] Sentence lengths vary dramatically
 - [ ] Every factual claim is specific
 - [ ] Mechanism explained in human language, not clinical terms
+- [ ] No meta-commentary ("That's the mechanism", "Here's how it works")
 - [ ] Passes "say it to a friend" test
+
+**Logic Flow:**
+- [ ] Every line connects logically to the next
+- [ ] No skipped steps in reasoning
+- [ ] Transitions are smooth and clear
+
+**Sensory Details:**
+- [ ] 2-3 relatable sensory moments included
+- [ ] Moments are specific to this avatar's experience
 
 **For Problem-Aware scripts:**
 - [ ] Includes analogy for the villain/problem
@@ -471,8 +857,9 @@ Every script must pass ALL of these:
 - [ ] Includes risk reversal element
 
 **Format:**
+- [ ] Script-only by default (no visual notes unless requested)
 - [ ] No separate pacing notes (line breaks handle pacing)
-- [ ] Visual direction notes at END only
+- [ ] Visual direction notes at END only (if requested)
 - [ ] Consistent formatting throughout
 
 ---
@@ -697,11 +1084,18 @@ When user provides feedback, apply these standard fixes:
 | "Product appears too early" | Move to correct % for awareness stage |
 | "This is for product-aware" | Remove education, add objection collapse + risk reversal |
 | "Wrong CTA" | Replace with user's specified CTA |
+| "Make it more technical" | Add technical education section (see Technical Education Option) |
+| "Same angle, shorter" | Cut fat, keep core villain + mechanism + CTA |
+| "Same angle, different execution" | Change entry point (see Angle Variation Framework) |
+| "Logic doesn't flow" | Add transitional phrases, ensure each line connects to next |
+| "Too much meta-commentary" | Delete "That's the mechanism" type lines |
+| "Add visual notes" | Append Visual Direction Notes section at end |
 
 ---
 
 ## Version History
 
-- **1.2.0** (Current): Made skill brand-agnostic. Removed CTA prescriptions (now user-specified). Added multiple category examples (supplement, SaaS, skincare, coaching). Changed "Geographic authenticity" to "Credibility anchor" as variable input. Generalized all brand-specific language.
+- **1.3.0** (Current): Added Angle Variation Framework, Frustration-to-Eureka Arc, Sensory Snapshot Moments, Logic Flow Rule, No Meta-Commentary Rule, Partial Solution Framing, Technical Education Option, External Content → Angle pattern, Hook Options pattern, Early Context Establishment (brand-agnostic), Script Length Variations. Made Visual Direction Notes optional (script-only default). Ensured all principles are brand-agnostic throughout.
+- **1.2.0**: Made skill brand-agnostic. Removed CTA prescriptions (now user-specified). Added multiple category examples (supplement, SaaS, skincare, coaching). Changed "Geographic authenticity" to "Credibility anchor" as variable input. Generalized all brand-specific language.
 - **1.1.0**: Added Awareness Stage Architecture, Hook Construction Rules, Product Introduction Sequence, removed separate Pacing Notes requirement
 - **1.0.0**: Initial release with 7 formats, AI Slop sub-types, quality checklist

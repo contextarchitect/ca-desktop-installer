@@ -23,14 +23,14 @@ This is Phase 4 in the brand development workflow: Business Validation → Avata
 
 This skill requires TWO primary inputs:
 
-1. **Phase 2 Avatar Research Output** — provides customer archetypes with language preferences, emotional drivers, tone requirements, vocabulary patterns, and proof type preferences per segment
-2. **Phase 3 Brand Guidelines** — provides brand identity, voice pillars, visual identity cues, positioning, values, and competitive differentiation
+1. **Phase 2 Avatar Research Output** - provides customer archetypes with language preferences, emotional drivers, tone requirements, vocabulary patterns, and proof type preferences per segment
+2. **Phase 3 Brand Guidelines** - provides brand identity, voice pillars, visual identity cues, positioning, values, and competitive differentiation
 
 ### Optional Inputs
 
-- **Phase 1 Business Validation Report** — provides market context, regulatory claim boundaries, competitive positioning
-- **Client Braindump** — provides product mechanism, pricing, founder's voice preferences
-- **Existing copy samples** — if the brand already has content, samples help calibrate the guide to existing voice
+- **Phase 1 Business Validation Report** - provides market context, regulatory claim boundaries, competitive positioning
+- **Client Braindump** - provides product mechanism, pricing, founder's voice preferences
+- **Existing copy samples** - if the brand already has content, samples help calibrate the guide to existing voice
 
 ## Workflow Overview
 
@@ -40,7 +40,8 @@ This skill requires TWO primary inputs:
 3. MAP        -> Map archetypes to copy requirements
 4. GENERATE   -> Populate the copywriting guide template
 5. CALIBRATE  -> Add category-specific rules and examples
-6. OUTPUT     -> Deliver complete guide
+6. STRUCTURE  -> Add the seven-technique structural layer
+7. OUTPUT     -> Deliver complete guide
 ```
 
 ## Step 1: Ingest and Extract
@@ -117,7 +118,7 @@ Voice pillars come primarily from brand guidelines but are refined by avatar res
 
 1. **Start with brand guideline voice traits** (typically 3-5 adjectives or principles)
 2. **Convert each to a pillar** with definition, sounds-like examples, doesn't-sound-like anti-examples
-3. **Test each pillar against every archetype** — does this pillar work for all segments, or does it alienate one?
+3. **Test each pillar against every archetype** - does this pillar work for all segments, or does it alienate one?
 4. **Add archetype-informed pillars** if the avatar research reveals voice requirements the brand guidelines missed (e.g., "Empathetic Without Being Soft" might emerge from avatar data showing segments need validation)
 
 Each pillar needs:
@@ -151,13 +152,13 @@ The universal rules apply to ALL brands. Brand-specific additions come from:
 
 For each major content type, provide a mini-guide showing how voice + archetype + humanization rules combine:
 
-1. **Social media captions** — platform-specific, archetype-specific
-2. **Email subject lines and body** — hooks, openings, CTAs
-3. **Website headlines** — homepage, product page, landing page
-4. **Product page copy** — description, benefits, proof
-5. **Customer service / FAQs** — tone shift for support context
-6. **Ad copy** — platform-specific (Meta, Google, TikTok)
-7. **Advertorial/Listicle content** — education-led funnel copy
+1. **Social media captions** - platform-specific, archetype-specific
+2. **Email subject lines and body** - hooks, openings, CTAs
+3. **Website headlines** - homepage, product page, landing page
+4. **Product page copy** - description, benefits, proof
+5. **Customer service / FAQs** - tone shift for support context
+6. **Ad copy** - platform-specific (Meta, Google, TikTok)
+7. **Advertorial/Listicle content** - education-led funnel copy
 
 Each guide should include:
 - Character/word limits for the format
@@ -169,21 +170,86 @@ Each guide should include:
 
 From business validation regulatory findings + brand guidelines positioning:
 
-1. **How to explain the core product mechanism simply** — 1 sentence, 3 sentences, 1 paragraph versions
-2. **Common objections with approved response frameworks** — for each archetype's primary objection
-3. **Claim boundaries** — what can be said, what requires qualification, what's prohibited
-4. **Competitor comparison rules** — how to reference competitors (or not)
+1. **How to explain the core product mechanism simply** - 1 sentence, 3 sentences, 1 paragraph versions
+2. **Common objections with approved response frameworks** - for each archetype's primary objection
+3. **Claim boundaries** - what can be said, what requires qualification, what's prohibited
+4. **Competitor comparison rules** - how to reference competitors (or not)
 
-## Step 7: Generate Humanization Checklist
+## Step 7: Add the Seven-Technique Structural Layer
+
+Voice rules govern HOW copy sounds. The seven techniques govern WHAT MOVE the copy is making structurally. Both layers run on every piece of brand content. This step adds a structural framework section to the copywriting guide so writers (human or LLM) know which technique to deploy in which moment.
+
+The seven techniques come from Eugene Schwartz's Breakthrough Advertising. They are:
+
+1. **Intensification** - build desire by making the fulfilled state vivid through multiple specific scenes
+2. **Identification** - give the reader a felt identity to step into
+3. **Gradualization** - sequence claims so each one earns belief from the one before
+4. **Redefinition** - reframe a desire, problem, or alternative so a different solution becomes obviously correct
+5. **Mechanization** - give proof a physical, mechanical, named explanation
+6. **Concentration** - zoom in on ONE specific competitor or alternative and demolish it
+7. **Camouflage** - hide the sales pitch inside a different surface (story, editorial, expose, FAQ)
+
+### The Layering Rule
+
+Pick the technique FIRST. Write the move in the brand's voice SECOND. Run the AI Detection Firewall THIRD. The technique determines what the copy is doing. Voice rules constrain how it gets said. Reverse the order and you end up with on-voice writing that is not advancing any argument.
+
+### Writing Each Technique in Brand Voice
+
+For each technique, the copywriting guide should include a "what this looks like in our voice" worked example drawn from the brand's actual archetype profiles.
+
+**Intensification.** Build 3-5 vivid scenes of the prospect already living the result, each from a different angle. Phase 4's "Show, Don't Tell" rule is intensification by another name; this layer formalizes it.
+
+Voice translation: pick the brand's primary archetype. Write five different specific moments where the prospect is already living the desired state. Different times of day, different locations, different witnesses, different textures. Apply the brand's voice rules (burstiness, contractions, vocabulary) throughout.
+
+**Identification.** Name the identity the prospect steps into when they take action. The brand's archetype profiles already do this at the strategic level (e.g., "the dad who's fully there," "the husband she married, restored"). Identification at the COPY level means revisiting that identity early and at the close of every long-form piece.
+
+**Gradualization.** Sequence claims smallest to biggest. The product claim arrives last, after the prospect has agreed to a chain of harder-to-deny claims. In short copy: small claim (observation) → bigger claim (mechanism) → biggest claim (product). In long copy: the entire advertorial structure does this.
+
+**Redefinition.** Reframe what the prospect currently believes. Examples:
+- "Viagra works for the 4 hours after you take it. Daily support works for your body, not for the pill." (Reframes the desire from "tonight" to "your body working again.")
+- "97% adherence at clinical doses beats 60% adherence at clinical doses." (Reframes the desire from "best ingredients" to "best ingredients you'll actually take.")
+
+Stay in voice. Reframes do not need exclamation marks; numbers and contrast carry the work.
+
+**Mechanization.** Name the mechanism with a memorable phrase. Walk the steps in plain English. Anchor at least one step to a published study or specific data point. This is the structural form of voice pillar "Knowledgeable, Never Lecturing" if the brand has one.
+
+**Concentration.** Pick ONE alternative the prospect is most likely using. Demolish it with mechanism + numbers, not adjectives. Do not aggregate ("most alternatives are bad"). Specific concentration is required at sophistication Stage 4+; generic dismissal fails.
+
+**Camouflage.** Pick a content surface (advertorial, listicle, expose, FAQ, news-style). Build the sales argument underneath using techniques 1-6. The reader thinks they are reading content; structurally they are reading a sales argument. The brand's archetype profile and voice pillars determine what kind of content surface fits.
+
+### Combining Techniques
+
+The most common combinations across content types:
+
+- **Single-image ad:** Concentration (one alternative attacked) + Mechanization (one mechanism named) + minimal Identification
+- **Long-form advertorial:** All seven, in roughly the order above, with Camouflage as the surface
+- **Email nurture sequence:** Intensification across multiple emails, one Mechanization email, one Concentration email, one Identification email at the close
+- **Social post:** One technique. Pick the one that does the most work for the platform
+- **Product page:** Mechanization (primary) + Redefinition (reframe the category) + minimal Identification at the testimonial section
+
+### Pressure Test for Voice + Technique Compliance
+
+After applying any technique, the copy must still pass the brand's full Phase 4 humanization checklist (Step 7 below). Common failure: a technique feels strong in 1966-style hype voice but fails the brand's voice rules. Restate without exclamations, without forbidden vocabulary, without em dashes. The technique is the structural move; the voice is independent.
+
+### Output: A Section in the Final Guide
+
+Add a section to the copywriting guide called "Structural Moves: The Seven Techniques." Include:
+- The seven technique definitions (above)
+- The layering rule
+- One worked example per technique, written in the brand's voice for the brand's primary archetype
+- The combinations table
+- The pressure test reminder
+
+## Step 8: Generate Humanization Checklist
 
 A 4-phase self-check that any LLM runs after writing content:
 
-**Phase 1: AI Detection Audit** — vocabulary scan, em dash check, burstiness check, hedging removal
-**Phase 2: Voice Alignment** — brand voice match, archetype match, confidence check
-**Phase 3: Emotional Resonance** — target emotion achieved, empathy present, aspiration without pandering
-**Phase 4: Specificity and Differentiation** — no vague statements, concrete scenarios, mechanism clear
+**Phase 1: AI Detection Audit** - vocabulary scan, em dash check, burstiness check, hedging removal
+**Phase 2: Voice Alignment** - brand voice match, archetype match, confidence check
+**Phase 3: Emotional Resonance** - target emotion achieved, empathy present, aspiration without pandering
+**Phase 4: Specificity and Differentiation** - no vague statements, concrete scenarios, mechanism clear
 
-## Step 8: Present and Output
+## Step 9: Present and Output
 
 Present summary:
 
@@ -200,8 +266,9 @@ Guide Contents:
   Archetypes: [count] with full copy profiles
   Content Guides: [count] content types covered
   Humanization Rules: [count] rules in AI Detection Firewall
-  
-Total Sections: 11 + 2 appendices
+  Structural Moves: 7 techniques with worked examples
+
+Total Sections: 12 + 2 appendices
 Estimated Length: [word count]
 
 Confirm or adjust:
@@ -217,6 +284,7 @@ Sections populated:
   - [count] voice pillars with examples
   - AI Detection Firewall ([count] rules)
   - [count] archetype copy profiles with sample paragraphs
+  - Structural moves: 7 techniques with worked examples
   - Humanization checklist (4 phases)
   - [count] content type quick guides
   - Category messaging framework with claim boundaries

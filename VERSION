@@ -1,11 +1,12 @@
 business-validation=1.0.0
 avatar-research=1.0.0
 brand-analyzer=1.0.0
-copywriting-guide=1.0.0
-funnel-builder=2.1.0
+copywriting-guide=1.1.0
+funnel-builder=2.3.0
 nano-banana-prompting=1.1.0
-ad-style-generator=1.0.0
+ad-style-generator=1.1.0
 product-deep-research=1.0.0
 video-prompting-guide=1.0.0-beta
-angle-roadmap=1.0.0
+angle-roadmap=1.1.0
 video-script-generator=1.3.0
+system-prompt=1.2.0

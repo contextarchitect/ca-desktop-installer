@@ -60,7 +60,11 @@ STEP 4: ALTERNATIVE SOLUTION POSITIONING
 STEP 5: ANGLE CARD GENERATION
   -> Combine Steps 1-4 into structured angle cards (5-15 per brand)
 
-STEP 6: PRIORITIZATION & OUTPUT
+STEP 6: SCHWARTZ SCORING (awareness + sophistication per angle)
+  -> Apply the awareness/sophistication framework to every angle card
+  -> Add the Schwartz scores as fields on each card
+
+STEP 7: PRIORITIZATION & OUTPUT
   -> Rank angles by testing priority, deliver as Brand Angle Roadmap document
 ```
 
@@ -279,7 +283,7 @@ This is where everything comes together. Each angle card combines one emotional 
 3. Select the root cause framing that connects to this trigger (Step 1) - the same root cause can be framed differently depending on which emotion you're leading with
 4. Select the mechanism framing that resolves this specific trigger
 5. Select the alternative attack that's most relevant to this trigger/desire combination (Step 4)
-6. Determine the awareness stage this angle is best suited for
+6. Determine the awareness stage this angle is best suited for (see Step 6 for the awareness framework)
 7. Recommend ad formats and funnel types based on awareness stage + emotional intensity
 
 **Angle naming convention:** Each angle gets a short, evocative name that captures the core narrative. Think of it as the "campaign theme" name. Examples: "The Internal Sabotage," "The Dependency Trap," "The Stolen Identity," "The Silent Storm."
@@ -290,7 +294,74 @@ This is where everything comes together. Each angle card combines one emotional 
 - At least 1 angle per awareness stage the brand targets
 - Mix of emotional-led angles (lead with trigger) and logic-led angles (lead with root cause)
 
-## Step 6: Prioritization & Output
+## Step 6: Schwartz Scoring (Awareness + Sophistication)
+
+Every angle card carries two structural scores from Eugene Schwartz's Breakthrough Advertising framework. These scores determine downstream creative execution: which headline strategy, which advertorial section gets the most weight, which ad style fits the angle.
+
+Score each angle on the two axes below, and add the scores as fields on the angle card. The scores are not optional. Every angle in the roadmap carries them.
+
+### 6A: Awareness Stage
+
+The awareness stage describes where the prospect sits relative to their problem and the available solutions. Schwartz defines five stages, ordered from least to most aware:
+
+| Stage | The prospect... | Headline rule | Opening rule |
+|-------|-----------------|---------------|--------------|
+| Unaware | Does not know they have the problem | Lead with story, news, or a vivid scenario | Open with experience, not diagnosis |
+| Problem Aware | Knows the problem; does not know solutions exist | Name the problem precisely; promise a mechanism | Open with the problem they already feel |
+| Solution Aware | Knows solutions exist; not yet sold on any | Differentiate the mechanism from what they've heard | Open with what is different about THIS approach |
+| Product Aware | Knows your product specifically; not yet committed | Lead with offer, proof, or unique mechanism | Open with the reason this product over alternatives |
+| Most Aware | Is sold on category and ready to act | Lead with offer, social proof, or testimonial | Open with a specific reason to act now |
+
+**The Solution-Switching variant.** Some brands' angle cards include "Solution-Switching" as a label. This is not a Schwartz stage; it is a compound state where the prospect knows competing products (Product Aware) AND is actively dissatisfied with them. Headline strategy follows Product Aware (name the alternative; differentiate; redefine the desire). Emotional register is closer to Problem Aware (frustration, betrayal). When you encounter this label, treat it as Product Aware + dissatisfaction, not as a separate stage.
+
+### 6B: Sophistication Stage
+
+The sophistication stage describes where the MARKET sits, not the prospect. It is the cumulative claims-fatigue of the audience based on how many competing brands have already pitched them. Schwartz's five stages:
+
+| Stage | The market has... | Required move |
+|-------|-------------------|---------------|
+| 1 | Never heard the claim before | State the claim simply |
+| 2 | Heard the claim; competing brands escalating it | Make a bigger claim |
+| 3 | Heard escalating claims; starting to distrust them | Name a NEW MECHANISM that delivers the claim |
+| 4 | Heard mechanism claims; distrusting those too | Prove the mechanism with named research, transparency, or specificity |
+| 5 | Exhausted by the entire category | Identify with the exhaustion; elevate to a new dimension the category has not reached |
+
+Most mature D2C categories sit at Stage 4 by default. Some sub-segments (research-driven optimizers, prescription refugees, late-stage skeptics) sit at Stage 5. New categories or genuinely under-marketed mechanisms can sit at Stage 3.
+
+**Mismatch is the most common cause of weak angles.** A Stage 2 claim ("boost testosterone") in a Stage 4 market reads as another commodity claim. A Stage 5 identification move on a Stage 3 audience over-identifies with exhaustion they don't yet feel.
+
+### 6C: Score Each Angle Card
+
+For every angle card produced in Step 5, add these fields:
+
+```
+Awareness Stage: [Unaware / Problem Aware / Solution Aware / Product Aware / Most Aware / Solution-Switching]
+Sophistication Stage Score: [Stage 1-5]
+Required Schwartz Move: [one sentence describing the move that fits the intersection]
+```
+
+The "Required Schwartz Move" is the strategic instruction downstream skills (funnel-builder, ad-style-generator) inherit. Examples:
+
+- Problem Aware + Stage 3: "Name the new mechanism, then prove it with one named study and a 4th-grade-level explanation."
+- Product Aware (Solution-Switching) + Stage 4: "Concentrate on the specific competing product the prospect is using; demolish its limitation with mechanism + numbers."
+- Most Aware + Stage 4: "Lead with partner-noticed testimonial. Avoid mechanism heaviness."
+- Problem Aware + Stage 5: "Identify with category exhaustion ('you've tried everything'). Then name a dimension the category has not reached."
+
+### 6D: Four-Hole Pressure Test
+
+Run this on every angle card before finalizing. It catches the most common structural failures.
+
+1. **Desire-mechanism gap.** Does the mechanism in the card actually deliver the core desire? There must be a bridge sentence (or the option for one) connecting mechanism to desire. Example bridge: "When cortisol drops, your body produces testosterone again, and your wife notices the man she married." If no bridge exists or could exist, the angle stalls in proof.
+
+2. **Awareness-headline mismatch.** Does the headline rule for the angle's awareness stage match the headline directions in the card? An Unaware angle with a Problem Aware headline burns half the prospects.
+
+3. **Sophistication-claim mismatch.** Is the claim style appropriate for the sophistication score? A Stage 2 claim in a Stage 4 market is the most common failure. A Stage 5 identification move on a Stage 3 audience is the second most common.
+
+4. **Alternative attack specificity.** Is the Alternative Attack named specifically (a specific competitor mechanism, a specific product limitation, a specific dose problem)? Or is it generic ("most supplements don't work")? At Stage 4+, generic concentration fails. The attack must name a target the prospect has actually encountered.
+
+If any pressure test fails, revise before finalizing the angle.
+
+## Step 7: Prioritization & Output
 
 ### Prioritization
 
@@ -301,6 +372,7 @@ Rank angles by testing priority using these criteria:
 3. **Awareness stage coverage** - ensure the top 5 angles cover at least 2 awareness stages
 4. **Format diversity** - the top 5 should include at least one image ad angle, one UGC/video angle, and one advertorial angle
 5. **Alternative attack diversity** - avoid putting all top angles against the same alternative
+6. **Sophistication-required move diversity** - avoid putting all top angles at the same Schwartz move (e.g., five Stage 4 mechanism-naming angles)
 
 ### Output: Brand Angle Roadmap Document
 
@@ -327,7 +399,8 @@ Inputs: Phase 1 ([date]), Phase 2 ([date]), Product docs
 [Full output from Step 4]
 
 ## 6. Angle Cards
-[All angle cards from Step 5, ordered by testing priority]
+[All angle cards from Step 5 + Step 6 scoring, ordered by testing priority.
+Each card carries: Awareness Stage, Sophistication Stage Score, Required Schwartz Move]
 
 ## 7. Testing Roadmap
 [Top 5 angles to test first, with recommended:
@@ -351,7 +424,7 @@ Produced:
   - [N] emotional triggers scored and ranked
   - [N] desire chains across [N] avatars
   - [N] alternative solutions analyzed
-  - [N] angle cards defined
+  - [N] angle cards defined with awareness + sophistication scores
   - Testing roadmap with top 5 priorities
 
 Next steps:
@@ -395,6 +468,13 @@ Before delivering the roadmap, verify:
 - [ ] Each angle has a clear name and one-sentence summary
 - [ ] No two angles are the same trigger + desire combination
 - [ ] Recommended ad formats and funnel types are specified per angle
+
+**Schwartz Scoring (Step 6):**
+- [ ] Every angle has an Awareness Stage assigned
+- [ ] Every angle has a Sophistication Stage Score (1-5)
+- [ ] Every angle has a Required Schwartz Move articulated in one sentence
+- [ ] Four-hole pressure test passed on every angle (desire-mechanism gap, awareness-headline match, sophistication-claim match, alternative attack specificity)
+- [ ] If any angle uses the "Solution-Switching" label, the card notes it is treated as Product Aware + dissatisfaction
 
 ## What This Skill Does NOT Do
 

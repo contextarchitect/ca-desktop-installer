@@ -34,7 +34,7 @@ The user then generates the image externally in Nano Banana and uses it wherever
 1. **Brand Guidelines (Phase 3)** - colors (hex codes), typography, logo treatment, visual identity rules, positioning
 2. **Avatar Profiles (Phase 2)** - target segments, awareness stages, emotional triggers, language preferences
 3. **Copywriting Guide (Phase 4)** - voice rules, forbidden vocabulary, tone per archetype
-4. **Angle Roadmap (Phase 4.5)** - the angle card driving this ad concept, including Awareness Stage and Sophistication Stage Score (these scores determine the technique density and headline strategy; see Schwartz Structural Layer below)
+4. **Angle Roadmap (Phase 4.5)** - the angle card driving this ad concept. If the brand has completed Schwartz onboarding (i.e., `phase-4.5-angle-roadmap/schwartz-applied.md` exists in the brand repo), the angle card will also carry Awareness Stage and Sophistication Stage Score; these determine the technique density and headline strategy (see Schwartz Structural Layer below). If the file does not exist, treat the angle card as the standard Phase 4.5 output.
 5. **Funnel Config (Phase 5)** - product reference images (REF numbers), image generation rules, visual restrictions
 
 If any of these are missing, note the gap and work with what's available. Brand Guidelines is the minimum requirement.
@@ -55,38 +55,38 @@ If the user doesn't specify a style, use the Style Selection Framework in `refer
 
 ```
 STEP 1: CONTEXT LOADING (automatic)
-  -> Read brand guidelines (colors, fonts, visual identity)
-  -> Read avatar profiles (target segment details)
-  -> Read copywriting guide (voice, forbidden vocabulary)
-  -> Read angle card (awareness stage, sophistication score, required Schwartz move)
-  -> Read funnel config (product refs, image rules)
+  → Read brand guidelines (colors, fonts, visual identity)
+  → Read avatar profiles (target segment details)
+  → Read copywriting guide (voice, forbidden vocabulary)
+  → Read angle card (awareness stage, sophistication score, required Schwartz move)
+  → Read funnel config (product refs, image rules)
 
 STEP 2: STYLE SELECTION (with user)
-  -> User specifies style OR skill recommends based on:
+  → User specifies style OR skill recommends based on:
     - Objective + avatar + platform (existing logic)
-    - Awareness stage + sophistication score -> required technique (Style-to-Schwartz mapping)
-  -> Read the specific style framework from references/style-catalogue.md
-  -> Confirm approach with user
+    - Awareness stage + sophistication score → required technique (Style-to-Schwartz mapping)
+  → Read the specific style framework from references/style-catalogue.md
+  → Confirm approach with user
 
 STEP 3: CREATIVE BRIEF (generate)
-  -> Concept description (what the ad shows)
-  -> Headline using a Schwartz method tagged on the brief
-  -> Body copy (following copywriting guide rules + technique density rule for awareness stage)
-  -> Layout description (composition, color zones, typography placement)
-  -> Avatar-visual alignment check
+  → Concept description (what the ad shows)
+  → Headline using a Schwartz method tagged on the brief
+  → Body copy (following copywriting guide rules + technique density rule for awareness stage)
+  → Layout description (composition, color zones, typography placement)
+  → Avatar-visual alignment check
 
 STEP 4: NANO BANANA PROMPT (generate)
-  -> Complete prompt using Three-Layer Model:
+  → Complete prompt using Three-Layer Model:
     - Visible Layer: scene description with brand colors, fonts, layout
     - Constraint Layer: aspect ratio, style, quality requirements
     - Exclusion Layer: what to avoid (brand restrictions + style exclusions)
-  -> Include product reference images where applicable
-  -> Specify exact dimensions for target platform
+  → Include product reference images where applicable
+  → Specify exact dimensions for target platform
 
 STEP 5: DELIVERY
-  -> Output creative brief + Nano Banana prompt
-  -> If batch (multiple concepts), output as downloadable markdown file
-  -> User generates images in Nano Banana externally
+  → Output creative brief + Nano Banana prompt
+  → If batch (multiple concepts), output as downloadable markdown file
+  → User generates images in Nano Banana externally
 ```
 
 ## Brand Element Mapping
@@ -146,6 +146,8 @@ When the user requests multiple ad concepts:
 5. Name each concept clearly: `[STYLE]-[topic-slug]-[variant].png`
 
 ## Schwartz Structural Layer (Style Selection + Headlines)
+
+**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
 
 This section adds two structural inputs to ad creative selection:
 
@@ -259,6 +261,8 @@ When auditing an ad concept (existing or proposed), run these four checks:
 
 If any check fails, surface the finding and propose a concrete revision.
 
+**If this brand has not yet completed Schwartz onboarding:** see `_frameworks/breakthrough-advertising-brand-onboarding.md` in `contextarchitect/context-architect-brands` for the 30-60 minute scoped session that produces `schwartz-applied.md`.
+
 ## Quality Checklist
 
 Before delivering any ad concept:
@@ -274,7 +278,7 @@ Before delivering any ad concept:
 - [ ] Nano Banana prompt uses Three-Layer Model
 - [ ] Product reference images specified where applicable
 
-**Schwartz Structural Layer:**
+**Schwartz Structural Layer (only if `schwartz-applied.md` exists for this brand):**
 - [ ] Style choice matches the technique the angle needs (Style-to-Schwartz mapping)
 - [ ] Technique density correct for the awareness stage (density rule)
 - [ ] Headline tagged with a Schwartz method on the brief

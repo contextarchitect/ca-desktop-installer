@@ -9,7 +9,7 @@ description: "Generate a complete Human-Centered Copywriting Guide for any brand
 
 Generate a complete Human-Centered Copywriting Guide by synthesizing avatar research (who we're talking to, how they speak, what resonates) with brand guidelines (who we are, how we sound, what we stand for). The output is a standalone document that any LLM can use as a training manual to produce copy that sounds authentically human, passes AI detection, and connects emotionally with each customer segment.
 
-This is Phase 4 in the brand development workflow: Business Validation → Avatar Research → Brand Guidelines → **Copywriting Guide** → Funnel Development.
+This is Phase 4 in the brand development workflow: Business Validation -> Avatar Research -> Brand Guidelines -> **Copywriting Guide** -> Funnel Development.
 
 ## When to Use
 
@@ -203,7 +203,7 @@ Voice translation: pick the brand's primary archetype. Write five different spec
 
 **Identification.** Name the identity the prospect steps into when they take action. The brand's archetype profiles already do this at the strategic level (e.g., "the dad who's fully there," "the husband she married, restored"). Identification at the COPY level means revisiting that identity early and at the close of every long-form piece.
 
-**Gradualization.** Sequence claims smallest to biggest. The product claim arrives last, after the prospect has agreed to a chain of harder-to-deny claims. In short copy: small claim (observation) → bigger claim (mechanism) → biggest claim (product). In long copy: the entire advertorial structure does this.
+**Gradualization.** Sequence claims smallest to biggest. The product claim arrives last, after the prospect has agreed to a chain of harder-to-deny claims. In short copy: small claim (observation) -> bigger claim (mechanism) -> biggest claim (product). In long copy: the entire advertorial structure does this.
 
 **Redefinition.** Reframe what the prospect currently believes. Examples:
 - "Viagra works for the 4 hours after you take it. Daily support works for your body, not for the pill." (Reframes the desire from "tonight" to "your body working again.")

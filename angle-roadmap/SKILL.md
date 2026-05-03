@@ -296,6 +296,8 @@ This is where everything comes together. Each angle card combines one emotional 
 
 ## Step 6: Schwartz Scoring (Awareness + Sophistication)
 
+**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+
 Every angle card carries two structural scores from Eugene Schwartz's Breakthrough Advertising framework. These scores determine downstream creative execution: which headline strategy, which advertorial section gets the most weight, which ad style fits the angle.
 
 Score each angle on the two axes below, and add the scores as fields on the angle card. The scores are not optional. Every angle in the roadmap carries them.
@@ -360,6 +362,8 @@ Run this on every angle card before finalizing. It catches the most common struc
 4. **Alternative attack specificity.** Is the Alternative Attack named specifically (a specific competitor mechanism, a specific product limitation, a specific dose problem)? Or is it generic ("most supplements don't work")? At Stage 4+, generic concentration fails. The attack must name a target the prospect has actually encountered.
 
 If any pressure test fails, revise before finalizing the angle.
+
+**If this brand has not yet completed Schwartz onboarding:** see `_frameworks/breakthrough-advertising-brand-onboarding.md` in `contextarchitect/context-architect-brands` for the 30-60 minute scoped session that produces `schwartz-applied.md`.
 
 ## Step 7: Prioritization & Output
 
@@ -469,7 +473,7 @@ Before delivering the roadmap, verify:
 - [ ] No two angles are the same trigger + desire combination
 - [ ] Recommended ad formats and funnel types are specified per angle
 
-**Schwartz Scoring (Step 6):**
+**Schwartz Scoring (Step 6) (only if `schwartz-applied.md` exists for this brand):**
 - [ ] Every angle has an Awareness Stage assigned
 - [ ] Every angle has a Sophistication Stage Score (1-5)
 - [ ] Every angle has a Required Schwartz Move articulated in one sentence

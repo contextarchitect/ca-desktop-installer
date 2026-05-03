@@ -1,6 +1,6 @@
 ---
 name: funnel-builder
-version: 2.3.0
+version: 2.3.1
 description: "Create high-converting funnel pages (advertorials and listicles) for e-commerce brands. Handles the complete workflow: funnel type selection based on avatar awareness stage, image generation via Kie MCP, copy creation following brand voice guidelines, and deployment via Lovable. Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, and copywriting guide as inputs."
 ---
 
@@ -10,7 +10,7 @@ description: "Create high-converting funnel pages (advertorials and listicles) f
 
 Create production-ready funnel pages (advertorials and listicles) by combining avatar research, brand voice, and conversion psychology into a structured workflow. The copy methodology follows a 9-section advertorial architecture and a 3-variant listicle system, both built on the awareness ladder principle: every decision flows from where the audience sits on the awareness ladder and what ad format drove them there.
 
-This is Phase 5 in the brand development workflow: Business Validation -> Avatar Research -> Brand Guidelines -> Copywriting Guide -> **Funnel Pages** -> Launch.
+This is Phase 5 in the brand development workflow: Business Validation → Avatar Research → Brand Guidelines → Copywriting Guide → **Funnel Pages** → Launch.
 
 ## When to Use
 
@@ -28,10 +28,10 @@ Nothing works in isolation. The ad, the headline, the landing page, the close fo
 ### The Yes-Yes-Yes Causal Chain
 
 Every advertorial must build this chain:
-- Root cause clicks -> "I believe THIS is causing my problem"
-- Unique mechanism clicks -> "I believe THIS approach fixes that cause"
-- Product clicks -> "I believe THIS product delivers that mechanism"
-- Close clicks -> "This is the obvious choice"
+- Root cause clicks → "I believe THIS is causing my problem"
+- Unique mechanism clicks → "I believe THIS approach fixes that cause"
+- Product clicks → "I believe THIS product delivers that mechanism"
+- Close clicks → "This is the obvious choice"
 
 If any link is weak, the conversion architecture fails.
 
@@ -63,7 +63,7 @@ Length is determined by the job each section needs to do, not by a target word c
 1. **Avatar Research (Phase 2)** - target segments, awareness stages, language preferences, emotional triggers, platform behavior, raw quotes, day-to-day struggles. Also check for an Emotion-First Communications Framework if the brand has one.
 2. **Brand Guidelines (Phase 3)** - brand colors, typography, positioning, voice pillars, visual identity
 3. **Copywriting Guide (Phase 4)** - voice rules, forbidden vocabulary, humanization principles, archetype-specific tone guidance
-4. **Angle Roadmap (Phase 4.5)** - the angle card driving this funnel, including Awareness Stage and Sophistication Stage Score (these scores determine which advertorial sections carry the most weight; see Schwartz Structural Layer section below)
+4. **Angle Roadmap (Phase 4.5)** - the angle card driving this funnel. If the brand has completed Schwartz onboarding (i.e., `phase-4.5-angle-roadmap/schwartz-applied.md` exists in the brand repo), the angle card will also carry Awareness Stage and Sophistication Stage Score; these determine which advertorial sections carry the most weight (see Schwartz Structural Layer section below). If the file does not exist, treat the angle card as the standard Phase 4.5 output.
 
 ### Brand-Specific Documents (Check If Available)
 
@@ -88,7 +88,7 @@ Before building the first funnel for any brand, collect these configuration inpu
    [No pricing (recommended) / Show pricing / Show savings only]
 
 3. CTA language: What should CTA buttons say?
-   [User provides, e.g., "Check Availability ->", "Shop Now", "Get My Bundle"]
+   [User provides, e.g., "Check Availability →", "Shop Now", "Get My Bundle"]
 
 4. Guarantee: Do you offer a guarantee? If yes, specifics?
    [User provides, e.g., "90-day money-back, no questions asked"]
@@ -136,33 +136,33 @@ Before building the first funnel for any brand, collect these configuration inpu
 
 ```
 STAGE 0: PLANNING & ALIGNMENT
-  -> Identify traffic source and reader state
-  -> Select funnel type + variant
-  -> Choose target avatar + awareness stage
-  -> Pull the angle card's Sophistication Stage Score (drives section weighting)
-  -> Map content structure and image requirements
+  → Identify traffic source and reader state
+  → Select funnel type + variant
+  → Choose target avatar + awareness stage
+  → Pull the angle card's Sophistication Stage Score (drives section weighting)
+  → Map content structure and image requirements
 
 STAGE 1: COPY CREATION
-  -> Write body copy following section architecture (apply Schwartz section mapping)
-  -> Write close section
-  -> Write lead (tease of full content)
-  -> Write headline (checked against five-element framework)
-  -> Run deletion pass, simplicity check, humanity check
+  → Write body copy following section architecture (apply Schwartz section mapping)
+  → Write close section
+  → Write lead (tease of full content)
+  → Write headline (checked against five-element framework)
+  → Run deletion pass, simplicity check, humanity check
   *** STOP. Present copy to user. Wait for approval or revision requests.
   *** Do NOT proceed to Stage 2 until copy is approved.
 
 STAGE 2: IMAGE GENERATION (via Kie MCP)
-  -> Build Three-Layer prompts for each image slot
-  -> Submit each via kie-ai:nano_banana_image, poll for completion
-  -> Present generated image links in chat for each image
+  → Build Three-Layer prompts for each image slot
+  → Submit each via kie-ai:nano_banana_image, poll for completion
+  → Present generated image links in chat for each image
   *** STOP. Wait for user to approve or request regeneration per image.
   *** Do NOT proceed to Stage 3 until all images are approved.
 
 STAGE 3: LOVABLE IMPLEMENTATION
-  -> Read references/visual-design.md
-  -> Generate single complete Lovable prompt with approved copy + approved images
-  -> Output as downloadable markdown file
-  -> QA review
+  → Read references/visual-design.md
+  → Generate single complete Lovable prompt with approved copy + approved images
+  → Output as downloadable markdown file
+  → QA review
 ```
 
 ### Stage 0: Planning & Alignment
@@ -179,7 +179,7 @@ Before anything else, determine what ad format will drive traffic. This determin
 | UGC / day-in-the-life | Curious about product | Skip broad filtering, build emotional connection |
 | Long-form VSL | Emotionally invested | Focus on logic, don't repeat emotional arc |
 | Targeted image + copy | Filtered, problem-aware | Go deeper into root cause + mechanism |
-| Advertorial ad copy | Emotionally warmed | Logical validation -> Listicle (logic variant) |
+| Advertorial ad copy | Emotionally warmed | Logical validation → Listicle (logic variant) |
 
 **Step 0.2: Select Funnel Type + Variant**
 
@@ -192,7 +192,7 @@ Based on traffic source and awareness stage:
 | Solution-aware audience comparing options | Listicle - Product variant |
 | Skeptical audience, tried alternatives, needs full journey | Advertorial (full 9-section) |
 | Emotional connection needed beyond features | Advertorial |
-| Advertorial ad copy -> landing page | Listicle - Logic variant (COMBO PATTERN) |
+| Advertorial ad copy → landing page | Listicle - Logic variant (COMBO PATTERN) |
 
 **Step 0.3: Avatar-Image Alignment Check**
 
@@ -208,6 +208,8 @@ Before any content or image planning:
 
 **Step 0.4: Pull the Angle Card's Schwartz Scores**
 
+**Gating check (run before this step).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire step silently and proceed to Step 0.5 as if this step were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, or any related vocabulary in your output. If the file exists, run this step normally.
+
 Open the angle card driving this funnel. Capture three values that drive Stage 1 writing:
 
 - **Awareness Stage** (Unaware / Problem Aware / Solution Aware / Product Aware / Most Aware / Solution-Switching)
@@ -221,9 +223,9 @@ If the angle card lacks these fields, the angle predates the angle-roadmap skill
 **Step 0.5: Map Content Structure**
 
 Read the appropriate reference file:
-- Advertorial -> `references/advertorial-framework.md`
-- Listicle -> `references/listicle-framework.md`
-- Visual layout -> `references/visual-design.md` (section-level design specs, component patterns)
+- Advertorial → `references/advertorial-framework.md`
+- Listicle → `references/listicle-framework.md`
+- Visual layout → `references/visual-design.md` (section-level design specs, component patterns)
 
 Determine: section sequence, tone balance for awareness stage, CTA placement, image requirements, listicle variant (if applicable).
 
@@ -236,15 +238,15 @@ Determine: section sequence, tone balance for awareness stage, CTA placement, im
 **For Advertorials - Writing Order:**
 
 1. **Immerse in avatar research** - re-read raw quotes, struggles, emotional triggers
-2. **Apply the Schwartz Structural Layer (below) to plan section weighting** based on the angle's sophistication score
-3. **Write sections 3-8 in one sitting** (Background Story -> Root Cause -> Consequences -> Unique Mechanism -> Product Buildup -> Product Reveal). Continuous flow, not section-by-section.
+2. **(Only if `schwartz-applied.md` exists for this brand) Apply the Schwartz Structural Layer (below) to plan section weighting** based on the angle's sophistication score. If the file does not exist, skip this step.
+3. **Write sections 3-8 in one sitting** (Background Story → Root Cause → Consequences → Unique Mechanism → Product Buildup → Product Reveal). Continuous flow, not section-by-section.
 4. **Write section 9 (Close)** - testimonials, price anchoring, value stack, guarantee, urgency
 5. **Write section 2 (Lead)** - tease/summarize what the reader will discover. Written AFTER body is complete.
 6. **Write section 1 (Headline)** - checked against the five-element framework (Relatability, Tension, Curiosity, Humanity, Contextual Fit) and the headline quality check questions. If any quality check answer is "no," rework.
 7. **Deletion pass** - remove any sentence that doesn't create curiosity, build belief, deepen identification, handle an objection, or move the reader forward
 8. **Simplicity check** - root cause and mechanism sections: would a tired, distracted person understand them?
 9. **Humanity check** - no em dashes, no forbidden vocabulary, contractions natural, high burstiness
-10. **Verify causal chain** - Root Cause -> Mechanism -> Product must flow logically
+10. **Verify causal chain** - Root Cause → Mechanism → Product must flow logically
 
 **For Listicles - Writing Order:**
 
@@ -267,9 +269,9 @@ Determine: section sequence, tone balance for awareness stage, CTA placement, im
 **All videos are provided by the user (pre-existing assets). Video generation is not part of this workflow.**
 
 **Before writing any image prompts, check for brand-specific documents:**
-1. Search for Ad Style Catalogue -> if found, align image styles to catalogue
-2. Search for Visual Design Guidelines -> if found, apply infographic specs
-3. Search for Product Photography Reference Index -> if found, verify all REF numbers
+1. Search for Ad Style Catalogue → if found, align image styles to catalogue
+2. Search for Visual Design Guidelines → if found, apply infographic specs
+3. Search for Product Photography Reference Index → if found, verify all REF numbers
 
 Read brand-specific image rules from configuration before writing any prompts.
 
@@ -363,6 +365,8 @@ https://raw.githubusercontent.com/[org]/[repo]/main/[path]/[filename]
 
 ## Schwartz Structural Layer (Advertorial Section Mapping)
 
+**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+
 The 9-section advertorial format is structurally aligned with the seven techniques from Eugene Schwartz's Breakthrough Advertising. The angle card's Sophistication Stage Score (from the angle-roadmap skill, Step 6) determines which sections carry the most weight.
 
 This section provides the section-by-section technique map and the sophistication-driven weighting rules. Use these when writing or auditing an advertorial.
@@ -374,7 +378,7 @@ This section provides the section-by-section technique map and the sophisticatio
 | 1. Above the Fold | Headline method | Identification | Stops the scroll, signals who the piece is for |
 | 2. Lead | Identification | Camouflage | Establish narrator and authentic content surface |
 | 3. Background Story | Identification | Intensification | Build narrator identity through specific scenes the reader recognizes |
-| 4. Root Cause | Mechanization | Gradualization | Name the mechanism in plain English; build the small-claim -> bigger-claim chain |
+| 4. Root Cause | Mechanization | Gradualization | Name the mechanism in plain English; build the small-claim → bigger-claim chain |
 | 5. Consequences | Intensification | Concentration | Make the do-nothing path vivid; concentrate on specific deteriorations |
 | 6. Unique Mechanism | Mechanization | Redefinition | Name the solution mechanism; redefine the desire it satisfies |
 | 7. Product Buildup | Concentration | Gradualization | Demolish the alternatives the reader has tried; sequence belief toward the product |
@@ -445,33 +449,35 @@ When a published advertorial is underperforming (read-through under 40%, CTA cli
 3. **Sophistication-based section weighting check.** Apply the weighting rule above. If the heaviest sections in the copy are mismatched to the angle's sophistication score, that is the structural cause. The most common case: a Stage 4 angle with a thin Section 7.
 
 4. **Identify the limiting section.** One section is usually disproportionately weak. Conversion is gated by it. Common diagnoses:
-   - Section 3 thin -> add specific failed-attempt scenes for Intensification
-   - Section 4 jargon-heavy -> add the analogy + plain-English mechanization
-   - Section 5 abstract -> make the do-nothing path vivid with specific deteriorations
-   - Section 7 generic -> concentrate per-paragraph on specific alternatives
-   - Section 9 only does CTA + guarantee -> add fulfillment-scene Intensification
+   - Section 3 thin → add specific failed-attempt scenes for Intensification
+   - Section 4 jargon-heavy → add the analogy + plain-English mechanization
+   - Section 5 abstract → make the do-nothing path vivid with specific deteriorations
+   - Section 7 generic → concentrate per-paragraph on specific alternatives
+   - Section 9 only does CTA + guarantee → add fulfillment-scene Intensification
 
 5. **Rewrite the limiting section in brand voice.** Use the primary technique from the table. Pass the brand's full Phase 4 humanization checklist. Match surrounding sections' length proportionally. Do not balloon a section out of structural balance.
 
 6. **Present the rewrite to the user.** Per the workflow efficiency protocol, present before committing.
+
+**If this brand has not yet completed Schwartz onboarding:** see `_frameworks/breakthrough-advertising-brand-onboarding.md` in `contextarchitect/context-architect-brands` for the 30-60 minute scoped session that produces `schwartz-applied.md`.
 
 ## Quality Assurance
 
 After Stage 3, verify against this checklist:
 
 **Conversion Architecture (Advertorial Only):**
-- [ ] **Causal chain verified:** Root Cause -> Mechanism -> Product flows logically
+- [ ] **Causal chain verified:** Root Cause → Mechanism → Product flows logically
 - [ ] **System 1 compliance:** Root cause and mechanism would be understood by a tired, distracted reader
 - [ ] **Analogy present:** Root cause has at least one real-world analogy
 - [ ] **Root cause infographic planned:** Visual explanation of root cause included in image list
 - [ ] **Villain externalized:** Root cause shifts blame from reader to external factor
 - [ ] **Consequences section present:** Urgency created between root cause and mechanism
 - [ ] **Product buildup present:** Perceived value built before product reveal
-- [ ] **Close architecture complete:** Testimonials -> Anchoring -> Price -> Value stack -> Guarantee -> CTA
+- [ ] **Close architecture complete:** Testimonials → Anchoring → Price → Value stack → Guarantee → CTA
 - [ ] **Lead written last and teases full content**
 - [ ] **Headline passes quality check:** All five elements evaluated, all gut-check questions answered "yes"
 
-**Schwartz Structural Layer (Advertorial Only):**
+**Schwartz Structural Layer (Advertorial Only) (only if `schwartz-applied.md` exists for this brand):**
 - [ ] **Section technique map applied:** every section carries its primary technique
 - [ ] **Sophistication weighting matches the angle's score:** heaviest sections align with the rule
 - [ ] **Section 3 intensification present:** at least 3 different specific scenes of the struggle

@@ -7,7 +7,7 @@ description: "Generate high-converting direct-response video ad scripts using th
 
 ## Metadata
 - **Skill Name:** video-script-generator
-- **Version:** 1.3.0
+- **Version:** 1.4.0
 - **Category:** Creative / Copywriting
 - **Dependencies:** None (standalone) | Enhanced with: avatar-research, brand-analyzer, copywriting-guide, angle-roadmap
 - **Triggers:** "video script", "ad script", "write a script", "yap script", "voiceover script", "podcast script", "AI slop", "video ad", "talking head script", "UGC script"
@@ -41,6 +41,19 @@ This skill is **brand-agnostic** and applies to any product category: physical p
 - User has completed avatar research and wants to create video content
 - User has an angle roadmap and wants scripts for specific angles
 - User asks for "ad creative" and video is the implied format
+
+---
+
+## Upstream Format Sources
+
+Some script requests originate as repurposing tasks from `long-form-static-builder`. When a user has a winning long-form-static ad and wants a video adaptation, the upstream skill produces repurposing instructions covering two formats:
+
+- **Movie-credits scroll video ad** - the long-form static body becomes scrolling text over a static or slow-motion background, voiceover optional. Format selection in this skill: "Static" with explicit "movie-credits scroll" sub-type if needed.
+- **UGC long-form yap-session script** - the long-form static body becomes a first-person creator monologue script (3-7 minutes). Format selection in this skill: "UGC".
+
+When the user references a long-form-static ad and asks for a video version, the body copy is already written. The job here is reformatting for delivery (timing, scene cuts, voiceover pacing), not generating fresh narrative. Do not re-write identification, mechanism, or close sections from scratch - preserve the body and add video-specific direction (scene cuts, voiceover pacing, on-screen text breaks).
+
+If the user does not have a long-form-static ad already and asks for "video version of an advertorial," route them to `long-form-static-builder` first. The body copy must exist before video reformatting can produce a coherent script.
 
 ---
 
@@ -1095,7 +1108,8 @@ When user provides feedback, apply these standard fixes:
 
 ## Version History
 
-- **1.3.0** (Current): Added Angle Variation Framework, Frustration-to-Eureka Arc, Sensory Snapshot Moments, Logic Flow Rule, No Meta-Commentary Rule, Partial Solution Framing, Technical Education Option, External Content → Angle pattern, Hook Options pattern, Early Context Establishment (brand-agnostic), Script Length Variations. Made Visual Direction Notes optional (script-only default). Ensured all principles are brand-agnostic throughout.
+- **1.4.0** (Current): Added Upstream Format Sources section. When the user has a winning long-form-static ad and wants a video adaptation, the body copy is already written; this skill handles reformatting for delivery (timing, scene cuts, voiceover pacing) rather than generating fresh narrative. Cross-references the new long-form-static-builder skill.
+- **1.3.0**: Added Angle Variation Framework, Frustration-to-Eureka Arc, Sensory Snapshot Moments, Logic Flow Rule, No Meta-Commentary Rule, Partial Solution Framing, Technical Education Option, External Content → Angle pattern, Hook Options pattern, Early Context Establishment (brand-agnostic), Script Length Variations. Made Visual Direction Notes optional (script-only default). Ensured all principles are brand-agnostic throughout.
 - **1.2.0**: Made skill brand-agnostic. Removed CTA prescriptions (now user-specified). Added multiple category examples (supplement, SaaS, skincare, coaching). Changed "Geographic authenticity" to "Credibility anchor" as variable input. Generalized all brand-specific language.
 - **1.1.0**: Added Awareness Stage Architecture, Hook Construction Rules, Product Introduction Sequence, removed separate Pacing Notes requirement
 - **1.0.0**: Initial release with 7 formats, AI Slop sub-types, quality checklist

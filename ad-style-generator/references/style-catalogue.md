@@ -1,6 +1,6 @@
 # Universal Ad Style Catalogue
 
-12 proven ad styles applicable to any e-commerce brand. Each style defines visual approach, layout, psychology, and when to use. Brand-specific elements (colors, fonts, avatars, products) are pulled from the brand's Phase 1-4 documents at generation time.
+13 proven ad styles applicable to any e-commerce brand. Each style defines visual approach, layout, psychology, and when to use. Brand-specific elements (colors, fonts, avatars, products) are pulled from the brand's Phase 1-4 documents at generation time. Style #13 (REDDIT-NATIVE) is the handoff target for `long-form-static-builder`; the canonical spec for that style lives in that skill's `references/image-spec.md`.
 
 **Notation:** `{{PRIMARY}}` = brand primary color, `{{SECONDARY}}` = brand secondary color, `{{FONT}}` = brand primary font. Replace with actual values from brand guidelines.
 
@@ -8,7 +8,7 @@
 
 ## 1. SCIENCE-FRIENDLY
 
-**Psychology:** Cartoon-style anatomical illustrations make complex biology accessible. Anthropomorphized elements reduce anxiety. Playful execution balances credibility with approachability. Stories reduce counterarguing — viewers absorbed in visual narrative lower critical defenses.
+**Psychology:** Cartoon-style anatomical illustrations make complex biology accessible. Anthropomorphized elements reduce anxiety. Playful execution balances credibility with approachability. Stories reduce counterarguing - viewers absorbed in visual narrative lower critical defenses.
 
 **Visual Specifications:**
 - Simplified anatomical forms with bold outlines (2-3px black strokes)
@@ -68,7 +68,7 @@
 **Layout:**
 - Left = problem state, Right = solution state (universal reading direction)
 - Product appears ONLY in solution side
-- Minimal copy — let visuals drive emotion
+- Minimal copy - let visuals drive emotion
 - {{FONT}} Bold for maximum impact headlines
 
 **Best For:** High emotional investment topics, conversion-focused content, retargeting audiences, social proof campaigns
@@ -186,7 +186,7 @@
 
 ## 7. COMPARISON (Side-by-Side Evaluation)
 
-**Psychology:** Comparison format leverages anchoring bias — your product positioned against weaker alternatives looks stronger. Decision simplification through structured layout reduces analysis paralysis.
+**Psychology:** Comparison format leverages anchoring bias - your product positioned against weaker alternatives looks stronger. Decision simplification through structured layout reduces analysis paralysis.
 
 **Visual Specifications:**
 - Side-by-side columns or grid layout
@@ -274,7 +274,7 @@
 
 ## 11. UNBOXING (Product Discovery)
 
-**Psychology:** Unboxing triggers anticipation and discovery emotions. Reveals product quality through packaging. Creates purchase visualization — viewer imagines receiving the product.
+**Psychology:** Unboxing triggers anticipation and discovery emotions. Reveals product quality through packaging. Creates purchase visualization - viewer imagines receiving the product.
 
 **Visual Specifications:**
 - Natural lighting, clean backgrounds
@@ -290,7 +290,7 @@
 
 ## 12. PREMIUM (Luxury Positioning)
 
-**Psychology:** Minimalism signals exclusivity. Premium materials (marble, gold, dark surfaces) transfer luxury association. Negative space communicates confidence — the product doesn't need to shout.
+**Psychology:** Minimalism signals exclusivity. Premium materials (marble, gold, dark surfaces) transfer luxury association. Negative space communicates confidence - the product doesn't need to shout.
 
 **Visual Specifications:**
 - Marble, gold, dark wood, or metallic surfaces
@@ -310,6 +310,33 @@
 
 ---
 
+## 13. REDDIT-NATIVE (Native Candid)
+
+**Psychology:** The image must look like a real customer's phone screenshot, not a brand asset. Authenticity disarms the reader's filter - the brain processes a candid-looking image as a real person's experience, not an ad. Highest-leverage style for long-form-static Facebook ads where the visual must pass a 2-second sniff test.
+
+**Visual Specifications:**
+- Aspect ratio: 4:5 (vertical, in-feed optimized)
+- Phone-camera quality (NOT professional studio)
+- Slightly off-center framing, foreground clutter
+- One visible imperfection (wrinkle, thumbprint, dust speck, misalignment)
+- Natural color cast (yellow incandescent, green fluorescent, blue screen)
+
+**Layout:** Candid composition. No staged hero shots. Subject types include phone-held BP cuff readings, prescription clutter, partial-face mirror selfies, lab reports on counters, before/after with intentionally inconsistent lighting. Avoid: brand-styled product shots, polished lifestyle scenes, model-grade body types, stock photo aesthetics.
+
+**Color Treatment:** Whatever the lighting source produces, unedited. Brand colors are NOT applied - the brand is invisible in the image; the ad copy carries the brand voice.
+
+**Exclusion Layer:** Exclude all studio-polished, AI-glossy, and brand-forward cues. Full exclusion list is in `_skills/long-form-static-builder/references/image-spec.md`.
+
+**Best For:** Long-form-static Facebook ads (in-feed primary text format), retargeting where the ad asset must look organic, problem-aware to solution-aware audiences who have already filtered past brand-styled creative
+
+**Avoid When:** Premium positioning required, brand identity must be clearly readable, regulated category prohibits informal medical framing, top-of-funnel awareness campaigns where brand recognition matters
+
+**Policy-Filter Notes:** Soften medical framing before changing subject if Nano Banana rejects a prompt. The aesthetic comes from lighting and framing, not from medical specificity. Detailed safe-prompt patterns are in `_skills/long-form-static-builder/references/image-spec.md`.
+
+**Source of truth:** The canonical specification (full aesthetic markers, subject-to-emotional-trigger mapping, complete exclusion layer, sample Nano Banana prompts for BP-cuff and before/after-selfie scenarios) lives in `_skills/long-form-static-builder/references/image-spec.md`. This catalogue entry is a summary; defer to the source for any ambiguity. When the style is invoked from `long-form-static-builder`, the handoff payload includes the angle's emotional trigger and a paste-ready Nano Banana prompt produced from the source spec.
+
+---
+
 ## Style Selection Framework
 
 ### By Campaign Objective
@@ -318,8 +345,8 @@
 |-----------|---------------|-----------------|
 | Awareness (cold traffic) | NEWS, LIFESTYLE, SCIENCE-FRIENDLY | LISTICLE, INFOGRAPHIC |
 | Consideration | INFOGRAPHIC, COMPARISON, TUTORIAL | RESEARCH, SCIENCE-FRIENDLY |
-| Conversion | BA-EMOTION, TESTIMONIAL, COMPARISON | PREMIUM, UNBOXING |
-| Retargeting | TESTIMONIAL, BA-EMOTION, PREMIUM | COMPARISON, LIFESTYLE |
+| Conversion | BA-EMOTION, TESTIMONIAL, COMPARISON | PREMIUM, UNBOXING, REDDIT-NATIVE |
+| Retargeting | TESTIMONIAL, BA-EMOTION, REDDIT-NATIVE | COMPARISON, LIFESTYLE, PREMIUM |
 | Education | SCIENCE-FRIENDLY, TUTORIAL, INFOGRAPHIC | LISTICLE, RESEARCH |
 | Brand building | LIFESTYLE, PREMIUM, UNBOXING | NEWS, TESTIMONIAL |
 
@@ -327,10 +354,10 @@
 
 | Awareness Stage | Recommended Styles | Rationale |
 |----------------|-------------------|-----------|
-| Problem Aware | SCIENCE-FRIENDLY, NEWS, INFOGRAPHIC | Educate about cause, build authority |
-| Solution Aware | COMPARISON, TUTORIAL, RESEARCH | Differentiate, demonstrate, prove |
+| Problem Aware | SCIENCE-FRIENDLY, NEWS, INFOGRAPHIC, REDDIT-NATIVE | Educate about cause, build authority, or pair with long-form-static for native feel |
+| Solution Aware | COMPARISON, TUTORIAL, RESEARCH, REDDIT-NATIVE | Differentiate, demonstrate, prove, or run native-feel retargeting |
 | Product Aware | TESTIMONIAL, BA-EMOTION, PREMIUM | Validate, overcome objections |
-| Most Aware | TESTIMONIAL, UNBOXING, LIFESTYLE | Reinforce, create urgency |
+| Most Aware | TESTIMONIAL, UNBOXING, LIFESTYLE, REDDIT-NATIVE | Reinforce, create urgency, or run fake-complaint-style retargeting |
 
 ### By Platform
 
@@ -338,7 +365,7 @@
 |----------|------------|--------------|
 | Instagram Feed | SCIENCE-FRIENDLY, LIFESTYLE, PREMIUM, BA-EMOTION | 1:1, highly visual |
 | Instagram Stories | TUTORIAL, TESTIMONIAL, UNBOXING | 9:16, quick consumption |
-| Facebook Ads | BA-EMOTION, SCIENCE-FRIENDLY, NEWS, LISTICLE | 1.91:1 or 1:1, scroll-stopping |
+| Facebook Ads | BA-EMOTION, SCIENCE-FRIENDLY, NEWS, LISTICLE, REDDIT-NATIVE | 1.91:1 or 1:1 for most styles; 4:5 for REDDIT-NATIVE pairing with long-form-static primary text |
 | TikTok | UNBOXING, TUTORIAL, TESTIMONIAL | 9:16, authentic feeling |
 | Email | INFOGRAPHIC, SCIENCE-FRIENDLY, TESTIMONIAL, COMPARISON | 2:1 header, breaks up text |
 | Landing Page | NEWS, BA-EMOTION, SCIENCE-FRIENDLY, COMPARISON | 16:9 hero or 3:2 inline |

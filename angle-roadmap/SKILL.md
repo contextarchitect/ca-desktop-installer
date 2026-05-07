@@ -23,7 +23,15 @@ This is Phase 4.5 in the brand development workflow: Business Validation -> Avat
 
 ## Why This Exists
 
-The ad-style-generator and funnel-builder skills both require knowing WHAT to say (the angle), not just WHO to say it to (the avatar) and HOW to say it (the copywriting guide). Without defined angles, the quality of ads and funnels depends entirely on the operator's marketing instinct. This skill captures that instinct as a structured, reusable asset.
+The angle roadmap drives three downstream skills:
+
+- `ad-style-generator` (ad creative briefs and image prompts)
+- `funnel-builder` (advertorial and listicle landing pages)
+- `long-form-static-builder` (Facebook in-feed ad primary text, 2,500-3,500 words plus a Reddit-native image spec)
+
+All three require knowing WHAT to say (the angle), not just WHO to say it to (the avatar) and HOW to say it (the copywriting guide). Without defined angles, the quality of ads, funnels, and long-form-static copy depends entirely on the operator's marketing instinct. This skill captures that instinct as a structured, reusable asset.
+
+Each angle card gets used multiple times across these downstream skills. The same angle drives a long-form-static ad (the in-feed primary text), a landing page that traffic clicks through to, and the supporting visual ad creative. Reusing one angle across formats keeps messaging coherent end to end.
 
 ## Required Inputs
 
@@ -60,9 +68,9 @@ STEP 4: ALTERNATIVE SOLUTION POSITIONING
 STEP 5: ANGLE CARD GENERATION
   -> Combine Steps 1-4 into structured angle cards (5-15 per brand)
 
-STEP 6: SCHWARTZ SCORING (awareness + sophistication per angle)
-  -> Apply the awareness/sophistication framework to every angle card
-  -> Add the Schwartz scores as fields on each card
+STEP 6: STRUCTURAL SCORING (conditional)
+  -> Run only if `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand
+  -> Apply the gated framework in Step 6 below; skip the step entirely otherwise
 
 STEP 7: PRIORITIZATION & OUTPUT
   -> Rank angles by testing priority, deliver as Brand Angle Roadmap document
@@ -283,8 +291,10 @@ This is where everything comes together. Each angle card combines one emotional 
 3. Select the root cause framing that connects to this trigger (Step 1) - the same root cause can be framed differently depending on which emotion you're leading with
 4. Select the mechanism framing that resolves this specific trigger
 5. Select the alternative attack that's most relevant to this trigger/desire combination (Step 4)
-6. Determine the awareness stage this angle is best suited for (see Step 6 for the awareness framework)
+6. Determine the awareness stage this angle is best suited for
 7. Recommend ad formats and funnel types based on awareness stage + emotional intensity
+
+(If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, Step 6 below adds a structured awareness/sophistication framework on top of step 6 above. If it does not exist, treat the awareness stage choice as a generic strategic call.)
 
 **Angle naming convention:** Each angle gets a short, evocative name that captures the core narrative. Think of it as the "campaign theme" name. Examples: "The Internal Sabotage," "The Dependency Trap," "The Stolen Identity," "The Silent Storm."
 
@@ -376,7 +386,7 @@ Rank angles by testing priority using these criteria:
 3. **Awareness stage coverage** - ensure the top 5 angles cover at least 2 awareness stages
 4. **Format diversity** - the top 5 should include at least one image ad angle, one UGC/video angle, and one advertorial angle
 5. **Alternative attack diversity** - avoid putting all top angles against the same alternative
-6. **Sophistication-required move diversity** - avoid putting all top angles at the same Schwartz move (e.g., five Stage 4 mechanism-naming angles)
+6. **Structural-move diversity (only if `schwartz-applied.md` exists for this brand):** avoid putting all top angles at the same Schwartz move (e.g., five Stage 4 mechanism-naming angles)
 
 ### Output: Brand Angle Roadmap Document
 
@@ -403,8 +413,8 @@ Inputs: Phase 1 ([date]), Phase 2 ([date]), Product docs
 [Full output from Step 4]
 
 ## 6. Angle Cards
-[All angle cards from Step 5 + Step 6 scoring, ordered by testing priority.
-Each card carries: Awareness Stage, Sophistication Stage Score, Required Schwartz Move]
+[All angle cards from Step 5, ordered by testing priority.
+If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, each card also carries the structural fields produced in Step 6.]
 
 ## 7. Testing Roadmap
 [Top 5 angles to test first, with recommended:
@@ -428,7 +438,7 @@ Produced:
   - [N] emotional triggers scored and ranked
   - [N] desire chains across [N] avatars
   - [N] alternative solutions analyzed
-  - [N] angle cards defined with awareness + sophistication scores
+  - [N] angle cards defined [if `schwartz-applied.md` exists, append: with awareness + sophistication scores]
   - Testing roadmap with top 5 priorities
 
 Next steps:

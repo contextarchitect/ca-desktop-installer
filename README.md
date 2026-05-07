@@ -41,9 +41,9 @@ Requires [Git for Windows](https://git-scm.com) (includes Git Bash).
 | avatar-research | Phase 2 | Customer avatar and psychographic profiles |
 | brand-analyzer | Phase 3 | Brand guidelines from research |
 | copywriting-guide | Phase 4 | Brand voice and humanization rules |
-| angle-roadmap | Phase 4.5 | Marketing angles with root cause narratives |
-| ad-style-generator | Creative | Ad briefs with image prompts (12 styles) |
-| funnel-builder | Creative | Advertorial and listicle funnel pages |
+| angle-roadmap | Phase 4.5 | Marketing angles with root cause narratives; drives funnel-builder, ad-style-generator, and long-form-static-builder |
+| ad-style-generator | Creative | Ad briefs with image prompts (13 styles, REDDIT-NATIVE pairs with long-form-static-builder) |
+| funnel-builder | Creative | Advertorial and listicle funnel pages, deployed via Funnel Factory pipeline |
 | long-form-static-builder | Creative | Long-form static ad copy (2,500-3,500 words) for Facebook in-feed advertorials |
 | nano-banana-prompting | Creative | AI image generation prompts |
 | video-prompting-guide | Creative | AI video prompts for ad production |

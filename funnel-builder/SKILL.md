@@ -1,7 +1,6 @@
 ---
 name: funnel-builder
-version: 2.3.1
-description: "Create high-converting funnel pages (advertorials and listicles) for e-commerce brands. Handles the complete workflow: funnel type selection based on avatar awareness stage, image generation via Kie MCP, copy creation following brand voice guidelines, and deployment via Lovable. Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, and copywriting guide as inputs."
+description: "Create high-converting funnel pages (advertorials and listicles) for e-commerce brands. Handles the complete workflow: funnel type selection based on avatar awareness stage, image generation prompts via Nano Banana, copy creation following brand voice guidelines, and deployment via the Funnel Factory pipeline (default) or Lovable implementation prompts (on request). Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, and copywriting guide as inputs."
 ---
 
 # Funnel Builder Skill
@@ -18,6 +17,17 @@ This is Phase 5 in the brand development workflow: Business Validation → Avata
 - User says "build a funnel for [topic/avatar]"
 - User needs a landing page that warms cold traffic before purchase
 - User has completed avatar research and brand guidelines and needs conversion pages
+
+## When NOT to Use
+
+This skill builds landing pages with their own URLs (advertorials and listicles served to traffic that has clicked an ad).
+
+For Facebook in-feed ad copy where the entire advertorial body lives as the ad's primary text - the reader scrolls inside the ad, not on a separate page - use `long-form-static-builder` instead. The two skills produce structurally different outputs:
+
+- `funnel-builder` -> Landing page with hero image, sections, CTAs, deployed via Funnel Factory pipeline or Lovable
+- `long-form-static-builder` -> Ad primary text (2,500-3,500 words full / 1,000-1,400 medium / 200-300 fake-complaint) plus a Reddit-native image spec, paste-ready for Meta Ads Manager
+
+If the user says "build me an advertorial" without context, ask which they mean. The two formats serve different funnel positions: long-form-static is the ad itself; funnel-builder produces the page that ad clicks through to. A typical campaign uses both - a long-form-static ad drives clicks to a funnel-built landing page, which then drives conversion.
 
 ## Core Principles
 
@@ -50,7 +60,7 @@ Length is determined by the job each section needs to do, not by a target word c
 | Created OUTSIDE Lovable | Provided TO Lovable |
 |------------------------|-------------------|
 | All copy (headlines, body, CTAs, FAQ) | Complete copy (paste in) |
-| All images (via Nano Banana Pro / Kie MCP) | Pre-generated images (uploaded or via temp URL instructions) |
+| All images (via Nano Banana Pro) | Pre-generated images (upload first) |
 | Page architecture and layout specs | Layout instructions |
 | Tracking pixels (user provides) | Pixel code in `<head>` |
 
@@ -81,7 +91,7 @@ Before building the first funnel for any brand, collect these configuration inpu
 
 ```
 1. What ad format will drive traffic to this page?
-   [Ugly/clickbait image / UGC-day-in-the-life / Long VSL / Targeted image+copy /
+   [Ugly/clickbait image / UGC-day-in-the-life / Long VSL / Targeted image+copy / 
     Advertorial ad copy (long Facebook text) / Retargeting / Other]
 
 2. Pricing display policy: Should funnel pages show specific pricing?
@@ -139,29 +149,28 @@ STAGE 0: PLANNING & ALIGNMENT
   → Identify traffic source and reader state
   → Select funnel type + variant
   → Choose target avatar + awareness stage
-  → Pull the angle card's Sophistication Stage Score (drives section weighting)
   → Map content structure and image requirements
 
 STAGE 1: COPY CREATION
-  → Write body copy following section architecture (apply Schwartz section mapping)
+  → Write body copy following section architecture
   → Write close section
   → Write lead (tease of full content)
   → Write headline (checked against five-element framework)
   → Run deletion pass, simplicity check, humanity check
-  *** STOP. Present copy to user. Wait for approval or revision requests.
-  *** Do NOT proceed to Stage 2 until copy is approved.
 
-STAGE 2: IMAGE GENERATION (via Kie MCP)
-  → Build Three-Layer prompts for each image slot
-  → Submit each via kie-ai:nano_banana_image, poll for completion
-  → Present generated image links in chat for each image
-  *** STOP. Wait for user to approve or request regeneration per image.
-  *** Do NOT proceed to Stage 3 until all images are approved.
+STAGE 2: IMAGE PROMPT PREPARATION
+  → Generate Nano Banana Pro prompts
+  → Include prompts in pipeline spec (Stage 3A) OR user generates externally (Stage 3B)
 
-STAGE 3: LOVABLE IMPLEMENTATION
-  → Read references/visual-design.md
-  → Generate single complete Lovable prompt with approved copy + approved images
-  → Output as downloadable markdown file
+STAGE 3A: PIPELINE DEPLOY (DEFAULT)
+  → Generate structured JSON spec
+  → Deploy via deploy_funnel MCP tool (images generated automatically by pipeline)
+  → QA review
+
+STAGE 3B: LOVABLE IMPLEMENTATION (ON REQUEST)
+  → User generates images from Stage 2 prompts
+  → Generate complete Lovable prompt
+  → User uploads images + pastes prompt
   → QA review
 ```
 
@@ -208,7 +217,7 @@ Before any content or image planning:
 
 **Step 0.4: Pull the Angle Card's Schwartz Scores**
 
-**Gating check (run before this step).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire step silently and proceed to Step 0.5 as if this step were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, or any related vocabulary in your output. If the file exists, run this step normally.
+**Gating check (run before this step).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire step silently and proceed to Step 0.5 as if this step were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. If the file exists, run this step normally.
 
 Open the angle card driving this funnel. Capture three values that drive Stage 1 writing:
 
@@ -261,11 +270,9 @@ Determine: section sequence, tone balance for awareness stage, CTA placement, im
 
 **Deliverable:** Complete copy document (all sections, all CTAs, FAQ, guarantee). Output as markdown file if over 500 words.
 
-**STOP HERE. Present copy to user. Do not proceed to Stage 2 until the user explicitly approves the copy or requests revisions.**
+### Stage 2: Image & Video Asset Preparation
 
-### Stage 2: Image Generation via Kie MCP
-
-**All images are generated via Kie MCP (`kie-ai:nano_banana_image`). Never in Lovable.**
+**All images are generated in Nano Banana Pro. Never in Lovable.**
 **All videos are provided by the user (pre-existing assets). Video generation is not part of this workflow.**
 
 **Before writing any image prompts, check for brand-specific documents:**
@@ -291,39 +298,150 @@ Read brand-specific image rules from configuration before writing any prompts.
 
 **Video assets:** If the user has videos to include, read `references/video-guidance.md` for placement, dimension, and naming specifications.
 
-**Kie MCP Generation Steps (per image):**
+**Deliverable:** Complete set of Nano Banana prompts with filenames, purposes, and reference image instructions. Plus video placement map if videos are included. Output as a markdown file if over 500 words.
 
-1. **Build Three-Layer prompt** per nano-banana-prompting skill (Visible Layer + Constraint Layer + Exclusion Layer)
-2. **Submit via `kie-ai:nano_banana_image`:**
-   - Include reference image URL in `image_input` array (use public GitHub URLs for product reference images)
-   - Set `output_format: "jpg"` for funnel pages
-   - Set `aspect_ratio` as needed (typically `16:9` for hero and inline images)
-3. **Capture `taskId`** from response
-4. **Poll `kie-ai:get_task_status`** every ~15 seconds until status = "success"
-5. **Extract download URL** from `result_urls` array
-6. **Present to user** with descriptive filename and purpose
+**For Stage 3A (Pipeline Deploy):** Proceed directly. No need to wait for image generation. The pipeline generates images from the prompts automatically.
 
-Generate and present images one at a time (or in logical batches). After presenting each image or batch, wait for the user to approve or request a regeneration before continuing.
+**For Stage 3B (Lovable Implementation):** Wait for user confirmation ("Images ready" / "Images generated") before proceeding.
 
-**Generation Time Expectations:**
+### Stage 3: Output
 
-| Mode | Typical Duration |
-|------|------------------|
-| Generate (no reference) | 30-90 seconds |
-| Edit (with 1 reference) | 90-200 seconds |
-| Edit (with multiple references) | 200-500 seconds |
+**Stage 3 has two output modes. Stage 3A (Pipeline Deploy) is the default. Stage 3B (Lovable Prompt) is available on explicit request.**
 
-**STOP HERE. Do not proceed to Stage 3 until all images are approved by the user.**
+#### Stage 3A: Pipeline Deploy (Default)
 
----
+Generate a structured JSON spec that the Funnel Factory pipeline accepts. This spec can be deployed via:
+- **Creative Engine** (primary): The CE Funnel Builder generates the spec, handles image generation with reference images, and deploys via the FF REST API. The full workflow (copy → images → deploy) runs within a single CE conversation.
+- **MCP tool** (Claude Desktop): The `deploy_funnel` MCP tool deploys via the Funnel Factory connector at `mcp.econstructor.ai`.
+- **Manual**: Output the spec as JSON for manual deployment.
 
-### Stage 3: Lovable Implementation
+The pipeline handles everything automatically: image generation (concurrent via Kie.ai from the prompts in the spec), HTML rendering with brand design tokens (auto-extracted from brand-guidelines.md), tracking pixel injection, and deployment to Cloudflare Pages. Total time: ~90 seconds.
+
+Read `references/visual-design.md` for section-level layout patterns when determining image placement and section structure.
+
+**The JSON spec must follow this exact schema:**
+
+```json
+{
+  "brand_id": "<brand key, e.g., 'regrowth' not 'regrowthplus'>",
+  "funnel_type": "advertorial" | "listicle",
+  "slug": "<lowercase-hyphenated-max-80-chars>",
+  "update": false,
+  "metadata": {
+    "avatar_name": "<target avatar name>",
+    "awareness_stage": "problem_aware" | "solution_aware" | "product_aware",
+    "price_point": "low_ticket" | "mid_ticket" | "high_ticket",
+    "traffic_source": "<ad format driving traffic>",
+    "created_by": "claude_desktop"
+  },
+  "copy": {
+    "headline": "<main headline text>",
+    "subheadline": "<subheadline text>",
+    "authority_line": "<byline, e.g., 'By Dr. Sarah Mitchell, Trichologist | March 2026'>",
+    "urgency_banner": "<urgency banner text, or null if none>",
+    "sections": [
+      {
+        "id": "<unique_section_id>",
+        "type": "<section_type>",
+        "heading": "<section heading, or null>",
+        "body": "<full section body copy>",
+        "image_ref": "<matching ref from images array, or null>"
+      }
+    ],
+    "faq": [
+      {
+        "question": "<FAQ question>",
+        "answer": "<FAQ answer>"
+      }
+    ],
+    "guarantee": {
+      "text": "<guarantee headline>",
+      "details": "<guarantee details>"
+    },
+    "social_proof": [
+      {
+        "name": "<reviewer name>",
+        "rating": 5,
+        "text": "<review text>",
+        "verified": true
+      }
+    ]
+  },
+  "images": [
+    {
+      "ref": "<unique ref matching image_ref in sections>",
+      "purpose": "<what this image shows>",
+      "prompt": "<complete Nano Banana Three-Layer Model prompt>",
+      "dimensions": "1200x800" | "800x600",
+      "position": "above_fold" | "inline"
+    }
+  ],
+  "profile": "problem-aware" | "solution-aware" | "product-aware" | "standard",
+  "variations": {},
+  "config": {
+    "cta_text": "<CTA button text>",
+    "cta_url": "<CTA destination URL>"
+  }
+}
+```
+
+**Schema Rules:**
+
+1. **brand_id** should use the pipeline's preferred brand key (e.g., `regrowth`). The pipeline resolves aliases automatically - `regrowth-plus`, `regrowthplus`, or the GitHub repo name will also work. When deploying via Creative Engine, the brand slug from the CE database is used directly (CE sends `brand.slug`, FF resolves it).
+2. **slug** must be lowercase, hyphenated, no special characters, max 80 chars
+3. **copy.sections** is an ordered array. The pipeline renders sections in the order they appear. Section selection is YOUR responsibility based on awareness stage and funnel type.
+4. **Section types for advertorials:** `lead`, `background_story`, `root_cause`, `consequences`, `mechanism`, `product_buildup`, `product_reveal`, `close`, `social_proof`, `urgency`
+5. **Section types for listicles:** `opening`, `item`, `cta_mid`, `cta_final`, `guarantee`
+6. **images[].ref** must match a `copy.sections[].image_ref` value. The hero image uses `position: "above_fold"`.
+7. **images[].prompt** must be a complete Nano Banana Three-Layer Model prompt (Visible Layer + Constraint Layer + Exclusion Layer). Do not use shorthand.
+8. **profile** maps to page layout config on the pipeline: `problem-aware`, `solution-aware`, `product-aware` for both advertorials and listicles. The pipeline has awareness-stage-specific profiles for each funnel type (different CTA positions, list lengths, and layout parameters by awareness stage). Falls back to `standard` if a specific profile doesn't exist.
+9. **config.cta_text** and **config.cta_url** override brand defaults for this specific funnel. Always include them explicitly.
+10. **copy.urgency_banner** can be null if no urgency banner is needed.
+11. **metadata** is stored in the deployment log but does not affect rendering.
+12. **variations** is empty `{}` for now. Used for A/B testing in Phase 2.
+
+**Section Mapping from Advertorial Architecture:**
+
+| Advertorial Section | Spec Location |
+|---|---|
+| Section 1: Above the Fold | `headline`, `subheadline`, `authority_line` in top-level `copy.*`. Urgency banner in `copy.urgency_banner`. Hero image in `images[]` with `position: "above_fold"` |
+| Section 2: The Lead | `{ "id": "lead", "type": "lead", "heading": null, "body": "..." }` |
+| Section 3: Background Story | `{ "id": "background_story", "type": "background_story", "heading": "...", "body": "..." }` |
+| Section 4: Root Cause | `{ "id": "root_cause", "type": "root_cause", "heading": "...", "body": "...", "image_ref": "root-cause-infographic" }` |
+| Section 5: Consequences | `{ "id": "consequences", "type": "consequences", "heading": null, "body": "..." }` |
+| Section 6: Unique Mechanism | `{ "id": "mechanism", "type": "mechanism", "heading": "...", "body": "...", "image_ref": "mechanism-diagram" }` |
+| Section 7: Product Buildup | `{ "id": "product_buildup", "type": "product_buildup", "heading": null, "body": "..." }` |
+| Section 8: Product Reveal | `{ "id": "product_reveal", "type": "product_reveal", "heading": "...", "body": "...", "image_ref": "product-hero" }` |
+| Section 9: The Close | `social_proof` entries in `copy.social_proof[]`, guarantee in `copy.guarantee`, urgency as `{ "type": "urgency" }` section |
+
+**What the spec does NOT contain (pipeline resolves from brand config):**
+- Colors, fonts, logo URL (auto-extracted from brand-guidelines.md)
+- Tracking pixels and pixel code (from funnel-config.md / brands.json)
+- UTM passthrough script (embedded in templates)
+- Payment plan details, free shipping info (from funnel-config.md)
+- GCC compliance rules, image ethnicity rules (from funnel-config.md)
+
+**After generating the spec, offer to deploy immediately:**
+
+> "The funnel spec is ready. Would you like me to deploy it now using the Funnel Factory pipeline? It will generate images, render the page, and publish to [brand domain]. Takes about 90 seconds."
+
+If the user confirms, call the `deploy_funnel` MCP tool with the spec as a JSON string.
+
+If the MCP connector is not available in this conversation, output the spec as a downloadable JSON file using `create_file` + `present_files` so the user can deploy from a conversation where the connector is enabled.
+
+**Output format:** Always save the spec as `{slug}-spec.json` using `create_file` + `present_files`. If also deploying via MCP, provide both the file and the deployment.
+
+#### Stage 3B: Lovable Implementation (On Request)
+
+**Use only when the user explicitly requests Lovable output.**
+
+Trigger phrases: "output as Lovable prompt", "Lovable format", "Stage 3B", "I want to use Lovable"
 
 Read `references/visual-design.md` for section-level layout patterns, component specifications, and design rules. Apply brand-specific colors/typography from brand guidelines (Phase 3) on top of these structural defaults.
 
 Generate a single, complete Lovable prompt containing:
-- All copy (pre-written and approved - paste verbatim, Lovable must not alter it)
-- Image placement instructions (referencing approved image filenames or temp URLs with download instructions)
+- All copy (pre-written, not generated by Lovable)
+- Image placement instructions (referencing uploaded filenames)
 - Video embed instructions if applicable (see `references/video-guidance.md`)
 - Section-level layout specifications (from `references/visual-design.md`)
 - Brand design system (colors, typography from brand guidelines)
@@ -331,35 +449,6 @@ Generate a single, complete Lovable prompt containing:
 - Tracking pixel code in `<head>` section (all configured pixels)
 - UTM passthrough script in `<head>` section (MANDATORY, see reference framework)
 - Technical requirements (responsive, accessible, performant)
-
-**Temporary URL Handling (CRITICAL):**
-
-Kie MCP returns temporary URLs from `tempfile.aiquickdraw.com` that **expire within approximately 3 days**. These URLs MUST NOT be used directly in production code. The Lovable prompt MUST include explicit download instructions at the top:
-
-```
-CRITICAL - IMAGE HANDLING:
-These image URLs are TEMPORARY and will expire within days.
-For each image:
-1. Download from its temp URL during build
-2. Save to /public/images/[descriptive-filename].jpg
-3. Reference via local path only (/images/[filename].jpg)
-
-NEVER use tempfile.aiquickdraw.com URLs in production code.
-
-Image Assets:
-- hero-image.jpg: [temp URL]
-- root-cause-diagram.jpg: [temp URL]
-- product-shot.jpg: [temp URL]
-[etc.]
-```
-
-**Reference Image URL Format:**
-
-When passing product reference images to Kie MCP, use publicly accessible URLs:
-
-```
-https://raw.githubusercontent.com/[org]/[repo]/main/[path]/[filename]
-```
 
 **Output format:** Any Lovable prompt over 500 words must be delivered as a single downloadable markdown file using `create_file` + `present_files`. Never break long prompts into multiple copyable sections in chat.
 
@@ -508,10 +597,12 @@ After Stage 3, verify against this checklist:
 - [ ] Payment plans mentioned if configured
 
 **Technical:**
-- [ ] Tracking pixels included in `<head>` (all configured platforms)
-- [ ] UTM passthrough script included in `<head>` (MANDATORY)
-- [ ] All images referenced by correct filename
-- [ ] Temp URL download instructions included at top of Lovable prompt
+- [ ] **Stage 3A:** Spec validates against pipeline JSON schema (all required fields present, brand_id correct, slug valid)
+- [ ] **Stage 3A:** All `images[].ref` values match an `image_ref` in `copy.sections[]`
+- [ ] **Stage 3A:** Image prompts follow Three-Layer Model (not shorthand)
+- [ ] **Stage 3B:** Tracking pixels included in `<head>` (all configured platforms)
+- [ ] **Stage 3B:** UTM passthrough script included in `<head>` (MANDATORY)
+- [ ] **Stage 3B:** All images referenced by correct filename
 - [ ] Video embeds responsive and properly placed (if applicable)
 - [ ] Mobile responsive design specified
 - [ ] Sticky mobile CTA specified
@@ -534,7 +625,8 @@ After Stage 3, verify against this checklist:
 
 ## What This Skill Does NOT Do
 
-- Does not generate images in Lovable (all images generated via Kie MCP before Lovable prompt is created)
+- Does not generate images (Stage 3A: pipeline generates from prompts automatically; Stage 3B: user generates from Nano Banana prompts externally)
 - Does not generate videos (accepts user-provided video assets for placement)
+- Does not handle brand visual identity for pipeline deployment (pipeline extracts colors/fonts from brand-guidelines.md automatically)
 - Does not create brand strategy (reads previous phase outputs)
 - Does not handle quiz funnels (future addition)

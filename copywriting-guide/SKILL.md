@@ -40,7 +40,7 @@ This skill requires TWO primary inputs:
 3. MAP        -> Map archetypes to copy requirements
 4. GENERATE   -> Populate the copywriting guide template
 5. CALIBRATE  -> Add category-specific rules and examples
-6. STRUCTURE  -> Add the seven-technique structural layer
+6. STRUCTURE  -> (conditional, see Step 7 gating) Apply an optional structural layer if onboarding file is present
 7. OUTPUT     -> Deliver complete guide
 ```
 
@@ -231,7 +231,7 @@ The most common combinations across content types:
 
 ### Pressure Test for Voice + Technique Compliance
 
-After applying any technique, the copy must still pass the brand's full Phase 4 humanization checklist (Step 7 below). Common failure: a technique feels strong in 1966-style hype voice but fails the brand's voice rules. Restate without exclamations, without forbidden vocabulary, without em dashes. The technique is the structural move; the voice is independent.
+After applying any technique, the copy must still pass the brand's full Phase 4 humanization checklist (Step 8 below). Common failure: a technique feels strong in 1966-style hype voice but fails the brand's voice rules. Restate without exclamations, without forbidden vocabulary, without em dashes. The technique is the structural move; the voice is independent.
 
 ### Output: A Section in the Final Guide
 
@@ -270,9 +270,9 @@ Guide Contents:
   Archetypes: [count] with full copy profiles
   Content Guides: [count] content types covered
   Humanization Rules: [count] rules in AI Detection Firewall
-  Structural Moves: 7 techniques with worked examples
+  Structural Moves: [include this line ONLY if `schwartz-applied.md` exists; 7 techniques with worked examples]
 
-Total Sections: 12 + 2 appendices
+Total Sections: 11 + 2 appendices (12 + 2 if `schwartz-applied.md` exists)
 Estimated Length: [word count]
 
 Confirm or adjust:
@@ -288,7 +288,7 @@ Sections populated:
   - [count] voice pillars with examples
   - AI Detection Firewall ([count] rules)
   - [count] archetype copy profiles with sample paragraphs
-  - Structural moves: 7 techniques with worked examples
+  - Structural moves: [include this line ONLY if `schwartz-applied.md` exists; 7 techniques with worked examples]
   - Humanization checklist (4 phases)
   - [count] content type quick guides
   - Category messaging framework with claim boundaries

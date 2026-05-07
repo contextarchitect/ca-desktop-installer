@@ -1,13 +1,13 @@
 ---
 name: ad-style-generator
-description: "Generate ad creative briefs and Nano Banana image prompts using a 12-style catalogue mapped to brand identity and avatar psychology. Use when user says 'create an ad', 'ad creative', 'generate ad images', 'ad style for [topic]', 'create a [SCIENCE-FRIENDLY/BA-EMOTION/etc] ad', 'ad campaign for [avatar/product]', or references ad creative development for any brand. Reads brand guidelines, avatar profiles, copywriting guide, and angle roadmap to produce brand-consistent ad concepts with complete Nano Banana prompts."
+description: "Generate ad creative briefs and Nano Banana image prompts using a 13-style catalogue mapped to brand identity and avatar psychology. Use when user says 'create an ad', 'ad creative', 'generate ad images', 'ad style for [topic]', 'create a [SCIENCE-FRIENDLY/BA-EMOTION/REDDIT-NATIVE/etc] ad', 'ad campaign for [avatar/product]', or references ad creative development for any brand. Reads brand guidelines, avatar profiles, copywriting guide, and angle roadmap to produce brand-consistent ad concepts with complete Nano Banana prompts. Style #13 (REDDIT-NATIVE) is the handoff target for long-form-static-builder."
 ---
 
 # Ad Style Generator Skill
 
 ## Purpose
 
-Generate production-ready ad creative briefs with complete Nano Banana Pro image prompts by combining a universal 12-style catalogue with brand-specific identity (colors, typography, avatars, product references) pulled from existing brand documents. No separate brand-specific ad catalogue needed - the skill reads Phase 1-4.5 outputs and applies them to universal style frameworks.
+Generate production-ready ad creative briefs with complete Nano Banana Pro image prompts by combining a universal 13-style catalogue with brand-specific identity (colors, typography, avatars, product references) pulled from existing brand documents. No separate brand-specific ad catalogue needed - the skill reads Phase 1-4.5 outputs and applies them to universal style frameworks.
 
 ## When to Use
 
@@ -49,7 +49,7 @@ Ask the user to specify or help them determine:
 4. **Topic/angle** - which angle from the roadmap is this ad executing?
 5. **Style preference** - specific style requested, or should the skill recommend?
 
-If the user doesn't specify a style, use the Style Selection Framework in `references/style-catalogue.md` AND the Style-to-Schwartz mapping (below) to recommend 2-3 appropriate styles based on the objective, avatar, awareness stage, and sophistication score.
+If the user doesn't specify a style, use the Style Selection Framework in `references/style-catalogue.md` to recommend 2-3 appropriate styles based on the objective, avatar, and platform. If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, the gated section below adds structural inputs to the recommendation.
 
 ## Workflow
 
@@ -58,20 +58,19 @@ STEP 1: CONTEXT LOADING (automatic)
   → Read brand guidelines (colors, fonts, visual identity)
   → Read avatar profiles (target segment details)
   → Read copywriting guide (voice, forbidden vocabulary)
-  → Read angle card (awareness stage, sophistication score, required Schwartz move)
+  → Read angle card (basic strategic content; conditional structural fields per Required Inputs item #4)
   → Read funnel config (product refs, image rules)
 
 STEP 2: STYLE SELECTION (with user)
-  → User specifies style OR skill recommends based on:
-    - Objective + avatar + platform (existing logic)
-    - Awareness stage + sophistication score → required technique (Style-to-Schwartz mapping)
+  → User specifies style OR skill recommends based on objective + avatar + platform.
+  → If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, also apply the structural mapping in the gated section below.
   → Read the specific style framework from references/style-catalogue.md
   → Confirm approach with user
 
 STEP 3: CREATIVE BRIEF (generate)
   → Concept description (what the ad shows)
-  → Headline using a Schwartz method tagged on the brief
-  → Body copy (following copywriting guide rules + technique density rule for awareness stage)
+  → Headline (if `schwartz-applied.md` exists, follow the gated headline framework below; otherwise standard brand-voice headline)
+  → Body copy (following copywriting guide rules; if gated section applies, also apply its density guidance)
   → Layout description (composition, color zones, typography placement)
   → Avatar-visual alignment check
 
@@ -103,7 +102,7 @@ When reading brand documents, extract and map these elements to replace what wou
 | Avatar names + demographics | Avatar Profiles | "Best For" targeting |
 | Avatar emotional triggers | Avatar Profiles | Concept angle selection |
 | Avatar awareness stage | Avatar Profiles | Style selection weighting |
-| Angle awareness + sophistication | Angle Roadmap | Style-to-Schwartz mapping; technique density |
+| Angle structural fields (gated) | Angle Roadmap | Used only when `schwartz-applied.md` exists; see gated section |
 | Product REF numbers | Funnel Config | Product placement in ads |
 | Image restrictions | Funnel Config | Exclusion layer in prompts |
 | Forbidden vocabulary | Copywriting Guide | Ad copy constraints |
@@ -151,14 +150,14 @@ When the user requests multiple ad concepts:
 
 This section adds two structural inputs to ad creative selection:
 
-1. **Style-to-Schwartz mapping** - which technique each of the 12 styles primarily executes, so style selection is driven by what the angle needs structurally, not just by visual preference.
+1. **Style-to-Schwartz mapping** - which technique each of the 13 styles primarily executes, so style selection is driven by what the angle needs structurally, not just by visual preference.
 2. **The 38-method headline framework** - a method-tagged inventory for headline development, with a stage-fit table showing which methods work for which awareness stage.
 
 These come from Eugene Schwartz's Breakthrough Advertising. Apply them after Step 2 (Style Selection) and during Step 3 (Headline writing within the Creative Brief).
 
 ### Style-to-Schwartz Mapping
 
-The 12 catalogue styles each emphasize one or two of the seven Schwartz techniques. Pick the style by the technique the angle most needs.
+The 13 catalogue styles each emphasize one or two of the seven Schwartz techniques. Pick the style by the technique the angle most needs.
 
 | Style | Primary Technique | Secondary | Best for |
 |-------|-------------------|-----------|----------|
@@ -174,6 +173,7 @@ The 12 catalogue styles each emphasize one or two of the seven Schwartz techniqu
 | LISTICLE | Camouflage | Mechanization | Multi-point arguments inside content format |
 | UNBOXING | Identification | Intensification | Product-aware audience moments |
 | PREMIUM | Identification | Redefinition | Brand identity reinforcement; better for retargeting than cold |
+| REDDIT-NATIVE | Camouflage | Identification | Stage 4-5 angles where the visual must look organic; pairs with long-form-static-builder |
 
 **The seven techniques (definitions):**
 

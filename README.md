@@ -44,6 +44,7 @@ Requires [Git for Windows](https://git-scm.com) (includes Git Bash).
 | angle-roadmap | Phase 4.5 | Marketing angles with root cause narratives |
 | ad-style-generator | Creative | Ad briefs with image prompts (12 styles) |
 | funnel-builder | Creative | Advertorial and listicle funnel pages |
+| long-form-static-builder | Creative | Long-form static ad copy (2,500-3,500 words) for Facebook in-feed advertorials |
 | nano-banana-prompting | Creative | AI image generation prompts |
 | video-prompting-guide | Creative | AI video prompts for ad production |
 | video-script-generator | Creative | AI video scripts with beat framework |

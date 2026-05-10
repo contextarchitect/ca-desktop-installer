@@ -1,6 +1,6 @@
 ---
 name: funnel-builder
-description: "Create high-converting funnel pages (advertorials and listicles) for e-commerce brands. Handles the complete workflow: funnel type selection based on avatar awareness stage, image generation prompts via Nano Banana, copy creation following brand voice guidelines, and deployment via the Funnel Factory pipeline (default) or Lovable implementation prompts (on request). Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, and copywriting guide as inputs."
+description: "Create high-converting funnel pages for e-commerce brands using a 9-format library (Advertorial, Listicle 3-variant, PAS, AIDA, SPS, 4P, Long-Form, BAB, Problem Stack, plus the Fake-Complaint sub-format). Handles the complete workflow: format selection based on awareness x resistance, objection-handling architecture, image generation prompts via Nano Banana, copy creation following brand voice and the universal structural copywriting rules, and deployment via the Funnel Factory pipeline (default) or Lovable implementation prompts (on request). Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, copywriting guide, and angle roadmap as inputs."
 ---
 
 # Funnel Builder Skill
@@ -35,15 +35,7 @@ If the user says "build me an advertorial" without context, ask which they mean.
 
 Nothing works in isolation. The ad, the headline, the landing page, the close form one continuous experience. Before building any funnel page, you must understand what ad is driving traffic, what state the reader arrives in, and what the page needs to do to continue their journey.
 
-### The Yes-Yes-Yes Causal Chain
-
-Every advertorial must build this chain:
-- Root cause clicks → "I believe THIS is causing my problem"
-- Unique mechanism clicks → "I believe THIS approach fixes that cause"
-- Product clicks → "I believe THIS product delivers that mechanism"
-- Close clicks → "This is the obvious choice"
-
-If any link is weak, the conversion architecture fails.
+**Causal chain:** see `references/advertorial-framework.md` section "The Yes-Yes-Yes Causal Chain" for the canonical block. Every advertorial must verify the chain before delivery.
 
 ### System 1 Principle
 
@@ -70,10 +62,35 @@ Length is determined by the job each section needs to do, not by a target word c
 
 ### From Previous Phases (Read First)
 
-1. **Avatar Research (Phase 2)** - target segments, awareness stages, language preferences, emotional triggers, platform behavior, raw quotes, day-to-day struggles. Also check for an Emotion-First Communications Framework if the brand has one.
-2. **Brand Guidelines (Phase 3)** - brand colors, typography, positioning, voice pillars, visual identity
-3. **Copywriting Guide (Phase 4)** - voice rules, forbidden vocabulary, humanization principles, archetype-specific tone guidance
-4. **Angle Roadmap (Phase 4.5)** - the angle card driving this funnel. If the brand has completed Schwartz onboarding (i.e., `phase-4.5-angle-roadmap/schwartz-applied.md` exists in the brand repo), the angle card will also carry Awareness Stage and Sophistication Stage Score; these determine which advertorial sections carry the most weight (see Schwartz Structural Layer section below). If the file does not exist, treat the angle card as the standard Phase 4.5 output.
+The 6-document input rule (Zakaria Video28): when all six upstream documents below exist, this skill REQUIRES them all before generating any copy. When some are missing, the skill proceeds but flags which inputs are degraded. Operators should always check the 6-document set before starting; missing inputs degrade output quality predictably.
+
+1. **Avatar Research (Phase 2)** - target segments, awareness stages, language preferences, emotional triggers, platform behavior, raw quotes, day-to-day struggles. Also check for an Emotion-First Communications Framework if the brand has one. **Used for:** narrator identity, identification scenes, language calibration, objection sourcing.
+
+2. **Root Cause Narrative** (from `angle-roadmap` Phase 4.5 angle card) - the specific root cause this funnel argues for, with analogy and System 1 framing. **Used for:** Section 4 (Root Cause) construction.
+
+3. **Solution Mechanism Narrative** (from `angle-roadmap` Phase 4.5 angle card) - the specific mechanism this funnel reveals, with named technique and proof points. **Used for:** Section 6 (Unique Mechanism) construction.
+
+4. **Product Specifics** (from brand product documents / config) - actual SKU details, pricing, ingredients/components, certifications, sourcing. **Used for:** Section 8 (Product Reveal) accuracy and Section 9 (Close) value stack.
+
+5. **Objection Inventory** (from Phase 2 Avatar Research Section L + the new Objection-Handling section in `references/advertorial-framework.md`) - 3-5 named objections to address explicitly. **Used for:** section-by-section objection mapping (see advertorial framework Objection-Handling section).
+
+6. **Competitor Inventory** (from Phase 1 Business Validation + brand competitor docs) - named alternatives the avatar has tried or is comparing. **Used for:** Section 7 (Product Buildup) concentration on specific alternatives.
+
+**Plus the foundational documents (always required):**
+
+7. **Brand Guidelines (Phase 3)** - brand colors, typography, positioning, voice pillars, visual identity.
+8. **Copywriting Guide (Phase 4)** - voice rules, forbidden vocabulary, humanization principles, archetype-specific tone guidance, AND the universal structural copywriting rules in §8 (Bridge Principle, Open-Loop Principle, Time-Delay Introduction Rule, Hook Quality Checklist, Identification-Before-Mechanism Rule, Discovery Story Format, Five Core Feelings Library, Authority Hook Patterns).
+9. **Angle Roadmap (Phase 4.5)** - the angle card driving this funnel. If the brand has completed Schwartz onboarding (i.e., `phase-4.5-angle-roadmap/schwartz-applied.md` exists in the brand repo), the angle card will also carry Awareness Stage and Sophistication Stage Score; these determine which advertorial sections carry the most weight (see Schwartz Structural Layer section below). If the file does not exist, treat the angle card as the standard Phase 4.5 output.
+
+### Degraded Input Handling
+
+If any of inputs 1-6 are missing, proceed but explicitly flag the gap to the operator before generating copy:
+
+- **Missing #1 (Avatar Research):** Cannot derive narrator identity or objections. Stop and request.
+- **Missing #2 or #3 (Root Cause / Mechanism):** Cannot write Sections 4 or 6. Stop and request angle card or its source narratives.
+- **Missing #4 (Product Specifics):** Generate Sections 1-7 with placeholders for product-specific content. Flag for user fill-in.
+- **Missing #5 (Objection Inventory):** Generate but flag: objection-handling will be implicit rather than explicit. Proceed only if user accepts the degradation.
+- **Missing #6 (Competitor Inventory):** Section 7 (Product Buildup) becomes generic concentration. Flag and request before proceeding when possible.
 
 ### Brand-Specific Documents (Check If Available)
 
@@ -147,16 +164,19 @@ Before building the first funnel for any brand, collect these configuration inpu
 ```
 STAGE 0: PLANNING & ALIGNMENT
   → Identify traffic source and reader state
-  → Select funnel type + variant
+  → Select format from the library (Advertorial / Listicle 3-variant / PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint sub-format)
   → Choose target avatar + awareness stage
   → Map content structure and image requirements
+  → Map objections from avatar research to sections
 
 STAGE 1: COPY CREATION
-  → Write body copy following section architecture
+  → Apply the Universal Structural Copywriting Rules (copywriting-guide §8) throughout
+  → Write body copy following the selected format's section architecture
   → Write close section
   → Write lead (tease of full content)
-  → Write headline (checked against five-element framework)
+  → Write headline (checked against five-element framework AND Hook Quality Checklist §8.4)
   → Run deletion pass, simplicity check, humanity check
+  → Run Yes-Yes-Yes causal chain self-test (NEW build step)
 
 STAGE 2: IMAGE PROMPT PREPARATION
   → Generate Nano Banana Pro prompts
@@ -192,7 +212,9 @@ Before anything else, determine what ad format will drive traffic. This determin
 
 **Step 0.2: Select Funnel Type + Variant**
 
-Based on traffic source and awareness stage:
+Note: the angle card carries a `Recommended Format` strategic default (see `angle-roadmap/references/angle-card-schema.md`). This matrix is the operational override and applies when the actual traffic source contradicts the angle card's recommendation.
+
+Based on traffic source and awareness stage (universal 3-value field, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction):
 
 | Signal | Recommended |
 |--------|-------------|
@@ -231,14 +253,42 @@ If the angle card lacks these fields, the angle predates the angle-roadmap skill
 
 **Step 0.5: Map Content Structure**
 
-Read the appropriate reference file:
+Read the appropriate reference file based on the format selected in Step 0.2 (rough advertorial-vs-listicle choice). If Step 0.7 below selects one of the 7 alternative formats from `references/format-library.md` (PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint), use that file's entry as the structural reference instead and revisit this mapping after the format is finalized.
+
 - Advertorial → `references/advertorial-framework.md`
 - Listicle → `references/listicle-framework.md`
+- Other 7 formats → `references/format-library.md` (the entry for the selected format)
 - Visual layout → `references/visual-design.md` (section-level design specs, component patterns)
 
 Determine: section sequence, tone balance for awareness stage, CTA placement, image requirements, listicle variant (if applicable).
 
 **Visual break rule:** No more than 3-4 short paragraphs between visual elements. If you count four consecutive paragraphs without a visual break, plan an image for that gap.
+
+**Step 0.6: Map Objections to Sections**
+
+Pull the brand's named objections from input #5 (Objection Inventory). Each archetype's primary 1-2 objections become the required-handle list for this funnel. Target 3-5 distinct named objections.
+
+Map each objection to the section(s) where it gets addressed. The mapping table is in `references/advertorial-framework.md` under "Objection-Handling Architecture." For listicle and other format choices, the mapping shifts:
+
+- **Advertorial:** Objections handled in Sections 3 (narrator), 6 (mechanism), 7 (alternatives), 9 (close). See advertorial-framework.md Objection-Handling section.
+- **Listicle:** Objections handled in item bodies: assign at least one item to each named objection.
+- **PAS / AIDA / SPS / 4P:** Objections handled in the Solution / Desire / Solution / Push sections respectively.
+- **Long-Form:** Same as Advertorial but with longer per-section objection coverage.
+- **BAB:** Objections handled in the Bridge section (between Before and After).
+- **Problem Stack:** Objections embedded in the stacked failure scenes.
+- **Fake-Complaint:** Objections handled implicitly through the customer-voice complaint frame.
+
+**Output of this step:** A list mapping each named objection to the section(s) that will address it. This list becomes a Stage 1 writing constraint.
+
+**Step 0.7: Select Format from Library**
+
+Read `references/format-library.md` for the 9 named formats and the format selection matrix.
+
+Select the format based on: traffic source (from Step 0.1), awareness stage (universal 3-value field, from Phase 2 avatar research), resistance level (category maturity + price-tier + alternative-stack), and ad-format-to-page alignment (the COMBO PATTERN where advertorial-ad-copy → listicle-logic-page is one example).
+
+The default is **Advertorial** unless one of the 8 alternative formats fits the audience better. Most ContextArchitect funnels use Advertorial or Listicle; the other 7 formats are for specific audience/resistance fits.
+
+**Output of this step:** Selected format name + the format's reference (advertorial-framework.md, listicle-framework.md, or the format-library.md entry for the chosen format).
 
 ### Stage 1: Copy Creation
 
@@ -246,27 +296,44 @@ Determine: section sequence, tone balance for awareness stage, CTA placement, im
 
 **For Advertorials - Writing Order:**
 
-1. **Immerse in avatar research** - re-read raw quotes, struggles, emotional triggers
+1. **Immerse in avatar research** - re-read raw quotes, struggles, emotional triggers.
 2. **(Only if `schwartz-applied.md` exists for this brand) Apply the Schwartz Structural Layer (below) to plan section weighting** based on the angle's sophistication score. If the file does not exist, skip this step.
-3. **Write sections 3-8 in one sitting** (Background Story → Root Cause → Consequences → Unique Mechanism → Product Buildup → Product Reveal). Continuous flow, not section-by-section.
-4. **Write section 9 (Close)** - testimonials, price anchoring, value stack, guarantee, urgency
-5. **Write section 2 (Lead)** - tease/summarize what the reader will discover. Written AFTER body is complete.
-6. **Write section 1 (Headline)** - checked against the five-element framework (Relatability, Tension, Curiosity, Humanity, Contextual Fit) and the headline quality check questions. If any quality check answer is "no," rework.
-7. **Deletion pass** - remove any sentence that doesn't create curiosity, build belief, deepen identification, handle an objection, or move the reader forward
-8. **Simplicity check** - root cause and mechanism sections: would a tired, distracted person understand them?
-9. **Humanity check** - no em dashes, no forbidden vocabulary, contractions natural, high burstiness
-10. **Verify causal chain** - Root Cause → Mechanism → Product must flow logically
+3. **Pick the core feeling** (`copywriting-guide §8.7 The Five Core Feelings Library`) - vindication / loss aversion / betrayal / desperation / identity. The whole advertorial serves ONE core feeling. Pick before writing.
+4. **Write sections 3-8 in one sitting** (Background Story → Root Cause → Consequences → Unique Mechanism → Product Buildup → Product Reveal). Continuous flow, not section-by-section.
+   - Section 3 must apply `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)` - the narrator must be specific (name, age, situation) and the reader must feel seen before any mechanism explanation.
+   - Section 4 root cause uses one analogy (System 1 principle).
+   - Sections 6 and 8 explain mechanism in plain English (System 1 principle).
+   - Each section addresses its assigned objections from Step 0.6.
+5. **Write section 9 (Close)** - testimonials, price anchoring, value stack, guarantee, urgency. Apply `copywriting-guide §8.8 Authority Hook Patterns` if invoking named authority in the close.
+6. **Write section 2 (Lead)** - tease/summarize what the reader will discover. Written AFTER body is complete. The lead must apply `copywriting-guide §8.2 The Open-Loop Principle` - open a loop the body closes.
+7. **Write section 1 (Headline)** - check against the five-element framework AND `copywriting-guide §8.4 Hook Quality Checklist`. If any quality check answer is "no," rework.
+8. **Add bridges between sections** (`copywriting-guide §8.1 The Bridge Principle`) - every transition (Section 1 → 3, Section 3 → 4, Section 4 → 5, Section 5 → 6, Section 6 → 7, Section 7 → 8, Section 8 → 9, Section 9 → CTA) gets an explicit transition sentence.
+9. **Apply Time-Delay Introduction** to results sections (`copywriting-guide §8.3 The Time-Delay Introduction Rule`) - every result anchored to a specific time delay before the outcome.
+10. **Deletion pass** - remove any sentence that doesn't create curiosity, build belief, deepen identification, handle an objection, or move the reader forward.
+11. **Simplicity check** - root cause and mechanism sections: would a tired, distracted person understand them?
+12. **Humanity check** - no em dashes, no forbidden vocabulary, contractions natural, high burstiness.
+13. **Yes-Yes-Yes causal chain self-test (NEW build step).** Verify the four-link chain explicitly:
+    - **Root Cause click:** Does the reader believe THIS is what's causing their problem? Look for: clear cause-and-effect framing; analogy that lands; specific avatar-language acknowledgment of the symptoms.
+    - **Mechanism click:** Does the reader believe THIS approach fixes that cause? Look for: System 1 explanation; named mechanism; one analogy; at least one specific number or proof point.
+    - **Product click:** Does the reader believe THIS product delivers that mechanism? Look for: specific ingredient/component → specific mechanism step traceability; differentiation against named alternatives in Section 7.
+    - **Close click:** Is this the obvious next step? Look for: stacked value (testimonials, anchoring, guarantee, urgency); risk reversal; payment plan if configured.
+
+    If any link is weak, identify which section is structurally underwriting it (most commonly: Root Cause → Section 4 thin; Mechanism → Section 6 jargon-heavy; Product → Section 7 generic alternative-demolition; Close → Section 9 missing post-product fulfillment scenes). Fix before delivering.
+14. **Verify objection-handling completeness.** Every objection from Step 0.6 has an explicit handle in its assigned section. If any unaddressed, the relevant section is structurally weak. Fix.
 
 **For Listicles - Writing Order:**
 
-1. **Determine variant** (Logic, Emotion, or Product-focused) based on traffic source
-2. **Write item headlines first** - all items, sequenced per the variant's psychological arc
-3. **Write item body copy** - maximum 2 paragraphs per item, text must not visually overwhelm the image
-4. **Write opening paragraph** - variant-specific opening
-5. **Write CTA card copy** - mid-page and final
-6. **Write guarantee section copy**
-7. **Write headline** - variant-specific, odd number mandatory
-8. **Deletion pass** - cut any word that doesn't earn its place
+1. **Determine variant** (Logic, Emotion, or Product-focused) based on traffic source.
+2. **Pick the core feeling** (`copywriting-guide §8.7 The Five Core Feelings Library`) - same as advertorial; one core feeling drives the whole list.
+3. **Write item headlines first** - all items, sequenced per the variant's psychological arc. Each headline passes `copywriting-guide §8.4 Hook Quality Checklist`.
+4. **Write item body copy** - maximum 2 paragraphs per item, text must not visually overwhelm the image. Each item addresses at least one objection from Step 0.6 if applicable.
+5. **Write opening paragraph** - variant-specific opening. Apply `copywriting-guide §8.2 The Open-Loop Principle`.
+6. **Write CTA card copy** - mid-page and final.
+7. **Write guarantee section copy.**
+8. **Write headline** - variant-specific, odd number mandatory; passes `copywriting-guide §8.4 Hook Quality Checklist`.
+9. **Add bridges** between items where transitions don't feel earned (`copywriting-guide §8.1 The Bridge Principle`).
+10. **Deletion pass** - cut any word that doesn't earn its place.
+11. **Yes-Yes-Yes causal chain self-test:** for listicles, the chain compresses to: Belief in problem framing (item 1-2) → Belief in mechanism (mid-list items) → Belief in product (item containing product reveal) → Close click. Verify each link.
 
 **Deliverable:** Complete copy document (all sections, all CTAs, FAQ, guarantee). Output as markdown file if over 500 words.
 
@@ -565,6 +632,17 @@ After Stage 3, verify against this checklist:
 - [ ] **Close architecture complete:** Testimonials → Anchoring → Price → Value stack → Guarantee → CTA
 - [ ] **Lead written last and teases full content**
 - [ ] **Headline passes quality check:** All five elements evaluated, all gut-check questions answered "yes"
+- [ ] **Yes-Yes-Yes causal chain explicitly verified:** all four links (Root Cause click → Mechanism click → Product click → Close click) tested per Stage 1 step 13 self-test; no weak links remaining
+- [ ] **All objections from Step 0.6 explicitly addressed** in their assigned sections per `references/advertorial-framework.md` Objection-Handling Architecture
+
+**Universal Structural Copywriting Rules (All Formats) - from `copywriting-guide §8`:**
+- [ ] **Bridges present at every section transition** (`§8.1 The Bridge Principle`): explicit transition sentence between each major section
+- [ ] **Open-loop discipline** (`§8.2 The Open-Loop Principle`): every paragraph opens / deepens / closes a loop; "best-copy-can-start-at-any-line" test passes
+- [ ] **Time-delay anchors on all results** (`§8.3 The Time-Delay Introduction Rule`): every result statement anchored to a specific time delay
+- [ ] **Hook Quality Checklist passed** (`§8.4`): all 5 points (open loop, one claim, first-person where brand voice allows, specificity, identity marker)
+- [ ] **Identification before mechanism** (`§8.5 Identification-Before-Mechanism Rule`): narrator/reader feels seen before any mechanism explanation lands
+- [ ] **One core feeling, not multiple** (`§8.7 The Five Core Feelings Library`): one of vindication/loss-aversion/betrayal/desperation/identity drives the whole piece
+- [ ] **Authority hook from the named four patterns** (`§8.8 Authority Hook Patterns`): when invoking authority, one of Classic/Doctor's Surprise/Doctor's Skepticism/Study-Research is used (not a hybrid)
 
 **Schwartz Structural Layer (Advertorial Only) (only if `schwartz-applied.md` exists for this brand):**
 - [ ] **Section technique map applied:** every section carries its primary technique
@@ -580,10 +658,7 @@ After Stage 3, verify against this checklist:
 - [ ] **Odd number of items** (5, 7, 9, 11)
 
 **Content Quality (All Types):**
-- [ ] No em dashes anywhere
-- [ ] No forbidden AI vocabulary
-- [ ] Contractions used naturally
-- [ ] High burstiness (sentence length varies dramatically)
+- [ ] Run the copywriting-guide humanization checklist (see `../copywriting-guide/references/humanization-rules.md`). All universal rules + all brand-specific additions must pass.
 - [ ] Avatar-appropriate tone and language
 - [ ] Brand-specific compliance rules followed
 - [ ] **Deletion pass completed:** Every sentence creates curiosity, builds belief, or moves reader forward

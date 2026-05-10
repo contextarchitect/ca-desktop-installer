@@ -1,6 +1,6 @@
 # Long-Form Static: Image Specification (Reddit-Native Style)
 
-The single image that runs alongside long-form-static ad copy. The whole job of the image is to look like a screenshot a real person would have on their phone, not an ad. This file is the canonical spec for the Reddit-native style. The ad-style-generator catalogue includes a summary entry as style #13 (`_skills/ad-style-generator/references/style-catalogue.md`) and defers to this file for full detail. The prompts here are paste-ready for direct Nano Banana use.
+The single image that runs alongside long-form-static ad copy. The whole job of the image is to look like a screenshot a real person would have on their phone, not an ad. This file is the canonical spec for the Reddit-native style. The ad-style-generator catalogue includes a summary entry as style #13 (`../../ad-style-generator/references/style-catalogue.md`) and defers to this file for full detail. The prompts here are paste-ready for direct Nano Banana use.
 
 ## Style Definition
 
@@ -176,7 +176,7 @@ Exclusion Layer:
 
 ## Handoff to ad-style-generator
 
-The ad-style-generator catalogue documents Reddit-native as style #13 (`_skills/ad-style-generator/references/style-catalogue.md`). When long-form-static-builder hands off to ad-style-generator, the payload uses this format:
+The ad-style-generator catalogue documents Reddit-native as style #13 (`../../ad-style-generator/references/style-catalogue.md`). When long-form-static-builder hands off to ad-style-generator, the payload uses this format:
 
 ```yaml
 style: reddit-native

@@ -53,8 +53,9 @@ Each angle card gets used multiple times across these downstream skills. The sam
 
 ```
 STEP 1: ROOT CAUSE & MECHANISM NARRATIVES
-  -> Develop the scientific explanation, simplification, analogy, and copywriting section
-  -> For root cause AND solution mechanism
+  -> 1A: Root cause narrative (scientific, 4th-grade, analogy, copywriting section)
+  -> 1B: Solution mechanism narrative (same 4 layers + product mapping)
+  -> 1C: UGC creator brief (5 components for spoken delivery)
 
 STEP 2: EMOTIONAL TRIGGER SCORING
   -> Extract from Phase 2, consolidate, score, rank across avatars
@@ -67,6 +68,11 @@ STEP 4: ALTERNATIVE SOLUTION POSITIONING
 
 STEP 5: ANGLE CARD GENERATION
   -> Combine Steps 1-4 into structured angle cards (5-15 per brand)
+  -> Each card carries a Recommended Format (from funnel-builder/references/format-library.md)
+  -> Each card identifies multi-bio-marker pivots when applicable
+
+STEP 5.5: LEAD VARIANTS
+  -> For each angle, produce 3 POV variants (first-person sufferer, first-person discoverer, third-person authority/witness)
 
 STEP 6: STRUCTURAL SCORING (conditional)
   -> Run only if `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand
@@ -80,6 +86,8 @@ STEP 7: PRIORITIZATION & OUTPUT
 
 This is the most important step. Every advertorial depends on sections 4-6 (root cause -> consequences -> mechanism), and every ad depends on being able to communicate WHY the problem exists and WHY this solution works - in a way that a tired person scrolling at midnight understands instantly.
 
+Step 1 produces three artifacts: the root cause narrative (1A), the solution mechanism narrative (1B), and the UGC creator brief (1C). The first two feed downstream copy work (advertorials, ads, listicles). The third feeds downstream video work, where a UGC creator records a 60-90 second clip explaining the root cause + mechanism in their own words on camera.
+
 ### 1A: Root Cause Narrative
 
 Ask the user (or extract from documents): **What is actually causing the problem your product solves?**
@@ -90,7 +98,7 @@ If the user knows the root cause, develop the narrative. If they don't, generate
 
 1. **Scientific explanation** - the factual, evidence-based explanation of why the problem exists. Include the key contributing factors. This doesn't appear in marketing copy directly, but it's the foundation everything else is built on. Cite credible sources where possible.
 
-2. **4th-grade explanation** - rewrite the scientific explanation so a child could understand it. Strip all jargon. Use only common words. If you have to use a technical term, define it immediately in plain language. This is the version that gets adapted into marketing copy.
+2. **4th-grade explanation** - rewrite the scientific explanation so a child could understand it. Strip all jargon. Use only common words. If you have to use a technical term, define it immediately in plain language. This is the version that gets adapted into marketing copy. (Same principle as System 1 simplicity in the funnel-builder skill. See `funnel-builder/references/advertorial-framework.md` Section 4.)
 
 3. **Real-world analogy** - a concrete, visual metaphor that makes the root cause instantly understandable and emotionally resonant. The analogy must: be something the avatar has seen or experienced in daily life, create a visual image (not abstract), externalize blame (the problem isn't the avatar's fault - it's this external force), and imply a fixable situation (the analogy should suggest the solution direction). Test: if you described this analogy to someone at a dinner party, would they say "oh, that makes sense" within 5 seconds?
 
@@ -125,7 +133,7 @@ The mechanism is NOT the product. It's the PRINCIPLE behind why the solution wor
 
 1. **Scientific explanation** - how does the fix actually work at a biological/mechanical/systemic level? What does the mechanism do to the root cause?
 
-2. **4th-grade explanation** - plain language version. "It does X, which stops Y, which lets Z happen again."
+2. **4th-grade explanation** - plain language version. "It does X, which stops Y, which lets Z happen again." (Same principle as System 1 simplicity in the funnel-builder skill. See `funnel-builder/references/advertorial-framework.md` Section 4.)
 
 3. **Real-world analogy** - extends or mirrors the root cause analogy. If the root cause is "weed killer in the garden," the mechanism is "clearing the toxins so the soil can grow again." The two analogies should feel like natural complements.
 
@@ -154,6 +162,52 @@ Product-to-Mechanism Mapping:
 [For each key product feature/ingredient, one line showing:
 Feature -> triggers this mechanism -> which addresses this part of the root cause]
 ```
+
+### 1C: UGC Creator Brief
+
+The UGC creator brief is a third Step 1 artifact that translates the root cause + mechanism narratives into a format a real UGC creator can record on camera in 60-90 seconds. UGC ads generated downstream depend on this brief existing - without it, every UGC video request requires re-deriving the root cause + mechanism content from scratch.
+
+Unlike the copywriting sections in 1A and 1B, this is NOT for written copy. It is a script-style brief written for spoken delivery: shorter sentences, conversational register, room for the creator to ad-lib while staying anchored to the core narrative.
+
+**Five components of the UGC creator brief:**
+
+1. **Hook line (5-9 words spoken)** - the first sentence the creator says. Camera-on, no preamble. Should pass the spirit of `copywriting-guide §8.4 Hook Quality Checklist` (open loop, identity marker, specificity) translated for spoken delivery.
+
+2. **Identity reveal (1-2 sentences)** - who the creator is, in plain language, in a way the avatar can latch onto. "I'm 47. Three kids. I started losing weight after my second pregnancy and never got it back." Establishes narrator identity for `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)`.
+
+3. **Root cause in 30 seconds (script)** - the 4th-grade explanation from 1A, adapted for spoken delivery. Use the analogy. Use "you" or "your body" not "the body." Add natural verbal pauses ("...so what's happening is..."). Aim for 60-80 words.
+
+4. **Mechanism in 20 seconds (script)** - the 4th-grade explanation from 1B, adapted for spoken delivery. Continue the analogy from the root cause. Aim for 40-60 words.
+
+5. **Close prompt (1 sentence)** - one sentence that hands off to the brand's CTA without being a sales pitch. "I just thought you should know what I figured out." OR "I'm not selling anything. I just wish someone had explained this to me a year ago." The CTA itself comes from the funnel/ad context, not from the UGC clip.
+
+**Output format for UGC creator brief:**
+
+```
+UGC CREATOR BRIEF: [Brand Name]
+
+Brief duration: [60-90 seconds spoken]
+Recommended creator profile: [Demographics that match the avatar - age range, life stage, region/accent if relevant]
+
+Hook line (5-9 words):
+"[Camera-on opener]"
+
+Identity reveal (1-2 sentences):
+"[Narrator establishment]"
+
+Root cause script (~60-80 words, ~30 seconds spoken):
+"[The 4th-grade explanation, conversational, with the analogy]"
+
+Mechanism script (~40-60 words, ~20 seconds spoken):
+"[The 4th-grade mechanism explanation, conversational, continuing the analogy]"
+
+Close prompt (1 sentence):
+"[Hand-off line, not a sales pitch]"
+
+Total estimated runtime: [X seconds]
+```
+
+The UGC creator brief is consumed by the future video-script-generator skill (Session 13) and by ad-style-generator when generating UGC-style ad concepts. It does NOT replace those skills' video-specific outputs - it is the source narrative they adapt.
 
 ### Step 1 Fallback: When Root Cause Is Unknown
 
@@ -288,13 +342,16 @@ This is where everything comes together. Each angle card combines one emotional 
 
 1. Start with the highest-scored cross-avatar emotional triggers (Step 2)
 2. For each trigger, pair it with the desire chain that best matches (Step 3)
-3. Select the root cause framing that connects to this trigger (Step 1) - the same root cause can be framed differently depending on which emotion you're leading with
-4. Select the mechanism framing that resolves this specific trigger
-5. Select the alternative attack that's most relevant to this trigger/desire combination (Step 4)
-6. Determine the awareness stage this angle is best suited for
-7. Recommend ad formats and funnel types based on awareness stage + emotional intensity
+3. Identify the core feeling driving this angle (`copywriting-guide §8.7 The Five Core Feelings Library` - vindication / loss aversion / betrayal / desperation / identity). One core feeling per angle; do not blend.
+4. Select the root cause framing that connects to this trigger (Step 1) - the same root cause can be framed differently depending on which emotion you're leading with
+5. Select the mechanism framing that resolves this specific trigger
+6. Select the alternative attack that's most relevant to this trigger/desire combination (Step 4)
+7. Determine the awareness stage this angle is best suited for (use the universal 3-value field: Problem-aware / Solution-aware / Product-aware, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction)
+8. **Recommend a format from funnel-builder's format library.** Read `../funnel-builder/references/format-library.md` for the 9 named formats plus the Fake-Complaint sub-format. Select based on the angle's awareness stage and resistance level (category maturity + price-tier + alternative-stack). The format selection matrix in format-library.md drives this decision. Add the selected format name to the angle card's "Recommended Format" field.
+9. **Consider multi-bio-marker pivots.** If the same root cause produces multiple felt symptoms (e.g., low testosterone manifests as energy/libido/recovery/focus/mood), identify the primary bio-marker for this angle and the secondary pivots. The Rosabella corpus showed that the same angle can run profitably across 4-7 different symptom entries when the underlying root cause + mechanism are unified. If the brand's product addresses only one symptom, mark this field "N/A - single-symptom angle."
+10. Provide headline direction (2-3 example headlines, each passing `copywriting-guide §8.4 Hook Quality Checklist` - open loop, one specific claim, identity marker, specificity, first-person where brand voice allows).
 
-(If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, Step 6 below adds a structured awareness/sophistication framework on top of step 6 above. If it does not exist, treat the awareness stage choice as a generic strategic call.)
+(If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, Step 6 below adds a structured awareness/sophistication framework on top of step 7 above. If it does not exist, treat the awareness stage choice as a generic strategic call.)
 
 **Angle naming convention:** Each angle gets a short, evocative name that captures the core narrative. Think of it as the "campaign theme" name. Examples: "The Internal Sabotage," "The Dependency Trap," "The Stolen Identity," "The Silent Storm."
 
@@ -303,6 +360,58 @@ This is where everything comes together. Each angle card combines one emotional 
 - At least 2 angles per primary avatar
 - At least 1 angle per awareness stage the brand targets
 - Mix of emotional-led angles (lead with trigger) and logic-led angles (lead with root cause)
+
+## Step 5.5: Lead Variants
+
+Each angle card produces 3 POV variants. Same root cause, same mechanism, same alternative attack - different narrator. The variants are the testing surface: production runs all three, and the winning POV becomes the canonical version of the angle for that brand.
+
+The three-lead rule comes from Zakaria Video17, 18, 28. The pattern observed across mature D2C testing data: the same angle delivered through three different narrators converts at different rates by 2-5x depending on the lead emotion + avatar pairing. Picking one POV without testing leaves performance on the table.
+
+In the variant descriptions below, "awareness" is used in the universal 3-value sense (Problem-aware / Solution-aware / Product-aware, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction). Operators with Schwartz onboarding should use the formal 6-value enum from Step 6 below as a stricter overlay; the variant fits described here are universal first-pass guidance.
+
+### The Three POV Variants
+
+**Variant 1: First-Person Sufferer**
+
+A specific avatar-matched persona who is currently in the problem. Voice register: frustrated, exhausted, sometimes hopeful, sometimes vindicated. Opens with their lived experience. The reader's identification is direct ("this is me, right now").
+
+Best for: problem-aware audiences, high-intensity triggers (score 8+), brands with avatars who actively self-narrate their struggle (mom-blogger demographic, fitness-failure demographic, chronic-condition demographic).
+
+Avoid when: the avatar's emotional register is one of denial or shame about the problem, in which case Variant 3 (third-person witness) avoids the cringe-of-recognition that blocks engagement.
+
+**Variant 2: First-Person Discoverer**
+
+A specific persona who solved the problem and is sharing what worked. Voice register: relieved, evangelical, matter-of-fact, sometimes "I can't believe I figured this out." Opens with the after-state and works backward to the discovery.
+
+Best for: solution-aware audiences, brands with strong transformation stories, retargeting campaigns where the audience is already warmed.
+
+Avoid when: the audience is too early-stage (problem-aware with low resistance) and would dismiss a solved-it narrator as "easy for them to say."
+
+**Variant 3: Third-Person Authority or Witness**
+
+An external voice - a specialist, doctor, researcher, OR a partner/friend/family member who watched the transformation. Voice register: clinical (authority), observational (witness), often surprised by data. Opens with what they observed, not what they felt.
+
+Best for: high-resistance audiences who distrust first-person testimonials, mature categories where readers have heard many competing claims, brands with named medical authority assets.
+
+Avoid when: the brand voice is intentionally peer-to-peer (DTC mom-brand voice, lifestyle-influencer voice) and external authority would feel out of place.
+
+### Variant Selection Procedure
+
+For each angle card:
+
+1. Identify the avatar's primary emotional register from Phase 2 Section F (Emotional Landscape).
+2. Match Variant 1's voice to that register if the avatar self-narrates their struggle openly.
+3. If the avatar denies, minimizes, or feels shame about the problem, default to Variant 3 as the lead variant.
+4. Variant 2 is the cross-cut variant - it works for most audiences as a secondary test, but rarely as the primary variant unless the audience is solution-aware.
+5. Each variant gets a specific narrator (name, age, situation), specific voice register, and specific lead opening line. These three details go on the angle card under the "Lead Variants" field (see `references/angle-card-schema.md`).
+
+**Important:** every variant must apply `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)` - the narrator must be specific enough that the reader feels seen before any mechanism explanation lands. A generic "people are realizing..." narrator fails this rule regardless of which POV you pick.
+
+(If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, the Required Schwartz Move from Step 6 below adds a constraint to which variants fit best for the angle's awareness x sophistication intersection. If it does not exist, treat variant selection as a Phase 2 emotional-register call only.)
+
+### Output
+
+For each angle card, the Lead Variants section produces 9 specific lines: 3 narrators x 3 fields (narrator, voice register, lead opening). The angle-card-schema.md template specifies the exact format.
 
 ## Step 6: Schwartz Scoring (Awareness + Sophistication)
 
@@ -403,26 +512,31 @@ Inputs: Phase 1 ([date]), Phase 2 ([date]), Product docs
 ## 2. Solution Mechanism Narrative
 [Full output from Step 1B]
 
-## 3. Emotional Trigger Scorecard
+## 3. UGC Creator Brief
+[Full output from Step 1C]
+
+## 4. Emotional Trigger Scorecard
 [Full output from Step 2]
 
-## 4. Desire Chains
+## 5. Desire Chains
 [Full output from Step 3]
 
-## 5. Alternative Solution Positioning
+## 6. Alternative Solution Positioning
 [Full output from Step 4]
 
-## 6. Angle Cards
+## 7. Angle Cards
 [All angle cards from Step 5, ordered by testing priority.
+Each card carries: Recommended Format (from funnel-builder format-library.md), Lead Variants (3 POV variants from Step 5.5), Multi-Bio-Marker Pivots (when applicable).
 If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, each card also carries the structural fields produced in Step 6.]
 
-## 7. Testing Roadmap
+## 8. Testing Roadmap
 [Top 5 angles to test first, with recommended:
-- Ad format per angle
-- Funnel type per angle (if angle is validated by ad performance)
+- Format per angle (from format-library.md)
+- Lead variant priority (which of the 3 POVs to test first)
+- Bio-marker priority (when angle has multi-bio-marker pivots)
 - Budget allocation suggestion (% split across angles)]
 
-## 8. Creative Engine Integration
+## 9. Creative Engine Integration
 [Angle Registry - structured data for each angle, formatted
 for import into Creative Engine's angle entity table]
 ```
@@ -435,10 +549,11 @@ ANGLE ROADMAP COMPLETE: [Brand Name]
 Produced:
   - Root cause narrative (with analogy)
   - Mechanism narrative (with product mapping)
+  - UGC creator brief (5 components for spoken delivery)
   - [N] emotional triggers scored and ranked
   - [N] desire chains across [N] avatars
   - [N] alternative solutions analyzed
-  - [N] angle cards defined [if `schwartz-applied.md` exists, append: with awareness + sophistication scores]
+  - [N] angle cards defined, each with Recommended Format, 3 Lead Variants, and Multi-Bio-Marker Pivot consideration [if `schwartz-applied.md` exists, append: plus awareness + sophistication scores from Step 6]
   - Testing roadmap with top 5 priorities
 
 Next steps:
@@ -481,7 +596,27 @@ Before delivering the roadmap, verify:
 - [ ] At least 2 awareness stages covered in top 5
 - [ ] Each angle has a clear name and one-sentence summary
 - [ ] No two angles are the same trigger + desire combination
-- [ ] Recommended ad formats and funnel types are specified per angle
+- [ ] Recommended ad formats are specified per angle
+- [ ] Recommended Format (from `funnel-builder/references/format-library.md`) is specified per angle, with rationale referencing the format selection matrix
+- [ ] Core feeling identified (`copywriting-guide §8.7`) - one of vindication / loss aversion / betrayal / desperation / identity
+- [ ] Headline directions pass `copywriting-guide §8.4 Hook Quality Checklist`
+- [ ] Multi-Bio-Marker Pivots field populated (specific pivots OR "N/A - single-symptom angle")
+
+**Step 1C UGC Creator Brief:**
+- [ ] Hook line is 5-9 words and would survive sound-off scroll-stop
+- [ ] Identity reveal establishes specific narrator (name, age, situation)
+- [ ] Root cause script is conversational (not written-copy register)
+- [ ] Mechanism script continues the root cause analogy
+- [ ] Close prompt is hand-off, not sales pitch
+- [ ] Total runtime is 60-90 seconds spoken
+- [ ] Recommended creator profile matches the avatar's demographics
+
+**Step 5.5 Lead Variants:**
+- [ ] Every angle card has 3 lead variants populated
+- [ ] Variant 1 (First-Person Sufferer) has specific narrator, voice register, and lead opening
+- [ ] Variant 2 (First-Person Discoverer) has specific narrator, voice register, and lead opening
+- [ ] Variant 3 (Third-Person Authority or Witness) has specific narrator, voice register, and lead opening
+- [ ] All three variants apply `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)` - narrator specificity is sufficient for identification
 
 **Schwartz Scoring (Step 6) (only if `schwartz-applied.md` exists for this brand):**
 - [ ] Every angle has an Awareness Stage assigned
@@ -495,5 +630,7 @@ Before delivering the roadmap, verify:
 - Does not run Deep Research (generates a focused mini-prompt only if root cause is unknown)
 - Does not create ads or funnels (produces the strategic input for skills that do)
 - Does not replace Phase 2 avatar research (reads and restructures its output)
-- Does not generate images or copy (produces narrative frameworks that copy is built from)
+- Does not generate images, copy, or video (produces narrative frameworks and the UGC creator brief that downstream skills build on)
+- Does not record or produce video itself (the UGC creator brief is the source script; actual video production happens via UGC creators or video-script-generator skill)
+- Does not select the Recommended Format autonomously when the format library decision is genuinely ambiguous - flags ambiguity and asks the user
 - Does not commit files to GitHub

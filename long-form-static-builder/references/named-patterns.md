@@ -154,6 +154,28 @@ Two to four sentences. What makes THIS version of the mechanism different from c
 
 **Structural test:** Read each stage in isolation. Stage 1: did you name the mechanism? Stage 2: can you visualize the analogy? Stage 3: do you have at least two specific numbers or named differentiators? If any answer is no, the stage is incomplete.
 
+### Delivery Vehicle: Dialogue with Authority Character
+
+The three-stage explanation above covers *content*. This subsection covers *delivery*. The canonical delivery method for long-format static is dialogue with an authority character, not exposition. Stages 1, 2, and 3 stay exactly as defined; the dialogue framework is how the protagonist receives them.
+
+**Authority character options** (synthetic abstract beats, illustrative only):
+
+- A specialist met during the desperation frame: research scientist, unconventional doctor, foreign practitioner.
+- A knowledgeable layperson the protagonist encountered: guesthouse owner who survived the same condition, farmer with unusual longevity, longshore worker who learned a folk fix.
+- A family member who became expert through caregiving: parent of a patient, spouse of a sufferer.
+
+**The dialogue framework, five rules:**
+
+1. **Authority character leads.** They state the mechanism, the analogy, the differentiation. They are the source of the explanation; the protagonist learns from them.
+2. **Physical gestures break information density.** Every 100-150 words of mechanism content, insert a physical detail (the specialist pulled out a notebook; the farmer pointed at a tree; the doctor sketched a diagram on a napkin). These act as visual breaks and keep the dialogue from reading as a lecture.
+3. **Narrator reacts as reader's proxy.** Every 3-4 lines of mechanism content, insert one line of narrator reaction. Surprise, confusion, recognition, skepticism. The narrator is the reader; their reactions cue the reader's emotional response.
+4. **Narrator asks questions the reader would ask.** When the mechanism makes a non-obvious claim, the narrator pauses to question it. The authority character answers. This pre-empts the reader's own objections.
+5. **Analogies come from the authority character.** The Stage 2 analogy is delivered as a quote from the authority, not as the narrator's explanation. This places the conceptual leap inside the authority's credibility frame, not the protagonist's.
+
+**Pacing rule:** every 3-4 lines of mechanism content, one line of narrator reaction. Sustained without dialogue breaks, the mechanism reveal reads as a lecture and the reader scans-then-bounces. With the dialogue framework, the mechanism reveal reads as a conversation the reader is overhearing.
+
+**Structural test (additional to the Stage 1-3 test above):** Read the mechanism reveal section in isolation. Are there at least three physical-gesture details? Is there at least one narrator question? Is the Stage 2 analogy delivered as a quote from the authority character? If any answer is no, the dialogue framework is incomplete; rewrite the mechanism reveal as dialogue rather than exposition.
+
 ## 5. Bridges Between Every Section
 
 **Definition:** Explicit connector sentences at every section transition. No abrupt jumps.

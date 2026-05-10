@@ -56,7 +56,7 @@ The critical insight: **listicles are not one-size-fits-all.** The right listicl
 
 ```
 1. Header (brand logo + shop link)
-2. Headline + Subheadline + Opening paragraph (NO HERO IMAGE — text-first)
+2. Headline + Subheadline + Opening paragraph (text-first; see Image Requirements below)
 3. LIST ITEMS (side-by-side image + text, alternating)
    - ITEM 1: Image LEFT + Text RIGHT + CTA BUTTON after
    - ITEM 2: Text LEFT + Image RIGHT
@@ -299,7 +299,6 @@ Video is NOT generated as part of this workflow. See `references/video-guidance.
 
 ## Technical Requirements
 
-- NO hero image (text-first approach)
 - Page load: under 2.5 seconds
 - Mobile responsive (stacks to single column)
 - Semantic HTML (H1 → H2 per item)

@@ -58,20 +58,28 @@ The skill produces the spec for the image but does not produce the image itself.
 1. Which angle from the roadmap should drive this ad?
    (List angle card names if multiple are available.)
 
-2. Which awareness stage is this ad targeting?
+2. Run swipe research?
+   [Yes - via TrendTrack MCP (default if connected) /
+    Yes - operator will run TrendTrack UI manually /
+    No - skip swipe research entirely]
+   (See `references/swipe-research-protocol.md` for path detail.
+    The choice does not affect downstream writing; it only changes
+    how the swipe library is produced.)
+
+3. Which awareness stage is this ad targeting?
    [Defaults to the angle card's stage if Schwartz onboarding is done.
     Override only if the user has a specific reason.]
 
-3. Which format variant?
+4. Which format variant?
    [Full long-form (2,500+ words) /
     Medium long-form (1,200 words) /
     Fake-complaint short-form (250 words, solution-aware bottom-funnel only)]
 
-4. POV preference?
+5. POV preference?
    [Default: generate three POV variants per the three-lead rule.
     Override only if the user wants a single POV.]
 
-5. CTA destination?
+6. CTA destination?
    [Sales page lander / listicle / advertorial.
     NEVER direct-to-PDP per Sufian's funnel guidance.]
 ```
@@ -81,14 +89,20 @@ Store these as the per-ad configuration. Subsequent ads in the same campaign reu
 ## Workflow Overview
 
 ```
-1. INGEST     -> Read 4 upstream docs + per-request inputs
-2. SELECT     -> Choose format variant + 3 POV variants
-3. STRUCTURE  -> Apply section structure from references/section-structure.md
-4. WRITE      -> Generate body copy following Rosabella playbook
-5. IMAGE-SPEC -> Generate Reddit-native image spec (handoff to ad-style-generator)
-6. SELF-TEST  -> Run Yes-Yes-Yes self-test + 14-point quality checklist
-7. OUTPUT     -> Deliver three POV-variant copies + image spec + repurposing notes
+1.   INGEST          -> Read 4 upstream docs + per-request inputs
+1.5. AVATAR DEPTH    -> Audit Phase 2 vs references/deep-avatar-research-prompt.md;
+                        if thin, output the prompt and PAUSE workflow
+1.7. SWIPE RESEARCH  -> Optional, path-divergent (MCP / manual / skip);
+                        produces analyzed swipe library
+2.   SELECT          -> Choose format variant + 3 POV variants
+3.   STRUCTURE       -> Apply section structure from references/section-structure.md
+4.   WRITE           -> Generate body copy following Rosabella playbook
+5.   IMAGE-SPEC      -> Generate Reddit-native image spec (handoff to ad-style-generator)
+6.   SELF-TEST       -> Run Yes-Yes-Yes self-test + 14-point quality checklist
+7.   OUTPUT          -> Deliver three POV-variant copies + image spec + repurposing notes
 ```
+
+Steps 2-7 are **path-agnostic**. They consume the swipe library if one exists, but do not branch on which path produced it (or whether it exists at all). If Step 1.7 took Path C (skip), Step 3 onwards proceeds from angle card + avatar research alone, with the caveat noted in the session log.
 
 ## Step-by-Step Instructions
 
@@ -97,6 +111,34 @@ Store these as the per-ad configuration. Subsequent ads in the same campaign reu
 Read the four upstream documents in order. The angle roadmap is hard-required. The other three are strongly recommended; if any are missing, flag it and ask the user whether to proceed with reduced quality or pause and run the upstream skill first.
 
 Read avatar research with the specific angle in mind. Pull raw quotes that match the angle's emotional trigger and core desire. These quotes become the seed material for identification sections.
+
+### Step 1.5: Avatar Depth Audit
+
+Phase 2 avatar research is sufficient for most workflows in this skill's pipeline. Long-format static is the format that pushes hardest on avatar specificity, because the identification opener, antecedent / catalyst story, and failed-solution stack sections each draw directly from raw avatar quotes.
+
+Audit the Phase 2 output against the five required outputs in `references/deep-avatar-research-prompt.md`:
+
+1. The morning-it-clicked moment (5-10 specific tipping-point scenes)
+2. Internal monologue verbatim (10-15 self-talk phrases)
+3. Sequenced failed-attempts list (3-5 sequences with named brands and durations)
+4. Relationships affected (5-10 specific people and named consequences)
+5. The unspoken fear (3-5 examples)
+
+If Phase 2 covers all five with sufficient texture: proceed to Step 1.7.
+
+If Phase 2 is thin on any required output: output the prompt template from `references/deep-avatar-research-prompt.md` with CONTEXT and SOURCES filled in from this brand's Phase 2 + competitor list. **STOP. Pause the workflow.** Wait for the user to run the prompt in Deep Research and return with the output (~1-2 hour runtime). Resume at INGEST with the new avatar research document layered on top of Phase 2.
+
+### Step 1.7: Swipe Research
+
+Optional, path-divergent. See `references/swipe-research-protocol.md` for the full protocol. The path was chosen at the per-request inputs step (question 2 in the `ask_user_input_v0` block).
+
+**Path A (TrendTrack MCP).** Run the tool sequence from `references/swipe-research-protocol.md` Path A: `creative_inspiration_pack` (niche + keywords required) → `scan_ad` on top 5-8 candidates (filter to long-format) → optional `search_advertisers` if pack returns repeating brands. Produce an analyzed swipe library per the Output Schema in that file. Tell the user the run will take a few minutes so it does not appear to hang.
+
+**Path B (Manual TrendTrack).** Output the filter recipe and seed brand list from `references/swipe-research-protocol.md` Path B. **STOP. Pause the workflow.** Wait for the operator to run the research in TrendTrack UI (~30-60 minutes) and return with the analyzed swipe library in the Output Schema shape.
+
+**Path C (Skip).** Note in the session log: "Swipe research skipped per operator preference. If first draft underperforms, run swipe research before iteration." Proceed to Step 2.
+
+The swipe library, if produced, is consumed at Step 3 (STRUCTURE) and Step 4 (WRITE) as input alongside the angle card and avatar research. Steps 2 onwards do **not** branch on which path produced the library; they only branch on whether a library exists.
 
 ### Step 2: Select Format Variant
 
@@ -135,6 +177,10 @@ Read `references/named-patterns.md` for the full playbook. The 10 patterns are n
 10. **POV stability** - once a POV is chosen, never break it. The product enters from inside the POV, not from a narrator stepping in.
 
 Write the full long-form (or compressed medium) once for the primary POV. Then produce the two POV variants by rewriting from a different storyteller's vantage point. Do not word-substitute; actually re-tell the story from that POV.
+
+If a swipe library was produced at Step 1.7, consume it at this stage: pull lead-style choice, mechanism delivery convention, and image-type signal from the most relevant swipe entries. The library is reference material, not a template; do not copy verbatim.
+
+For beat-level audit reference, see `references/worked-examples.md` (two long-format static ads broken down beat-by-beat, mapped to the section structure and named patterns). Use the example whose lead style most closely matches your angle's POV variant as a pre-draft read; the audit checklist at the end of that file complements the 14-point self-test in Step 6.
 
 ### Step 5: Image Specification
 

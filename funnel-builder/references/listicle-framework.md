@@ -2,7 +2,7 @@
 
 ## Core Philosophy
 
-A listicle is a purpose-built bridge between curiosity and purchase that works through scannable validation. Where advertorials lower defenses through narrative, listicles lower defenses through education — each numbered item builds a brick of belief until the reader arrives at the product as the obvious conclusion.
+A listicle is a purpose-built bridge between curiosity and purchase that works through scannable validation. Where advertorials lower defenses through narrative, listicles lower defenses through education - each numbered item builds a brick of belief until the reader arrives at the product as the obvious conclusion.
 
 The critical insight: **listicles are not one-size-fits-all.** The right listicle variant depends entirely on what emotional/informational state the reader arrives in, which is determined by the ad that drove them there.
 
@@ -24,7 +24,7 @@ The critical insight: **listicles are not one-size-fits-all.** The right listicl
 
 ### Variant B: Emotion-Focused (Post-Curiosity)
 
-**Use when:** The ad created curiosity but no deep emotional investment. Day-in-the-life UGCs, short hook videos, curiosity images — the reader is interested but hasn't been warmed emotionally. The listicle needs to create both emotional connection AND product desire.
+**Use when:** The ad created curiosity but no deep emotional investment. Day-in-the-life UGCs, short hook videos, curiosity images - the reader is interested but hasn't been warmed emotionally. The listicle needs to create both emotional connection AND product desire.
 
 **Tone:** Aspirational, personal, relatable. Benefit-and-identity focused.
 **Each item answers:** "Why will I love this product? How will it change my life?"
@@ -56,17 +56,17 @@ The critical insight: **listicles are not one-size-fits-all.** The right listicl
 
 ```
 1. Header (brand logo + shop link)
-2. Headline + Subheadline + Opening paragraph (NO HERO IMAGE — text-first)
+2. Headline + Subheadline + Opening paragraph (text-first; see Image Requirements below)
 3. LIST ITEMS (side-by-side image + text, alternating)
    - ITEM 1: Image LEFT + Text RIGHT + CTA BUTTON after
    - ITEM 2: Text LEFT + Image RIGHT
    - ITEM 3: Image LEFT + Text RIGHT
    [Continue alternating...]
-4. [MID-PAGE CTA CARD] — after around 40-60% of items
+4. [MID-PAGE CTA CARD] - after around 40-60% of items
 5. Remaining LIST ITEMS (continue alternating pattern)
-6. [GUARANTEE SECTION] — after final item
-7. [FINAL CTA CARD] — strong urgency, product image
-8. [MOBILE STICKY CTA] — triggers at 40% scroll
+6. [GUARANTEE SECTION] - after final item
+7. [FINAL CTA CARD] - strong urgency, product image
+8. [MOBILE STICKY CTA] - triggers at 40% scroll
 ```
 
 **Key difference from advertorial:** No hero image. Listicles are text-first, jumping straight into educational content. The headline does the hook work.
@@ -94,7 +94,7 @@ Items are NOT random. They follow a psychological arc that varies by variant:
 | Items 1-2 | Establish the root cause connection | How the product targets the real problem |
 | Items 3-4 | Build the mechanism case | Specific ingredients/features that deliver the fix |
 | Items 5-6 | Compound credibility | Clinical backing, unique formulation, quality signals |
-| Final item | Bridge to action | The "complete system" pitch — all pieces working together |
+| Final item | Bridge to action | The "complete system" pitch - all pieces working together |
 
 ### Variant B (Emotion-Focused) Sequencing
 
@@ -102,7 +102,7 @@ Items are NOT random. They follow a psychological arc that varies by variant:
 |----------|-----|--------------|
 | Items 1-2 | Mirror the pain | The biggest emotional struggles the product addresses |
 | Items 3-4 | Show the transformation | What changes when the root cause is fixed |
-| Items 5-6 | Build identity hope | "Getting yourself back" — identity restoration themes |
+| Items 5-6 | Build identity hope | "Getting yourself back" - identity restoration themes |
 | Final item | Future pacing | The life that's waiting on the other side |
 
 ### Variant C (Product-Focused) Sequencing
@@ -116,7 +116,7 @@ Items are NOT random. They follow a psychological arc that varies by variant:
 
 ## Image-Text Parity Rule
 
-**MC Principle:** Text must NEVER overwhelm images. The listicle format works because it's scannable — balanced layouts where eyes alternate between image and text. Text-heavy layouts destroy the scannability advantage.
+**MC Principle:** Text must NEVER overwhelm images. The listicle format works because it's scannable - balanced layouts where eyes alternate between image and text. Text-heavy layouts destroy the scannability advantage.
 
 ### Layout Specifications
 
@@ -156,7 +156,7 @@ Why this matters, how it works, or social proof. 2-3 sentences max.
 **The parity rule in practice:**
 - Maximum 2 paragraphs per item (3 only if absolutely necessary)
 - Each paragraph: 2-3 sentences
-- The text block should visually match the image height — if the text is visually taller than the image, cut words
+- The text block should visually match the image height - if the text is visually taller than the image, cut words
 - Remove ALL unnecessary words. Every word earns its place.
 
 **Completion test per item:** Does this item make one clear point, supported by one proof element, in the space that visually matches the image? If the text overwhelms the image, it's too long.
@@ -164,9 +164,9 @@ Why this matters, how it works, or social proof. 2-3 sentences max.
 ## Opening Paragraph Structure
 
 ```
-[Emotional hook — visceral problem description] (1-2 sentences)
-[Specific symptoms — create recognition] (1-2 sentences)
-[Frustration acknowledgment — empathy] (1 sentence)
+[Emotional hook - visceral problem description] (1-2 sentences)
+[Specific symptoms - create recognition] (1-2 sentences)
+[Frustration acknowledgment - empathy] (1 sentence)
 [Transition sentence]
 [Promise of explanation and solution] (1 sentence)
 ```
@@ -290,16 +290,15 @@ Video is NOT generated as part of this workflow. See `references/video-guidance.
 ## Scroll Depth Optimization
 
 **Techniques specific to listicles:**
-1. **Alternating layout creates visual zigzag** — eye naturally follows left-right-left pattern
-2. **First image cut at fold** — partially visible below fold signals scrollable content
-3. **Reason badges create progress markers** — "REASON 1", "REASON 2" signals progress
-4. **No full-width dividers between items** — continuous flow, not segmented blocks
-5. **CTA button after item #1** — engaged readers click early, others keep scanning
-6. **Image-text parity** — balanced layouts feel premium; text walls cause abandonment
+1. **Alternating layout creates visual zigzag** - eye naturally follows left-right-left pattern
+2. **First image cut at fold** - partially visible below fold signals scrollable content
+3. **Reason badges create progress markers** - "REASON 1", "REASON 2" signals progress
+4. **No full-width dividers between items** - continuous flow, not segmented blocks
+5. **CTA button after item #1** - engaged readers click early, others keep scanning
+6. **Image-text parity** - balanced layouts feel premium; text walls cause abandonment
 
 ## Technical Requirements
 
-- NO hero image (text-first approach)
 - Page load: under 2.5 seconds
 - Mobile responsive (stacks to single column)
 - Semantic HTML (H1 → H2 per item)
@@ -308,5 +307,5 @@ Video is NOT generated as part of this workflow. See `references/video-guidance.
 - Sticky mobile CTA: 56px min height
 - Tap targets: 44px minimum
 - Tracking pixels: in `<head>`
-- UTM passthrough script: in `<head>` (MANDATORY — see advertorial-framework.md for script)
+- UTM passthrough script: in `<head>` (MANDATORY - see advertorial-framework.md for script)
 - CTA buttons: centered, min 48px height

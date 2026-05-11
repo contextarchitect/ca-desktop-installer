@@ -64,6 +64,8 @@ This file is paired with `named-patterns.md`, which documents the writing rules 
 
 **Product introduction.** Soft. Organic. From inside the POV. The character introduces the product as the natural next step ("when I learned about X mechanism, I started looking for the cleanest version of it I could find"). Never break POV here. Never let a narrator step in to explain what the product is. The product enters the same way it would in a friend telling a story.
 
+**The 75% rule for product reveal.** In addition to the sequencing rule (Mechanism BEFORE Product Introduction), long-format static observes a quantitative threshold: the product name does NOT appear before approximately 75% of the body. In a 2,800-word full long-form, that is word ~2,100. In a 1,200-word medium long-form, that is word ~900. By the 75% mark, the reader's emotional investment has compounded across identification, antecedent story, failed-solution stack, desperation frame, and mechanism reveal; the product feels like the natural resolution of the story. Earlier introductions feel like sales pitches breaking the spell. This is one of the more frequently violated rules in beginner long-form static; ads that read structurally correct but convert poorly often fail this single check. To verify: search the body for the brand name and any product name. The earliest occurrence should be at or after the 75% mark by word count. If earlier, audit the section preceding the product introduction; typically the mechanism reveal needs to expand or the failed-solution stack needs more specificity. Note this is distinct from the 60% identification-before-mechanism threshold (see `named-patterns.md` pattern 3); 60% is where the mechanism FIRST appears, 75% is where the product name FIRST appears.
+
 **Differentiation block.** This is the "vs the cheap alternatives" moment, but it's not a comparison chart. It's the protagonist explaining why other versions of the mechanism didn't qualify. Specifics: percentages, certifications, sourcing, processing methods, dosage. If the brand has a USP catalog, pull from it. If not, the differentiation block is thin and the ad will need a stronger close.
 
 **Results timeline.** Every results claim needs a time anchor. "Week 2." "Day 14." "After 17 minutes." Generic claims ("I started feeling better") are a writing failure. The time anchor does two jobs: it makes the claim feel specific and verifiable, and it sets the reader's expectations for their own timeline.
@@ -83,6 +85,35 @@ This file is paired with `named-patterns.md`, which documents the writing rules 
 **PS.** Mandatory. Specific personal detail or callback to story. The PS is the highest-engagement element of every Rosabella variant analyzed; it's where the reader who scrolled to the bottom looking for the offer often gets hooked back into the body. Common patterns: a callback to the antecedent character ("My father called me last week, said his doctor noticed something"); a specific scene from after the decision moment ("First time in 11 years I drove past the pharmacy without stopping in"); a future-pacing line ("This Christmas will be the first one in a decade where I'm not...").
 
 **PPS.** Optional. A second testimonial, an urgency note, or a soft social-proof anchor. The PPS adds a second hook for readers who skipped to the bottom; without it, the PS does the job alone.
+
+### Sufian's 19-Step Crosswalk
+
+The Variant 1 section table maps to Sufian's 19-step framework skeleton (Hook, Lead × 3, Storyline, Identification, Symptoms, Fear, Failed solutions, Real-life consequences, Feelings, Mechanism Problem, Mechanism Solution, Organic Product Intro, Differentiation, Social Proof, Risk Reversal, Urgency, Scarcity, CTA, PS, PPS) as follows:
+
+| Sufian step | Section in this table |
+|---|---|
+| Hook | Hook + headline |
+| Lead × 3 | Three-lead rule (`named-patterns.md` pattern 9): same body, three POV variants |
+| Storyline | Antecedent / catalyst story |
+| Identification | Identification opener |
+| Symptoms | Identification opener (specific sensory + lifestyle markers) |
+| Fear | Identification opener (emotional weight beat) |
+| Failed solutions | Failed-solution stack |
+| Real-life consequences | Antecedent story + identification opener |
+| Feelings (Vindication / Loss aversion / etc.) | Five core feelings (`named-patterns.md` pattern 7) |
+| Mechanism Problem | Mechanism reveal (Stage 1 + Stage 2 root cause framing) |
+| Mechanism Solution | Mechanism reveal (Stage 2 mechanism action + Stage 3) |
+| Organic Product Intro | Product introduction |
+| Differentiation | Differentiation block + Differentiation vs others (closing) |
+| Social Proof | Authority closure + Durability proof + Mirror moment |
+| Risk Reversal | Risk reversal |
+| Urgency | Crossroads framing |
+| Scarcity | Crossroads framing or PPS |
+| CTA | CTA (1) + CTA (2) |
+| PS | PS |
+| PPS | PPS |
+
+Both treatments cover the same architecture. Use Sufian's checklist as a step-by-step writer's checklist; use this section table as the word-budget map. They reinforce each other; pick whichever unit is more useful for the operator workflow.
 
 ## Variant 2: Medium Long-Form (1,200 words)
 
@@ -166,6 +197,14 @@ This file is paired with `named-patterns.md`, which documents the writing rules 
 | Solution-aware (heavy social proof) | Fake-complaint short-form | Bottom-funnel only. Customer-to-customer voice, no claims. |
 | Product-aware | Medium long-form | Reader already knows the brand. Less education needed. |
 | Most-aware (retargeting) | Fake-complaint short-form OR medium long-form | Depends on offer. Short-form for sale-price retargeting, medium for objection-handling. |
+
+**Note on word count vs. line count.** The word ranges above (2,500-3,500 full, 1,000-1,400 medium, 200-300 fake-complaint) are platform-agnostic. Some operators measure in *lines* because Meta primary text formatting (one sentence per line, white-space rules) makes line count the operator's measurable unit in-feed. Approximate conversion at 5-10 words per line of Meta primary text:
+
+- Full long-form: ~500-700 lines (covers the longer end of "Unaware 700-1,000 lines, Problem-Aware 500-800 lines" from operator-side measurement)
+- Medium long-form: ~200-280 lines (covers "Solution-Aware 400-600 lines" lower end)
+- Fake-complaint short-form: ~40-60 lines
+
+Use whichever unit your operator workflow prefers. The structural rules in this file are unit-agnostic; word budgets and line ranges describe the same body, measured differently.
 
 ## Section Length Sanity Checks
 

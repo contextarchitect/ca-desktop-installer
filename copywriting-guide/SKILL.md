@@ -35,13 +35,14 @@ This skill requires TWO primary inputs:
 ## Workflow Overview
 
 ```
-1. INGEST     -> Read avatar research + brand guidelines
-2. EXTRACT    -> Pull voice inputs from both sources
-3. MAP        -> Map archetypes to copy requirements
-4. GENERATE   -> Populate the copywriting guide template
-5. CALIBRATE  -> Add category-specific rules and examples
-6. STRUCTURE  -> Add the seven-technique structural layer
-7. OUTPUT     -> Deliver complete guide
+1. INGEST       -> Read avatar research + brand guidelines
+2. EXTRACT      -> Pull voice inputs from both sources
+3. MAP          -> Map archetypes to copy requirements
+4. GENERATE     -> Populate the copywriting guide template
+5. CALIBRATE    -> Add category-specific rules and examples
+6. STRUCTURE    -> Apply structural layers (gated Schwartz + universal copywriting rules)
+7. HUMANIZE     -> Run the AI Detection Firewall
+8. OUTPUT       -> Deliver complete guide
 ```
 
 ## Step 1: Ingest and Extract
@@ -231,7 +232,7 @@ The most common combinations across content types:
 
 ### Pressure Test for Voice + Technique Compliance
 
-After applying any technique, the copy must still pass the brand's full Phase 4 humanization checklist (Step 7 below). Common failure: a technique feels strong in 1966-style hype voice but fails the brand's voice rules. Restate without exclamations, without forbidden vocabulary, without em dashes. The technique is the structural move; the voice is independent.
+After applying any technique, the copy must still pass the brand's full Phase 4 humanization checklist (Step 9 below). Common failure: a technique feels strong in 1966-style hype voice but fails the brand's voice rules. Restate without exclamations, without forbidden vocabulary, without em dashes. The technique is the structural move; the voice is independent.
 
 ### Output: A Section in the Final Guide
 
@@ -244,7 +245,139 @@ Add a section to the copywriting guide called "Structural Moves: The Seven Techn
 
 **If this brand has not yet completed Schwartz onboarding:** see `_frameworks/breakthrough-advertising-brand-onboarding.md` in `contextarchitect/context-architect-brands` for the 30-60 minute scoped session that produces `schwartz-applied.md`.
 
-## Step 8: Generate Humanization Checklist
+## Step 8: Universal Structural Copywriting Rules
+
+These rules govern HOW any piece of copy is built, regardless of brand, archetype, or whether Schwartz onboarding has been completed. They are universal. Every long-form piece, every ad, every email passes through these checks.
+
+The seven techniques (Step 7, gated) tell you WHAT MOVE the copy is making. The Universal Structural Rules (this step) tell you HOW TO BUILD any move so it actually lands. Both layers apply when Schwartz onboarding is present; only this step applies otherwise.
+
+### 8.1 The Bridge Principle
+
+Every transition between sections must be earned with an explicit transition sentence. The transitions that matter most:
+
+- Hook to Identification ("This is what made me realize I wasn't alone in this.")
+- Identification to Agitation ("And here's what I didn't see coming.")
+- Agitation to Mechanism ("That's when I learned what was actually happening.")
+- Mechanism to Product ("Which is exactly what [product name] was designed to do.")
+- Product to Social Proof ("And I'm not the only one who's seen these results.")
+- Social Proof to CTA ("Here's how to get started yourself.")
+
+Missing bridges are the #1 failure mode in long-form copy. The reader hits an unearned section break and disengages. A bridge can be one sentence; it must exist.
+
+**Self-test:** Read the copy out loud. At every section change, ask: "did the previous paragraph earn the next one?" If the answer is "the next paragraph just starts," there's a missing bridge.
+
+### 8.2 The Open-Loop Principle
+
+Every paragraph either opens a new loop, deepens tension on an existing loop, or closes one. Paragraphs that do none of those three things are dead weight.
+
+An open loop is a curiosity gap that creates psychological debt - the reader must keep going to close it. Examples:
+
+- "I refused the medication for three years. Here's what I did instead." (Opens: what did you do?)
+- "My doctor laughed when I told him. Six months later, he wasn't laughing." (Opens: what changed?)
+- "There's one ingredient most supplements skip. It's the one that actually matters." (Opens: which one?)
+
+The "best copy can start at any line" test: cut the opening hook. Read line two as if it were the new hook. If line two opens a loop strong enough to carry the rest, the copy is structurally healthy. If line two is descriptive ("This product is for people who..."), the copy was carried entirely by the hook and will collapse without it.
+
+### 8.3 The Time-Delay Introduction Rule
+
+When introducing results, always anchor a specific time delay before describing the outcome.
+
+Wrong: "The cream works."
+Right: "After three weeks, I noticed my skin felt different."
+
+Wrong: "Your blood pressure normalizes."
+Right: "Around week six, my blood pressure readings started dropping into the normal range."
+
+Without a time anchor, the reader has no expectation framework. They cannot picture themselves at the result because they cannot picture WHEN. Time anchors are mandatory in:
+
+- Results sections of advertorials
+- Testimonial integrations
+- "What to expect" content
+- Any first-person transformation narrative
+
+### 8.4 Hook Quality Checklist
+
+Every hook (caption, first line, headline) passes through this five-point check:
+
+1. **Opens a loop, doesn't close one.** A statement of fact closes the loop ("Our supplement contains 500mg of beetroot extract"). A statement of consequence opens it ("I refused the medication for three years.").
+
+2. **One specific claim, not multiple.** Hooks that try to do two things accomplish neither. Pick one.
+
+3. **First person over third person where the brand voice allows.** "I refused..." beats "Many people refuse...". Exceptions: explicit narrator-VSL formats where third-person is structural, and brand voice guidelines that require third-person formality. When the brand voice prescribes third-person, keep the rest of the rule (one claim, specificity, identity marker, open loop) and apply it within the approved POV.
+
+4. **Specificity over vagueness.** Name the medication. Name the symptom. Give the number. "147/92" beats "high blood pressure." "Lisinopril" beats "blood pressure medication."
+
+5. **Identity marker present.** The hook should include something that filters the right viewer in (age, role, situation). "I'm a 61-year-old who watched my father die of a stroke" gives age + family context. "After 32 years as a nurse" gives role + tenure.
+
+Static hooks add two more constraints:
+- Sound-off friendly (works visually + caption-only)
+- 9 words maximum for the caption layer (the visible-in-feed text)
+
+### 8.5 Identification-Before-Mechanism Rule
+
+Identification (mirroring the prospect's symptoms, lifestyle, failed solutions) MUST precede mechanism reveal. Mechanism that arrives before the reader feels seen does not convert.
+
+The order is non-negotiable:
+
+1. Show the reader you understand what they're going through (identification)
+2. Show them the failed solutions they've already tried (depositioning)
+3. THEN explain the mechanism that actually works
+
+Reverse the order - lead with mechanism - and the reader bounces because they have no reason to trust the explanation. Identification earns the right to explain.
+
+This is the most common structural error in technical-founder-written copy. The founder knows the mechanism cold and wants to explain it. The reader needs to feel seen first.
+
+### 8.6 The Discovery Story Format
+
+A named copy format that sits parallel to PAS / AIDA / SPS / etc. Structure:
+
+1. **Distress.** Character is in extremis (medical scare, failure stack, desperation).
+2. **Unusual decision.** Character makes an unusual choice driven by the desperation (drives 6 hours, stays up till 6 AM researching, accepts a stranger's recommendation, visits a folk practitioner).
+3. **Discovery.** The unusual decision exposes them to the solution (an Amish farmer, an old book, a former colleague's offhand comment, a specialist they wouldn't normally consult).
+4. **Mechanism reveal.** What the discovery actually is, in plain English with one analogy.
+5. **Application.** First trial, first results.
+6. **Validation.** Authority confirms, doctor confirms, time confirms.
+7. **Crossroads.** Reader is shown the same choice the character faced.
+
+The discovery story is the strongest format for readers who already recognize the problem or are actively comparing possible fixes. The desperation + unusual-discovery combination earns the right to explain a novel mechanism. Reference: Sufian Long-form Static Image Ads, lines 145-260.
+
+Use this format when:
+- The mechanism is novel and needs earning
+- The audience is skeptical of supplements / treatments / solutions in this category
+- The brand has a folk / heritage / discovery story (real or analogous)
+- The avatar profile shows a "tried everything" failed-solution stack
+
+### 8.7 The Five Core Feelings Library
+
+Every long-form piece of copy serves one core feeling. Identify it before writing. The five proven core feelings for direct-response copy:
+
+1. **Vindication.** "I was right all along; the system was wrong." Copy serves this feeling by validating the reader's suspicion that conventional advice failed them. Authority figures admit the establishment view was wrong. The reader's instinct is the hero.
+
+2. **Loss aversion.** "I lost something I want back." Copy serves this feeling by making the loss vivid and specific (the marriage that drifted, the energy that faded, the confidence that left). Recovery, not gain, is the promise.
+
+3. **Betrayal.** "Someone I trusted misled me." Copy serves this feeling by naming who betrayed the reader (the doctor who pushed pills, the industry that hid the truth, the brand that overpromised). The reader is justified in being angry.
+
+4. **Desperation.** "I will try anything that might work." Copy serves this feeling by lowering the perceived stakes of trying the new thing (90-day guarantee, free trial, "if I'm wrong, send it back"). The reader's exhaustion is the engine.
+
+5. **Identity.** "I want to be the kind of person who [does this thing]." Copy serves this feeling by surfacing the aspirational self the reader is trying to become (the dad who's fully there, the woman who feels like herself again, the man who took control). The product is the bridge to that identity.
+
+A piece of copy that tries to serve more than one core feeling dilutes them all. Pick one. Build everything around it. Reference: Sufian Long-form Static Image Ads, lines 145-172.
+
+### 8.8 Authority Hook Patterns
+
+Four named patterns for invoking authority. Pick one per piece; combining them feels like overstuffing.
+
+1. **Classic.** Named specialist endorses or aligns with the message. ("Dr. [Name], a cardiologist with 30 years of experience, says the same thing I just told you.") Use when the brand has access to a real named authority.
+
+2. **Doctor's Surprise.** Authority is surprised by your results. ("My doctor looked at the readings twice. He asked what I'd been doing.") The reader gets to enjoy authority confirmation without the brand needing a paid endorser. Use when the avatar is anti-establishment but still wants validation.
+
+3. **Doctor's Skepticism.** Authority disagreed but data proved them wrong. ("She told me beetroot wouldn't make a difference. Six months later, my numbers said otherwise.") Adds vindication on top of authority. Use when the avatar feels dismissed by the medical system.
+
+4. **Study/Research.** Named research from a named institution. ("A 2022 study from the University of Maryland measured exactly this effect across 287 participants.") Adds external proof to the brand's claims. Use when the avatar reads research and wants citations they can verify.
+
+Reference: Sufian Anatomy of a Winning Ad, lines 178-212.
+
+## Step 9: Generate Humanization Checklist
 
 A 4-phase self-check that any LLM runs after writing content:
 
@@ -253,7 +386,7 @@ A 4-phase self-check that any LLM runs after writing content:
 **Phase 3: Emotional Resonance** - target emotion achieved, empathy present, aspiration without pandering
 **Phase 4: Specificity and Differentiation** - no vague statements, concrete scenarios, mechanism clear
 
-## Step 9: Present and Output
+## Step 10: Present and Output
 
 Present summary:
 
@@ -270,9 +403,10 @@ Guide Contents:
   Archetypes: [count] with full copy profiles
   Content Guides: [count] content types covered
   Humanization Rules: [count] rules in AI Detection Firewall
-  Structural Moves: 7 techniques with worked examples
+  Universal Structural Rules: 8 rules (Bridge, Open-Loop, Time-Delay, Hook Quality, Identification-Before-Mechanism, Discovery Story, Five Core Feelings, Authority Hooks)
+  Structural Moves: [include this line ONLY if `schwartz-applied.md` exists; 7 techniques with worked examples]
 
-Total Sections: 12 + 2 appendices
+Total Sections: 12 + 2 appendices (13 + 2 if `schwartz-applied.md` exists)
 Estimated Length: [word count]
 
 Confirm or adjust:
@@ -288,7 +422,8 @@ Sections populated:
   - [count] voice pillars with examples
   - AI Detection Firewall ([count] rules)
   - [count] archetype copy profiles with sample paragraphs
-  - Structural moves: 7 techniques with worked examples
+  - Universal Structural Rules (The Bridge Principle, The Open-Loop Principle, The Time-Delay Introduction Rule, Hook Quality Checklist, Identification-Before-Mechanism Rule, The Discovery Story Format, The Five Core Feelings Library, Authority Hook Patterns)
+  - Structural moves: [include this line ONLY if `schwartz-applied.md` exists; 7 techniques with worked examples]
   - Humanization checklist (4 phases)
   - [count] content type quick guides
   - Category messaging framework with claim boundaries

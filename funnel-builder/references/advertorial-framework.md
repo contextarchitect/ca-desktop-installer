@@ -2,27 +2,27 @@
 
 ## Core Philosophy
 
-An advertorial is not a product page wearing a story costume. It is a psychological journey that takes a reader from "I have a problem" to "I just found the only thing that actually fixes it" — and makes them feel like they arrived at that conclusion themselves.
+An advertorial is not a product page wearing a story costume. It is a psychological journey that takes a reader from "I have a problem" to "I just found the only thing that actually fixes it", and makes them feel like they arrived at that conclusion themselves.
 
 The power of an advertorial is that it never feels like selling. It feels like someone finally explaining what's really going on, sharing a real experience, and revealing something they wish they'd found sooner. Every sentence earns the right to the next one. The sale happens as a natural conclusion, not a pitch.
 
 **The Mouse and Trap Framework:**
-- **Making the mouse bigger:** Background story, root cause, consequences — all increase the perceived magnitude of the problem
-- **Making the trap better:** Unique mechanism, product buildup, product reveal — all increase the perceived value and credibility of the solution
+- **Making the mouse bigger:** Background story, root cause, consequences: all increase the perceived magnitude of the problem
+- **Making the trap better:** Unique mechanism, product buildup, product reveal: all increase the perceived value and credibility of the solution
 - The combination creates irresistible offers because the reader both desperately needs a fix AND believes this specific product is the only one that works
 
 ## The 9-Section Architecture
 
 ```
-1. ABOVE THE FOLD — Hero image + Headline + Subheadline
-2. LEAD — Benefit promise, tease of what's coming, emotional lock-in (WRITTEN LAST)
-3. BACKGROUND STORY — Emotional engine, identification, "nothing worked" loop
-4. ROOT CAUSE — Reframes why nothing worked; System 1, analogies, villain
-5. CONSEQUENCES — Negative future pacing, urgency creation (what happens if you don't fix it)
-6. UNIQUE MECHANISM — How the fix works; directly aligned with root cause
-7. PRODUCT BUILDUP — Why this product had to exist; premium perceived value
-8. PRODUCT REVEAL — The reward, not a pitch; reader self-convinces
-9. CLOSE — Testimonials → Price architecture → Guarantee → Final CTA
+1. ABOVE THE FOLD: Hero image + Headline + Subheadline
+2. LEAD: Benefit promise, tease of what's coming, emotional lock-in (WRITTEN LAST)
+3. BACKGROUND STORY: Emotional engine, identification, "nothing worked" loop
+4. ROOT CAUSE: Reframes why nothing worked; System 1, analogies, villain
+5. CONSEQUENCES: Negative future pacing, urgency creation (what happens if you don't fix it)
+6. UNIQUE MECHANISM: How the fix works; directly aligned with root cause
+7. PRODUCT BUILDUP: Why this product had to exist; premium perceived value
+8. PRODUCT REVEAL: The reward, not a pitch; reader self-convinces
+9. CLOSE: Testimonials → Price architecture → Guarantee → Final CTA
 ```
 
 **The Yes-Yes-Yes Causal Chain:**
@@ -44,27 +44,27 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 
 ```
 1. Header (brand logo + shop link)
-2. HERO IMAGE (full-width, emotional or problem-state) — MANDATORY
+2. HERO IMAGE (full-width, emotional or problem-state): MANDATORY
 3. Headline + Subheadline
 4. LEAD SECTION (benefit promise + tease + emotional hook)
 5. BACKGROUND STORY (emotional identification, nothing-worked loop, breaking point)
    [IMAGE: relatable problem-state or protagonist visual]
 6. ROOT CAUSE EXPLANATION (System 1, analogy, villain, visual)
-   [IMAGE: infographic, diagram, or analogy visual — MANDATORY]
+   [IMAGE: infographic, diagram, or analogy visual: MANDATORY]
 7. CONSEQUENCES / NEGATIVE FUTURE PACING (what happens if you don't fix it)
 8. UNIQUE MECHANISM SOLUTION (how the fix works, aligned to root cause)
    [IMAGE: mechanism visual, before/after diagram]
-9. [SOFT CTA — optional, around 35-40% scroll]
+9. [SOFT CTA: optional, around 35-40% scroll]
 10. PRODUCT BUILDUP (why it had to exist, difficulty, partnerships, credibility)
 11. PRODUCT REVEAL (the reward: what it is, ingredients/features, objection handling)
     [IMAGE: product showcase]
-12. [MID-PAGE CTA CARD — around 55-65% scroll]
+12. [MID-PAGE CTA CARD: around 55-65% scroll]
 13. SOCIAL PROOF SECTION (3+ testimonials, specific outcomes, relatable)
     [IMAGE: testimonial photos or social proof visual]
 14. CLOSE SECTION (price anchoring → reveal → bundles → value stack → guarantee → urgency)
-15. [FINAL CTA CARD — near bottom of page]
-16. FAQ SECTION (accordion-style) — mandatory for mid/high-ticket
-17. [MOBILE STICKY CTA] — triggers at 40% scroll
+15. [FINAL CTA CARD: near bottom of page]
+16. FAQ SECTION (accordion-style): mandatory for mid/high-ticket
+17. [MOBILE STICKY CTA]: triggers at 40% scroll
 ```
 
 ---
@@ -89,7 +89,7 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 
 **Components:**
 - Hero image (full-width, emotional)
-- Headline (written LAST — see Headline section below)
+- Headline (written LAST: see Headline section below)
 - Subheadline (clarifying, specific)
 - Trust signals if brand is unknown (as seen in, number of customers, etc.)
 
@@ -114,6 +114,8 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 - Establish trust with a proof element (authority, social validation, credentials)
 - Transition smoothly into the story
 
+**The lead's first line is a hook.** Apply `copywriting-guide §8.4 Hook Quality Checklist` to it: opens a loop (does not close one), one specific claim (not multiple), first-person where brand voice allows, specificity over vagueness, identity marker present. The lead's full body teases the rest of the advertorial; the first line of the lead carries the structural job of any hook.
+
 **Completion test:** If a reader only reads the lead and nothing else, would they know: (1) this is about their specific problem, (2) there is something valuable to discover, and (3) someone credible is about to explain it? If yes, the lead is doing its job.
 
 **Without a lead, 80-90% of traffic bounces** because they have no reason to invest in reading. With a lead, even when they hit a confusing or slow paragraph deeper in the story, they keep reading because the lead already told them what they'll get if they finish.
@@ -132,30 +134,30 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 
 **Psychological jobs of the background story:**
 
-1. **Build deep identification** — Reader must think "this person knows exactly what I'm going through, even the things I haven't said out loud"
-2. **Intensify the pain** — Not by lecturing, but through the story itself. The twist-the-knife technique: surface the shame, the fear, the identity loss, the daily frustrations — through the narrator's experience, not by telling the reader what to feel
-3. **Establish the "nothing worked" loop** — Walk through solutions the reader has already tried (the obvious ones, the popular ones, even the "clean" ones). Show growing frustration. Don't explain WHY they failed yet — that's the root cause section's job. Just show the hopelessness building.
-4. **Introduce the breaking point** — The moment where ignoring it was no longer an option. The emotional or practical "this has to change" event.
-5. **Spark the search for truth** — Narrator shifts from pain to pursuit. They want answers, not band-aids. They begin asking deeper questions, reading, connecting dots.
+1. **Build deep identification**: Reader must think "this person knows exactly what I'm going through, even the things I haven't said out loud"
+2. **Intensify the pain**: Not by lecturing, but through the story itself. The twist-the-knife technique: surface the shame, the fear, the identity loss, the daily frustrations: through the narrator's experience, not by telling the reader what to feel
+3. **Establish the "nothing worked" loop**: Walk through solutions the reader has already tried (the obvious ones, the popular ones, even the "clean" ones). Show growing frustration. Don't explain WHY they failed yet: that's the root cause section's job. Just show the hopelessness building.
+4. **Introduce the breaking point**: The moment where ignoring it was no longer an option. The emotional or practical "this has to change" event.
+5. **Spark the search for truth**: Narrator shifts from pain to pursuit. They want answers, not band-aids. They begin asking deeper questions, reading, connecting dots.
 
 **The "nothing worked" loop is critical because:**
 - It creates identification (reader has tried the same things)
 - It sets up the root cause ("here's WHY nothing worked")
-- It externalizes blame ("it wasn't your fault — the approach was wrong")
+- It externalizes blame ("it wasn't your fault: the approach was wrong")
 - It makes the unique mechanism feel like a genuine breakthrough, not another product claim
 
 **Writing rules:**
 - Use the avatar's exact language from research (raw quotes, day-to-day struggle phrasing)
-- Stay in the narrator's POV — don't break the story to lecture the reader
+- Stay in the narrator's POV: don't break the story to lecture the reader
 - Psychology (loss aversion, regret anticipation, future pacing) works best INSIDE stories because it doesn't feel manipulative
-- Keep it human — no polished marketing copy, no fancy vocabulary
-- The turning point should be realistic (scrolling TikTok, a forum post, a doctor's comment) — not a mysterious ancient discovery
+- Keep it human: no polished marketing copy, no fancy vocabulary
+- The turning point should be realistic (scrolling TikTok, a forum post, a doctor's comment): not a mysterious ancient discovery
 
-**Completion test:** Would the reader feel "this person gets me — they know what I've been going through even better than I do"? Would they want to know what the narrator discovered next? If yes, the story has done its job.
+**Completion test:** Would the reader feel "this person gets me: they know what I've been going through even better than I do"? Would they want to know what the narrator discovered next? If yes, the story has done its job.
 
 ### Section 4: Root Cause
 
-**Job:** Reframe WHY nothing has worked. Give the reader something to point to — a villain — instead of blaming themselves. Make it so clear that the dumbest person gets it and the most skeptical person trusts it.
+**Job:** Reframe WHY nothing has worked. Give the reader something to point to: a villain: instead of blaming themselves. Make it so clear that the dumbest person gets it and the most skeptical person trusts it.
 
 **The System 1 Principle:** Root cause explanations must activate System 1 (fast, intuitive, emotional processing), NEVER System 2 (slow, analytical, effortful).
 
@@ -172,7 +174,7 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
    - Example: Sciatica → jelly donut (vertebrae = donut, disc = jelly, pressure squeezes jelly onto nerve)
    - Example: Lymphatic blockage → car accident blocking traffic (the blockage = the crash, fluid = traffic, solution = clearing the road)
 
-2. **Visual (MANDATORY):** Every root cause needs an accompanying infographic, diagram, or visual explanation. Words alone are not enough — today's audiences are screen-trained and can't visualize abstract concepts without help. Show them.
+2. **Visual (MANDATORY):** Every root cause needs an accompanying infographic, diagram, or visual explanation. Words alone are not enough: today's audiences are screen-trained and can't visualize abstract concepts without help. Show them.
 
 3. **Villain Externalization:** The root cause must shift blame from the reader to an external factor:
    - Broken system ("your doctor only treated the symptom, not the cause")
@@ -180,7 +182,7 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
    - Hidden mechanism ("there's something happening inside your body that no one explained")
    - Industry failure ("products are made for generic problems, not YOUR specific condition")
 
-4. **Relief moment:** When the root cause clicks, the reader should feel RELIEF — "I'm not broken. There's a real reason. And if there's a reason, there might be a real fix." This relief creates urgency and openness to the mechanism section.
+4. **Relief moment:** When the root cause clicks, the reader should feel RELIEF: "I'm not broken. There's a real reason. And if there's a reason, there might be a real fix." This relief creates urgency and openness to the mechanism section.
 
 **Completion test:** Could the reader explain the root cause back to a friend in simple words? If the explanation requires medical terminology to retell, it's too complex. Zakaria: "They should be able to repeat it themselves and explain to their friend."
 
@@ -196,7 +198,7 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 - **Studies or data:** Brief, simple citations that show progression rates
 - **Identity threat:** Connect consequences to identity loss, relationship damage, career impact
 
-**Critical limit — urgency, not paralysis:** Don't go full doomsday. For audiences who are already emotionally exhausted (weight loss, chronic conditions), too much fear makes them freeze instead of act. They already know how bad it is. Show them the progression briefly, then transition to hope.
+**Critical limit: urgency, not paralysis:** Don't go full doomsday. For audiences who are already emotionally exhausted (weight loss, chronic conditions), too much fear makes them freeze instead of act. They already know how bad it is. Show them the progression briefly, then transition to hope.
 
 **Do this through the story, not as confrontation.** Don't say "YOU will lose all your hair if you don't act." Instead, through the narrator: "I started seeing posts from women who went from thinning to bald patches in months. And I realized if I didn't find something, that was my path too."
 
@@ -204,7 +206,7 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 
 ### Section 6: Unique Mechanism Solution
 
-**Job:** Show HOW the fix works. Directly aligned with the root cause. Must feel like the missing piece that connects all the dots — obvious in hindsight.
+**Job:** Show HOW the fix works. Directly aligned with the root cause. Must feel like the missing piece that connects all the dots: obvious in hindsight.
 
 **The causal chain requirement:** The unique mechanism MUST directly fix the root cause the reader just accepted. If the root cause is "DHT overload attacking hair follicles," the mechanism must explain how to stop DHT at the source. The connection should be immediate and obvious, not a logical stretch.
 
@@ -212,17 +214,25 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 - Keep it stupidly simple
 - Continue the analogy from the root cause section (if you used the traffic jam, show how the mechanism "clears the road")
 - Use visuals to show the mechanism in action
-- Give the mechanism a name — something branded that feels innovative and scientific but not gimmicky (e.g., "NeuroMuscular Electrical Stimulation Technology")
+- Give the mechanism a name: something branded that feels innovative and scientific but not gimmicky (e.g., "NeuroMuscular Electrical Stimulation Technology")
 - No jargon. No science lectures. Plain English.
 - Should feel like "wait, why has no one explained it this way before? This just makes sense."
+
+**SIN check (Simple, Intuitive, New).** After applying the Writing rules above, run a final three-element quality check on the mechanism section:
+
+- **Simple.** A tired reader understands the mechanism in one read. No jargon, no two-step explanations, no unnecessary complexity. Preserve qualifications required for substantiation, compliance, or GCC/regulatory constraints (those are not failures of Simple). If the mechanism cannot be stated in one sentence at fourth-grade reading level (with any compliance-required qualifications intact), it fails Simple.
+- **Intuitive.** The mechanism makes sense immediately, anchored to the analogy from Section 4. If the reader has to pause and think "how does that work again?", it fails Intuitive.
+- **New.** The mechanism's framing, analogy, or narrative angle feels fresh, not a category cliche. Novelty applies to how the mechanism is introduced and explained, not to the underlying claim language itself. Approved structure-function vocabulary, substantiation requirements, and regulatory constraints stay as-is; the test is whether the framing reads as a recombination of category narratives or a different angle of attack on the problem.
+
+If any of the three fails, the mechanism section is structurally weak. For the fix routing (which sections of the advertorial to strengthen based on the angle's sophistication stage), see `../SKILL.md` section "Schwartz Structural Layer (Advertorial Section Mapping)" then "Sophistication-Driven Section Weighting".
 
 **Completion test:** Can the reader explain the mechanism to a friend in one sentence? Zakaria: "They should be able to repeat it themselves and explain to their friend how my problem is actually caused by this." If they can't, simplify.
 
 ### Section 7: Product Buildup
 
-**Job:** Build anticipation, trust, and perceived value around HOW the product came to be — BEFORE revealing it. By the time the product appears, the reader should already believe it's rare, valuable, and credible.
+**Job:** Build anticipation, trust, and perceived value around HOW the product came to be: BEFORE revealing it. By the time the product appears, the reader should already believe it's rare, valuable, and credible.
 
-**Why this section exists separately from the product reveal:** This is where the offer's perceived value gets built. Everyone obsesses over pricing, BOGO, free gifts — but the real offer architecture happens here. If you do the buildup right, whatever price you reveal later feels like a steal.
+**Why this section exists separately from the product reveal:** This is where the offer's perceived value gets built. Everyone obsesses over pricing, BOGO, free gifts, but the real offer architecture happens here. If you do the buildup right, whatever price you reveal later feels like a steal.
 
 **Two proven structures:**
 
@@ -247,27 +257,27 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 
 **Note:** The product name, price, and detailed ingredient lists are typically saved for the product reveal section. The buildup creates anticipation without fully revealing what's coming.
 
-**Completion test:** Would the reader think "Wow, this isn't some random supplement or gadget — this was made for people like me and actually took effort to get right"? If yes, the buildup has created the perceived value needed.
+**Completion test:** Would the reader think "Wow, this isn't some random supplement or gadget: this was made for people like me and actually took effort to get right"? If yes, the buildup has created the perceived value needed.
 
 ### Section 8: Product Reveal
 
-**Job:** The reward, not a pitch. By this point, the reader has been on a journey — emotional investment, root cause understanding, mechanism belief, buildup anticipation. The product reveal is the moment everything clicks into place. The reader should feel "THERE it is. Of course."
+**Job:** The reward, not a pitch. By this point, the reader has been on a journey: emotional investment, root cause understanding, mechanism belief, buildup anticipation. The product reveal is the moment everything clicks into place. The reader should feel "THERE it is. Of course."
 
 **The self-convincing principle:** If everything before this section was done right, the reader isn't being sold. They're finishing the process of convincing themselves. The product is the natural, inevitable conclusion.
 
 **What to cover:**
-- Reveal — name, what it is, the first [product type] built specifically for THIS
-- Root cause connection — "it targets [root cause] by delivering [mechanism]"
-- Key ingredients/features — each linked back to the mechanism, with brief credibility
-- Objection handling — ease of use, safety, fits daily routine, no-test/no-hassle
-- Differentiation — why existing products weren't made for this specific problem
-- Timeline expectation — honest timeline, supported by testimonial ("if you're expecting overnight magic, skip it")
+- Reveal: name, what it is, the first [product type] built specifically for THIS
+- Root cause connection: "it targets [root cause] by delivering [mechanism]"
+- Key ingredients/features: each linked back to the mechanism, with brief credibility
+- Objection handling: ease of use, safety, fits daily routine, no-test/no-hassle
+- Differentiation: why existing products weren't made for this specific problem
+- Timeline expectation: honest timeline, supported by testimonial ("if you're expecting overnight magic, skip it")
 
 **Product-aware objections to handle in this section:**
 - Is it safe? (FDA-registered, clinical doses, no fillers)
 - Is it easy? (two capsules a day, fits existing routine)
 - Is it a gimmick? (real ingredients, real research, real people behind it)
-- How long until results? (be honest — honest timelines build trust AND drive subscription/bundle sales naturally)
+- How long until results? (be honest: honest timelines build trust AND drive subscription/bundle sales naturally)
 - How is it different from what I've already tried? (it targets the root cause, not the symptom)
 
 **Completion test:** Is the reader's inner dialogue "show me where I can buy this" rather than "convince me why I should"? If they're already chasing, the reveal worked.
@@ -279,7 +289,7 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 **Close Section Sequence:**
 
 **9a. Social Proof (3+ testimonials)**
-- Raw, authentic testimonials — real language, not polished
+- Raw, authentic testimonials: real language, not polished
 - Match avatar demographics
 - Specific outcomes + timelines ("after 6 weeks, I noticed baby hairs")
 - Include at least one that addresses a common objection ("I was skeptical but...")
@@ -303,14 +313,14 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 **9d. Price Reveal**
 - Show regular price first
 - Show current/bundle price
-- Per-day cost breakdown ("less than $2/day — less than your morning coffee")
+- Per-day cost breakdown ("less than $2/day: less than your morning coffee")
 - Frame as investment, not expense
 
 **9e. Bundle Positioning**
 - Frame multi-month as the logical choice based on results timeline
 - "Best results happen at 90 days" → 3-month bundle makes sense
 - Support with testimonial showing timeline
-- Don't hard-sell subscriptions — let the timeline logic do the work
+- Don't hard-sell subscriptions: let the timeline logic do the work
 
 **9f. Value Stack**
 - Free bonuses that genuinely support the outcome (not throwaway filler)
@@ -318,14 +328,14 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 - Frame as practical support: "we added this so you don't have to guess"
 
 **9g. Guarantee with Teeth**
-- Not just "60-day money back" — explain the exact process
+- Not just "60-day money back": explain the exact process
 - "Email us at [address], we process within 48 hours, no questions asked"
 - Make the risk reversal feel REAL and actionable
 - Reinforce with social proof
 
 **9h. Soft Urgency / Regret Reminder**
 - Brief reminder of what's at stake if they don't act
-- Not aggressive — they're already convinced
+- Not aggressive: they're already convinced
 - Scarcity only if genuine (limited stock, seasonal ingredient)
 - "If not now, when?" framing
 
@@ -340,19 +350,54 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 
 ---
 
+## Objection-Handling Architecture
+
+Every advertorial must explicitly address 3-5 named objections from avatar research. The current 9-section structure handles objections implicitly; the corpus (Zakaria Video21) demands they be made explicit and named.
+
+### Sourcing Objections
+
+Pull objections from Phase 2 Avatar Research. Each archetype's primary 1-2 objections become this advertorial's required-handle list. Combined across all archetypes, target 3-5 distinct named objections per advertorial.
+
+If avatar research lacks explicit objection language, derive from:
+- Section L "Language to Avoid" (these often signal objections)
+- Section G "Buying Behavior" decision blockers
+- Section F "Emotional Landscape" trust requirements
+
+### Where Objections Get Handled
+
+| Objection Type | Section to Address |
+|----------------|--------------------|
+| "This won't work for someone like me" | Section 3 (Background Story): narrator matches avatar exactly |
+| "The mechanism is BS" | Section 6 (Unique Mechanism): System 1 explanation + analogy |
+| "Other things I tried failed" | Section 7 (Product Buildup): specific concentration on what they tried |
+| "Too expensive" | Section 9 (Close): value stack + payment plan + guarantee |
+| "How do I know it works?" | Section 9 (Close): testimonials + guarantee + risk reversal |
+| "I don't trust the brand" | Throughout: narrator authenticity + authority hook (`copywriting-guide §8.8`) |
+| "I'll do it later" | Section 9 (Close): urgency + scarcity (price/inventory/time) |
+
+### Objection-Handling Checklist (added to QA)
+
+After writing the advertorial, verify each named objection from avatar research has been addressed in the appropriate section. If any objection is unaddressed, the section that should handle it is structurally weak. Fix before proceeding to image prompts.
+
+This is the most common gap in technical-founder-written advertorials: the founder's own confidence in the product overrides their ability to surface and address objections the audience actually has.
+
+**Reference:** Zakaria Video21 (Similar Product Research / Objections).
+
+---
+
 ## Headline Framework
 
 ### The Anti-Formula Principle
 
-Formula-based headlines ("How [Authority] Fixed [Problem] in [Timeframe]") are starting points for brainstorming, never final output. Market sophistication means audiences have seen every formula thousands of times. Pattern recognition kills curiosity. Your headline must feel unique — something they've never read before but instantly recognize as true.
+Formula-based headlines ("How [Authority] Fixed [Problem] in [Timeframe]") are starting points for brainstorming, never final output. Market sophistication means audiences have seen every formula thousands of times. Pattern recognition kills curiosity. Your headline must feel unique: something they've never read before but instantly recognize as true.
 
 ### The Five Elements
 
 Every headline should be evaluated against these five qualities:
 
-1. **Relatability:** Does the reader instantly think "this is about me"? Does it mirror their exact life experience — daily habits, frustrations, silent fears, internal monologue?
+1. **Relatability:** Does the reader instantly think "this is about me"? Does it mirror their exact life experience: daily habits, frustrations, silent fears, internal monologue?
 
-2. **Tension:** Does something feel off, contradictory, or impossible? Creates a "what the fuck" moment — the brain hates unresolved contradictions and will read to resolve them.
+2. **Tension:** Does something feel off, contradictory, or impossible? Creates a "what the fuck" moment: the brain hates unresolved contradictions and will read to resolve them.
 
 3. **Curiosity:** Is there a knowledge gap demanding resolution? Something is hinted at but not revealed. The word "until" is a powerful curiosity trigger.
 
@@ -379,7 +424,7 @@ After writing headlines, gut-check each one against these questions (directly fr
 
 1. Write the ENTIRE advertorial first (story through close)
 2. Zoom out and understand the full picture
-3. Write headlines — many of them, back to back, for an extended period
+3. Write headlines: many of them, back to back, for an extended period
 4. Don't stop at the first one that sounds good
 5. Keep going until your brain stops copying what it's seen and starts creating what it feels
 6. Check each headline against the five elements and quality check questions
@@ -404,19 +449,19 @@ After writing headlines, gut-check each one against these questions (directly fr
 
 ## Image Requirements
 
-**Hero image** (MANDATORY) — emotional problem-state or aspirational, sets tone
-**Story/problem visualization** (1-2) — protagonist, problem environment, relatable visuals. iPhone-quality, real people.
-**Root cause infographic** (MANDATORY) — analogy visualization, mechanism diagram. Clean, clear, System 1.
-**Mechanism visual** (1) — how the solution works, before/after process
-**Product showcase** (1-2) — for CTA cards, polished product photography
-**Social proof visual** (1) — testimonial photos (iPhone-quality, real users), volume graphic
+**Hero image** (MANDATORY): emotional problem-state or aspirational, sets tone
+**Story/problem visualization** (1-2): protagonist, problem environment, relatable visuals. iPhone-quality, real people.
+**Root cause infographic** (MANDATORY): analogy visualization, mechanism diagram. Clean, clear, System 1.
+**Mechanism visual** (1): how the solution works, before/after process
+**Product showcase** (1-2): for CTA cards, polished product photography
+**Social proof visual** (1): testimonial photos (iPhone-quality, real users), volume graphic
 
 **Product placement rule:** Product images appear ONLY in solution/hope contexts (product reveal, CTA cards). Never during problem, story, or failure narratives.
 
 **Hero image types:**
-- Emotional problem-state (person experiencing the problem — authentic, not stock)
-- Aspirational transformation (desired end-state — real, not modelesque)
-- Environmental context (the problem environment itself — shower, mirror, etc.)
+- Emotional problem-state (person experiencing the problem: authentic, not stock)
+- Aspirational transformation (desired end-state: real, not modelesque)
+- Environmental context (the problem environment itself: shower, mirror, etc.)
 
 ## CTA Placement Strategy
 
@@ -471,17 +516,6 @@ After writing headlines, gut-check each one against these questions (directly fr
 
 **Technique:** Add soft CTA within FAQ answers near purchase-related questions.
 
-## Copywriting Process (Writing Order)
-
-1. **Immerse in avatar research** — re-read raw quotes, day-to-day struggles, emotional triggers until you can think like the avatar
-2. **Write sections 3-8 in one sitting** — background story through product reveal, continuous flow. Don't write section by section with breaks. The story needs to feel like one continuous narrative.
-3. **Write section 9 (close)** — can be separate session
-4. **Write section 2 (lead)** — tease/summarize what the reader will discover. Written AFTER body is complete.
-5. **Write section 1 (headline)** — only after full content is complete. Spend significant time writing many headlines until the best ones emerge.
-6. **Deletion pass** — re-read every section. Remove any sentence that doesn't create curiosity, build belief, deepen emotional connection, or move the reader toward the next section. If it could be removed without the reader missing anything, remove it.
-7. **Simplicity check** — re-read root cause and mechanism sections specifically. Would a tired, distracted person scrolling at midnight understand this? If anything requires effort to understand, simplify it.
-8. **Humanity check** — re-read the full piece. Does it sound like a real person or marketing copy? No em dashes, no forbidden AI vocabulary, contractions used naturally, high sentence-length variation.
-
 ## Video Integration (If Brand Has Video Assets)
 
 Video is NOT generated as part of this workflow. See `references/video-guidance.md` for full specifications.
@@ -505,7 +539,7 @@ Video is NOT generated as part of this workflow. See `references/video-guidance.
 - Sticky mobile CTA: 56px min height, z-index 1000
 - Tap targets: 44px minimum on mobile
 - Tracking pixels: in `<head>` before closing tag
-- UTM passthrough script: in `<head>` (MANDATORY — see below)
+- UTM passthrough script: in `<head>` (MANDATORY: see below)
 
 ### UTM Parameter Passthrough Script (MANDATORY)
 

@@ -17,6 +17,21 @@ Usage
 The script must be run from the installer repo root (it discovers
 distributed skills by listing directories at `.`).
 
+Prerequisites
+-------------
+Before running, ensure the local installer checkout is in a known-clean state:
+
+    git fetch origin
+    git checkout main && git pull origin main
+    # (or work on a fresh branch off origin/main)
+
+The script's pre-flight check enforces this: it refuses to run if the local
+HEAD doesn't match or descend from origin/main, or if the working tree has
+uncommitted changes. Bypass with --no-git-check if you have a deliberate
+reason (e.g., CI with detached HEAD). The check exists because divergent
+local state silently produces sync PRs with wrong diff baselines that hit
+merge conflicts (precedent: installer PR #4, 2026-05-12).
+
 Policy reference (locked 2026-05-11, Desktop design conversation)
 -----------------------------------------------------------------
 - Policy 1: Canonical VERSION is the source of truth. Every session that
@@ -49,6 +64,7 @@ import argparse
 import hashlib
 import re
 import shutil
+import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -110,6 +126,106 @@ def cmp_versions(a: str, b: str) -> int:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def check_git_state(installer_root: Path, no_git_check: bool) -> None:
+    """Verify the local installer checkout is in a known-clean state.
+
+    The script's sync correctness depends on the local working directory
+    accurately representing what's on the installer's remote main. The
+    PR #4 failure (2026-05-12) happened because this assumption was
+    silently violated: the local checkout had divergent VERSION values
+    relative to remote main, so the script's diff baseline was wrong and
+    the resulting PR couldn't merge cleanly.
+
+    This check enforces the assumption explicitly. Three conditions:
+
+    1. The installer root is a git repository.
+    2. HEAD is on or descended from origin/main (rejects stale checkouts
+       and unrelated branches).
+    3. Working tree is clean (no uncommitted changes).
+
+    Pass --no-git-check to bypass (e.g., when running in CI with a detached
+    HEAD, or deliberately on a branch that doesn't descend from origin/main).
+
+    The check assumes origin/main is up to date. The operator is responsible
+    for running `git fetch origin` before invoking this script. We don't
+    auto-fetch to avoid network side effects and credential prompts.
+    """
+    if no_git_check:
+        return
+
+    if not (installer_root / ".git").exists():
+        print(
+            f"ERROR: {installer_root} is not a git repository.\n"
+            "Run this script from a checkout of ca-desktop-installer.\n"
+            "If you have a legitimate reason to skip this check, pass --no-git-check.",
+            file=sys.stderr,
+        )
+        sys.exit(4)
+
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", "origin/main", "HEAD"],
+        cwd=installer_root,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        try:
+            head_sha = subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"],
+                cwd=installer_root,
+            ).decode().strip()
+        except subprocess.CalledProcessError:
+            head_sha = "(unknown)"
+        try:
+            origin_main_sha = subprocess.check_output(
+                ["git", "rev-parse", "--short", "origin/main"],
+                cwd=installer_root,
+            ).decode().strip()
+        except subprocess.CalledProcessError:
+            origin_main_sha = "(unknown - did you run `git fetch origin`?)"
+
+        print(
+            f"ERROR: local HEAD ({head_sha}) does not match or descend from "
+            f"origin/main ({origin_main_sha}).\n"
+            "\n"
+            "This likely means your checkout is stale relative to the remote. "
+            "If the script runs in this state, the resulting sync diff will "
+            "have a wrong baseline and the PR will hit merge conflicts.\n"
+            "\n"
+            "To fix:\n"
+            "  git fetch origin\n"
+            "  git checkout main && git reset --hard origin/main\n"
+            "  # (or, if on a feature branch: git rebase origin/main)\n"
+            "\n"
+            "Then re-run this script.\n"
+            "\n"
+            "If you're deliberately running on a branch that doesn't descend "
+            "from origin/main (rare; e.g., CI with detached HEAD), bypass this "
+            "check with --no-git-check. The script will trust your local "
+            "working tree as-is.",
+            file=sys.stderr,
+        )
+        sys.exit(4)
+
+    status_output = subprocess.check_output(
+        ["git", "status", "--porcelain"],
+        cwd=installer_root,
+    ).decode().strip()
+    if status_output:
+        print(
+            f"ERROR: working tree has uncommitted changes:\n"
+            f"{status_output}\n"
+            "\n"
+            "Commit, stash, or discard these changes before running the sync. "
+            "Otherwise the sync diff will include them as if they were part of "
+            "the sync, which is almost never what you want.\n"
+            "\n"
+            "If you have a legitimate reason to run with uncommitted changes "
+            "(rare), pass --no-git-check.",
+            file=sys.stderr,
+        )
+        sys.exit(4)
 
 
 def collect_skill_files(skill_dir: Path) -> list[Path]:
@@ -404,10 +520,19 @@ def main(argv: list[str]) -> int:
         action="store_true",
         help="Skip interactive confirmation prompt (apply immediately)",
     )
+    parser.add_argument(
+        "--no-git-check",
+        action="store_true",
+        help="Skip the pre-flight check that verifies the local checkout is "
+             "in sync with origin/main and has a clean working tree. Use only "
+             "if you have a deliberate reason (e.g., CI with detached HEAD).",
+    )
     args = parser.parse_args(argv)
 
     canonical_skills_dir = Path(args.canonical_path).resolve()
     installer_root = Path.cwd().resolve()
+
+    check_git_state(installer_root, args.no_git_check)
 
     if not (canonical_skills_dir / "VERSION").exists():
         print(f"ERROR: canonical VERSION not found at {canonical_skills_dir / 'VERSION'}",

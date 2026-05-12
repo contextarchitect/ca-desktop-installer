@@ -1,13 +1,13 @@
 ---
 name: ad-style-generator
-description: "Generate ad creative briefs and Nano Banana image prompts using a 13-style catalogue mapped to brand identity and avatar psychology. Use when user says 'create an ad', 'ad creative', 'generate ad images', 'ad style for [topic]', 'create a [SCIENCE-FRIENDLY/BA-EMOTION/REDDIT-NATIVE/etc] ad', 'ad campaign for [avatar/product]', or references ad creative development for any brand. Reads brand guidelines, avatar profiles, copywriting guide, and angle roadmap to produce brand-consistent ad concepts with complete Nano Banana prompts. Style #13 (REDDIT-NATIVE) is the handoff target for long-form-static-builder."
+description: "Generate ad creative briefs and Nano Banana image prompts using a 14-style catalogue mapped to brand identity and avatar psychology. Use when user says 'create an ad', 'ad creative', 'generate ad images', 'ad style for [topic]', 'create a [SCIENCE-FRIENDLY/BA-EMOTION/REDDIT-NATIVE/US-VS-OTHERS/etc] ad', 'ad campaign for [avatar/product]', or references ad creative development for any brand. Reads brand guidelines, avatar profiles, copywriting guide, and angle roadmap to produce brand-consistent ad concepts with complete Nano Banana prompts. Style #13 (REDDIT-NATIVE) is the handoff target for long-form-static-builder. Style #14 (US-VS-OTHERS) is the polemical comparison style for Solution-Switching audiences."
 ---
 
 # Ad Style Generator Skill
 
 ## Purpose
 
-Generate production-ready ad creative briefs with complete Nano Banana Pro image prompts by combining a universal 13-style catalogue with brand-specific identity (colors, typography, avatars, product references) pulled from existing brand documents. No separate brand-specific ad catalogue needed - the skill reads Phase 1-4.5 outputs and applies them to universal style frameworks.
+Generate production-ready ad creative briefs with complete Nano Banana Pro image prompts by combining a universal 14-style catalogue with brand-specific identity (colors, typography, avatars, product references) pulled from existing brand documents. No separate brand-specific ad catalogue needed - the skill reads Phase 1-4.5 outputs and applies them to universal style frameworks.
 
 ## When to Use
 
@@ -63,6 +63,7 @@ STEP 1: CONTEXT LOADING (automatic)
 
 STEP 2: STYLE SELECTION (with user)
   → User specifies style OR skill recommends based on objective + avatar + platform.
+  → If the angle card has a Lead Framing Route field populated (UMP / UMS / aspiration / curiosity), apply the Lead Framing Route style adjustment described after this workflow block.
   → If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, also apply the structural mapping in the gated section below.
   → Read the specific style framework from references/style-catalogue.md
   → Confirm approach with user
@@ -87,6 +88,30 @@ STEP 5: DELIVERY
   → If batch (multiple concepts), output as downloadable markdown file
   → User generates images in Nano Banana externally
 ```
+
+## Lead Framing Route Style Adjustment
+
+The angle card may carry a Lead Framing Route field (see `../angle-roadmap/references/angle-card-schema.md`) set by the Pain Matrix in angle-roadmap Step 5. This field adjusts style selection by indicating which copy framing should lead.
+
+**Read the angle card's Lead Framing Route field.** The value affects style selection as follows:
+
+- **UMP** (Unique Mechanism of Problem): the ad should lead with problem-mechanism framing. Prefer styles that emphasize problem-state visuals and root-cause communication: SCIENCE-FRIENDLY, INFOGRAPHIC, NEWS, REDDIT-NATIVE. Avoid pure-LIFESTYLE or pure-PREMIUM styles that telegraph transformation before the problem is felt.
+
+- **UMS** (Unique Mechanism of Solution): the ad should lead with solution-mechanism framing. Prefer styles that emphasize how the mechanism works: SCIENCE-FRIENDLY, INFOGRAPHIC, TUTORIAL, RESEARCH, COMPARISON, US-VS-OTHERS. Mechanism explanation is the value.
+
+- **aspiration**: the ad should lead with post-product identity / transformation. Prefer styles that show the after-state: BA-EMOTION (AFTER-state version), LIFESTYLE, TESTIMONIAL, UNBOXING, PREMIUM. Mechanism heaviness reduces effectiveness here.
+
+- **curiosity**: cold-traffic discovery framing. Lead Framing Route does not constrain style selection. Treat the same as N/A operationally (use standard style selection logic - objective + avatar + platform + Schwartz technique if applicable).
+
+- **N/A (explicit field value):** operator considered the Pain Matrix and deliberately skipped routing for this angle. The 5-value enum's presence signals the Pain Matrix step ran. Use the standard style selection logic; no Lead Framing Route adjustment.
+
+**Field-presence handling (legacy vs current-schema distinction):**
+
+- **Field present (any of UMP / UMS / aspiration / curiosity / N/A):** the angle card was produced under the current schema (angle-roadmap Step 5 sub-step 8 ran). Apply the style preferences above per the field value.
+- **Field truly absent (legacy card):** angle card predates the Pain Matrix schema extension. Apply standard style selection logic silently. Do NOT halt the workflow.
+- **Field truly absent on what should be a current-schema card:** this is a defect signal from angle-roadmap Step 5 sub-step 8. Surface this to the operator as a QA flag: "Angle card [name] is missing Lead Framing Route. Either re-run angle-roadmap Step 5 sub-step 8 for this angle, OR confirm the card predates the Pain Matrix schema extension and should be treated as legacy."
+
+**Stacking with Schwartz technique density:** if `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand and the angle has a Sophistication Stage Score, both the Schwartz density rule (Technique Density by Awareness Stage table in the Schwartz Structural Layer below) and the Lead Framing Route style adjustment apply simultaneously. Schwartz density rules constrain HOW MANY techniques to use per ad; Lead Framing Route adjusts WHICH STYLES are preferred. The two compose without conflict.
 
 ## Brand Element Mapping
 
@@ -131,7 +156,7 @@ All ad copy MUST follow the brand's copywriting guide. Additionally:
 2. **No forbidden AI vocabulary** - check the brand's list
 3. **GCC compliance** (if applicable) - no specific city/country names unless the brand permits
 4. **No absolute medical claims** - avoid "cure," "guarantee," "eliminate" without qualifiers
-5. **No competitor names** - generic references only ("other products" not specific brands)
+5. **No competitor names** - generic references only ("other products" not specific brands). **Exception:** style #14 (US-VS-OTHERS) is the polemical-comparison style and may name a specific alternative when the brand's regulatory and platform compliance has been cleared per that style's Compliance Notes in `references/style-catalogue.md`. Many brands run US-vs-Others ads with a category-archetype visual rather than the actual competitor logo (preserving the polemical psychology while avoiding the platform-review trigger).
 6. **Product placement rule** - product appears only in solution/positive contexts, never in problem/negative contexts
 
 ## Batch Generation
@@ -150,14 +175,14 @@ When the user requests multiple ad concepts:
 
 This section adds two structural inputs to ad creative selection:
 
-1. **Style-to-Schwartz mapping** - which technique each of the 13 styles primarily executes, so style selection is driven by what the angle needs structurally, not just by visual preference.
+1. **Style-to-Schwartz mapping** - which technique each of the 14 styles primarily executes, so style selection is driven by what the angle needs structurally, not just by visual preference.
 2. **The 38-method headline framework** - a method-tagged inventory for headline development, with a stage-fit table showing which methods work for which awareness stage.
 
 These come from Eugene Schwartz's Breakthrough Advertising. Apply them after Step 2 (Style Selection) and during Step 3 (Headline writing within the Creative Brief).
 
 ### Style-to-Schwartz Mapping
 
-The 13 catalogue styles each emphasize one or two of the seven Schwartz techniques. Pick the style by the technique the angle most needs.
+The 14 catalogue styles each emphasize one or two of the seven Schwartz techniques. Pick the style by the technique the angle most needs.
 
 | Style | Primary Technique | Secondary | Best for |
 |-------|-------------------|-----------|----------|
@@ -174,6 +199,7 @@ The 13 catalogue styles each emphasize one or two of the seven Schwartz techniqu
 | UNBOXING | Identification | Intensification | Product-aware audience moments |
 | PREMIUM | Identification | Redefinition | Brand identity reinforcement; better for retargeting than cold |
 | REDDIT-NATIVE | Camouflage | Identification | Stage 4-5 angles where the visual must look organic; pairs with long-form-static-builder |
+| US-VS-OTHERS | Concentration | Redefinition | Stage 4-5 angles where a specific named alternative needs polemical demolition; pairs with angle-roadmap Lead Variant 3 (Third-Person Authority/Witness) |
 
 **The seven techniques (definitions):**
 

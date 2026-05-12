@@ -1,6 +1,6 @@
 # Universal Ad Style Catalogue
 
-13 proven ad styles applicable to any e-commerce brand. Each style defines visual approach, layout, psychology, and when to use. Brand-specific elements (colors, fonts, avatars, products) are pulled from the brand's Phase 1-4 documents at generation time. Style #13 (REDDIT-NATIVE) is the handoff target for `long-form-static-builder`; the canonical spec for that style lives in that skill's `references/image-spec.md`.
+14 proven ad styles applicable to any e-commerce brand. Each style defines visual approach, layout, psychology, and when to use. Brand-specific elements (colors, fonts, avatars, products) are pulled from the brand's Phase 1-4 documents at generation time. Style #13 (REDDIT-NATIVE) is the handoff target for `long-form-static-builder`; the canonical spec for that style lives in that skill's `../../long-form-static-builder/references/image-spec.md`. Style #14 (US-VS-OTHERS) is the polemical comparison style for Solution-Switching audiences ("Solution-Switching" is the gated Schwartz compound state, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated awareness distinction; distinct from style #7 COMPARISON which is feature-grid analytical).
 
 **Notation:** `{{PRIMARY}}` = brand primary color, `{{SECONDARY}}` = brand secondary color, `{{FONT}}` = brand primary font. Replace with actual values from brand guidelines.
 
@@ -325,15 +325,68 @@
 
 **Color Treatment:** Whatever the lighting source produces, unedited. Brand colors are NOT applied - the brand is invisible in the image; the ad copy carries the brand voice.
 
-**Exclusion Layer:** Exclude all studio-polished, AI-glossy, and brand-forward cues. Full exclusion list is in `_skills/long-form-static-builder/references/image-spec.md`.
+**Exclusion Layer:** Exclude all studio-polished, AI-glossy, and brand-forward cues. Full exclusion list is in `../../long-form-static-builder/references/image-spec.md`.
 
 **Best For:** Long-form-static Facebook ads (in-feed primary text format), retargeting where the ad asset must look organic, problem-aware to solution-aware audiences who have already filtered past brand-styled creative
 
 **Avoid When:** Premium positioning required, brand identity must be clearly readable, regulated category prohibits informal medical framing, top-of-funnel awareness campaigns where brand recognition matters
 
-**Policy-Filter Notes:** Soften medical framing before changing subject if Nano Banana rejects a prompt. The aesthetic comes from lighting and framing, not from medical specificity. Detailed safe-prompt patterns are in `_skills/long-form-static-builder/references/image-spec.md`.
+**Policy-Filter Notes:** Soften medical framing before changing subject if Nano Banana rejects a prompt. The aesthetic comes from lighting and framing, not from medical specificity. Detailed safe-prompt patterns are in `../../long-form-static-builder/references/image-spec.md`.
 
-**Source of truth:** The canonical specification (full aesthetic markers, subject-to-emotional-trigger mapping, complete exclusion layer, sample Nano Banana prompts for BP-cuff and before/after-selfie scenarios) lives in `_skills/long-form-static-builder/references/image-spec.md`. This catalogue entry is a summary; defer to the source for any ambiguity. When the style is invoked from `long-form-static-builder`, the handoff payload includes the angle's emotional trigger and a paste-ready Nano Banana prompt produced from the source spec.
+**Source of truth:** The canonical specification (full aesthetic markers, subject-to-emotional-trigger mapping, complete exclusion layer, sample Nano Banana prompts for BP-cuff and before/after-selfie scenarios) lives in `../../long-form-static-builder/references/image-spec.md`. This catalogue entry is a summary; defer to the source for any ambiguity. When the style is invoked from `long-form-static-builder`, the handoff payload includes the angle's emotional trigger and a paste-ready Nano Banana prompt produced from the source spec.
+
+---
+
+## 14. US-VS-OTHERS (Polemical Comparison)
+
+**Psychology:** When the audience has already tried a category-leading alternative and is dissatisfied, naming that alternative directly is more powerful than generic "why our product is better" framing. The reader pre-validates the dissatisfaction they already feel. Polemical register signals confidence: a brand that names competitors specifically reads as more honest than one that hedges. Different from style #7 COMPARISON, which is analytical and feature-grid; US-vs-Others is emotional and narrative-driven.
+
+**Visual Specifications:**
+- Two-side layout with clear "us" and "them" zones (60/40 or 70/30 favoring "us" side)
+- "Them" side: greyed/desaturated palette, smaller scale, with the named alternative depicted directly OR via category-leader visual cue (a pill bottle for pharmaceutical alternatives, a generic supplement label for supplement alternatives, a wellness-brand-style aesthetic for lifestyle alternatives)
+- "Us" side: full saturation, brand colors, larger scale, brand product as hero
+- Optional: customer/witness narrator across both sides (a person whose face appears in the visual making the comparison from their own experience)
+- Bold dividing element OR a "switched" arrow/transition motif
+- Narrator quote or testimonial line is integrated into the visual, not a separate caption
+
+**Color System:**
+- "Them" side: Desaturated palette (grays, washed-out tones), suggesting fatigue or failure
+- "Us" side: Full brand palette ({{PRIMARY}}, {{SECONDARY}}, brand neutral palette)
+- Divider element: {{PRIMARY}} accent OR a high-contrast neutral
+- Background: Light cream or off-white, NOT pure white (signals warmth, not clinical analysis)
+
+**Layout Patterns:**
+- Side-by-side split with named alternative on left, brand product on right (universal reading direction: failure first, resolution second)
+- Diagonal "switched from / switched to" transition with narrator face in the middle
+- Stacked before/after with explicit naming ("After 6 months of [Alternative]" / "After 30 days of [Brand]"), note that this requires regulatory care; see Compliance Notes below
+- Grid of 3-4 narrator faces, each with a "switched from X" caption
+
+**Headline Patterns (apply `copywriting-guide §8.4 Hook Quality Checklist`):**
+- "I switched from [Alternative] to [Brand]. Here's what changed."
+- "[Alternative] gave me [side effect]. [Brand] gave me [outcome] instead."
+- "Why [N] people switched from [Alternative] to [Brand] this year."
+- "My doctor said [Alternative]. I tried [Brand] instead. Here's what happened."
+
+The Schwartz technique this style most cleanly executes is **Concentration** (zoom in on ONE specific alternative and demolish it). Headlines must name the alternative, generic "most supplements don't work" framing fails this style by definition.
+
+**Narrator Selection:**
+The narrator who delivers the polemical comparison maps to angle-roadmap's Lead Variants. The most powerful pairing is **Variant 3: Third-Person Authority or Witness** (see `../../angle-roadmap/SKILL.md` Step 5.5), a partner, friend, family member, or specialist who watched the transformation. The witness narrator carries authority without the brand needing to claim it.
+
+When the angle card's Lead Variants section specifies Variant 1 (First-Person Sufferer) or Variant 2 (First-Person Discoverer), US-vs-Others can still work but the polemical register becomes self-reported rather than externally observed. Variant 3 narrators land hardest in this style.
+
+Apply `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)` to whichever variant is chosen, the narrator must be specific (name, age, situation) before the alternative-attack mechanism lands.
+
+**Compliance Notes:**
+- Many platforms (Meta especially) restrict comparative advertising. Verify ad-policy compliance for the specific platform before deploying.
+- Naming a competitor's product directly may trigger platform review. Many brands run US-vs-Others ads with the alternative depicted via category-archetype visual (a generic pill bottle, a generic supplement label) rather than the actual competitor logo, which avoids the compliance trigger while preserving the polemical psychology.
+- Regulated categories (medical, financial, legal) often prohibit direct comparative claims. Use US-vs-Others only when the brand's regulatory team has cleared the specific claims.
+- Witness/testimonial narrators must be authentic. Fabricated testimonials are illegal and platform-prohibited.
+
+**Best For:** Solution-Switching audiences (knows competing products AND is actively dissatisfied with them; "Solution-Switching" is the gated Schwartz compound state, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated awareness distinction), Product-aware audiences ready to switch, mature categories where readers have heard many competing claims and are fatigued, retargeting campaigns where the reader has previously engaged with the category, brands with authentic switcher testimonials.
+
+**Avoid When:** Cold/Unaware traffic (the polemical register requires existing dissatisfaction), regulated categories prohibiting comparative claims, premium positioning where naming competitors feels beneath the brand, brand voice that's intentionally non-confrontational, audiences without existing exposure to the named alternative.
+
+**Source:** Zakaria Video20 (Similar Product Research) + Video25 (Direct Comparison Ads). The polemical-comparison pattern observed across mature D2C testing data when audiences have already tried category-leading alternatives.
 
 ---
 
@@ -345,19 +398,21 @@
 |-----------|---------------|-----------------|
 | Awareness (cold traffic) | NEWS, LIFESTYLE, SCIENCE-FRIENDLY | LISTICLE, INFOGRAPHIC |
 | Consideration | INFOGRAPHIC, COMPARISON, TUTORIAL | RESEARCH, SCIENCE-FRIENDLY |
-| Conversion | BA-EMOTION, TESTIMONIAL, COMPARISON | PREMIUM, UNBOXING, REDDIT-NATIVE |
-| Retargeting | TESTIMONIAL, BA-EMOTION, REDDIT-NATIVE | COMPARISON, LIFESTYLE, PREMIUM |
+| Conversion | BA-EMOTION, TESTIMONIAL, COMPARISON, US-VS-OTHERS | PREMIUM, UNBOXING, REDDIT-NATIVE |
+| Retargeting | TESTIMONIAL, BA-EMOTION, REDDIT-NATIVE, US-VS-OTHERS | COMPARISON, LIFESTYLE, PREMIUM |
 | Education | SCIENCE-FRIENDLY, TUTORIAL, INFOGRAPHIC | LISTICLE, RESEARCH |
 | Brand building | LIFESTYLE, PREMIUM, UNBOXING | NEWS, TESTIMONIAL |
 
 ### By Avatar Awareness Stage
 
+In this table, "awareness stage" is used in the universal 3-value sense (see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction). The Solution-Switching value (used in the Most Aware row below) is from the gated Schwartz layer's compound state and applies when the brand has completed Schwartz onboarding.
+
 | Awareness Stage | Recommended Styles | Rationale |
 |----------------|-------------------|-----------|
 | Problem Aware | SCIENCE-FRIENDLY, NEWS, INFOGRAPHIC, REDDIT-NATIVE | Educate about cause, build authority, or pair with long-form-static for native feel |
-| Solution Aware | COMPARISON, TUTORIAL, RESEARCH, REDDIT-NATIVE | Differentiate, demonstrate, prove, or run native-feel retargeting |
-| Product Aware | TESTIMONIAL, BA-EMOTION, PREMIUM | Validate, overcome objections |
-| Most Aware | TESTIMONIAL, UNBOXING, LIFESTYLE, REDDIT-NATIVE | Reinforce, create urgency, or run fake-complaint-style retargeting |
+| Solution Aware | COMPARISON, TUTORIAL, RESEARCH, REDDIT-NATIVE, US-VS-OTHERS | Differentiate, demonstrate, prove, run native-feel retargeting, or directly attack the alternative |
+| Product Aware | TESTIMONIAL, BA-EMOTION, PREMIUM, US-VS-OTHERS | Validate, overcome objections, or polemically position against the alternative the prospect currently uses |
+| Most Aware (incl. Solution-Switching) | TESTIMONIAL, UNBOXING, LIFESTYLE, REDDIT-NATIVE, US-VS-OTHERS | Reinforce, create urgency, run fake-complaint-style retargeting, or run direct switcher narratives |
 
 ### By Platform
 
@@ -365,10 +420,10 @@
 |----------|------------|--------------|
 | Instagram Feed | SCIENCE-FRIENDLY, LIFESTYLE, PREMIUM, BA-EMOTION | 1:1, highly visual |
 | Instagram Stories | TUTORIAL, TESTIMONIAL, UNBOXING | 9:16, quick consumption |
-| Facebook Ads | BA-EMOTION, SCIENCE-FRIENDLY, NEWS, LISTICLE, REDDIT-NATIVE | 1.91:1 or 1:1 for most styles; 4:5 for REDDIT-NATIVE pairing with long-form-static primary text |
+| Facebook Ads | BA-EMOTION, SCIENCE-FRIENDLY, NEWS, LISTICLE, REDDIT-NATIVE, US-VS-OTHERS | 1.91:1 or 1:1 for most styles; 4:5 for REDDIT-NATIVE pairing with long-form-static primary text; 1:1 or 1.91:1 for US-VS-OTHERS |
 | TikTok | UNBOXING, TUTORIAL, TESTIMONIAL | 9:16, authentic feeling |
 | Email | INFOGRAPHIC, SCIENCE-FRIENDLY, TESTIMONIAL, COMPARISON | 2:1 header, breaks up text |
-| Landing Page | NEWS, BA-EMOTION, SCIENCE-FRIENDLY, COMPARISON | 16:9 hero or 3:2 inline |
+| Landing Page | NEWS, BA-EMOTION, SCIENCE-FRIENDLY, COMPARISON, US-VS-OTHERS | 16:9 hero or 3:2 inline |
 
 ### Recommend 2-3 Styles
 

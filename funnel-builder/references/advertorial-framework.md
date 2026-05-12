@@ -114,6 +114,8 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 - Establish trust with a proof element (authority, social validation, credentials)
 - Transition smoothly into the story
 
+**The lead's first line is a hook.** Apply `copywriting-guide §8.4 Hook Quality Checklist` to it: opens a loop (does not close one), one specific claim (not multiple), first-person where brand voice allows, specificity over vagueness, identity marker present. The lead's full body teases the rest of the advertorial; the first line of the lead carries the structural job of any hook.
+
 **Completion test:** If a reader only reads the lead and nothing else, would they know: (1) this is about their specific problem, (2) there is something valuable to discover, and (3) someone credible is about to explain it? If yes, the lead is doing its job.
 
 **Without a lead, 80-90% of traffic bounces** because they have no reason to invest in reading. With a lead, even when they hit a confusing or slow paragraph deeper in the story, they keep reading because the lead already told them what they'll get if they finish.
@@ -215,6 +217,14 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 - Give the mechanism a name: something branded that feels innovative and scientific but not gimmicky (e.g., "NeuroMuscular Electrical Stimulation Technology")
 - No jargon. No science lectures. Plain English.
 - Should feel like "wait, why has no one explained it this way before? This just makes sense."
+
+**SIN check (Simple, Intuitive, New).** After applying the Writing rules above, run a final three-element quality check on the mechanism section:
+
+- **Simple.** A tired reader understands the mechanism in one read. No jargon, no two-step explanations, no unnecessary complexity. Preserve qualifications required for substantiation, compliance, or GCC/regulatory constraints (those are not failures of Simple). If the mechanism cannot be stated in one sentence at fourth-grade reading level (with any compliance-required qualifications intact), it fails Simple.
+- **Intuitive.** The mechanism makes sense immediately, anchored to the analogy from Section 4. If the reader has to pause and think "how does that work again?", it fails Intuitive.
+- **New.** The mechanism's framing, analogy, or narrative angle feels fresh, not a category cliche. Novelty applies to how the mechanism is introduced and explained, not to the underlying claim language itself. Approved structure-function vocabulary, substantiation requirements, and regulatory constraints stay as-is; the test is whether the framing reads as a recombination of category narratives or a different angle of attack on the problem.
+
+If any of the three fails, the mechanism section is structurally weak. For the fix routing (which sections of the advertorial to strengthen based on the angle's sophistication stage), see `../SKILL.md` section "Schwartz Structural Layer (Advertorial Section Mapping)" then "Sophistication-Driven Section Weighting".
 
 **Completion test:** Can the reader explain the mechanism to a friend in one sentence? Zakaria: "They should be able to repeat it themselves and explain to their friend how my problem is actually caused by this." If they can't, simplify.
 

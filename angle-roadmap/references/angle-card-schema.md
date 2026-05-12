@@ -43,6 +43,19 @@ Alternative Attack: [Which alternative solution(s) this angle positions against,
 Key Objection to Preempt: [The #1 objection this angle must handle,
   from Phase 2 objection mapping]
 
+--- LEAD FRAMING ROUTE ---
+
+Lead Framing Route: [UMP / UMS / aspiration / curiosity / N/A]
+  Set by the Pain Matrix in angle-roadmap Step 5 sub-step 8.
+  Values:
+    - UMP (Unique Mechanism of Problem): lead downstream copy with the problem mechanism. Use when avatar has High Pain (trigger score >= 8 + visceral language) and Low Awareness (Problem-aware).
+    - UMS (Unique Mechanism of Solution): lead downstream copy with the solution mechanism. Use when avatar has High Pain and High Awareness (Solution-aware or Product-aware).
+    - aspiration: lead downstream copy with post-product identity / transformation framing. Use when avatar has Low Pain and High Awareness.
+    - curiosity: cold-traffic discovery framing; Pain Matrix routing does not apply to this angle. Use when avatar has Low Pain and Low Awareness, OR when the angle is explicitly testing a non-pain-led approach.
+    - N/A: operator deliberately skipped the Pain Matrix for this angle. Downstream consumers treat N/A the same as absent field (graceful fallback to non-routed defaults).
+
+Reference: angle-roadmap SKILL.md Step 5 sub-step 8 for the Pain Matrix routing table, input definitions, and visceral-language criteria. Downstream consumers: funnel-builder Stage 0.5 (Lead Framing Route consumer) and ad-style-generator Step 2 (Style Selection adjustment).
+
 --- CREATIVE DIRECTION ---
 
 Recommended Ad Formats:
@@ -164,7 +177,7 @@ Receives the angle card and uses:
 - Alternative attack -> integrated into background story (section 3) or root cause (section 4)
 - Key objection -> addressed in close section (section 9)
 - Core desire -> the emotional destination the funnel builds toward
-- Recommended Format (one of 9 named formats from `funnel-builder/references/format-library.md` plus Fake-Complaint sub-format) -> determines the funnel structure
+- Recommended Format (one of 9 named formats from `../../funnel-builder/references/format-library.md` plus Fake-Complaint sub-format) -> determines the funnel structure
 - Lead Variants -> determines the narrator/POV for the funnel's body copy
 - UGC Creator Brief (from angle-roadmap Step 1C) -> source material when the funnel includes embedded video assets
 

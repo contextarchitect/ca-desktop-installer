@@ -98,7 +98,7 @@ If the user knows the root cause, develop the narrative. If they don't, generate
 
 1. **Scientific explanation** - the factual, evidence-based explanation of why the problem exists. Include the key contributing factors. This doesn't appear in marketing copy directly, but it's the foundation everything else is built on. Cite credible sources where possible.
 
-2. **4th-grade explanation** - rewrite the scientific explanation so a child could understand it. Strip all jargon. Use only common words. If you have to use a technical term, define it immediately in plain language. This is the version that gets adapted into marketing copy. (Same principle as System 1 simplicity in the funnel-builder skill. See `funnel-builder/references/advertorial-framework.md` Section 4.)
+2. **4th-grade explanation** - rewrite the scientific explanation so a child could understand it. Strip all jargon. Use only common words. If you have to use a technical term, define it immediately in plain language. This is the version that gets adapted into marketing copy. (Same principle as System 1 simplicity in the funnel-builder skill. See `../funnel-builder/references/advertorial-framework.md` Section 4.)
 
 3. **Real-world analogy** - a concrete, visual metaphor that makes the root cause instantly understandable and emotionally resonant. The analogy must: be something the avatar has seen or experienced in daily life, create a visual image (not abstract), externalize blame (the problem isn't the avatar's fault - it's this external force), and imply a fixable situation (the analogy should suggest the solution direction). Test: if you described this analogy to someone at a dinner party, would they say "oh, that makes sense" within 5 seconds?
 
@@ -133,7 +133,7 @@ The mechanism is NOT the product. It's the PRINCIPLE behind why the solution wor
 
 1. **Scientific explanation** - how does the fix actually work at a biological/mechanical/systemic level? What does the mechanism do to the root cause?
 
-2. **4th-grade explanation** - plain language version. "It does X, which stops Y, which lets Z happen again." (Same principle as System 1 simplicity in the funnel-builder skill. See `funnel-builder/references/advertorial-framework.md` Section 4.)
+2. **4th-grade explanation** - plain language version. "It does X, which stops Y, which lets Z happen again." (Same principle as System 1 simplicity in the funnel-builder skill. See `../funnel-builder/references/advertorial-framework.md` Section 4.)
 
 3. **Real-world analogy** - extends or mirrors the root cause analogy. If the root cause is "weed killer in the garden," the mechanism is "clearing the toxins so the soil can grow again." The two analogies should feel like natural complements.
 
@@ -347,9 +347,45 @@ This is where everything comes together. Each angle card combines one emotional 
 5. Select the mechanism framing that resolves this specific trigger
 6. Select the alternative attack that's most relevant to this trigger/desire combination (Step 4)
 7. Determine the awareness stage this angle is best suited for (use the universal 3-value field: Problem-aware / Solution-aware / Product-aware, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction)
-8. **Recommend a format from funnel-builder's format library.** Read `../funnel-builder/references/format-library.md` for the 9 named formats plus the Fake-Complaint sub-format. Select based on the angle's awareness stage and resistance level (category maturity + price-tier + alternative-stack). The format selection matrix in format-library.md drives this decision. Add the selected format name to the angle card's "Recommended Format" field.
-9. **Consider multi-bio-marker pivots.** If the same root cause produces multiple felt symptoms (e.g., low testosterone manifests as energy/libido/recovery/focus/mood), identify the primary bio-marker for this angle and the secondary pivots. The Rosabella corpus showed that the same angle can run profitably across 4-7 different symptom entries when the underlying root cause + mechanism are unified. If the brand's product addresses only one symptom, mark this field "N/A - single-symptom angle."
-10. Provide headline direction (2-3 example headlines, each passing `copywriting-guide §8.4 Hook Quality Checklist` - open loop, one specific claim, identity marker, specificity, first-person where brand voice allows).
+8. **Run the Pain Matrix to determine Lead Framing Route.** The Pain Matrix routes which mechanism layer leads in downstream copy. It uses two inputs that are now both populated: trigger score (from Step 2) and awareness stage (from sub-step 7 above).
+
+   **Inputs:**
+
+   - **Pain intensity** (from Step 2 trigger scorecard): the primary trigger score for this angle, on the 1-10 scale (Frequency × Intensity × Actionability). High Pain = score >= 8 AND raw quotes show visceral language. Low Pain = score <= 6 OR raw quotes lack visceral specificity. Score 7 is borderline; default to Low unless raw quotes are unambiguously visceral.
+
+   - **Awareness stage** (from sub-step 7 above): the universal 3-value field. High Awareness = Solution-aware OR Product-aware. Low Awareness = Problem-aware.
+
+   **Visceral language definition (used in the High Pain gate):** raw quotes show one or more of:
+   - Specific sensory detail (burning, throbbing, "like sandpaper")
+   - Specific time anchor ("every morning at 6am", "3 hours into my shift")
+   - Specific relational impact ("my wife wouldn't sleep in the same bed")
+   - Specific identity threat ("I'm becoming my father")
+
+   **Routing table:**
+
+   | Pain intensity | Awareness | Lead Framing Route |
+   |---|---|---|
+   | High (score >= 8 + visceral) | Low (Problem-aware) | **UMP** (Unique Mechanism of Problem) - reader must feel the pain before solution lands |
+   | High (score >= 8 + visceral) | High (Solution-aware or Product-aware) | **UMS** (Unique Mechanism of Solution) - reader knows the pain; needs reason to believe THIS solution |
+   | Low (score <= 6) | High (Solution-aware or Product-aware) | **aspiration** - pain alone cannot drive action; lead with the post-product identity |
+   | Low (score <= 6) | Low (Problem-aware) | **curiosity** (defer or recategorize) - this quadrant is rarely a strong angle. Either return to Step 2 to surface a more visceral trigger for this avatar, or recategorize the angle as cold-traffic discovery (in which case Lead Framing Route = curiosity and Pain Matrix routing does not apply downstream) |
+
+   **Lead Framing Route population is MANDATORY for every angle card produced.** Every card must have a Lead Framing Route field populated with one of the 5 allowed values (UMP / UMS / aspiration / curiosity / N/A). This is the sentinel that signals to downstream consumers that the Pain Matrix step was run for this card.
+
+   - **Deliberate routing decision:** UMP, UMS, aspiration, or curiosity, based on the routing table above.
+   - **Deliberate skip:** "N/A" if the operator considered the Pain Matrix and chose to skip routing for this angle (e.g., the routing decision is genuinely ambiguous, or the angle explicitly tests a non-routed lead).
+
+   The 5-value enum is the sentinel. If Lead Framing Route is populated with any of these values, downstream consumers know the Pain Matrix step ran. If the field is truly absent (no value at all), downstream consumers treat the card as legacy (predates this schema extension) and use standard defaults silently.
+
+   Truly absent Lead Framing Route on a card produced under this schema extension is a defect signal - it means sub-step 8 was skipped accidentally. Treat this as an integrity failure to be flagged in the angle roadmap's QA review.
+
+   **Write the result to the angle card's Lead Framing Route field** (see `references/angle-card-schema.md` for the field's location in the schema).
+
+   The Pain Matrix is NOT Schwartz-gated. It applies to every angle on every brand, regardless of whether the brand has completed Schwartz onboarding.
+
+9. **Recommend a format from funnel-builder's format library.** Read `../funnel-builder/references/format-library.md` for the 9 named formats plus the Fake-Complaint sub-format. Select based on the angle's awareness stage and resistance level (category maturity + price-tier + alternative-stack). The format selection matrix in format-library.md drives this decision. Add the selected format name to the angle card's "Recommended Format" field.
+10. **Consider multi-bio-marker pivots.** If the same root cause produces multiple felt symptoms (e.g., low testosterone manifests as energy/libido/recovery/focus/mood), identify the primary bio-marker for this angle and the secondary pivots. The Rosabella corpus showed that the same angle can run profitably across 4-7 different symptom entries when the underlying root cause + mechanism are unified. If the brand's product addresses only one symptom, mark this field "N/A - single-symptom angle."
+11. Provide headline direction (2-3 example headlines, each passing `copywriting-guide §8.4 Hook Quality Checklist` - open loop, one specific claim, identity marker, specificity, first-person where brand voice allows).
 
 (If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, Step 6 below adds a structured awareness/sophistication framework on top of step 7 above. If it does not exist, treat the awareness stage choice as a generic strategic call.)
 
@@ -597,7 +633,7 @@ Before delivering the roadmap, verify:
 - [ ] Each angle has a clear name and one-sentence summary
 - [ ] No two angles are the same trigger + desire combination
 - [ ] Recommended ad formats are specified per angle
-- [ ] Recommended Format (from `funnel-builder/references/format-library.md`) is specified per angle, with rationale referencing the format selection matrix
+- [ ] Recommended Format (from `../funnel-builder/references/format-library.md`) is specified per angle, with rationale referencing the format selection matrix
 - [ ] Core feeling identified (`copywriting-guide §8.7`) - one of vindication / loss aversion / betrayal / desperation / identity
 - [ ] Headline directions pass `copywriting-guide §8.4 Hook Quality Checklist`
 - [ ] Multi-Bio-Marker Pivots field populated (specific pivots OR "N/A - single-symptom angle")

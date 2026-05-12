@@ -212,7 +212,7 @@ Before anything else, determine what ad format will drive traffic. This determin
 
 **Step 0.2: Select Funnel Type + Variant**
 
-Note: the angle card carries a `Recommended Format` strategic default (see `angle-roadmap/references/angle-card-schema.md`). This matrix is the operational override and applies when the actual traffic source contradicts the angle card's recommendation.
+Note: the angle card carries a `Recommended Format` strategic default (see `../angle-roadmap/references/angle-card-schema.md`). This matrix is the operational override and applies when the actual traffic source contradicts the angle card's recommendation.
 
 Based on traffic source and awareness stage (universal 3-value field, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction):
 
@@ -251,9 +251,30 @@ These determine which advertorial sections carry the most weight (see Schwartz S
 
 If the angle card lacks these fields, the angle predates the angle-roadmap skill's Schwartz scoring update. Either run the angle-roadmap skill's Step 6 on the card to add them, or score them inline before proceeding.
 
-**Step 0.5: Map Content Structure**
+**Step 0.5: Pull the Angle Card's Lead Framing Route**
 
-Read the appropriate reference file based on the format selected in Step 0.2 (rough advertorial-vs-listicle choice). If Step 0.7 below selects one of the 7 alternative formats from `references/format-library.md` (PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint), use that file's entry as the structural reference instead and revisit this mapping after the format is finalized.
+The angle card carries a Lead Framing Route field (see `../angle-roadmap/references/angle-card-schema.md`) set by the Pain Matrix in angle-roadmap Step 5. This field determines which mechanism layer leads in this funnel's copy.
+
+**Read the angle card's Lead Framing Route field.** The value is one of:
+- **UMP** (Unique Mechanism of Problem): the funnel leads with problem mechanism in early sections. Apply heavier weight to Section 4 (Root Cause). The reader must feel the pain before the solution lands.
+- **UMS** (Unique Mechanism of Solution): the funnel leads with solution mechanism. Apply heavier weight to Section 6 (Unique Mechanism Solution). The reader knows the pain; the funnel earns trust by explaining THIS solution's specific mechanism.
+- **aspiration**: the funnel leads with post-product identity / transformation. Apply heavier weight to Sections 8 (Product Reveal) and 9 (Close), specifically the positive future pacing and fulfillment scene work. Pain framing is downplayed.
+- **curiosity**: cold-traffic discovery framing. Pain Matrix routing does not apply. Treat the same as N/A operationally (no section weighting adjustment).
+- **N/A (explicit field value):** operator considered the Pain Matrix and deliberately skipped routing for this angle. The 5-value enum's presence signals the Pain Matrix step ran. Use standard funnel weighting; no Lead Framing Route adjustment.
+
+**Field-presence handling (legacy vs current-schema distinction):**
+
+- **Field present (any of UMP / UMS / aspiration / curiosity / N/A):** the angle card was produced under the current schema (angle-roadmap Step 5 sub-step 8 ran). Apply the routing rule above per the field value.
+- **Field truly absent (legacy card):** angle card predates the Pain Matrix schema extension. Apply standard funnel weighting silently. Do NOT halt the workflow; do NOT prompt the operator to re-run angle-roadmap.
+- **Field truly absent on what should be a current-schema card** (e.g., angle card was produced after this schema extension shipped but Lead Framing Route is missing): this is a defect signal from angle-roadmap Step 5 sub-step 8. Surface this to the operator as a QA flag: "Angle card [name] is missing Lead Framing Route. Either re-run angle-roadmap Step 5 sub-step 8 for this angle, OR confirm the card predates the Pain Matrix schema extension and should be treated as legacy."
+
+**Output of this step:** Record the Lead Framing Route value (or "N/A" / "absent") in the funnel's planning notes. This routes into Stage 1 (Copy Creation) where section weighting decisions are applied.
+
+**Stacking with Schwartz Structural Layer:** if `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand and Step 0.4 produced a Sophistication Stage Score, both the Schwartz section-weighting (Sophistication-Driven Section Weighting table in the Schwartz Structural Layer below) and the Lead Framing Route apply simultaneously. The two operate on different axes (Schwartz weights sections by sophistication; Lead Framing Route emphasizes mechanism layer entry) and compose without conflict. Apply both in Stage 1 writing.
+
+**Step 0.6: Map Content Structure**
+
+Read the appropriate reference file based on the format selected in Step 0.2 (rough advertorial-vs-listicle choice). If Step 0.8 below selects one of the 7 alternative formats from `references/format-library.md` (PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint), use that file's entry as the structural reference instead and revisit this mapping after the format is finalized.
 
 - Advertorial → `references/advertorial-framework.md`
 - Listicle → `references/listicle-framework.md`
@@ -264,7 +285,7 @@ Determine: section sequence, tone balance for awareness stage, CTA placement, im
 
 **Visual break rule:** No more than 3-4 short paragraphs between visual elements. If you count four consecutive paragraphs without a visual break, plan an image for that gap.
 
-**Step 0.6: Map Objections to Sections**
+**Step 0.7: Map Objections to Sections**
 
 Pull the brand's named objections from input #5 (Objection Inventory). Each archetype's primary 1-2 objections become the required-handle list for this funnel. Target 3-5 distinct named objections.
 
@@ -280,7 +301,7 @@ Map each objection to the section(s) where it gets addressed. The mapping table 
 
 **Output of this step:** A list mapping each named objection to the section(s) that will address it. This list becomes a Stage 1 writing constraint.
 
-**Step 0.7: Select Format from Library**
+**Step 0.8: Select Format from Library**
 
 Read `references/format-library.md` for the 9 named formats and the format selection matrix.
 
@@ -303,7 +324,7 @@ The default is **Advertorial** unless one of the 8 alternative formats fits the 
    - Section 3 must apply `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)` - the narrator must be specific (name, age, situation) and the reader must feel seen before any mechanism explanation.
    - Section 4 root cause uses one analogy (System 1 principle).
    - Sections 6 and 8 explain mechanism in plain English (System 1 principle).
-   - Each section addresses its assigned objections from Step 0.6.
+   - Each section addresses its assigned objections from Step 0.7.
 5. **Write section 9 (Close)** - testimonials, price anchoring, value stack, guarantee, urgency. Apply `copywriting-guide §8.8 Authority Hook Patterns` if invoking named authority in the close.
 6. **Write section 2 (Lead)** - tease/summarize what the reader will discover. Written AFTER body is complete. The lead must apply `copywriting-guide §8.2 The Open-Loop Principle` - open a loop the body closes.
 7. **Write section 1 (Headline)** - check against the five-element framework AND `copywriting-guide §8.4 Hook Quality Checklist`. If any quality check answer is "no," rework.
@@ -319,14 +340,14 @@ The default is **Advertorial** unless one of the 8 alternative formats fits the 
     - **Close click:** Is this the obvious next step? Look for: stacked value (testimonials, anchoring, guarantee, urgency); risk reversal; payment plan if configured.
 
     If any link is weak, identify which section is structurally underwriting it (most commonly: Root Cause → Section 4 thin; Mechanism → Section 6 jargon-heavy; Product → Section 7 generic alternative-demolition; Close → Section 9 missing post-product fulfillment scenes). Fix before delivering.
-14. **Verify objection-handling completeness.** Every objection from Step 0.6 has an explicit handle in its assigned section. If any unaddressed, the relevant section is structurally weak. Fix.
+14. **Verify objection-handling completeness.** Every objection from Step 0.7 has an explicit handle in its assigned section. If any unaddressed, the relevant section is structurally weak. Fix.
 
 **For Listicles - Writing Order:**
 
 1. **Determine variant** (Logic, Emotion, or Product-focused) based on traffic source.
 2. **Pick the core feeling** (`copywriting-guide §8.7 The Five Core Feelings Library`) - same as advertorial; one core feeling drives the whole list.
 3. **Write item headlines first** - all items, sequenced per the variant's psychological arc. Each headline passes `copywriting-guide §8.4 Hook Quality Checklist`.
-4. **Write item body copy** - maximum 2 paragraphs per item, text must not visually overwhelm the image. Each item addresses at least one objection from Step 0.6 if applicable.
+4. **Write item body copy** - maximum 2 paragraphs per item, text must not visually overwhelm the image. Each item addresses at least one objection from Step 0.7 if applicable.
 5. **Write opening paragraph** - variant-specific opening. Apply `copywriting-guide §8.2 The Open-Loop Principle`.
 6. **Write CTA card copy** - mid-page and final.
 7. **Write guarantee section copy.**
@@ -633,7 +654,7 @@ After Stage 3, verify against this checklist:
 - [ ] **Lead written last and teases full content**
 - [ ] **Headline passes quality check:** All five elements evaluated, all gut-check questions answered "yes"
 - [ ] **Yes-Yes-Yes causal chain explicitly verified:** all four links (Root Cause click → Mechanism click → Product click → Close click) tested per Stage 1 step 13 self-test; no weak links remaining
-- [ ] **All objections from Step 0.6 explicitly addressed** in their assigned sections per `references/advertorial-framework.md` Objection-Handling Architecture
+- [ ] **All objections from Step 0.7 explicitly addressed** in their assigned sections per `references/advertorial-framework.md` Objection-Handling Architecture
 
 **Universal Structural Copywriting Rules (All Formats) - from `copywriting-guide §8`:**
 - [ ] **Bridges present at every section transition** (`§8.1 The Bridge Principle`): explicit transition sentence between each major section

@@ -45,7 +45,8 @@ Requires [Git for Windows](https://git-scm.com) (includes Git Bash).
 | ad-style-generator | Creative | Ad briefs with image prompts (13 styles, REDDIT-NATIVE pairs with long-form-static-builder) |
 | funnel-builder | Creative | Advertorial and listicle funnel pages, deployed via Funnel Factory pipeline |
 | long-form-static-builder | Creative | Long-form static ad copy (2,500-3,500 words) for Facebook in-feed advertorials |
-| nano-banana-prompting | Creative | AI image generation prompts |
+| nano-banana-prompting | Creative | AI image generation prompts (Nano Banana Pro) |
+| gpt-image-2-prompting | Creative | AI image generation prompts (OpenAI GPT Image 2) |
 | video-prompting-guide | Creative | AI video prompts for ad production |
 | video-script-generator | Creative | AI video scripts with beat framework |
 | product-deep-research | Strategy | Product portfolio and expansion research |

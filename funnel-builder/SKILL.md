@@ -1,5 +1,6 @@
 ---
 name: funnel-builder
+version: 2.5.0
 description: "Create high-converting funnel pages for e-commerce brands using a 9-format library (Advertorial, Listicle 3-variant, PAS, AIDA, SPS, 4P, Long-Form, BAB, Problem Stack, plus the Fake-Complaint sub-format). Handles the complete workflow: format selection based on awareness x resistance, objection-handling architecture, image generation prompts via Nano Banana, copy creation following brand voice and the universal structural copywriting rules, and deployment via the Funnel Factory pipeline (default) or Lovable implementation prompts (on request). Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, copywriting guide, and angle roadmap as inputs."
 ---
 

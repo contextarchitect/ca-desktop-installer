@@ -1,5 +1,6 @@
 ---
 name: gpt-image-2-prompting
+version: 1.0.0
 description: "Craft prompts for OpenAI GPT Image 2 using the labeled-segment structure (Goal / Scene / Subject / Composition / Lighting / Style / Text / Constraints / Preserve). Use when users want GPT Image 2 prompts for new images, edits, masked edits, multi-reference composition, text-heavy layouts, style transfer, or iterative refinement. Also used when Creative Engine's 'Generate with GPT' regeneration path is triggered, or when any skill needs a GPT Image 2 prompt generated."
 ---
 

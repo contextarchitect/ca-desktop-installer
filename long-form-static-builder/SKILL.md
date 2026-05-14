@@ -1,6 +1,6 @@
 ---
 name: long-form-static-builder
-version: 1.0.0
+version: 1.2.0
 description: "Generate production-ready long-form static ad copy for Facebook/Meta. Long-form advertorials (2,500-3,500 words full variant, 1,000-1,400 medium, 200-300 fake-complaint) embedded as ad primary text alongside a single image. Use when the user wants 'long form static', 'native ad copy', 'in-feed advertorial', 'ad primary text', 'Rosabella-style ad', '2500 word ad copy', or references the long-form-static format. Reads avatar research, angle roadmap, brand guidelines, and copywriting guide as inputs. Sits between video-script-generator and funnel-builder. Long-form-statics are ads, not landing pages."
 ---
 

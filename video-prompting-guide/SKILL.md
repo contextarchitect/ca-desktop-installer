@@ -1,5 +1,6 @@
 ---
 name: video-prompting-guide
+version: 1.0.0-beta
 description: |
   Generate production-ready AI video prompts for e-commerce ad production using Image-to-Video
   first-frame anchoring. Covers Sora 2 Pro, Veo 3.1, Seedance 1.5, and Kling 3.0.

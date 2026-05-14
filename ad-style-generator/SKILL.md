@@ -1,5 +1,6 @@
 ---
 name: ad-style-generator
+version: 1.4.0
 description: "Generate ad creative briefs and Nano Banana image prompts using a 14-style catalogue mapped to brand identity and avatar psychology. Use when user says 'create an ad', 'ad creative', 'generate ad images', 'ad style for [topic]', 'create a [SCIENCE-FRIENDLY/BA-EMOTION/REDDIT-NATIVE/US-VS-OTHERS/etc] ad', 'ad campaign for [avatar/product]', or references ad creative development for any brand. Reads brand guidelines, avatar profiles, copywriting guide, and angle roadmap to produce brand-consistent ad concepts with complete Nano Banana prompts. Style #13 (REDDIT-NATIVE) is the handoff target for long-form-static-builder. Style #14 (US-VS-OTHERS) is the polemical comparison style for Solution-Switching audiences."
 ---
 

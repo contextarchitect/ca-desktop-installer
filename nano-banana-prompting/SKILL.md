@@ -1,5 +1,6 @@
 ---
 name: nano-banana-prompting
+version: 1.1.0
 description: "Craft prompts for Nano Banana Pro (Gemini image generation) using the Three-Layer constraint framework. Use when users want help writing image generation prompts, need guidance on prompt structure, want to optimize prompts for better results, or when any other skill (funnel-builder, ad-style-generator) needs Nano Banana prompts generated. Handles product shots, lifestyle scenes, infographics, ad creatives, educational diagrams, and all other image types."
 ---
 

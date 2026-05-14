@@ -55,6 +55,10 @@ Requires [Git for Windows](https://git-scm.com) (includes Git Bash).
 
 Configures Claude Desktop to read and write files in your assigned GitHub repository directly from conversations.
 
+## Versioning
+
+Each skill carries its version in two places: the `version:` field in its `SKILL.md` YAML frontmatter, and a matching line in the root `VERSION` file. Both must agree — `sync-installer.py` refuses to run when they don't. See [VERSIONING.md](VERSIONING.md) for the full contract and bump procedure.
+
 ## Updating Skills
 
 When notified of a skill update:

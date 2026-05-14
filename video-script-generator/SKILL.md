@@ -1,5 +1,6 @@
 ---
 name: video-script-generator
+version: 1.4.0
 description: "Generate high-converting direct-response video ad scripts using the Video Script Framework. Produces scripts across seven formats (Yap/Voiceover, Podcast, Animation, Static, UGC, AI Slop) with awareness-stage-specific structures, proper beat sequencing, villain framing, and humanization rules. Trigger on: video script, ad script, yap script, voiceover script, podcast script, AI slop, UGC script, talking head script, animation script."
 ---
 
@@ -7,7 +8,6 @@ description: "Generate high-converting direct-response video ad scripts using th
 
 ## Metadata
 - **Skill Name:** video-script-generator
-- **Version:** 1.4.0
 - **Category:** Creative / Copywriting
 - **Dependencies:** None (standalone) | Enhanced with: avatar-research, brand-analyzer, copywriting-guide, angle-roadmap
 - **Triggers:** "video script", "ad script", "write a script", "yap script", "voiceover script", "podcast script", "AI slop", "video ad", "talking head script", "UGC script"

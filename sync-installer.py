@@ -46,9 +46,11 @@ Invariants enforced
 -------------------
 1. Distributed skills are skills whose directory exists at the installer
    repo root. Canonical-only skills are skipped.
-2. Installer-only VERSION entries (e.g., `system-prompt=`) are preserved
-   verbatim across sync. They are neither read from canonical nor
-   overwritten.
+2. Every VERSION entry must correspond to a skill folder on disk. The
+   pre-flight `verify_versions_consistent()` guard refuses to sync
+   otherwise. There are no installer-only VERSION entries — system prompt
+   versioning lives in each brand repo's `system-prompt.md` header, not
+   in this manifest.
 3. The installer is never ahead of canonical for a distributed skill.
    If detected, the script WARNs and refuses to downgrade - human
    resolution required.
@@ -62,6 +64,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import re
 import shutil
 import subprocess
@@ -69,8 +72,148 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
+import yaml
+
 
 VERSION_LINE_RE = re.compile(r"^([A-Za-z0-9_-]+)=(.+)$")
+
+_FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+
+# Contract enforcement: this regex must be byte-identical in
+# audit-skill-versions.py and normalize-skill-versions.py. Top-level only —
+# no leading whitespace, lowercase `version` only — because yaml.safe_load
+# is case-sensitive and the canonical position is column 0.
+_TOPLEVEL_VERSION_COUNT_RE = re.compile(r"^version[ \t]*:", re.MULTILINE)
+
+
+def _count_version_lines(fm: str) -> int:
+    return len(_TOPLEVEL_VERSION_COUNT_RE.findall(fm))
+
+
+class VersionContractError(Exception):
+    """SKILL.md frontmatter violates the version-field contract.
+
+    Raised for duplicate top-level `version:` keys, malformed YAML, or
+    non-string version values (e.g. unquoted `version: 1.4` which YAML
+    coerces to a float). The guard collects these and reports all of them
+    before exiting; it never silently picks a winner.
+    """
+
+
+def skill_frontmatter_version(skill_md: Path) -> str | None:
+    """Return the `version` field from a SKILL.md's YAML frontmatter.
+
+    Uses yaml.safe_load on the frontmatter block — the same parser used by
+    audit-skill-versions.py and normalize-skill-versions.py — so all three
+    tools agree at the edges (multi-line YAML strings, escaped colons,
+    trailing whitespace, BOM).
+
+    Returns None if the file has no frontmatter, the frontmatter is not a
+    mapping, or there is no `version` field. Raises VersionContractError for
+    duplicate top-level `version:` keys, malformed YAML, or non-string
+    version values (e.g. unquoted `version: 1.4` which YAML loads as float).
+    """
+    text = skill_md.read_text(encoding="utf-8")
+    m = _FRONTMATTER_RE.match(text)
+    if not m:
+        return None
+    fm = m.group(1)
+    count = _count_version_lines(fm)
+    if count > 1:
+        raise VersionContractError(
+            f"frontmatter has {count} top-level `version:` lines; expected exactly one. "
+            "Manual resolution required (likely an unresolved merge conflict)."
+        )
+    try:
+        data = yaml.safe_load(fm)
+    except yaml.YAMLError as e:
+        raise VersionContractError(f"malformed YAML frontmatter: {e}")
+    if not isinstance(data, dict):
+        return None
+    v = data.get("version")
+    if v is None:
+        return None
+    if not isinstance(v, str):
+        raise VersionContractError(
+            f"version field must be a quoted string in X.Y.Z form, got "
+            f"{type(v).__name__} ({v!r}). Quote the value in YAML: "
+            f'version: "1.4.0"'
+        )
+    return v.strip()
+
+
+def verify_versions_consistent(root: Path, label: str) -> None:
+    """Build-time guard: every skill's frontmatter version must match VERSION.
+
+    `root` is the directory whose VERSION file and skill folders are checked
+    (installer root for installer-side calls, canonical _skills/ dir for the
+    canonical pre-plan call). `label` is included in error output so a
+    failure makes clear which side is broken (e.g. "canonical",
+    "installer (pre-sync)", "installer (post-apply)").
+
+    Failure modes, no exceptions:
+      1. A SKILL.md frontmatter `version` disagrees with its VERSION entry.
+      2. A SKILL.md is missing the `version` field entirely.
+      3. A frontmatter violates the contract (duplicate keys, non-string
+         value, malformed YAML).
+      4. The VERSION file lists a name with no matching skill folder.
+      5. A skill folder (any top-level directory containing a SKILL.md) has
+         no VERSION entry.
+
+    Called three times from main(): canonical pre-plan, installer pre-sync,
+    installer post-apply. See VERSIONING.md for the contract.
+    """
+    version_records = dict(parse_version_file(root / "VERSION"))
+    skill_dirs = sorted(
+        d for d in root.iterdir()
+        if d.is_dir() and (d / "SKILL.md").exists()
+    )
+    skill_names_on_disk = {d.name for d in skill_dirs}
+
+    errors: list[str] = []
+
+    for d in skill_dirs:
+        name = d.name
+        central = version_records.get(name)
+        if central is None:
+            errors.append(
+                f"{name}: skill folder exists with SKILL.md but no entry in VERSION file"
+            )
+            continue
+        try:
+            fm_version = skill_frontmatter_version(d / "SKILL.md")
+        except VersionContractError as e:
+            errors.append(f"{name}: {e}")
+            continue
+        if fm_version is None:
+            errors.append(
+                f"{name}: SKILL.md has no `version` field in YAML frontmatter "
+                f"(central VERSION says {central})"
+            )
+        elif fm_version != central:
+            errors.append(
+                f"{name}: SKILL.md frontmatter version {fm_version!r} != "
+                f"central VERSION {central!r}"
+            )
+
+    for key in version_records:
+        if key in skill_names_on_disk:
+            continue
+        errors.append(
+            f"{key}: VERSION entry has no matching skill folder"
+        )
+
+    if errors:
+        print(
+            f"ERROR: skill version metadata is inconsistent in {label} ({root}).\n"
+            "\n"
+            "The VERSION file and each skill's SKILL.md YAML frontmatter\n"
+            "must agree. See VERSIONING.md for the contract.\n",
+            file=sys.stderr,
+        )
+        for e in errors:
+            print(f"  - {e}", file=sys.stderr)
+        sys.exit(5)
 
 
 def parse_version_file(path: Path) -> list[tuple[str, str]]:
@@ -312,9 +455,10 @@ def build_plan(
     for skill_name in installer_versions:
         if skill_name in canonical_versions:
             continue
-        # Installer-only entry. If a directory exists with that name, it's
-        # an installer-only skill (anomaly); otherwise it's an installer-only
-        # VERSION key like `system-prompt` (legitimate, preserve).
+        # Installer-only entry. With verify_versions_consistent() running
+        # at the top of main(), this branch is unreachable in practice: any
+        # VERSION key without a matching folder is rejected before sync.
+        # Kept as defense-in-depth for callers that bypass main().
         d = installer_root / skill_name
         if d.exists() and d.is_dir():
             anomalies.append(
@@ -543,6 +687,17 @@ def main(argv: list[str]) -> int:
               "Run this script from the installer repo root.", file=sys.stderr)
         return 2
 
+    # Guard call #1: installer pre-sync. Refuse to proceed if the installer
+    # checkout is internally inconsistent before any work happens.
+    verify_versions_consistent(installer_root, label="installer (pre-sync)")
+
+    # Guard call #2: canonical pre-plan. Refuse to propagate canonical-side
+    # inconsistency into the installer. Skipped if --canonical-path resolves
+    # to the same filesystem path as the installer root (someone running
+    # sync against themselves — pre-sync call already covered it).
+    if os.path.realpath(canonical_skills_dir) != os.path.realpath(installer_root):
+        verify_versions_consistent(canonical_skills_dir, label="canonical")
+
     canonical_versions = dict(parse_version_file(canonical_skills_dir / "VERSION"))
     installer_versions = dict(parse_version_file(installer_root / "VERSION"))
 
@@ -590,6 +745,13 @@ def main(argv: list[str]) -> int:
         canonical_versions,
         installer_versions,
     )
+
+    # Guard call #3: installer post-apply. Belt-and-suspenders — should be
+    # unreachable as a failure if canonical pre-plan passed and apply_sync
+    # is bug-free, but catches the edge case where a faulty apply path
+    # produces a drifted installer from a previously-consistent canonical.
+    verify_versions_consistent(installer_root, label="installer (post-apply)")
+
     return 0
 
 

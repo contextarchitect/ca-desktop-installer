@@ -1,6 +1,6 @@
 ---
 name: ad-style-generator
-version: 1.4.0
+version: "1.6.0"
 description: "Generate ad creative briefs and Nano Banana image prompts using a 14-style catalogue mapped to brand identity and avatar psychology. Use when user says 'create an ad', 'ad creative', 'generate ad images', 'ad style for [topic]', 'create a [SCIENCE-FRIENDLY/BA-EMOTION/REDDIT-NATIVE/US-VS-OTHERS/etc] ad', 'ad campaign for [avatar/product]', or references ad creative development for any brand. Reads brand guidelines, avatar profiles, copywriting guide, and angle roadmap to produce brand-consistent ad concepts with complete Nano Banana prompts. Style #13 (REDDIT-NATIVE) is the handoff target for long-form-static-builder. Style #14 (US-VS-OTHERS) is the polemical comparison style for Solution-Switching audiences."
 ---
 
@@ -54,6 +54,14 @@ If the user doesn't specify a style, use the Style Selection Framework in `refer
 
 ## Workflow
 
+**CRITICAL: Ad images are NOT interchangeable with funnel images.**
+
+This skill generates Nano Banana prompts for ad creatives. Ad images are scroll-stopping, identity-forward, feed-positioned, and default to 1:1 aspect ratio. They are NOT substitutes for funnel page images (which are educational, mechanism-forward, inline support for body copy, and use landscape ratios).
+
+If the same brand has both ad and funnel work in progress in the same conversation, treat the two image sets as fully separate. Do not let an ad image's existence in context cause the funnel-builder skill to skip its Stage 2. The funnel-builder skill has its own image generation workflow that produces a distinct set of images for the funnel.
+
+See funnel-builder's Stage 2 callout for the full disambiguation between ad images and funnel images.
+
 ```
 STEP 1: CONTEXT LOADING (automatic)
   → Read brand guidelines (colors, fonts, visual identity)
@@ -77,18 +85,37 @@ STEP 3: CREATIVE BRIEF (generate)
   → Avatar-visual alignment check
 
 STEP 4: NANO BANANA PROMPT (generate)
+  → MANDATORY: If the product appears in the image, load image-reference-index.md from the brand's repo to identify the correct REF and its public URL. The REF URL MUST be included in the brief and passed downstream to the image-prompting skill as the reference image.
   → Complete prompt using Three-Layer Model:
     - Visible Layer: scene description with brand colors, fonts, layout
     - Constraint Layer: aspect ratio, style, quality requirements
     - Exclusion Layer: what to avoid (brand restrictions + style exclusions)
-  → Include product reference images where applicable
-  → Specify exact dimensions for target platform
+  → Include product reference REF code AND public URL in the brief (NOT just a verbal description of the product)
+  → Specify exact dimensions for target platform (default 1:1 for ad creatives per the Default Aspect Ratio Rule above)
 
 STEP 5: DELIVERY
   → Output creative brief + Nano Banana prompt
   → If batch (multiple concepts), output as downloadable markdown file
   → User generates images in Nano Banana externally
 ```
+
+## Product Reference Lookup Requirement (MANDATORY)
+
+When the ad concept includes the brand's product in any form, the brief MUST include the product's REF code and public URL from `image-reference-index.md` in the brand's repo. Verbal descriptions of the product are not a substitute.
+
+**Why this rule fires procedurally rather than implicitly:** the Universal Product Appearance Rule (in nano-banana-prompting and gpt-image-2-prompting) says ANY image where the product appears MUST include a reference image. That rule documents the requirement but does not enforce loading the REF URL before the brief is generated. This step is the procedural enforcement: the REF URL must be loaded from `image-reference-index.md` and included in the brief before handoff to the image-prompting skill.
+
+**Procedure:**
+
+1. **Identify which products appear in the concept.** Read the concept description and list every product visible in any form (photorealistic, cartoon, silhouette, partial view, background placement).
+2. **Look up each product's REF in `image-reference-index.md`** in the brand's repo. The index maps product types (hero shot, hand-held, lifestyle, packshot) to REF codes and public URLs.
+3. **Select the correct REF for the scene context** per the Reference Image Scale Context Rule (in nano-banana-prompting and gpt-image-2-prompting). For person-holding-product scenes, use hand-model REFs. For flat-lay scenes, use lifestyle REFs. For graphic overlays, use isolated packshots.
+4. **Include in the brief:** REF code (e.g., `REF-012`) AND the public URL (e.g., `https://raw.githubusercontent.com/.../product-images/REF-012.png`). Both fields are required.
+5. **Verify the URL is publicly accessible** before handoff (no auth required, returns 200, image renders correctly).
+
+**If `image-reference-index.md` does not exist for this brand** (brand has not completed Phase 5 funnel-config setup), surface this gap to the user before proceeding: "This brand does not have `image-reference-index.md` set up yet. Either set up the reference index first, OR confirm you want to generate ads without product references (which will produce invented products and require manual product compositing after generation)." Do not silently proceed without references.
+
+**The image-prompting skill (nano-banana-prompting OR gpt-image-2-prompting) is responsible for using the REF URL correctly as `image_input` to the generation tool.** This skill's job is to load the URL and include it in the brief; the downstream skill's job is to apply it.
 
 ## Lead Framing Route Style Adjustment
 
@@ -136,18 +163,32 @@ When reading brand documents, extract and map these elements to replace what wou
 
 ## Platform Dimensions
 
-Include the correct dimensions in every Nano Banana prompt:
+### Default Aspect Ratio Rule for Ad Creatives
 
-| Platform | Dimensions | Aspect Ratio |
-|----------|-----------|--------------|
-| Instagram Feed | 1080x1080px | 1:1 |
-| Instagram Stories/Reels | 1080x1920px | 9:16 |
-| Facebook Feed | 1200x628px | 1.91:1 |
-| Facebook Carousel | 1080x1080px | 1:1 |
-| TikTok | 1080x1920px | 9:16 |
-| Email Header | 600x300px | 2:1 |
-| Landing Page Hero | 1920x1080px | 16:9 |
-| Landing Page Inline | 1200x800px | 3:2 |
+**Unless the user specifies otherwise, all ad creatives default to 1:1 (1080x1080px).** This applies to Facebook feed ads, Instagram feed ads, and any other paid placement where a feed-style image is rendered. 1:1 is the highest-real-estate format in the feed scroll, works identically across both Meta platforms, and is Meta's recommended default for image-only creative.
+
+Use a non-1:1 aspect ratio ONLY when one of these conditions applies:
+- The user explicitly specifies a different format (e.g., "make this 16:9 for the landing page hero")
+- The platform itself requires a different ratio (Stories, Reels, TikTok all require 9:16)
+- The brief explicitly calls for a link-share ad with a side-by-side preview card (Facebook 1.91:1)
+
+When in doubt, default to 1:1.
+
+### Dimensions Table
+
+Include the correct dimensions in every Nano Banana / GPT Image 2 prompt:
+
+| Platform | Dimensions | Aspect Ratio | Notes |
+|----------|-----------|--------------|-------|
+| Facebook Feed (default) | 1080x1080px | 1:1 | Default for all image-only ads |
+| Instagram Feed | 1080x1080px | 1:1 | Default for all image-only ads |
+| Facebook Carousel | 1080x1080px | 1:1 | Default for all carousel slides |
+| Facebook Feed (link-share fallback) | 1200x628px | 1.91:1 | ONLY when brief explicitly calls for link-preview format |
+| Instagram Stories/Reels | 1080x1920px | 9:16 | Platform requirement |
+| TikTok | 1080x1920px | 9:16 | Platform requirement |
+| Email Header | 600x300px | 2:1 | Email-specific format |
+| Landing Page Hero | 1920x1080px | 16:9 | Web-specific format |
+| Landing Page Inline | 1200x800px | 3:2 | Web-specific format |
 
 ## Ad Copy Rules
 
@@ -301,7 +342,9 @@ Before delivering any ad concept:
 - [ ] Ad copy follows copywriting guide rules
 - [ ] Forbidden vocabulary checked
 - [ ] Image restrictions from funnel config applied
+- [ ] Aspect ratio defaults to 1:1 unless user specified otherwise OR platform requires different (Stories/Reels = 9:16, etc.)
 - [ ] Dimensions correct for target platform
+- [ ] Product REF code AND public URL included in the brief (loaded from image-reference-index.md) if the product appears in the concept
 - [ ] Nano Banana prompt uses Three-Layer Model
 - [ ] Product reference images specified where applicable
 

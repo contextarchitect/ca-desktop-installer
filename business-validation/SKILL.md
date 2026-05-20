@@ -1,6 +1,6 @@
 ---
 name: business-validation
-version: 1.0.0
+version: "1.0.0"
 description: "Run rigorous, evidence-based business validation research for e-commerce and D2C brands. Use this skill whenever the user wants to validate a new business concept, assess market viability, research competitors, validate customer segments, or generate a research brief for Deep Research. Trigger on phrases like: 'validate this brand', 'run Phase 1', 'business validation', 'market research', 'is this viable', 'assess this opportunity', 'research this brand', 'run validation'. Also trigger when the user provides a client braindump or intake document and wants analysis. This skill handles the complete workflow from raw client information to a research-ready brief with structured context extraction, gap analysis, and auto-customized research instructions."
 ---
 

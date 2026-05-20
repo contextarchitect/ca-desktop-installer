@@ -1,6 +1,6 @@
 ---
 name: product-deep-research
-version: 1.0.0
+version: "1.0.0"
 description: "Generate deep research prompts for e-commerce product portfolio strategy — hero product deep-dives, adjacent product discovery, range architecture, and bundling. Trigger on: 'product research', 'what products should we add', 'complementary products', 'adjacent products', 'product range', 'product expansion', 'bundling strategy', 'what else can we sell', 'range architecture', 'SKU expansion', 'product portfolio', 'product deep dive'. Also trigger after Phase 1 (Business Validation) when exploring product strategy before or alongside Phase 2. Reads Phase 1 report as primary context and generates a customized product research prompt for Deep Research. Covers JTBD mapping, competitor product landscapes, system thinking (COMPLETION/AMPLIFICATION/PROTECTION/RETENTION), prioritization rubrics, MVP roadmaps, and Creative Engine integration."
 ---
 

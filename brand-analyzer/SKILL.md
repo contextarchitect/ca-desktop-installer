@@ -1,6 +1,6 @@
 ---
 name: brand-analyzer
-version: 1.0.0
+version: "1.0.0"
 description: "Phase 3 brand guidelines builder and existing brand analyzer. PRIMARY USE: Create comprehensive brand guidelines for new projects by synthesizing Phase 1 (Business Validation) and Phase 2 (Avatar Research) reports into a complete brand identity document. Trigger on: 'create brand guidelines', 'run Phase 3', 'brand guidelines', 'build brand identity', 'brand guidelines for [brand]'. SECONDARY USE: Analyze, audit, or document existing brands. Trigger on: 'analyze [brand]', 'brand audit', 'brand analysis', 'assess brand health', 'evaluate [brand] brand'."
 ---
 

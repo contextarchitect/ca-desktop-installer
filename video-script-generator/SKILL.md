@@ -1,6 +1,6 @@
 ---
 name: video-script-generator
-version: 1.4.0
+version: "1.4.0"
 description: "Generate high-converting direct-response video ad scripts using the Video Script Framework. Produces scripts across seven formats (Yap/Voiceover, Podcast, Animation, Static, UGC, AI Slop) with awareness-stage-specific structures, proper beat sequencing, villain framing, and humanization rules. Trigger on: video script, ad script, yap script, voiceover script, podcast script, AI slop, UGC script, talking head script, animation script."
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: angle-roadmap
-version: 1.3.0
+version: "1.3.0"
 description: "Synthesize Phase 1 (Business Validation) and Phase 2 (Avatar Research) outputs into a Brand Angle Roadmap: root cause narrative with analogy, solution mechanism narrative, scored emotional triggers, layered desire chains, alternative solution positioning, and structured angle cards. The roadmap becomes the required input for ad-style-generator and funnel-builder skills - it bridges avatar research to creative execution. Trigger on: 'build angle roadmap', 'define angles', 'angle development', 'run Phase 4.5', 'marketing angles for [brand]', 'root cause narrative', 'what angles should we run'. Also trigger when the user has completed Phase 2 and wants to move toward ad/funnel creation but hasn't defined angles yet."
 ---
 

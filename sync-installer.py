@@ -85,6 +85,11 @@ _FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 # is case-sensitive and the canonical position is column 0.
 _TOPLEVEL_VERSION_COUNT_RE = re.compile(r"^version[ \t]*:", re.MULTILINE)
 
+# Filenames sync should never copy from canonical into the installer. OS
+# metadata and placeholder files. Extend conservatively — anything not in
+# this set is treated as distributable skill content.
+EXCLUDED_FILENAMES = {".DS_Store", "Thumbs.db", ".gitkeep"}
+
 
 def _count_version_lines(fm: str) -> int:
     return len(_TOPLEVEL_VERSION_COUNT_RE.findall(fm))
@@ -372,15 +377,19 @@ def check_git_state(installer_root: Path, no_git_check: bool) -> None:
 
 
 def collect_skill_files(skill_dir: Path) -> list[Path]:
-    """Return all .md files inside a skill directory (recursively),
-    plus any optional skill-level non-md files we care to sync.
+    """Return all distributable files in a skill directory.
 
-    Scope: only .md files. Skill directories may contain references/,
-    nested data, etc. We sync everything that's .md and skip other files.
+    Globs all files recursively, excluding OS metadata and placeholder
+    files (see EXCLUDED_FILENAMES). Skills may contain .md, .ps1, .sh,
+    .template, image files, or any other content type the skill needs
+    to distribute.
     """
     if not skill_dir.exists():
         return []
-    return sorted(p for p in skill_dir.rglob("*.md") if p.is_file())
+    return sorted(
+        p for p in skill_dir.rglob("*")
+        if p.is_file() and p.name not in EXCLUDED_FILENAMES
+    )
 
 
 @dataclass
@@ -400,16 +409,27 @@ def build_plan(
     installer_root: Path,
     canonical_versions: dict[str, str],
     installer_versions: dict[str, str],
-) -> tuple[list[SkillSyncPlan], list[SkillSyncPlan], list[str], list[str]]:
-    """Return (to_sync, in_sync, excluded, anomalies_text).
+) -> tuple[
+    list[SkillSyncPlan],
+    list[SkillSyncPlan],
+    list[SkillSyncPlan],
+    list[str],
+    list[str],
+]:
+    """Return (to_sync, to_bootstrap, in_sync, excluded, anomalies_text).
 
-    to_sync: skills where canonical > installer, plan populated with diffs
-    in_sync: skills where canonical == installer (no file action expected,
-             but we still verify file content matches)
-    excluded: canonical-only skills (not distributed)
+    to_sync:      skills where canonical > installer, plan populated with diffs
+    to_bootstrap: skills in canonical VERSION whose folder does not yet exist
+                  in the installer — first-time distribution
+    in_sync:      skills where canonical == installer (no file action expected,
+                  but we still verify file content matches)
+    excluded:     reserved for operator-driven explicit exclusion of a
+                  canonical-listed skill from distribution. Currently no code
+                  path populates this; kept for future use.
     anomalies_text: human-readable anomaly notes
     """
     to_sync: list[SkillSyncPlan] = []
+    to_bootstrap: list[SkillSyncPlan] = []
     in_sync: list[SkillSyncPlan] = []
     excluded: list[str] = []
     anomalies: list[str] = []
@@ -417,7 +437,16 @@ def build_plan(
     for skill_name, c_ver in canonical_versions.items():
         installer_skill_dir = installer_root / skill_name
         if not installer_skill_dir.exists():
-            excluded.append(f"{skill_name} (canonical: {c_ver}; not distributed)")
+            # First-time distribution. Trust the pre-plan
+            # verify_versions_consistent(canonical) call in main() to have
+            # already rejected a canonical VERSION entry without a matching
+            # folder — so we know the canonical side is internally consistent
+            # and the absence is purely on the installer side. _populate_file_diffs
+            # will classify every canonical file as files_new since the
+            # installer directory does not exist yet.
+            plan = SkillSyncPlan(skill_name, c_ver, None)
+            _populate_file_diffs(plan, canonical_skills_dir, installer_root)
+            to_bootstrap.append(plan)
             continue
 
         i_ver = installer_versions.get(skill_name)
@@ -466,7 +495,7 @@ def build_plan(
                 "VERSION entry. Skipping."
             )
 
-    return to_sync, in_sync, excluded, anomalies
+    return to_sync, to_bootstrap, in_sync, excluded, anomalies
 
 
 def _populate_file_diffs(
@@ -497,6 +526,7 @@ def _populate_file_diffs(
 
 def render_plan(
     to_sync: list[SkillSyncPlan],
+    to_bootstrap: list[SkillSyncPlan],
     in_sync: list[SkillSyncPlan],
     excluded: list[str],
     anomalies: list[str],
@@ -534,6 +564,25 @@ def render_plan(
                 out.append(f"  - {rel}")
         out.append("")
 
+    out.append(
+        f"## Skills to bootstrap ({len(to_bootstrap)} first-time "
+        f"distribution{'s' if len(to_bootstrap) != 1 else ''})"
+    )
+    out.append("")
+    if not to_bootstrap:
+        out.append("_None._")
+        out.append("")
+    for plan in to_bootstrap:
+        out.append(f"### {plan.name}: (new) -> {plan.canonical_version}")
+        if plan.files_new:
+            out.append("Files to copy (new):")
+            for p in plan.files_new:
+                rel = _relative_to_skill(p, plan.name)
+                out.append(f"  - {rel}")
+        else:
+            out.append("Files to copy (new): none")
+        out.append("")
+
     out.append("## Skills NOT needing sync (canonical == installer)")
     out.append("")
     if not in_sync:
@@ -553,7 +602,7 @@ def render_plan(
             )
     out.append("")
 
-    out.append("## Skills in canonical but NOT in installer (excluded from distribution)")
+    out.append("## Skills explicitly excluded from distribution (currently empty)")
     out.append("")
     if not excluded:
         out.append("_None._")
@@ -565,8 +614,8 @@ def render_plan(
     out.append("")
     out.append("Installer VERSION will be updated to mirror canonical for all distributed skills:")
     has_any_bump = False
-    for plan in to_sync:
-        i_ver_str = plan.installer_version if plan.installer_version else "(missing)"
+    for plan in to_sync + to_bootstrap:
+        i_ver_str = plan.installer_version if plan.installer_version else "(new)"
         out.append(f"  - {plan.name}: {i_ver_str} -> {plan.canonical_version}")
         has_any_bump = True
     if not has_any_bump:
@@ -606,14 +655,21 @@ def _relative_to_skill(file_path: Path, skill_name: str) -> Path:
 
 def apply_sync(
     to_sync: list[SkillSyncPlan],
+    to_bootstrap: list[SkillSyncPlan],
     canonical_skills_dir: Path,
     installer_root: Path,
     canonical_versions: dict[str, str],
     installer_versions: dict[str, str],
 ) -> None:
-    """Copy files and rewrite VERSION. No deletions."""
+    """Copy files and rewrite VERSION. No deletions.
+
+    Bootstrapped skills are copied alongside updated skills; dst.parent.mkdir
+    materializes the new skill directory. The VERSION rewrite below picks up
+    any canonical entries whose folder now exists in the installer via the
+    second pass.
+    """
     copy_count = 0
-    for plan in to_sync:
+    for plan in to_sync + to_bootstrap:
         for c_path in plan.files_changed + plan.files_new:
             rel = _relative_to_skill(c_path, plan.name)
             dst = installer_root / plan.name / rel
@@ -701,7 +757,7 @@ def main(argv: list[str]) -> int:
     canonical_versions = dict(parse_version_file(canonical_skills_dir / "VERSION"))
     installer_versions = dict(parse_version_file(installer_root / "VERSION"))
 
-    to_sync, in_sync, excluded, anomalies = build_plan(
+    to_sync, to_bootstrap, in_sync, excluded, anomalies = build_plan(
         canonical_skills_dir,
         installer_root,
         canonical_versions,
@@ -709,7 +765,7 @@ def main(argv: list[str]) -> int:
     )
 
     plan_md = render_plan(
-        to_sync, in_sync, excluded, anomalies,
+        to_sync, to_bootstrap, in_sync, excluded, anomalies,
         canonical_versions, installer_versions,
     )
     print(plan_md)
@@ -728,7 +784,7 @@ def main(argv: list[str]) -> int:
         )
         return 3
 
-    if not to_sync:
+    if not to_sync and not to_bootstrap:
         print("\nNo skills need syncing. Done.")
         return 0
 
@@ -740,6 +796,7 @@ def main(argv: list[str]) -> int:
 
     apply_sync(
         to_sync,
+        to_bootstrap,
         canonical_skills_dir,
         installer_root,
         canonical_versions,

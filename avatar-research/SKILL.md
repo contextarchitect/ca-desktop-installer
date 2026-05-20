@@ -1,6 +1,6 @@
 ---
 name: avatar-research
-version: 1.0.0
+version: "1.0.0"
 description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Use this skill whenever the user wants to create customer avatars, psychographic profiles, buyer personas, or audience research briefs for Deep Research. Trigger on phrases like: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. This skill reads Phase 1 (Business Validation) output as primary context and generates a fully customized avatar research prompt optimized for Deep Research. Also trigger when user provides a business validation report and wants customer profiles derived from it."
 ---
 

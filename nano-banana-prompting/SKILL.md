@@ -1,6 +1,6 @@
 ---
 name: nano-banana-prompting
-version: 1.1.0
+version: "1.2.0"
 description: "Craft prompts for Nano Banana Pro (Gemini image generation) using the Three-Layer constraint framework. Use when users want help writing image generation prompts, need guidance on prompt structure, want to optimize prompts for better results, or when any other skill (funnel-builder, ad-style-generator) needs Nano Banana prompts generated. Handles product shots, lifestyle scenes, infographics, ad creatives, educational diagrams, and all other image types."
 ---
 
@@ -311,6 +311,27 @@ Read `references/techniques.md` for detailed technique patterns.
 | Magazine cover / poster | Physical object framing + Text protocol | 200-350 words |
 | Simple edit / background swap | Image transformation (minimal) | 30-120 words |
 
+### Step 3.5: Pre-Generation Reference Gate (MANDATORY)
+
+**Before constructing the prompt, run this gate. If the product appears in the image in any form (per the Universal Product Appearance Rule), you MUST have a REF URL loaded before continuing to Step 4. No exceptions.**
+
+**Procedure:**
+
+1. **Check: does the product appear in the image in any form?** Apply the Universal Product Appearance Rule's checklist (photorealistic, cartoon, silhouette, partial view, background placement). If yes, continue. If no (pure infographic, text-only graphic, scene without product), skip this gate.
+
+2. **Load the product REF and public URL.** The REF URL comes from one of these sources (in priority order):
+   - **Caller-provided:** If this skill was called from ad-style-generator, funnel-builder, or Creative Engine, the calling skill should have already loaded the REF URL from `image-reference-index.md` and passed it in the brief. Confirm the URL is present.
+   - **Direct lookup:** If called standalone, load `image-reference-index.md` from the brand's repo and select the correct REF per the Reference Image Scale Context Rule (hand-model for person-holding scenes, lifestyle for flat-lay, packshot for graphic overlay).
+   - **Auto-attach fallback:** If `image-reference-index.md` does not exist for this brand, surface the gap to the user before proceeding (do not silently generate without references).
+
+3. **Verify the REF URL is publicly accessible.** The URL must return 200 without authentication. The image generation tool will fetch it as `image_input`.
+
+4. **Confirm the REF matches the scene context.** Per the Reference Image Scale Context Rule, the reference must match the scene type (hand-held for person scenes, packshot only for graphic-overlay scenes). If the available REF does not match scene context, either select a different REF or warn the user that the available reference may produce wrong product scale.
+
+5. **Include the REF code AND public URL in the prompt deliverable.** Both are required fields of the output. The URL is what gets passed to the image generation tool as `image_input`.
+
+**This gate is the procedural enforcement of the Universal Product Appearance Rule.** Without it, the rule depends on Claude remembering to load `image-reference-index.md` from system prompt / memory context, which has failed in production. The gate makes the requirement workflow-enforced.
+
 ### Step 4: Construct Prompt
 
 Build in this exact order (Canonical Skeleton):
@@ -349,13 +370,46 @@ Nano Banana Pro does not require long prompts. Longer prompts often reduce instr
 
 **Guiding principle:** Write the shortest prompt that fully constrains the outcome and forbids everything else.
 
+### Step 5.5: Aspect Ratio Selection
+
+Pick the aspect ratio for the target use case. Default to 1:1 for any ad creative unless the user specifies otherwise or the platform requires a different ratio.
+
+**Default Aspect Ratio Rule for Ad Creatives:**
+
+Unless the user specifies otherwise, all ad creatives default to 1:1 (1080x1080px). This applies to Facebook feed ads, Instagram feed ads, and any other paid placement where a feed-style image is rendered. Use a non-1:1 ratio ONLY when:
+
+- The user explicitly specifies a different format (e.g., "make this 16:9 for the landing page hero")
+- The platform itself requires a different ratio (Stories, Reels, TikTok all require 9:16)
+- The brief explicitly calls for a link-share ad with a side-by-side preview card (Facebook 1.91:1)
+
+When in doubt, default to 1:1.
+
+**Aspect Ratio Table:**
+
+| Use Case | Aspect Ratio | Dimensions | Notes |
+|----------|-------------|------------|-------|
+| Facebook Feed ad (default) | 1:1 | 1080x1080px | Default for image-only ads |
+| Instagram Feed ad | 1:1 | 1080x1080px | Default for image-only ads |
+| Facebook Carousel slide | 1:1 | 1080x1080px | Default for carousel |
+| Facebook Feed link-share | 1.91:1 | 1200x628px | ONLY when brief explicitly calls for link-preview format |
+| Instagram Stories / Reels | 9:16 | 1080x1920px | Platform requirement |
+| TikTok | 9:16 | 1080x1920px | Platform requirement |
+| Email header | 2:1 | 600x300px | Email-specific |
+| Landing page hero | 16:9 | 1920x1080px | Web-specific |
+| Landing page inline | 3:2 | 1200x800px | Web-specific |
+| Extreme vertical banner | 1:4 or 1:8 | (varies) | Nano-only feature |
+| Extreme horizontal header | 4:1 or 8:1 | (varies) | Nano-only feature |
+
+**Nano Banana Pro supports extreme aspect ratios** (1:4, 1:8, 4:1, 8:1) that GPT Image 2 does not. If a concept requires these, Nano Banana is the correct model.
+
 ### Step 6: Deliver
 
 Present the prompt with:
-1. **Reference image instruction:** Which image(s) to attach and why
-2. **The prompt:** Ready to paste into Nano Banana
-3. **Dimensions:** Aspect ratio and pixel dimensions for the platform
-4. **Variation note:** One alternative approach if the first doesn't produce desired results
+1. **Reference REF code AND public URL** (MANDATORY when product appears): The REF code (e.g., `REF-012`) AND the public URL (e.g., `https://raw.githubusercontent.com/.../product-images/REF-012.png`) loaded in Step 3.5. The URL is what gets passed to Nano Banana as `image_input`. If the product does not appear in the image, this field is N/A.
+2. **Other reference image instructions:** Any additional references (pose, environment, style) beyond the product reference, with what each contributes.
+3. **The prompt:** Ready to paste into Nano Banana
+4. **Dimensions:** Aspect ratio and pixel dimensions for the platform (per Step 5.5 - default 1:1 for ad creatives unless user specifies otherwise)
+5. **Variation note:** One alternative approach if the first doesn't produce desired results
 
 If called from another skill, return the prompt in that skill's expected format (e.g., markdown file with filename conventions for funnel-builder).
 
@@ -378,6 +432,8 @@ If called from another skill, return the prompt in that skill's expected format 
 | Ad image with no headline | Prompt omits rendered text for non-Lifestyle ad | Apply Headline and Copy Default Rule; include headline unless Lifestyle or user opted out |
 | Extra fingers / distorted hands | No anatomical constraints for people | Apply Anatomical Integrity Protocol; explicitly constrain hand/finger count |
 | Body horror (merged limbs, extra arms) | High-risk scene without exclusions | Add explicit exclusion: "No extra fingers, hands, limbs, merged features" |
+| Product invented without reference | Pre-generation gate skipped; no REF URL loaded | Run Step 3.5 Pre-Generation Reference Gate; load REF URL from image-reference-index.md before prompt construction |
+| Ad rendered at wrong aspect ratio | Default 1:1 rule not applied | Run Step 5.5 Aspect Ratio Selection; default to 1:1 for ad creatives unless user specifies otherwise |
 
 ## Quality Gate (Include in Every Prompt)
 

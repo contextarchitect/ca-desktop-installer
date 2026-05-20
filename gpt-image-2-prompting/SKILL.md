@@ -1,6 +1,6 @@
 ---
 name: gpt-image-2-prompting
-version: 1.0.0
+version: "1.1.0"
 description: "Craft prompts for OpenAI GPT Image 2 using the labeled-segment structure (Goal / Scene / Subject / Composition / Lighting / Style / Text / Constraints / Preserve). Use when users want GPT Image 2 prompts for new images, edits, masked edits, multi-reference composition, text-heavy layouts, style transfer, or iterative refinement. Also used when Creative Engine's 'Generate with GPT' regeneration path is triggered, or when any skill needs a GPT Image 2 prompt generated."
 ---
 
@@ -346,6 +346,27 @@ Check what triggered this prompt generation:
 
 If called from another skill or tool, that skill provides: image purpose, dimensions, brand colors, product references, and any style-specific constraints.
 
+### Step 2.5: Pre-Generation Reference Gate (MANDATORY)
+
+**Before gathering requirements or constructing the prompt, run this gate. If the product appears in the image in any form (per the Universal Product Appearance Rule), you MUST have a REF URL loaded before continuing. No exceptions.**
+
+**Procedure:**
+
+1. **Check: does the product appear in the image in any form?** Apply the Universal Product Appearance Rule's checklist (photorealistic, cartoon, silhouette, partial view, background placement). If yes, continue. If no (pure infographic, text-only graphic, scene without product), skip this gate.
+
+2. **Load the product REF and public URL.** The REF URL comes from one of these sources (in priority order):
+   - **Caller-provided:** If this skill was called from ad-style-generator, funnel-builder, or Creative Engine, the calling skill should have already loaded the REF URL from `image-reference-index.md` and passed it in the brief. Confirm the URL is present.
+   - **Direct lookup:** If called standalone, load `image-reference-index.md` from the brand's repo and select the correct REF per the Reference Image Scale Context Rule (hand-model for person-holding scenes, lifestyle for flat-lay, packshot for graphic overlay).
+   - **Auto-attach fallback:** If `image-reference-index.md` does not exist for this brand, surface the gap to the user before proceeding (do not silently generate without references).
+
+3. **Verify the REF URL is publicly accessible.** The URL must return 200 without authentication. The image generation tool will fetch it as `image_input`.
+
+4. **Confirm the REF matches the scene context.** Per the Reference Image Scale Context Rule, the reference must match the scene type (hand-held for person scenes, packshot only for graphic-overlay scenes). If the available REF does not match scene context, either select a different REF or warn the user that the available reference may produce wrong product scale.
+
+5. **Include the REF code AND public URL in the prompt deliverable.** Both are required fields of the output. The URL is what gets passed to the image generation tool as `image_input` (e.g., the Kie.ai `gpt_image_2_image` tool's first reference parameter).
+
+**This gate is the procedural enforcement of the Universal Product Appearance Rule.** Without it, the rule depends on Claude remembering to load `image-reference-index.md` from system prompt / memory context, which has failed in production. The gate makes the requirement workflow-enforced.
+
 ### Step 3: Gather Requirements
 
 Extract from the user request:
@@ -409,30 +430,42 @@ GPT Image 2 supports up to 20,000 character prompts. This headroom is genuinely 
 
 ### Step 7: Aspect Ratio and Size
 
-Pick based on output need first:
+**Default Aspect Ratio Rule for Ad Creatives:**
 
-| Output Use | Aspect Ratio | Notes |
-|-----------|-------------|-------|
-| Instagram Feed | 1:1 | Square or near-square |
-| Instagram Stories / Reels cover | 9:16 | Vertical |
-| TikTok cover | 9:16 | Vertical |
-| Facebook Feed | 1.91:1 → closest is 2:3 or 16:9 | Use 16:9 for safety |
+Unless the user specifies otherwise, all ad creatives default to 1:1 (1024x1024px). This applies to Facebook feed ads, Instagram feed ads, and any other paid placement where a feed-style image is rendered. Use a non-1:1 ratio ONLY when:
+
+- The user explicitly specifies a different format (e.g., "make this 16:9 for the landing page hero")
+- The platform itself requires a different ratio (Stories, Reels, TikTok all require 9:16)
+- The brief explicitly calls for a link-share ad with a side-by-side preview card (Facebook 1.91:1, which routes to nano-banana-prompting since GPT Image 2 does not support 1.91:1)
+
+When in doubt, default to 1:1.
+
+**Aspect Ratio Table:**
+
+| Use Case | Aspect Ratio | Notes |
+|----------|-------------|-------|
+| Facebook Feed ad (default) | 1:1 | Default for image-only ads |
+| Instagram Feed ad | 1:1 | Default for image-only ads |
+| Facebook Carousel slide | 1:1 | Default for carousel |
+| Instagram Stories / Reels | 9:16 | Platform requirement |
+| TikTok cover | 9:16 | Platform requirement |
 | Landing Page Hero | 16:9 or 21:9 | Wide |
 | Landing Page Inline | 3:2 or 4:3 | Landscape |
 | Poster / book cover | 4:5 or 2:3 | Portrait |
 | Editorial portrait | 4:5 | Portrait |
 | UI mockup | 4:3 or 16:9 | Depends on device |
 
-**If the concept requires an extreme ratio** (`1:4`, `1:8`, `4:1`, `8:1`), route to nano-banana-prompting instead — GPT Image 2 does not support these.
+**If the concept requires Facebook 1.91:1 link-share format** or any of the extreme ratios (`1:4`, `1:8`, `4:1`, `8:1`), route to nano-banana-prompting instead. GPT Image 2 does not support these.
 
 ### Step 8: Deliver
 
 Present the prompt with:
-1. **Reference image instructions:** Which images to attach as Image 1, Image 2, etc., and what each contributes
-2. **The prompt:** Ready to paste into GPT Image 2 / Kie.ai `gpt_image_2_image` tool
-3. **Aspect ratio:** Matched to the platform (from the table above)
-4. **Invariants (for edits):** Separate fenced block listing what must be preserved
-5. **Iteration deltas (for iterative refinement):** One or two delta prompts if the user is likely to refine, each starting with `Change ONLY [X]. Keep EVERYTHING ELSE the same.`
+1. **Reference REF code AND public URL** (MANDATORY when product appears): The REF code (e.g., `REF-012`) AND the public URL (e.g., `https://raw.githubusercontent.com/.../product-images/REF-012.png`) loaded in Step 2.5. The URL is what gets passed to GPT Image 2 / Kie.ai `gpt_image_2_image` tool as the first reference. If the product does not appear in the image, this field is N/A.
+2. **Other reference image instructions:** Any additional references (Image 2, Image 3, etc.) beyond the product reference, with what each contributes.
+3. **The prompt:** Ready to paste into GPT Image 2 / Kie.ai `gpt_image_2_image` tool
+4. **Aspect ratio:** Matched to the platform (per Step 7 - default 1:1 for ad creatives unless user specifies otherwise)
+5. **Invariants (for edits):** Separate fenced block listing what must be preserved
+6. **Iteration deltas (for iterative refinement):** One or two delta prompts if the user is likely to refine, each starting with `Change ONLY [X]. Keep EVERYTHING ELSE the same.`
 
 If called from another skill, return the prompt in that skill's expected format.
 
@@ -481,6 +514,8 @@ The nano-vs-gpt A/B test v1 (April 2026, n=6 voters × 14 concepts) produced dir
 | Multi-reference merging | Reference roles left ambiguous | Label each image and state exactly what transfers from each |
 | Iteration drift | Multiple changes in one refinement round | One variable at a time, restate invariants each round |
 | `input_fidelity` suggested | Treated as a Sora/Dall-E-style param | Do not suggest this param — GPT Image 2 processes at high fidelity by default |
+| Product invented without reference | Pre-generation gate skipped; no REF URL loaded | Run Step 2.5 Pre-Generation Reference Gate; load REF URL from image-reference-index.md before prompt construction |
+| Ad rendered at wrong aspect ratio | Default 1:1 rule not applied | Run Step 7 Aspect Ratio and Size; default to 1:1 for ad creatives unless user specifies otherwise |
 
 ## Failure Modes to Actively Avoid
 

@@ -1,13 +1,14 @@
 ---
 name: video-script-generator
-version: "1.4.0"
-description: "Generate high-converting direct-response video ad scripts using the Video Script Framework. Produces scripts across seven formats (Yap/Voiceover, Podcast, Animation, Static, UGC, AI Slop) with awareness-stage-specific structures, proper beat sequencing, villain framing, and humanization rules. Trigger on: video script, ad script, yap script, voiceover script, podcast script, AI slop, UGC script, talking head script, animation script."
+version: "1.6.0"
+description: "Generate high-converting direct-response video ad scripts using the Video Script Framework. Produces scripts across seven formats (Yap/Voiceover, Podcast, Animation, Static, UGC, AI Slop) with awareness-stage-specific structures, three-variable hook framework, three-stage mechanism pattern, discovery vs desperation frames, villain framing, and humanization rules. Consumes copywriting-guide §8.4 Hook Quality Checklist, §8.5 Identification-Before-Mechanism Rule, §8.6 The Discovery Story Format, §8.7 The Five Core Feelings Library, and §8.8 Authority Hook Patterns as universal cross-references; consumes angle-roadmap Step 1C UGC Creator Brief and Step 5.5 Lead Variants, and the awareness-vocabulary framework doc, as cross-skill contracts. Schwartz Structural Layer added (gated). Trigger on: video script, ad script, yap script, voiceover script, podcast script, AI slop, UGC script, talking head script, animation script."
 ---
 
 # Video Script Generator Skill
 
 ## Metadata
 - **Skill Name:** video-script-generator
+- **Version:** 1.6.0
 - **Category:** Creative / Copywriting
 - **Dependencies:** None (standalone) | Enhanced with: avatar-research, brand-analyzer, copywriting-guide, angle-roadmap
 - **Triggers:** "video script", "ad script", "write a script", "yap script", "voiceover script", "podcast script", "AI slop", "video ad", "talking head script", "UGC script"
@@ -64,6 +65,7 @@ Before generating any script, ensure you have ALL of these. If any are missing, 
 ### Minimum Viable Inputs
 
 1. **Awareness stage** (MOST IMPORTANT - ask first)
+   - This skill uses the universal 3-value awareness field (Problem-aware / Solution-aware / Product-aware) extended with a 4th video-specific value, "Problem-unaware", that maps to the universal field's "Problem-aware" with an upstream education layer (the script first introduces the problem before treating the avatar as Problem-aware). See `_frameworks/awareness-vocabulary.md` for the universal-vs-gated awareness distinction; the gated Schwartz 6-value enum is used in the Schwartz Structural Layer section below when `phase-4.5-angle-roadmap/schwartz-applied.md` exists for the brand. This first-use qualifier covers all subsequent awareness-vocabulary references in this skill.
    - Problem-unaware: Don't know they have the problem or the cause
    - Problem-aware: Know they have the problem, don't know the real cause
    - Solution-aware: Know the solution category, but their attempts haven't worked
@@ -80,6 +82,8 @@ Before generating any script, ensure you have ALL of these. If any are missing, 
 4. **The villain** - The specific enemy the product defeats
    - Bad: "damage" or "toxins" or "inefficiency"
    - Good: A specific, nameable cause that can be visualized and blamed
+
+4.5. **Identification-Before-Mechanism context** - Per `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)`: before any mechanism explanation in the script, the narrator's identity must be established (specific name/age/situation). Ask the user: "Who is the narrator delivering this script: what's their specific identity?" The identity grounds the mechanism explanation in someone the viewer can see themselves in. Without identification before mechanism, even technically correct scripts fail to convert.
 
 5. **Credibility anchor** - What gives the product authority/legitimacy
    - Examples: Geographic origin, scientific backing, founder story, manufacturing process, ingredient sourcing, clinical studies, industry experience, proprietary method
@@ -106,9 +110,46 @@ Before generating any script, ensure you have ALL of these. If any are missing, 
 
 ---
 
+## Concept Structure (Pre-Script)
+
+Script generation runs in two stages. Stage one commits a concept. Stage two writes the script from it. Committing the concept first means the structural decisions (format, awareness stage, the angle the hook takes, the beat order) are agreed before a single line of script is written. A concept that is wrong in shape is cheap to fix here and expensive to fix once a full script exists. The ConceptCard holds the skeleton; the ScriptCard fills it in.
+
+Do not jump to a finished script when the user has not settled the concept. If the required inputs (see `## Required Inputs (Elicit if Missing)`) are present but the structural approach is still open, present a ConceptCard and get approval before writing.
+
+**ConceptCard required fields**
+
+- `format` -> one of the six canonical formats (see `## Format Selection Guide` and `## Format-Specific Rules`). Fixed for the script that derives from this concept.
+- `awareness_stage` -> one of Problem-Unaware, Problem-Aware, Solution-Aware, Product-Aware (see `## Awareness Stage Architecture (PRIMARY FRAMEWORK)`). This is the primary axis; it sets beat order and product-entry timing.
+- `hook_angle` -> the specific entry point the hook takes, expressed through the `### Three-Variable Hook Framework` (which of curiosity, specificity, or identity leads).
+- `structural_approach` -> the named pattern the body follows: the `## Three-Stage Mechanism Pattern`, the Frustration-to-Eureka Arc (the Problem-Aware sub-pattern under `## Awareness Stage Architecture`), or a Discovery or Desperation frame (see `## Discovery Frame vs Desperation Frame`).
+- `key_beats` -> 3 to 8 ordered beat headlines, in delivery order. These are headlines, not written lines. They are the spine the ScriptCard expands.
+
+**ConceptCard optional fields**
+
+- `cta_hook` -> the user-specified call to action, if known. The skill never invents a CTA (see `## CTA Integration`).
+- `target_duration_seconds` -> drives length variation (see `## Angle Variation Framework`, Script Length Variations).
+- `concept_id` -> stable identifier so derived scripts can point back to their concept.
+- `title` -> a short human-readable label.
+
+**Concept shape mirrors the awareness stage**
+
+`key_beats` is not free-form. It is populated from the `**Beat structure:**` block of the chosen stage in `## Awareness Stage Architecture`. A Problem-Aware concept draws its beats from the Problem-Aware beat structure, or from the Frustration-to-Eureka Arc when the script needs emotional validation before the reveal. A Solution-Aware concept draws from the Solution-Aware beats and usually carries the `## Three-Stage Mechanism Pattern`. A Product-Aware concept compresses or drops the early problem-framing beats because the viewer already knows the problem. The concept and the stage stay consistent; a Product-Aware concept does not carry a Problem-Unaware beat order.
+
+**One concept, many scripts**
+
+A single approved concept can produce more than one script. Hold the concept fixed and vary the hook, the target duration, or the lead variant to generate a set. Each derived script shares the concept's `format`, `awareness_stage`, and `structural_approach`; what changes is the surface.
+
+**One conversation, many concepts**
+
+A single conversation can carry more than one concept, including concepts in different formats. Concept selection happens before each script. When the user asks for a new format mid-conversation, present a fresh ConceptCard for that format rather than reshaping the previous concept. Format is fixed per concept.
+
+---
+
 ## Awareness Stage Architecture (PRIMARY FRAMEWORK)
 
 **This is the most important section.** Script structure varies dramatically by awareness stage. Determine stage FIRST, then apply the appropriate template.
+
+(Awareness-vocabulary first-use qualifier is at Required Inputs item #1 above; see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction.)
 
 ### Stage 1: PROBLEM-UNAWARE
 
@@ -301,6 +342,8 @@ When user asks for "shorter version, same angle" - cut the fat, keep the core.
 
 ## Hook Construction Rules
 
+Apply `copywriting-guide §8.4 Hook Quality Checklist` (5-point check: opens a loop, one specific claim, first-person voice, specificity, identity marker). Apply `copywriting-guide §8.8 Authority Hook Patterns` when the hook invokes authority (Classic / Doctor's Surprise / Doctor's Skepticism / Study/Research). The patterns below are video-format-specific extensions of those universal rules.
+
 **The hook must create an open loop the viewer cannot close without watching.**
 
 ### Hook Anti-Patterns (AVOID)
@@ -317,6 +360,36 @@ When user asks for "shorter version, same angle" - cut the fat, keep the core.
 | Problem-Aware | False cause elimination + promise | "There's a reason nothing you've tried has worked. And it's got nothing to do with [obvious causes]." |
 | Solution-Aware | Contrarian + question | "You [tried solution] specifically for [problem]. And it did absolutely nothing. Why?" |
 | Product-Aware | Direct accusation | "You've seen [Brand] before. You know what it does. You just haven't [action] yet." |
+
+### Three-Variable Hook Framework
+
+Strong video hooks deliberately combine three variables. Tune each variable based on the awareness stage and avatar:
+
+**Variable 1: Curiosity Trigger**
+- Hidden truth ("Nobody tells you...")
+- Pattern interrupt ("Stop doing X")
+- Counter-intuitive claim ("X is making it worse")
+- Insider knowledge ("Most people don't know...")
+- Time-anchored revelation ("After 35, this happens")
+
+**Variable 2: Specificity Marker**
+- Number ("12 hours a week", "3am again", "68%")
+- Name (specific brand, place, condition)
+- Time anchor ("After 35", "In your first month")
+- Concrete situation (specific scenario the viewer recognizes)
+
+**Variable 3: Identity Marker**
+- Demographic ("If you're over 35")
+- Behavioral ("If you've tried minoxidil")
+- Situational ("If you live in [region]")
+- Professional ("If you manage a team of 8+")
+- Aspirational ("If you want to feel like yourself again")
+
+A hook that hits all three variables with strong levels typically passes the §8.4 Hook Quality Checklist. A hook that hits only one is usually weak. The variables are not stage-locked; all four awareness stages benefit from all three. The MIX changes by stage: Problem-unaware leads with Curiosity Trigger; Problem-aware balances all three; Solution-aware leads with Identity Marker; Product-aware leads with Specificity Marker (specific numbers, specific guarantees).
+
+The Three-Variable Hook Framework is a deeper structural layer underneath the Hook Patterns by Stage table above. The patterns table gives you stage-specific hook shapes. The three-variable framework gives you the components those shapes are built from. Use them together: pick the stage-appropriate pattern, then tune each of the three variables to make the pattern land harder.
+
+When iterating hooks (see "Hook Iteration Pattern" below), generate 3 variants by holding the dominant variable constant and changing the secondary mix. Example: same Identity Marker ("If you're over 35"), but Variant A leads with Curiosity Trigger, Variant B leads with Specificity Marker, Variant C leads with a hybrid.
 
 ### Hook Quality Test
 Ask: "Does this hook make a promise AND withhold the answer?"
@@ -336,6 +409,10 @@ Which direction feels right?
 ```
 
 Let the user choose, then build the full script from their selection.
+
+### Discovery Story Format Hook (when applicable)
+
+Per `copywriting-guide §8.6 The Discovery Story Format`, when the script uses the Discovery Story Format, the hook should setup the 7-stage sequence (Distress -> Unusual decision -> Discovery -> Mechanism reveal -> Application -> Validation -> Crossroads). The hook itself opens with Distress framing; the rest of the script walks the 7 stages. This format works strongest in UGC and Voiceover Monologue formats; less effective in Static and AI Slop where the format depends on rhythm rather than narrative arc.
 
 ---
 
@@ -409,6 +486,10 @@ Sensory moments work best:
 - During frustration acknowledgment (validates their experience)
 - Before the pivot to solution (emotional peak before relief)
 
+### Core Feeling Alignment
+
+Sensory snapshot moments serve `copywriting-guide §8.7 The Five Core Feelings Library`. Each moment activates ONE of the five core feelings (Vindication, Loss aversion, Betrayal, Desperation, Identity). Pick the dominant core feeling for the script and let sensory moments reinforce that ONE feeling. Multiple core feelings dilute the script per §8.7.
+
 ---
 
 ## Logic Flow Rule
@@ -458,6 +539,62 @@ Use transitional phrases that connect ideas:
 Read the script line by line. After each line, ask: "Does the next line logically follow from this one?"
 
 If you need to add explanation for the jump to make sense, add it.
+
+---
+
+## Three-Stage Mechanism Pattern
+
+Mechanism explanations in video scripts work best in three stages, each serving a distinct cognitive job. The Three-Stage Mechanism Pattern is a specific structural pattern that operates within the universal Logic Flow Rule above; the Logic Flow Rule applies to every line of every script, while this pattern applies specifically to mechanism explanations.
+
+**Stage 1: Problem framing in everyday language**
+- The villain's effect, not the villain itself
+- What the viewer experiences (the symptom, the frustration, the gap)
+- Stays in the viewer's experiential vocabulary, not the brand's technical vocabulary
+- Example: "You're tired even after 8 hours of sleep" (NOT "GABA receptor downregulation")
+
+**Stage 2: Mechanism reveal with analogy**
+- The villain's identity (named, specific)
+- An analogy that makes the mechanism visualizable
+- The "aha" moment, the cognitive click
+- Example: "Magnesium is the brake fluid your nervous system needs to slow down at night. Without it, you have brakes but no fluid."
+
+**Stage 3: Cascade effect, what happens once mechanism is fixed**
+- The follow-on consequences once the villain is removed
+- Includes timeframe ("within 2 weeks", "by week 4")
+- Connects back to Stage 1's experiential framing (closes the loop)
+- Example: "When magnesium is restored, GABA works again. You stay asleep. By week 2, most people sleep through the night."
+
+The three stages are sequential. Skipping Stage 1 loses the viewer (they can't see why this matters). Skipping Stage 2 loses credibility (no aha moment). Skipping Stage 3 loses the close (no clear "what's in it for me").
+
+Apply the Three-Stage Mechanism Pattern in problem-aware and solution-aware scripts. Product-aware scripts often skip Stage 1 (viewer already knows the problem) and abbreviate Stage 2 (viewer has read the mechanism on the website); they go heavier on Stage 3 with risk reversal and timeline.
+
+The Three-Stage Mechanism Pattern combines with the Frustration-to-Eureka Arc (existing Problem-Aware sub-pattern) when the script needs both emotional validation AND mechanism education.
+
+---
+
+## Discovery Frame vs Desperation Frame
+
+Every script operates in one of two dominant emotional frames. Pick ONE per script; mixing dilutes both.
+
+### Discovery Frame
+- Narrator found something. Wants to share it.
+- Tone: insider knowledge, "I figured this out and you should know"
+- Energy: calm, confident, almost gentle
+- Best for: Problem-unaware, Solution-aware (intellectual reframe), most UGC scripts
+- Hook patterns: hidden truth, pattern interrupt, insider knowledge
+- Pacing: deliberate; long pauses; thoughtful
+
+### Desperation Frame
+- Narrator is in the situation now. Looking for help.
+- Tone: vulnerable, raw, "I'm sharing this because I don't know what else to do"
+- Energy: intense, urgent, sometimes shaky
+- Best for: Problem-aware (validation through shared suffering), some UGC scripts where the creator hasn't fully resolved
+- Hook patterns: false cause elimination, frustration acknowledgment, sensory snapshot
+- Pacing: faster; shorter sentences; emotional peaks
+
+The Frustration-to-Eureka Arc (existing Problem-Aware sub-pattern) is a Desperation Frame opening that pivots to Discovery Frame at the eureka moment. This is one of the strongest Problem-Aware structures because it converts the desperation into a discovery WITHIN the script.
+
+UGC scripts especially benefit from explicit frame selection. Variant 1: First-Person Sufferer typically operates in Desperation Frame. Variant 2: First-Person Discoverer typically operates in Discovery Frame. Variant 3: Third-Person Authority or Witness usually operates in Discovery Frame with a more measured tone. See `_skills/angle-roadmap/SKILL.md` Step 5.5 for variant definitions; this skill's UGC format consumes those variant names as canonical references.
 
 ---
 
@@ -703,6 +840,105 @@ If user asks for visual notes, add at the end:
 
 ---
 
+## Cross-Reference Disciplines
+
+This skill consumes contracts from prior corpus-enhancement work. The following disciplines apply rigorously:
+
+### §8.5 Disambiguation Discipline (Session 9)
+
+Every reference to `copywriting-guide §8.5` carries the full title `(Identification-Before-Mechanism Rule)` to disambiguate from the gated Schwartz technique #2 Identification. This discipline is now load-bearing across 6 skills (copywriting-guide as source, plus funnel-builder + angle-roadmap + ad-style-generator + ad-analysis-tagger + this skill).
+
+### Awareness-Vocabulary Disambiguation (Session 14)
+
+The first-use qualifier referencing `_frameworks/awareness-vocabulary.md` appears at the FIRST strategic-decision use of awareness vocabulary in any universal section. In this skill, that's Required Inputs item #1 (Awareness stage). The Awareness Stage Architecture section carries only a pointer back to that first-use location. Subsequent awareness-vocabulary references throughout the skill don't repeat the qualifier.
+
+### Variant Name Canonical Match
+
+Variant names match `_skills/angle-roadmap/SKILL.md` Step 5.5 exactly:
+- "Variant 1: First-Person Sufferer"
+- "Variant 2: First-Person Discoverer"
+- "Variant 3: Third-Person Authority or Witness"
+
+This skill is the third downstream consumer of the Lead Variants section (after ad-style-generator US-VS-OTHERS in Session 11 and ad-analysis-tagger Cross-Variant Tagging in Session 12).
+
+### Step 1C UGC Creator Brief Canonical Match
+
+The Step 1C UGC Creator Brief at `_skills/angle-roadmap/SKILL.md` Step 1C is the canonical source narrative for UGC video scripts when available. Reference it by full path; do not paraphrase the 5-component structure.
+
+### Format Names as Cross-Skill Contracts
+
+The 6 video formats are now stable cross-skill contracts:
+- Voiceover Monologue (also referred to colloquially as "Yap" in triggers)
+- Podcast Two-Host
+- Animation / Character
+- Static / Reverse Psychology
+- UGC Emotional Testimonial
+- AI Slop / Personified Chain
+
+Future sessions consuming this skill (e.g., ad-analysis-tagger when extended to video tagging, future format library cross-references) should use these exact names. Format renames require coordinated edits. (Note: the historical version-history language and frontmatter wording use "seven formats" with "Yap/Voiceover" listed as a slash-separated pair; these are the same format. The canonical count is 6 distinct formats.)
+
+---
+
+## Schwartz Structural Layer (Gated)
+
+**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages (in the gated 6-value sense), the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+
+When the brand has Schwartz onboarding, video scripts apply additional structural rules on top of the universal awareness-stage architecture.
+
+### Technique Density Per Script
+
+Apply the technique density rule from `_skills/ad-style-generator/SKILL.md` Schwartz Structural Layer. Video scripts execute the same density rules as ad creatives:
+
+- Unaware: 1 technique per script
+- Problem Aware: 2 techniques (Mechanization + Intensification)
+- Solution Aware: 2 techniques (Concentration + Mechanization)
+- Product Aware (incl. Solution-Switching): 3 techniques (Concentration + Redefinition + light Identification)
+- Most Aware: 1 technique (Identification or social proof)
+
+The Three-Stage Mechanism Pattern (above, universal) maps to the gated techniques:
+- Stage 1 (Problem framing) executes Intensification
+- Stage 2 (Mechanism reveal with analogy) executes Mechanization
+- Stage 3 (Cascade effect) executes Identification
+
+For Solution Aware scripts that lead with Concentration (zooming in on ONE specific alternative attack), the alternative attack becomes the script's villain. For Product Aware (incl. Solution-Switching), the polemical-comparison register from ad-style-generator Style #14 US-VS-OTHERS may apply at script level.
+
+### Sophistication Stage Adjustment
+
+When the brand's Sophistication Stage Score (per `_skills/angle-roadmap/SKILL.md` Step 6) is 4-5 (mature category, audience has heard many competing claims), apply Camouflage as a tertiary technique. Hooks that look like organic content (UGC scripts using "Variant 1: First-Person Sufferer" in Desperation Frame; AI Slop with personified avatar) outperform brand-forward formats in mature categories.
+
+When the Sophistication Stage Score is 1-3, brand-forward formats (Voiceover Monologue with named brand authority, Podcast Two-Host with named experts) outperform Camouflage formats.
+
+### 38-Method Headline Tagging for Hooks
+
+Video script hooks can also be tagged against the 12 most-used Schwartz headline methods from `_skills/ad-style-generator/SKILL.md`:
+- #1 Promise a Benefit
+- #2 Reveal a New Mechanism
+- #4 Question Headline
+- #6 Specific Number Headline
+- #11 Promise of Inside Information
+- #14 Statement of Astonishment
+- #19 Reframed Alternative
+- #20 Promise of Simplicity
+- #21 Numbered List
+- #25 Customer Quote
+- #28 Headline as Demonstration
+- #34 Single-Word Punch
+
+When iterating hooks per the Hook Iteration Pattern, optionally tag each variant with its Schwartz method. Variants spanning multiple methods (e.g., Variant A is #2 Reveal a New Mechanism, Variant B is #11 Promise of Inside Information, Variant C is #19 Reframed Alternative) typically test better than variants all using the same method.
+
+### Pressure Test for Video Scripts
+
+Run the four-check pressure test from `_skills/ad-style-generator/SKILL.md` adapted to video:
+
+1. Angle inheritance: does the script match its angle card?
+2. Technique density correct for awareness stage
+3. Hook uses a Schwartz method (or is method-less by deliberate choice)
+4. Concentration target named (Stage 4-5 only): for video this means the polemical comparison or alternative attack is named, not generic
+
+If any check fails, surface the finding and propose a concrete revision.
+
+---
+
 ## Format Selection Guide
 
 **After determining awareness stage**, select format based on content needs:
@@ -768,7 +1004,40 @@ The most common and versatile format. No on-camera talent required.
 
 ### UGC Emotional Testimonial
 
-- 80% before-state suffering and identity
+When the brand has completed angle-roadmap Phase 4.5 with Step 1C UGC Creator Brief, that Brief is the primary source narrative. Rather than generating fresh UGC narrative, this skill REFORMATS Step 1C content into the UGC video format.
+
+**Reading Step 1C as input:**
+
+The UGC Creator Brief at `_skills/angle-roadmap/SKILL.md` Step 1C produces 5 components for spoken delivery (60-90s):
+1. Hook line (5-9 words spoken): camera-on opener; passes the spirit of `copywriting-guide §8.4 Hook Quality Checklist` translated for spoken delivery
+2. Identity reveal (1-2 sentences): narrator establishment grounding `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)`
+3. Root cause script (~60-80 words, ~30 seconds spoken): the 4th-grade root-cause explanation, conversational, with the analogy
+4. Mechanism script (~40-60 words, ~20 seconds spoken): the 4th-grade mechanism explanation, continuing the analogy
+5. Close prompt (1 sentence): hand-off line, not a sales pitch
+
+The CTA itself does NOT come from Step 1C. Per the angle-roadmap contract, the CTA "comes from the funnel/ad context, not from the UGC clip." When generating the video script, source CTA, product introduction, and any guarantee/risk-reversal content from separate inputs (the user's CTA spec at Required Input #6, brand guidelines, funnel context). Do not invent product/CTA content from a Brief that does not contain it.
+
+**Reformatting Step 1C for video:**
+- Add line breaks as breath beats per existing format-specific rules
+- Add scene cuts where the narrative beats shift (after hook line, after identity reveal, after mechanism script, before close)
+- Add stage directions for emotional shifts ([narrator's voice softens], [shows product], [holds for camera])
+- Map the Brief's beats into video beats: Hook line opens the script; Identity reveal anchors before any mechanism; Root cause + Mechanism scripts deliver the Three-Stage Mechanism Pattern's Stage 1 + Stage 2; Close prompt sets up the externally-sourced CTA in the script's final beat
+- Apply Lead Variant selection per `_skills/angle-roadmap/SKILL.md` Step 5.5. The Brief's narrator type determines which variant carries the script: Variant 1: First-Person Sufferer, Variant 2: First-Person Discoverer, or Variant 3: Third-Person Authority or Witness.
+
+**Variant-to-frame mapping:**
+- Variant 1: First-Person Sufferer typically uses Desperation Frame opening, may pivot to Discovery Frame at eureka moment
+- Variant 2: First-Person Discoverer typically uses Discovery Frame throughout
+- Variant 3: Third-Person Authority or Witness typically uses Discovery Frame with measured tone
+
+**When Step 1C is unavailable:**
+
+If the brand hasn't completed Phase 4.5 with Step 1C, generate UGC narrative from scratch using the existing UGC structure (80% before-state, 20% product, transformation-as-vessel). This is the legacy path; the Step 1C path is preferred when available.
+
+**Structure (universal, applied either path):**
+
+The 80/20 ratio is content allocation; the Lead Variant choice (per `_skills/angle-roadmap/SKILL.md` Step 5.5) determines the emotional register of the 80% before-state portion; the frame (Discovery vs. Desperation) determines the energy level of the variant.
+
+- 80% before-state suffering and identity (or Discovery Frame insider knowledge for "Variant 2: First-Person Discoverer" or "Variant 3: Third-Person Authority or Witness")
 - 20% product (almost incidental)
 - Product is vessel for transformation already undergone
 
@@ -874,6 +1143,20 @@ Every script must pass ALL of these:
 - [ ] No separate pacing notes (line breaks handle pacing)
 - [ ] Visual direction notes at END only (if requested)
 - [ ] Consistent formatting throughout
+
+**Cross-Skill Contract Compliance (universal, always):**
+- [ ] §8.5 references carry full title "Identification-Before-Mechanism Rule"
+- [ ] §8.4, §8.6, §8.7, §8.8 references carry section number with full title at first use
+- [ ] Awareness-vocabulary first-use qualifier present at first strategic-decision use of awareness vocabulary
+- [ ] Lead Variant names from angle-roadmap Step 5.5 used by exact canonical name when applicable
+- [ ] Step 1C UGC Creator Brief consumed by full path when generating UGC scripts (when Brief is available)
+
+**Schwartz Structural Layer (only if `phase-4.5-angle-roadmap/schwartz-applied.md` exists for the brand):**
+- [ ] Technique density correct for awareness stage
+- [ ] Three-Stage Mechanism Pattern mapped to gated techniques (Intensification -> Mechanization -> Identification)
+- [ ] Sophistication Stage Score considered for format selection (4-5 favors Camouflage formats; 1-3 favors brand-forward)
+- [ ] Hooks tagged against 38-method framework when iterating
+- [ ] Pressure test (4 checks) passed
 
 ---
 
@@ -1108,7 +1391,9 @@ When user provides feedback, apply these standard fixes:
 
 ## Version History
 
-- **1.4.0** (Current): Added Upstream Format Sources section. When the user has a winning long-form-static ad and wants a video adaptation, the body copy is already written; this skill handles reformatting for delivery (timing, scene cuts, voiceover pacing) rather than generating fresh narrative. Cross-references the new long-form-static-builder skill.
+- **1.6.0** (Current): Added Concept Structure (Pre-Script) section: the two-stage concept-then-script flow with the ConceptCard schema (format, awareness_stage, hook_angle, structural_approach, key_beats; optional cta_hook, target_duration_seconds, concept_id, title). Documents one-concept-to-many-scripts, one-conversation-to-many-concepts, and concept-shape-mirrors-awareness-stage. Session 109.
+- **1.5.0**: Added cross-skill contract consumption from Sessions 8-12 corpus-enhancement series. Wired §8.4/§8.5/§8.6/§8.7/§8.8 universal cross-references throughout (with §8.5 carrying full title per Session 9 disambiguation discipline). Added awareness-vocabulary disambiguation first-use qualifier per Session 14. Added Step 1C UGC Creator Brief consumption from angle-roadmap Phase 4.5 (first downstream consumer of that contract). Added Lead Variants integration in UGC Emotional Testimonial format (third downstream consumer of angle-roadmap Step 5.5 after ad-style-generator US-VS-OTHERS and ad-analysis-tagger Cross-Variant Tagging). Added Three-Variable Hook Framework (curiosity / specificity / identity), Three-Stage Mechanism Pattern (problem framing / mechanism reveal / cascade), Discovery Frame vs Desperation Frame, Discovery Story Format Hook cross-reference. Added Cross-Reference Disciplines section. Added gated Schwartz Structural Layer with technique density rules, sophistication stage adjustment, 38-method headline tagging, pressure test for video scripts. Updated Quality Checklist with cross-skill contract compliance items + gated Schwartz items.
+- **1.4.0**: Added Upstream Format Sources section. When the user has a winning long-form-static ad and wants a video adaptation, the body copy is already written; this skill handles reformatting for delivery (timing, scene cuts, voiceover pacing) rather than generating fresh narrative. Cross-references the new long-form-static-builder skill.
 - **1.3.0**: Added Angle Variation Framework, Frustration-to-Eureka Arc, Sensory Snapshot Moments, Logic Flow Rule, No Meta-Commentary Rule, Partial Solution Framing, Technical Education Option, External Content → Angle pattern, Hook Options pattern, Early Context Establishment (brand-agnostic), Script Length Variations. Made Visual Direction Notes optional (script-only default). Ensured all principles are brand-agnostic throughout.
 - **1.2.0**: Made skill brand-agnostic. Removed CTA prescriptions (now user-specified). Added multiple category examples (supplement, SaaS, skincare, coaching). Changed "Geographic authenticity" to "Credibility anchor" as variable input. Generalized all brand-specific language.
 - **1.1.0**: Added Awareness Stage Architecture, Hook Construction Rules, Product Introduction Sequence, removed separate Pacing Notes requirement

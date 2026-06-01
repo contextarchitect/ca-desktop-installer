@@ -1,6 +1,6 @@
 ---
 name: gpt-image-2-prompting
-version: "1.1.0"
+version: "1.2.0"
 description: "Craft prompts for OpenAI GPT Image 2 using the labeled-segment structure (Goal / Scene / Subject / Composition / Lighting / Style / Text / Constraints / Preserve). Use when users want GPT Image 2 prompts for new images, edits, masked edits, multi-reference composition, text-heavy layouts, style transfer, or iterative refinement. Also used when Creative Engine's 'Generate with GPT' regeneration path is triggered, or when any skill needs a GPT Image 2 prompt generated."
 ---
 
@@ -25,19 +25,19 @@ These are GPT Image 2 specific. Do not port assumptions from other image models:
 5. **Do not default above 2K resolution** unless the user clearly needs it.
 6. **Aspect ratios NOT supported (use nano-banana-prompting instead):** `1:4`, `1:8`, `4:1`, `8:1`. GPT Image 2 supports: `auto`, `1:1`, `5:4`, `9:16`, `21:9`, `16:9`, `4:3`, `3:2`, `4:5`, `3:4`, `2:3`.
 7. **Prompt length limit:** 20,000 characters (vs Nano Banana Pro's 5,000). This is a real structural advantage for dense text-in-image briefs. Use the headroom when required strings are many, but do not bloat for its own sake.
-8. **Text-heavy, layout-sensitive, or brand-consistency-sensitive work may still need iterative passes.** Exact text placement and repeated cross-image consistency are the weakest areas — plan for one or two refinement rounds rather than expecting perfect first-shot output.
+8. **Text-heavy, layout-sensitive, or brand-consistency-sensitive work may still need iterative passes.** Exact text placement and repeated cross-image consistency are the weakest areas -- plan for one or two refinement rounds rather than expecting perfect first-shot output.
 
 ## Mandatory: Request Classification
 
 EVERY GPT Image 2 request must be classified as exactly one of the following before writing the prompt. The classification determines which pattern to use from `references/patterns.md`:
 
-1. **New image generation** — no input image must be preserved
-2. **Edit of existing image** — modify one aspect, preserve everything else
-3. **Masked edit** — replace content in a specific region, blend with surroundings
-4. **Multi-image reference composition** — combine elements from 2+ sources with explicit contribution per source
-5. **Text-heavy design or layout** — posters, ads, packaging, infographics where text accuracy is a hard constraint
-6. **Style transfer** — apply a specific visual style to a subject
-7. **Iterative refinement** — change one thing from a previous generation, restate invariants
+1. **New image generation** -- no input image must be preserved
+2. **Edit of existing image** -- modify one aspect, preserve everything else
+3. **Masked edit** -- replace content in a specific region, blend with surroundings
+4. **Multi-image reference composition** -- combine elements from 2+ sources with explicit contribution per source
+5. **Text-heavy design or layout** -- posters, ads, packaging, infographics where text accuracy is a hard constraint
+6. **Style transfer** -- apply a specific visual style to a subject
+7. **Iterative refinement** -- change one thing from a previous generation, restate invariants
 
 **Failing to classify first leads to the most common failure mode: mixing change instructions with invariants in edits, which produces drift.**
 
@@ -62,14 +62,14 @@ Lighting/color: [light quality, mood, palette].
 
 Style/medium: [photo, illustration, render, poster, etc.].
 
-Text in image: "[exact text]" [placement and hierarchy — omit this line if no text].
+Text in image: "[exact text]" [placement and hierarchy -- omit this line if no text].
 
 Constraints: [hard requirements].
 
 Preserve: [only for edits or iterative refinement].
 ```
 
-**Not every line is required for every prompt.** Simple new generations may skip `Preserve:`. Lifestyle scenes may skip `Text in image:`. But the order of included lines must follow the canonical skeleton — the model reads earliest lines as highest-priority controls.
+**Not every line is required for every prompt.** Simple new generations may skip `Preserve:`. Lifestyle scenes may skip `Text in image:`. But the order of included lines must follow the canonical skeleton -- the model reads earliest lines as highest-priority controls.
 
 **Starter verb matters:**
 - New generations: start with `Create` or `Draw`
@@ -92,7 +92,7 @@ Image 2 contribution: use the outfit design and color palette.
 Image 3 contribution: use the environment and camera framing.
 ```
 
-### Universal Product Appearance Rule (CRITICAL — prevents invented products)
+### Universal Product Appearance Rule (CRITICAL -- prevents invented products)
 
 **ANY image where the product appears in ANY form MUST include a reference image.** This applies universally regardless of art style, rendering technique, or level of abstraction. Specifically:
 
@@ -102,7 +102,7 @@ Image 3 contribution: use the environment and camera framing.
 - **Silhouette or outline** (product shape recognizable): reference REQUIRED
 - **Partial views** (cap, label, or bottom of bottle visible): reference REQUIRED
 
-**Without a reference, the AI model will invent its own version of the product.** This results in wrong colors, wrong label design, wrong proportions, wrong cap shape, and wrong branding. This is true even for cartoon styles — an illustrated version of a product must still be based on the real product's appearance.
+**Without a reference, the AI model will invent its own version of the product.** This results in wrong colors, wrong label design, wrong proportions, wrong cap shape, and wrong branding. This is true even for cartoon styles -- an illustrated version of a product must still be based on the real product's appearance.
 
 **The only exception:** The product does not appear in the image at all (pure infographic with no product, text-only graphic, scene without product, problem-visualization with no solution shown).
 
@@ -129,7 +129,98 @@ Image 1. Do not alter, reinterpret, or reimagine the product.
 
 **The rule:** Reference attached = no product description. Reference absent = describe product in detail.
 
-### Reference Image Scale Context Rule (CRITICAL — prevents wrong product size)
+### Small or Secondary Placement Sub-Rule
+
+**When the product appears small in the scene (corner element, background
+object, secondary to the main visual), explicitly state that small size does
+not reduce the accuracy requirement.**
+
+Without this instruction, the model interprets small placement as permission
+for low fidelity. It will render a generic white bottle -- or any white bottle
+-- because at small scale, "close enough" passes visual inspection during
+generation. The result is a product-less ad that technically has a bottle in
+the corner but bears no resemblance to the actual product.
+
+**The pattern:**
+```
+
+The [product name] from the reference must appear in [location]. Even though it is small, it must accurately reproduce the [specific label detail / branding / color design] from the reference. Do not invent a different bottle.
+
+```
+
+**In practice:**
+
+WRONG -- size mentioned, accuracy not enforced:
+```
+
+Constraints: small accurate Regrowth+ bottle tucked bottom right corner, small and secondary to the visual.
+
+```
+
+RIGHT -- size acknowledged, accuracy explicitly required regardless:
+```
+
+Constraints: the Regrowth+ shampoo bottle from the reference must appear in the bottom right corner. Even though it is small, it must accurately reproduce the teal wave label, Regrowth+ branding, and white body from the reference. Do not invent a different bottle.
+
+```
+
+**Why this matters:** The model's default reasoning is: "small = low detail
+needed = I can approximate." The explicit override breaks this assumption.
+The phrase "Even though it is small" is important -- it directly addresses
+the model's implicit justification for low fidelity at small scale.
+
+**Applies to:** Any scene where the product is secondary to the main visual:
+corner placements, background props, shelf objects, partial views, and any
+scene where the product is present but not the hero element.
+
+
+### Reference Image Front-Loading Rule (image-to-image mode)
+
+**When generating in image-to-image mode (input_urls provided), the reference
+block must appear first in the prompt text -- before any creative direction.**
+
+GPT Image 2 processes the `input_urls` parameter in parallel with the prompt
+text. If creative description comes first, the model weights the text higher
+than the image and may satisfy the prompt from text alone, ignoring the
+reference. Front-loading forces the model to anchor on the reference before
+processing the scene.
+
+**The pattern:**
+```
+
+REFERENCE IMAGE FIRST: The attached image shows [product/element name]. [State exactly what must appear and where.] Do not invent a different [product/bottle/element].
+Now generate: [creative direction begins here]
+
+```
+
+**In practice:**
+
+WRONG -- creative direction before reference acknowledgment:
+```
+
+Generate a photorealistic editorial ad. Background: dark moody shower drain scene. Overlaid headline: "We Tested 5 Shampoos." Small Regrowth+ bottle in bottom right from the reference.
+
+```
+
+RIGHT -- reference block first:
+```
+
+REFERENCE IMAGE FIRST: The attached image shows the Regrowth+ shampoo bottle. This exact bottle must appear in the bottom right corner. Even though it is small, it must accurately reproduce the teal wave label and Regrowth+ branding from the reference. Do not invent a different bottle.
+Now generate: A photorealistic editorial ad. Background: dark moody shower drain scene. Overlaid headline: "We Tested 5 Shampoos."
+
+```
+
+**Observed effect:** Switching from creative-first to reference-first prompts
+in batch generation reduced generation time (some tasks completing in under 70
+seconds vs 200+ seconds previously) and eliminated the most common product
+fidelity failures where GPT rendered a generic white bottle instead of the
+actual product.
+
+**Applies to:** Image-to-image mode only (when `input_urls` is provided).
+Text-to-image prompts are unaffected -- there is no reference to front-load.
+
+
+### Reference Image Scale Context Rule (CRITICAL -- prevents wrong product size)
 
 **The reference image must match the scene context.** An isolated packshot (product on transparent/white background with no surrounding objects) provides NO scale information. The AI model has no way to determine how large the product should be relative to a person, a shelf, a counter, or any other object in the scene. It will default to whatever size fills the composition, which is almost always wrong.
 
@@ -160,8 +251,8 @@ not enlarge or shrink the product beyond its real-world proportions.
 
 When generating prompts programmatically (e.g., from Creative Engine or another tool that passes product metadata):
 - **hand_model reference:** "Preserve the exact product-to-hand scale ratio shown in Image 1. The product must remain graspable in one hand. Do not enlarge beyond what is shown in the reference."
-- **Known dimensions from product catalog:** "Product details: [dimensions]. When placing in a scene with people, it must appear at this natural real-world scale — small enough to hold comfortably in one hand. Do not enlarge the product to fill the frame."
-- **No data available (fallback):** "The product is a standard personal care bottle. In scenes with people, it should be graspable in one hand — roughly 1/4 to 1/3 the length of a human forearm. Do not enlarge beyond real-world proportions."
+- **Known dimensions from product catalog:** "Product details: [dimensions]. When placing in a scene with people, it must appear at this natural real-world scale -- small enough to hold comfortably in one hand. Do not enlarge the product to fill the frame."
+- **No data available (fallback):** "The product is a standard personal care bottle. In scenes with people, it should be graspable in one hand -- roughly 1/4 to 1/3 the length of a human forearm. Do not enlarge beyond real-world proportions."
 - **CRITICAL:** When the reference image shows the product held by a person (hand_model type), the scale relationship in the reference IS the ground truth.
 - **Never include fabricated dimensions** (like "250ml" or "18cm") unless they come from verified product data.
 
@@ -169,7 +260,7 @@ When generating prompts programmatically (e.g., from Creative Engine or another 
 1. "Does this scene include people, objects, or environments alongside the product?" If yes, the reference MUST show the product with scale context (hand, counter, other objects).
 2. "Does the isolated packshot provide enough information for the AI to render the product at correct size in this scene?" If no, choose a different reference.
 
-## Text in Image Rules (CRITICAL — GPT Image 2's core strength and weak point)
+## Text in Image Rules (CRITICAL -- GPT Image 2's core strength and weak point)
 
 GPT Image 2 is generally strong at text rendering, but text accuracy is a hard constraint and deserves explicit handling.
 
@@ -177,7 +268,7 @@ GPT Image 2 is generally strong at text rendering, but text accuracy is a hard c
 
 1. **Always quote required visible text exactly.** Do not paraphrase user-provided text.
 2. **Preserve capitalization, punctuation, spacing, and line breaks exactly.**
-3. **When spelling is critical, repeat the text letter-by-letter after the quote.** Example: `"CITY ROAST FEST"` — spell exactly as written. For the headline, C-I-T-Y space R-O-A-S-T space F-E-S-T.
+3. **When spelling is critical, repeat the text letter-by-letter after the quote.** Example: `"CITY ROAST FEST"` -- spell exactly as written. For the headline, C-I-T-Y space R-O-A-S-T space F-E-S-T.
 4. **Specify placement, hierarchy, size, weight, contrast, and background treatment for legibility.**
 5. **Declare text as a hard constraint when the image type demands it.** Posters, ads, packaging, signs, charts, diagrams, infographics, menus, UI screens, and logos should state this explicitly:
    ```
@@ -193,13 +284,13 @@ GPT Image 2 is generally strong at text rendering, but text accuracy is a hard c
 - Short critical words (3-8 characters) where a single-letter drop changes meaning
 - Any word where drift would break the design (product names, event names, CTAs)
 
-Skip letter-by-letter for common English words ('AFTER', 'BEFORE', 'CLICK HERE') — it adds noise without meaningfully reducing risk.
+Skip letter-by-letter for common English words ('AFTER', 'BEFORE', 'CLICK HERE') -- it adds noise without meaningfully reducing risk.
 
 ### Forbidden by omission
 
 GPT Image 2 rarely adds gibberish the way some models do, but it can add interpretive decorative text. Close out the `Constraints:` line with: `no extra text, no misspellings, no placeholder, no overlapping elements.`
 
-## Standalone Context Rule (CRITICAL — prevents meaningless images)
+## Standalone Context Rule (CRITICAL -- prevents meaningless images)
 
 **Every image with text or data must be self-explanatory without any external caption, ad copy, or surrounding context.** A viewer scrolling past the image in a feed must understand the core message from the image alone.
 
@@ -214,7 +305,7 @@ This means:
 
 **This rule applies to ALL image types with rendered text:** infographics, data graphics, comparison layouts, editorial layouts, stat callouts, listicle images, and any image where text is part of the visual.
 
-## Headline and Copy Default Rule (CRITICAL — prevents contextless ad images)
+## Headline and Copy Default Rule (CRITICAL -- prevents contextless ad images)
 
 **By default, every ad image MUST include rendered text (headline, subheadline, or key message) that makes the image self-explanatory.** This is an extension of the Standalone Context Rule, applied specifically to ad creatives.
 
@@ -235,9 +326,9 @@ A viewer scrolling past an ad in a feed must understand the core message from th
 
 **Pre-headline checklist:** Before finalizing any ad prompt, ask: "Is this a Lifestyle image or did the user request no text?" If NO to both, a headline is mandatory.
 
-## Environmental Coherence Rule (CRITICAL — prevents unrealistic scenes)
+## Environmental Coherence Rule (CRITICAL -- prevents unrealistic scenes)
 
-**Every object, prop, and element in the scene MUST belong naturally in the described environment.** The AI model does not judge whether objects make sense together — it renders whatever you describe. You must enforce realism.
+**Every object, prop, and element in the scene MUST belong naturally in the described environment.** The AI model does not judge whether objects make sense together -- it renders whatever you describe. You must enforce realism.
 
 **Environment-specific rules:**
 - **Bathroom scenes:** ONLY items found in a real bathroom (toiletries, towels, soap, toothbrush, cotton pads, candles, mirrors, hair tools). NEVER laptops, coffee cups, business cards, food, office supplies, or electronics other than an electric toothbrush or hair tool.
@@ -248,9 +339,9 @@ A viewer scrolling past an ad in a feed must understand the core message from th
 
 **Pre-prompt checklist:** Before finalizing any prompt, ask: "Would every single object I described actually be found in this environment in real life?" If any object would look out of place in the setting, remove it or replace it with something that belongs.
 
-**This rule applies to ALL scene types.** The goal is photographic realism — the image should look like it could be a real photograph taken in that environment.
+**This rule applies to ALL scene types.** The goal is photographic realism -- the image should look like it could be a real photograph taken in that environment.
 
-## Anatomical Integrity Protocol (CRITICAL — prevents body horror)
+## Anatomical Integrity Protocol (CRITICAL -- prevents body horror)
 
 **Human subjects must have natural, correct anatomy.** GPT Image 2 is generally stronger than Nano Banana Pro at hand and limb rendering, but constraints are still required for high-risk scenes.
 
@@ -275,7 +366,7 @@ No extra fingers, no extra hands, no third arm, no merged or fused limbs,
 no distorted facial features, no unnatural joint angles.
 ```
 
-**Tip:** Medium shots (waist up) with hands below frame or naturally positioned are the safest framing for scenes with people. GPT Image 2's multi-person hand rendering is materially better than Nano's — if the scene involves two people interacting, GPT is often the correct default.
+**Tip:** Medium shots (waist up) with hands below frame or naturally positioned are the safest framing for scenes with people. GPT Image 2's multi-person hand rendering is materially better than Nano's -- if the scene involves two people interacting, GPT is often the correct default.
 
 ## When to Use Photorealistic Language
 
@@ -285,7 +376,7 @@ GPT Image 2 takes "photorealistic" as a real instruction, not a fluffy quality b
 - Composited scenes where a person or object must sit convincingly inside a believable environment.
 - Cases where the user explicitly asks for the image to look like a real photo rather than an illustration, render, or graphic design piece.
 
-**Reinforce photorealism with grounded photographic cues** — camera angle, lens feel, natural lighting, believable materials, realistic textures, true-to-life proportions, subtle imperfections, and explicit anti-stylization constraints when needed:
+**Reinforce photorealism with grounded photographic cues** -- camera angle, lens feel, natural lighting, believable materials, realistic textures, true-to-life proportions, subtle imperfections, and explicit anti-stylization constraints when needed:
 
 ```
 Style/medium: photoreal product photography, grounded and believable,
@@ -403,7 +494,7 @@ Read `references/patterns.md` for the pattern matching the classification. The s
 
 ### Step 5: Construct Prompt
 
-Build in the Canonical Order (above). Apply the pattern's specific guidance on top of the default structure. Not every prompt needs every line — simple edits may only use `Edit / Change ONLY / Keep EVERYTHING ELSE`. Text-heavy designs need the full text protocol.
+Build in the Canonical Order (above). Apply the pattern's specific guidance on top of the default structure. Not every prompt needs every line -- simple edits may only use `Edit / Change ONLY / Keep EVERYTHING ELSE`. Text-heavy designs need the full text protocol.
 
 **Before finalizing, run seven validation checks:**
 - **Classification check:** Was the request classified as exactly one type? (Mandatory: Request Classification)
@@ -471,7 +562,7 @@ If called from another skill, return the prompt in that skill's expected format.
 
 ## Soft Routing Guidance (Nano vs GPT)
 
-The nano-vs-gpt A/B test v1 (April 2026, n=6 voters × 14 concepts) produced directional signals — not hard defaults. Use these as hints when the caller is choosing between models:
+The nano-vs-gpt A/B test v1 (April 2026, n=6 voters × 14 concepts) produced directional signals -- not hard defaults. Use these as hints when the caller is choosing between models:
 
 **Lean toward GPT Image 2 when:**
 - The concept involves two or more people interacting with each other or with a product (Models Interacting category won 10-2 for GPT in v1)
@@ -513,13 +604,15 @@ The nano-vs-gpt A/B test v1 (April 2026, n=6 voters × 14 concepts) produced dir
 | Extra fingers / distorted hands | No anatomical constraints for people | Apply Anatomical Integrity Protocol |
 | Multi-reference merging | Reference roles left ambiguous | Label each image and state exactly what transfers from each |
 | Iteration drift | Multiple changes in one refinement round | One variable at a time, restate invariants each round |
-| `input_fidelity` suggested | Treated as a Sora/Dall-E-style param | Do not suggest this param — GPT Image 2 processes at high fidelity by default |
+| `input_fidelity` suggested | Treated as a Sora/Dall-E-style param | Do not suggest this param -- GPT Image 2 processes at high fidelity by default |
+| Product in corner/background renders as generic bottle despite reference | Model interprets small placement as permission for low fidelity | Add explicit instruction: "Even though it is small, it must accurately reproduce [details] from the reference" (Small/Secondary Placement Sub-Rule) |
+| Reference ignored despite being passed in input_urls | Creative description precedes reference acknowledgment in prompt text | Apply Reference Image Front-Loading Rule: open prompt with reference block before any creative direction |
 | Product invented without reference | Pre-generation gate skipped; no REF URL loaded | Run Step 2.5 Pre-Generation Reference Gate; load REF URL from image-reference-index.md before prompt construction |
 | Ad rendered at wrong aspect ratio | Default 1:1 rule not applied | Run Step 7 Aspect Ratio and Size; default to 1:1 for ad creatives unless user specifies otherwise |
 
 ## Failure Modes to Actively Avoid
 
-(From the GPT Image 2 prompting guide — these are the canonical anti-patterns the model's authors call out)
+(From the GPT Image 2 prompting guide -- these are the canonical anti-patterns the model's authors call out)
 
 - Overwriting scope with unrequested stylistic additions
 - Dense prompts that bury the actual constraint
@@ -541,4 +634,4 @@ The nano-vs-gpt A/B test v1 (April 2026, n=6 voters × 14 concepts) produced dir
 - Does not replace brand guidelines (reads them for colors, fonts, visual identity)
 - Does not create ad concepts (the ad-style-generator skill does that; this skill writes the GPT Image 2 prompt)
 - Does not handle video prompts (see video-prompting-guide)
-- Does not override user choice between Nano and GPT Image 2 — CE's UI lets the user pick, and this skill is invoked after that choice is made. Soft routing guidance is for callers asking "which should I use?" without having picked yet.
+- Does not override user choice between Nano and GPT Image 2 -- CE's UI lets the user pick, and this skill is invoked after that choice is made. Soft routing guidance is for callers asking "which should I use?" without having picked yet.

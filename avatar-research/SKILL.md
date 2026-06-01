@@ -1,6 +1,6 @@
 ---
 name: avatar-research
-version: "1.0.0"
+version: "2.0.0"
 description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Use this skill whenever the user wants to create customer avatars, psychographic profiles, buyer personas, or audience research briefs for Deep Research. Trigger on phrases like: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. This skill reads Phase 1 (Business Validation) output as primary context and generates a fully customized avatar research prompt optimized for Deep Research. Also trigger when user provides a business validation report and wants customer profiles derived from it."
 ---
 
@@ -22,8 +22,8 @@ Transform Phase 1 (Business Validation) output + client braindump into a fully c
 
 This skill requires TWO inputs:
 
-1. **Phase 1 Business Validation Report** (primary context) — provides validated segments, competitive landscape, market positioning, customer voice quotes, and hypothesis testing results
-2. **Client Braindump** (supplementary context) — provides brand details, product portfolio, pricing, positioning, and founder perspective
+1. **Phase 1 Business Validation Report** (primary context) -- provides validated segments, competitive landscape, market positioning, customer voice quotes, and hypothesis testing results
+2. **Client Braindump** (supplementary context) -- provides brand details, product portfolio, pricing, positioning, and founder perspective
 
 If Phase 1 is not available, the skill can still generate an avatar brief but will note reduced quality. The validation report is what makes the avatars evidence-based rather than assumption-based.
 
@@ -55,7 +55,7 @@ Read the business validation report and extract these specific sections. Each fe
 | Market Size (1.5) | TAM/SAM/SOM, growth drivers, segment sizes | Target market opportunity |
 | Demand Validation (1.4) | Search interest, community activity, platform data | Platform-specific research guidance |
 
-### From Product Deep Research (Optional — if completed before or alongside Avatar Research)
+### From Product Deep Research (Optional -- if completed before or alongside Avatar Research)
 
 If Product Deep Research has been completed, also extract:
 
@@ -63,7 +63,7 @@ If Product Deep Research has been completed, also extract:
 |---------|----------------|------------|
 | Product Registry | Shortlisted product candidates with avatar assignments | G2: Product Affinity Mapping |
 | Bundle Registry | Bundle archetypes with target avatars | G2: Bundle Appeal |
-| System Thinking classifications | COMPLETION/AMPLIFICATION/PROTECTION/RETENTION rationales | Journey mapping — which products solve which journey moments |
+| System Thinking classifications | COMPLETION/AMPLIFICATION/PROTECTION/RETENTION rationales | Journey mapping -- which products solve which journey moments |
 | Hero Product Mechanism | How the hero product works, its limitations | Competitive context per avatar |
 
 This enrichment is optional. The skill works fully without it but produces deeper, more actionable avatars when product strategy context is available.
@@ -82,11 +82,11 @@ This enrichment is optional. The skill works fully without it but produces deepe
 
 The Phase 1 report contains preliminary avatar sketches. The skill must:
 
-1. **Adopt validated segments** — Use the segments exactly as validated in Phase 1, including any priority reordering that contradicted the founder's original hypothesis
-2. **Preserve priority ranking** — If Phase 1 recommended a different primary segment than the founder assumed, maintain that recommendation
-3. **Include segment challenge findings** — If Phase 1 found that the founder's "core" segment is actually low-value, this must be reflected in the persona definitions
-4. **Add missed segments** — If Phase 1 identified potential segments the founder missed, include them
-5. **Calculate persona count** — Typically 4-6 personas. Use Phase 1 validated segments as base, add 1-2 for coverage gaps (demographic variation, awareness stage gaps, regional variation)
+1. **Adopt validated segments** -- Use the segments exactly as validated in Phase 1, including any priority reordering that contradicted the founder's original hypothesis
+2. **Preserve priority ranking** -- If Phase 1 recommended a different primary segment than the founder assumed, maintain that recommendation
+3. **Include segment challenge findings** -- If Phase 1 found that the founder's "core" segment is actually low-value, this must be reflected in the persona definitions
+4. **Add missed segments** -- If Phase 1 identified potential segments the founder missed, include them
+5. **Calculate persona count** -- Typically 4-6 personas. Use Phase 1 validated segments as base, add 1-2 for coverage gaps (demographic variation, awareness stage gaps, regional variation)
 
 ### Segment-to-Persona Mapping
 
@@ -103,6 +103,19 @@ Assign each persona to exactly one Eugene Schwartz awareness stage. Requirements
 - Cover at least 3 of 5 stages across all personas
 - Two personas may share one stage (choose the stage with highest strategic value)
 - Assignment must be justified by Phase 1 psychographic data, not assumed
+
+### High-Risk Avatar Assessment
+
+Before generating the avatar brief, assess each proposed avatar against the high-risk criteria defined in the Research Integrity Framework (see avatar-profile-template.md). For each avatar, make an explicit determination: HIGH-RISK or STANDARD.
+
+Document this determination in the Step 6 summary presented to the user before output:
+```
+
+Avatar Risk Assessment: [Avatar Name]: STANDARD / HIGH-RISK -- [reason if high-risk] [Avatar Name]: STANDARD / HIGH-RISK -- [reason if high-risk]
+
+```
+
+When presenting to the user, note: "HIGH-RISK avatars are expected to return with thinner [CONFIRMED] sections and more extensive Research Gaps. This is the correct outcome, not a research failure."
 
 ## Step 3: Synthesize Research Context
 
@@ -218,15 +231,29 @@ Customizations applied:
   - [category]-specific attitude dimensions
   - Brand writing standards included
   - [count] personas defined across [count] awareness stages
-  - Product affinity mapping: [included / not included — depends on Product Deep Research availability]
+  - Product affinity mapping: [included / not included -- depends on Product Deep Research availability]
 
 Next: Paste this brief into Deep Research.
 After research completes:
-  → Avatar profiles feed into Phase 3 (Brand Guidelines) — voice, tone, visual identity
-  → Avatar profiles feed into Phase 4 (Copywriting Guide) — avatar-specific language
-  → Avatar Registry feeds into Creative Engine — ad creative targeting
-  → Avatar Registry feeds into Phase 5 (Funnel Building) — avatar-specific funnels
+  → Avatar profiles feed into Phase 3 (Brand Guidelines) -- voice, tone, visual identity
+  → Avatar profiles feed into Phase 4 (Copywriting Guide) -- avatar-specific language
+  → Avatar Registry feeds into Creative Engine -- ad creative targeting
+  → Avatar Registry feeds into Phase 5 (Funnel Building) -- avatar-specific funnels
   → If Product Deep Research completed, cross-reference product affinity per avatar
+```
+
+### Pre-Submission Quality Checklist
+
+The generated research brief must pass this checklist before being delivered to the user. Do not deliver the brief if any item fails.
+```
+
+RESEARCH INTEGRITY CHECKLIST
+Source Logs: [ ] Stage 1 source logs are present for all avatars before any profiles [ ] Standard avatars have minimum 5 consumer quotes each [ ] HIGH-RISK avatars have minimum 3 consumer quotes each, or gap acknowledged [ ] All quotes include platform, month/year, and URL or community context [ ] All published data points include direct verbatim quote, URL, and date
+Confidence Tiers: [ ] Every factual claim in every profile body carries a tier label [ ] Every [CONFIRMED] claim includes a verbatim quote (max 30 words), URL, and month/year [ ] No source cited as [CONFIRMED] is brand-owned content -- those are [CONFIRMED -- BRAND OWNED] [ ] All sources older than 4 years carry [CONFIRMED -- DATED] label [ ] No [HYPOTHESISED] content appears in main profile body outside its dedicated subsection
+Mandatory Subsections: [ ] "Evidence That Challenges This Avatar Hypothesis" present in every profile [ ] "Research Gaps and Unknowns" present in every profile [ ] "Hypotheses Requiring Validation" present in every profile [ ] HIGH-RISK profiles carry the explicit flag and have honest thin sections where data was absent
+Prohibited Inferences: [ ] No GCC-specific symptom data inferred from Western studies without [INFERRED -- cross-regional] label [ ] No GCC national behaviour inferred from expat behaviour [ ] No hijab-specific behaviour inferred from general Muslim-population data [ ] No cross-regional minoxidil or perimenopause data used without explicit flagging [ ] No purchase behaviour inferred from demographic proxies alone [ ] No awareness stage assigned without a sourced basis
+Output Completeness: [ ] Stage 1 logs appear before all profiles [ ] All profiles complete with Sections A through L plus three mandatory subsections [ ] Summary Comparison Table present [ ] Strategic Synthesis present (minimum 500 words) [ ] Creative Engine Avatar Registry complete for all avatars [ ] Two new registry fields (Confidence Profile, Key Unknowns) present for all avatars [ ] Confirmed Scientific Anchors appendix present [ ] Compliance note at end of appendix confirms GCC compliance and writing standards
+
 ```
 
 ## What This Skill Does NOT Do

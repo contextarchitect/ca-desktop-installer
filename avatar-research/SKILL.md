@@ -1,7 +1,7 @@
 ---
 name: avatar-research
-version: "2.0.0"
-description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Use this skill whenever the user wants to create customer avatars, psychographic profiles, buyer personas, or audience research briefs for Deep Research. Trigger on phrases like: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. This skill reads Phase 1 (Business Validation) output as primary context and generates a fully customized avatar research prompt optimized for Deep Research. Also trigger when user provides a business validation report and wants customer profiles derived from it."
+version: "2.1.0"
+description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Includes live MCP harvest of Reddit and YouTube first-person voice via socialvault tools (reversed-fetch rule: never direct-fetch Reddit/YouTube/Amazon). Reads Phase 1 (Business Validation) output and produces a fully customized, voice-seeded avatar brief optimized for Deep Research. Trigger on: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. Also trigger when user provides a business validation report and wants customer profiles derived from it."
 ---
 
 # Avatar Research Skill
@@ -108,7 +108,7 @@ Assign each persona to exactly one Eugene Schwartz awareness stage. Requirements
 
 Before generating the avatar brief, assess each proposed avatar against the high-risk criteria defined in the Research Integrity Framework (see avatar-profile-template.md). For each avatar, make an explicit determination: HIGH-RISK or STANDARD.
 
-Document this determination in the Step 6 summary presented to the user before output:
+Document this determination in the Step 8 summary presented to the user before output:
 ```
 
 Avatar Risk Assessment: [Avatar Name]: STANDARD / HIGH-RISK -- [reason if high-risk] [Avatar Name]: STANDARD / HIGH-RISK -- [reason if high-risk]
@@ -117,7 +117,102 @@ Avatar Risk Assessment: [Avatar Name]: STANDARD / HIGH-RISK -- [reason if high-r
 
 When presenting to the user, note: "HIGH-RISK avatars are expected to return with thinner [CONFIRMED] sections and more extensive Research Gaps. This is the correct outcome, not a research failure."
 
-## Step 3: Synthesize Research Context
+## Step 2.5: Accessibility-Tiered Platform Mapping (v2.1.0)
+
+Before generating platform research guidance, classify every platform into one of three access tiers. The classification determines whether Deep Research is directed to fetch the platform directly, or whether the skill harvests it via MCP in Step 3.
+
+### The Three Tiers
+
+**Tier 1 — MCP-Harvested (never direct-fetched)**
+Reddit and YouTube. These platforms are no longer reliably reachable via open-web fetch by a research agent. First-person voice from Reddit and YouTube is harvested by the skill itself in Step 3 using the socialvault MCP tools, then injected as provided context into the Deep Research brief. Deep Research must not attempt to fetch Reddit or YouTube directly. This is the reversed-fetch rule.
+
+**Tier 2 — Directly-Fetchable**
+Patient forums, review platforms, and community sites that a research agent can still reach reliably. Examples: Mayo Clinic Connect, Diabetes UK Forum, Diabetes.co.uk, WebMD user reviews, HealthUnlocked, Drugs.com, AgingCare, Patient.info, Trustpilot. Deep Research pulls these itself during the research pass.
+
+**Tier 3 — Blind Spot**
+Amazon. Reviews are not reliably fetchable. Log as a gap in every avatar's source tracking table. Never fabricate Amazon voice. Never infer from demographic proxies what Amazon reviews might say.
+
+### Harvest Map Generation
+
+For each prioritized avatar (primary and secondary), derive a harvest map from the Phase 1 report's community mentions, avatar "Gathers" lines, and the category-specific platform priorities in references/platform-mapping.md. For each avatar produce:
+
+- **Tier 1 targets:** Specific subreddits (bare names, no r/ prefix needed for the tool), the search queries to run in each (sort: top or relevance, timeframe: year), and one or two YouTube search queries targeting the avatar's primary concern or supplement/product angle.
+- **Tier 2 communities:** Named fetchable forums most relevant to that avatar's stated information sources and community behavior.
+- **Tier 3 note:** "Amazon — logged blind spot."
+
+For deprioritized avatars, note a lighter Tier 1 probe (one or two searches, one comment pull) sufficient to capture genuine voice or to document a gap or product-fit mismatch honestly.
+
+Print this as a headed **ACCESSIBILITY-TIERED HARVEST MAP** before running the live harvest.
+
+## Step 3: Live MCP Harvest (v2.1.0)
+
+Run the Tier 1 harvest now, against the map derived in Step 2.5. This is a live pass using the socialvault MCP tools. It runs before the Deep Research brief is generated, not after.
+
+### Required Tools
+- `reddit_subreddit_search` (filter: posts, sort: top or relevance, timeframe: year)
+- `reddit_post_comments` (on the highest-comment threads returned)
+- `youtube_search` (region: US, sortBy: popular)
+- `youtube_video_comments` (order: top, keep_creator: false)
+
+### Method
+
+**For each prioritized avatar:**
+Use `reddit_subreddit_search` to find high-comment threads on the target queries, then `reddit_post_comments` on the two or three best threads to pull verbatim first-person voice. Run `youtube_search` on the avatar's primary angle, then `youtube_video_comments` on the highest-view result with substantial community engagement.
+
+**For each deprioritized avatar:**
+Run one or two searches and one comment pull. Sufficient to capture real voice or to document the gap or mismatch honestly. Do not pad. If the harvested voice reveals a product-fit mismatch — the avatar's natural vocabulary and concerns do not map to this product — capture that in their own words and flag it explicitly.
+
+### Hygiene Rules
+
+- Weight comments over OP selftext. The tool returns selftext separately and flags it as potentially covert marketing. Do not treat selftext as organic first-person voice.
+- Creator comments and pinned promotional comments on YouTube are dropped by default (keep_creator: false). Leave this default on.
+- YouTube date_relative is the only reliable date signal. Do not treat YouTube voice as current-market language. Use Reddit as the freshness source.
+- Do not keep deleted comments (keep_deleted: false) unless there is a stated reason.
+- Only first-person customer voice counts toward quota. Journalism, blog prose, clinician monologue, brand or creator content do not count.
+
+### Quotas
+
+- Minimum 8 verbatim first-person quotes per prioritized avatar.
+- Minimum 3 verbatim first-person quotes per deprioritized avatar, or an honest gap log if none usable are found.
+- Economy guardrail: soft cap of approximately 10-12 comment-pull calls per avatar. If the quota is not met within the cap, log the shortfall honestly. Never pad with fabricated or paraphrased voice.
+
+### Harvest Log
+
+After completing the harvest, print a **HARVEST LOG** in this format:
+HARVEST LOG
+Avatar [name] (priority): targets queried [...], calls [n], credits [n], first-person quotes captured [n], gaps/flags [...]
+...
+Totals: calls [n], credits [n]
+
+## Step 4: Voice Appendix and Source Tracking Table (v2.1.0)
+
+Before generating the Deep Research brief, assemble the full voice corpus that will be embedded in the brief as its pre-seeded source layer.
+
+### Voice Appendix Construction
+
+For each avatar, build a per-avatar voice block with two layers:
+
+**Layer 1 — Newly harvested Reddit and YouTube first-person quotes (from Step 3)**
+
+Format each quote on one line:
+`"[verbatim quote]" | [platform / community or video title] | [date or relative date] | [score or likes if available] | [tier label] | [any hygiene flag]`
+
+Tier labels for this layer: `[CONFIRMED - REDDIT]` or `[CONFIRMED - YOUTUBE - dated]` as appropriate. YouTube voice carries the dated flag by default.
+
+**Layer 2 — Carried-forward Phase 1 voice relevant to that avatar**
+
+Apply the Phase 1 tier labels. Flag all vendor-hosted or brand-owned quotes as `[CONFIRMED -- BRAND OWNED]` and note they are excluded from the organic first-person count.
+
+### Source Tracking Table
+
+After the voice appendix, produce a per-avatar source tracking table:
+
+| Avatar | Tier 1 harvested (Reddit/YT) | Tier 2 fetchable | Tier 3 Amazon | Vendor-hosted (excluded) | Total first-person voice | Quota met (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|
+
+Amazon's cell reads "logged gap" for every row. Vendor-hosted quotes are counted separately and never folded into the first-person total. Surface honest thin-avatar flags in the Notes column.
+
+## Step 5: Synthesize Research Context
 
 Build the avatar brief context by merging Phase 1 findings with braindump details.
 
@@ -145,7 +240,7 @@ From Phase 1 customer voice repository: select 8-10 strongest direct quotes with
 3. Quotes revealing emotional state (frustration, resignation, hope)
 4. Quotes containing natural language the target audience uses
 
-## Step 4: Generate Platform-Specific Research Guidance
+## Step 6: Generate Platform-Specific Research Guidance
 
 Read `references/platform-mapping.md` for geography and category-specific platform guidance.
 
@@ -159,7 +254,7 @@ Based on geography and category detected, generate the "Where to Find Each Avata
 
 **The critical principle:** People speak differently on Reddit vs MumsNet vs TikTok vs Facebook Groups. The research brief must direct Deep Research to the specific communities where each persona drops their guard and reveals true motivations.
 
-## Step 5: Customize Avatar Profile Template
+## Step 7: Customize Avatar Profile Template
 
 Read `references/avatar-profile-template.md` for the universal profile structure (Sections A through L).
 
@@ -171,44 +266,47 @@ The profile template is universal and requires minimal customization. Customize 
 
 Everything else in the profile template (Sections B-I, K, L) is universal and should be included as-is.
 
-## Step 6: Present Summary and Confirm
+## Step 8: Present Summary and Confirm
 
 Before outputting the final brief, present:
 
 ```
-AVATAR RESEARCH BRIEF READY: [brand_name]
-
+AVATAR RESEARCH BRIEF (v2.1.0) BUILDING: [Brand]
+Verdict: [verdict] ([confidence])
+Segments derived: [count] ([names with priority tier])
+Awareness coverage: [stages covered]
+High-risk avatars: [names or none]
+Phase 1 voice on hand: [count] quotes ([fetchable] fetchable / [vendor] vendor-hosted excluded)
+Known gap to close: verbatim Reddit + YouTube first-person voice
 Phase 1 Context Loaded:
-  Verdict: [verdict] ([confidence])
-  Validated Segments: [count] ([names])
-  Priority Order: [ordered list with rationale]
-  Customer Voice Quotes: [count] available
-  Competitive Context: [count] competitors analyzed
-
+Validated Segments: [count] ([names])
+Priority Order: [ordered list with rationale]
+Customer Voice Quotes: [count] available
+Competitive Context: [count] competitors analyzed
 Personas to Research: [count]
-  1. [Name] ([awareness stage]) - [strategic importance]
-  2. [Name] ([awareness stage]) - [strategic importance]
-  [...]
+
+[Name] ([awareness stage]) - [priority tier] - [STANDARD / HIGH-RISK]
+[Name] ([awareness stage]) - [priority tier] - [STANDARD / HIGH-RISK]
+[...]
 
 Awareness Stage Coverage: [stages covered]
-Missing Coverage: [any gaps noted]
-
+Harvest Map: [subreddits and YouTube queries per avatar — brief summary]
 Expected Output: [count] avatars x 1,500+ words = [total]+ words
-Plus: comparison table, strategic synthesis (500+ words)
-
+Plus: comparison table, strategic synthesis (500+ words), Creative Engine Registry
 Confirm or adjust persona count/selection:
 ```
 
-## Step 7: Output
+## Step 9: Output
 
 Deliver the complete customized avatar research brief as a single document for Deep Research.
 
 The brief must contain all 10 sections:
-1. Context (populated from Steps 1-3)
-2. Research Methodology (populated from Step 4)
+1. Context (populated from Steps 1-5)
+2. Research Methodology (populated from Step 6)
+2b. Reversed-Fetch Rule and Accessibility Tiers — must explicitly state: (a) Do not attempt to directly fetch Reddit, Amazon, or YouTube. First-person voice from Reddit and YouTube is PROVIDED in the embedded Voice Appendix and is the primary first-person voice source for this research. (b) Supplement with the Tier 2 directly-fetchable sources, named per avatar. (c) Amazon is a logged blind spot. Do not fabricate Amazon reviews. If Amazon voice would be cited, mark it as a logged gap instead.
 3. Research Instructions with persona definitions (from Step 2)
 4. Awareness Stage Mapping (from Step 2)
-5. Avatar Profile Structure (from Step 5, mostly universal)
+5. Avatar Profile Structure (from Step 7, mostly universal)
 6. Additional Research Requirements (universal)
 7. Output Format (universal with persona count customized)
 8. Quality Standards (universal + brand writing standards)
@@ -255,6 +353,22 @@ Prohibited Inferences: [ ] No GCC-specific symptom data inferred from Western st
 Output Completeness: [ ] Stage 1 logs appear before all profiles [ ] All profiles complete with Sections A through L plus three mandatory subsections [ ] Summary Comparison Table present [ ] Strategic Synthesis present (minimum 500 words) [ ] Creative Engine Avatar Registry complete for all avatars [ ] Two new registry fields (Confidence Profile, Key Unknowns) present for all avatars [ ] Confirmed Scientific Anchors appendix present [ ] Compliance note at end of appendix confirms GCC compliance and writing standards
 
 ```
+
+## Compliance and Regulatory Findings
+
+Compliance and regulatory findings surfaced during avatar research — including but not limited to FDA/FTC enforcement context, DSHEA structure-function rules, warning letter language, scientific expressions of concern, ingredient safety data, and advertising platform policy — are **research outputs, not creative guardrails**.
+
+The skill's job is to surface them accurately, completely, and in context. How the brand applies that information is the brand's decision.
+
+**Rules that follow from this:**
+
+1. The avatar research brief must present compliance-relevant findings in the Context section and the Confirmed Scientific Anchors appendix as factual information, not as restrictions.
+
+2. The brief must not instruct Deep Research to avoid specific claims, angles, phrases, or language patterns on compliance grounds. It may note that a claim or phrase sits within a category that a named regulatory body has scrutinised, but the notation is informational only.
+
+3. The Language to Avoid list in Section L of each avatar profile is driven by what resonates or alienates this specific avatar psychologically — not by compliance concerns. Compliance context may be noted in the Research Gaps or Confirmed Scientific Anchors sections but does not populate the Language to Avoid list.
+
+4. Downstream skills (copywriting-guide, funnel-builder, video-script-generator, angle-roadmap, ad-style-generator) follow the same rule unless the client explicitly instructs restriction. If a client instructs "apply compliance restrictions to all downstream creative," that instruction overrides this default.
 
 ## What This Skill Does NOT Do
 

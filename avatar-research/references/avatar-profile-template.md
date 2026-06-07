@@ -371,7 +371,9 @@ Quotes used in Stage 1 logs must appear verbatim in the profiles -- not re-parap
 
 After all avatars, provide:
 
-| Persona | Gender | Age | Awareness Stage | Primary Pain | Primary Desire | Key Objection | Emotional Hook | Entry Product | Upgrade Likelihood | Primary Platform |
+| Persona | Gender | Age | Awareness Stage | {category_specific_journey_stage} | Primary Pain | Primary Desire | Key Objection | Emotional Hook | Entry Product | Upgrade Likelihood | Primary Platform |
+
+Note: Replace {category_specific_journey_stage} with the category-specific stage column label defined in Section A for this brand (e.g., "Blood-Sugar Management Journey Stage", "Sleep Solution Journey Stage", "Hair Loss Journey Stage"). If no category-specific stage was defined for this brand, use "Category Journey Stage".
 
 ### Strategic Synthesis (500+ words)
 
@@ -431,10 +433,10 @@ Format:
 | Claim | Verbatim Quote (max 30 words) | Source, Journal/Platform, URL, Date | Tier |
 |---|---|---|---|
 
-Include a compliance note at the bottom of the appendix confirming:
-- All marketing-facing language follows brand GCC compliance rules (no city or country names)
-- All forbidden vocabulary excluded from creative-facing sections
-- All [CONFIRMED -- DATED] sources flagged as potentially stale
+Include a note at the bottom of the appendix confirming:
+- All compliance-relevant findings in this appendix are informational. The brand determines how to apply them. No finding constitutes a creative restriction unless explicitly instructed by the client.
+- All [CONFIRMED -- DATED] sources are flagged as potentially stale.
+- Brand-specific writing standards (forbidden vocabulary, tone rules) were applied as instructed in Section 8 / {brand_writing_standards}.
 
 ---
 

@@ -1,7 +1,7 @@
 ad-analysis-tagger=1.0.0
 breakthrough-advertising=1.0.0
 business-validation=1.0.0
-avatar-research=2.1.0
+avatar-research=2.1.1
 brand-analyzer=1.0.0
 copywriting-guide=1.2.0
 funnel-builder=2.6.0
@@ -14,3 +14,4 @@ video-script-generator=1.6.0
 long-form-static-builder=1.2.0
 gpt-image-2-prompting=1.2.0
 figma-to-lovable=1.0.0
+duplicate-pages=2.0.0

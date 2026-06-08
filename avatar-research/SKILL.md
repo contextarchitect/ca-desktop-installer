@@ -1,7 +1,7 @@
 ---
 name: avatar-research
-version: "2.1.0"
-description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Includes live MCP harvest of Reddit and YouTube first-person voice via socialvault tools (reversed-fetch rule: never direct-fetch Reddit/YouTube/Amazon). Reads Phase 1 (Business Validation) output and produces a fully customized, voice-seeded avatar brief optimized for Deep Research. Trigger on: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. Also trigger when user provides a business validation report and wants customer profiles derived from it."
+version: "2.1.1"
+description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Includes live MCP harvest of Reddit and YouTube first-person voice via socialvault tools (reversed-fetch rule: never direct-fetch Reddit/YouTube/Amazon). Harvest is source-diversity and saturation based; sources are weighted (first-party over Tier 2 forums over Reddit over YouTube) with a two-source corroboration rule for decision-driving claims. Reads Phase 1 (Business Validation) output and produces a fully customized, voice-seeded avatar brief optimized for Deep Research. Trigger on: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. Also trigger when user provides a business validation report and wants customer profiles derived from it."
 ---
 
 # Avatar Research Skill
@@ -117,34 +117,34 @@ Avatar Risk Assessment: [Avatar Name]: STANDARD / HIGH-RISK -- [reason if high-r
 
 When presenting to the user, note: "HIGH-RISK avatars are expected to return with thinner [CONFIRMED] sections and more extensive Research Gaps. This is the correct outcome, not a research failure."
 
-## Step 2.5: Accessibility-Tiered Platform Mapping (v2.1.0)
+## Step 2.5: Accessibility-Tiered Platform Mapping
 
 Before generating platform research guidance, classify every platform into one of three access tiers. The classification determines whether Deep Research is directed to fetch the platform directly, or whether the skill harvests it via MCP in Step 3.
 
 ### The Three Tiers
 
-**Tier 1 — MCP-Harvested (never direct-fetched)**
+**Tier 1 -- MCP-Harvested (never direct-fetched)**
 Reddit and YouTube. These platforms are no longer reliably reachable via open-web fetch by a research agent. First-person voice from Reddit and YouTube is harvested by the skill itself in Step 3 using the socialvault MCP tools, then injected as provided context into the Deep Research brief. Deep Research must not attempt to fetch Reddit or YouTube directly. This is the reversed-fetch rule.
 
-**Tier 2 — Directly-Fetchable**
+**Tier 2 -- Directly-Fetchable**
 Patient forums, review platforms, and community sites that a research agent can still reach reliably. Examples: Mayo Clinic Connect, Diabetes UK Forum, Diabetes.co.uk, WebMD user reviews, HealthUnlocked, Drugs.com, AgingCare, Patient.info, Trustpilot. Deep Research pulls these itself during the research pass.
 
-**Tier 3 — Blind Spot**
+**Tier 3 -- Blind Spot**
 Amazon. Reviews are not reliably fetchable. Log as a gap in every avatar's source tracking table. Never fabricate Amazon voice. Never infer from demographic proxies what Amazon reviews might say.
 
 ### Harvest Map Generation
 
 For each prioritized avatar (primary and secondary), derive a harvest map from the Phase 1 report's community mentions, avatar "Gathers" lines, and the category-specific platform priorities in references/platform-mapping.md. For each avatar produce:
 
-- **Tier 1 targets:** Specific subreddits (bare names, no r/ prefix needed for the tool), the search queries to run in each (sort: top or relevance, timeframe: year), and one or two YouTube search queries targeting the avatar's primary concern or supplement/product angle.
-- **Tier 2 communities:** Named fetchable forums most relevant to that avatar's stated information sources and community behavior.
-- **Tier 3 note:** "Amazon — logged blind spot."
+- **Tier 1 targets:** At least three distinct subreddits (bare names, no r/ prefix needed for the tool), the search queries to run in each (sort: top or relevance, timeframe: year), and two or three YouTube search queries targeting the avatar's primary concern or supplement/product angle. Name more communities than seem strictly necessary; saturation in Step 3 decides where to stop, not a fixed count.
+- **Tier 2 communities:** At least three distinct fetchable forums or review platforms most relevant to that avatar's stated information sources and community behavior. This is a depth floor, not a single example, so that Tier 1 voice does not structurally dominate the corpus.
+- **Tier 3 note:** "Amazon -- logged blind spot."
 
-For deprioritized avatars, note a lighter Tier 1 probe (one or two searches, one comment pull) sufficient to capture genuine voice or to document a gap or product-fit mismatch honestly.
+For deprioritized avatars, note a Tier 1 probe of two or three distinct threads (deeper than a single pull) sufficient to capture genuine voice or to document a gap or product-fit mismatch honestly.
 
 Print this as a headed **ACCESSIBILITY-TIERED HARVEST MAP** before running the live harvest.
 
-## Step 3: Live MCP Harvest (v2.1.0)
+## Step 3: Live MCP Harvest
 
 Run the Tier 1 harvest now, against the map derived in Step 2.5. This is a live pass using the socialvault MCP tools. It runs before the Deep Research brief is generated, not after.
 
@@ -157,10 +157,12 @@ Run the Tier 1 harvest now, against the map derived in Step 2.5. This is a live 
 ### Method
 
 **For each prioritized avatar:**
-Use `reddit_subreddit_search` to find high-comment threads on the target queries, then `reddit_post_comments` on the two or three best threads to pull verbatim first-person voice. Run `youtube_search` on the avatar's primary angle, then `youtube_video_comments` on the highest-view result with substantial community engagement.
+Use `reddit_subreddit_search` across at least three distinct communities to find high-comment threads on the target queries, then `reddit_post_comments` on the highest-comment threads. Harvest from a minimum of five to eight distinct Reddit threads spanning at least three communities. Run `youtube_search` on the avatar's primary angle, then `youtube_video_comments` on two or three distinct videos with substantial community engagement, not one. Capture every usable verbatim first-person quote from each thread; quote count is not the stopping rule (see Saturation below).
+
+YouTube depth buys vocabulary and objections, not current-market language. Weight depth toward Reddit, which is the freshness source. Two or three videos is enough; do not chase YouTube saturation the way you do Reddit.
 
 **For each deprioritized avatar:**
-Run one or two searches and one comment pull. Sufficient to capture real voice or to document the gap or mismatch honestly. Do not pad. If the harvested voice reveals a product-fit mismatch — the avatar's natural vocabulary and concerns do not map to this product — capture that in their own words and flag it explicitly.
+Run searches across one or two communities and pull comments from two or three distinct threads. Sufficient to capture real voice or to document the gap or mismatch honestly. Do not pad. If the harvested voice reveals a product-fit mismatch -- the avatar's natural vocabulary and concerns do not map to this product -- capture that in their own words and flag it explicitly.
 
 ### Hygiene Rules
 
@@ -170,21 +172,22 @@ Run one or two searches and one comment pull. Sufficient to capture real voice o
 - Do not keep deleted comments (keep_deleted: false) unless there is a stated reason.
 - Only first-person customer voice counts toward quota. Journalism, blog prose, clinician monologue, brand or creator content do not count.
 
-### Quotas
+### Saturation, Quotas, and Guardrail
 
-- Minimum 8 verbatim first-person quotes per prioritized avatar.
-- Minimum 3 verbatim first-person quotes per deprioritized avatar, or an honest gap log if none usable are found.
-- Economy guardrail: soft cap of approximately 10-12 comment-pull calls per avatar. If the quota is not met within the cap, log the shortfall honestly. Never pad with fabricated or paraphrased voice.
+- **Saturation is the stopping rule, not a quote count.** Keep pulling additional threads within a prioritized avatar until two consecutive threads surface no new theme (no new pain, objection, identity frame, vocabulary, or proof preference). Record the thread at which saturation was reached.
+- **Floors:** at least 8 verbatim first-person quotes per prioritized avatar drawn from the five-to-eight-thread spread above; at least 3 per deprioritized avatar, or an honest gap log if none usable are found. The floors are a minimum, not a target; expect prioritized avatars to exceed 8 once saturation is the goal.
+- **No single thread or video may supply more than half of any one avatar's first-person quotes.** If it does, the harvest is too narrow; widen it before proceeding.
+- **Economy guardrail:** the binding constraint is saturation, not a call cap. Allow up to approximately 20-25 comment-pull calls per prioritized avatar before forcing a stop-and-log. If saturation is reached earlier, stop earlier. If the guardrail is hit before saturation, log that the avatar did not saturate. Never pad with fabricated or paraphrased voice.
 
 ### Harvest Log
 
 After completing the harvest, print a **HARVEST LOG** in this format:
 HARVEST LOG
-Avatar [name] (priority): targets queried [...], calls [n], credits [n], first-person quotes captured [n], gaps/flags [...]
+Avatar [name] (priority): communities searched [n], distinct Reddit threads pulled [n], distinct YouTube videos [n], comment-pull calls [n], credits [n], usable first-person quotes [n], saturation reached [Y at thread k / N], gaps/flags [...]
 ...
 Totals: calls [n], credits [n]
 
-## Step 4: Voice Appendix and Source Tracking Table (v2.1.0)
+## Step 4: Voice Appendix and Source Tracking Table
 
 Before generating the Deep Research brief, assemble the full voice corpus that will be embedded in the brief as its pre-seeded source layer.
 
@@ -192,25 +195,47 @@ Before generating the Deep Research brief, assemble the full voice corpus that w
 
 For each avatar, build a per-avatar voice block with two layers:
 
-**Layer 1 — Newly harvested Reddit and YouTube first-person quotes (from Step 3)**
+**Layer 1 -- Newly harvested Reddit and YouTube first-person quotes (from Step 3)**
 
 Format each quote on one line:
 `"[verbatim quote]" | [platform / community or video title] | [date or relative date] | [score or likes if available] | [tier label] | [any hygiene flag]`
 
 Tier labels for this layer: `[CONFIRMED - REDDIT]` or `[CONFIRMED - YOUTUBE - dated]` as appropriate. YouTube voice carries the dated flag by default.
 
-**Layer 2 — Carried-forward Phase 1 voice relevant to that avatar**
+**Layer 2 -- Carried-forward Phase 1 voice relevant to that avatar**
 
 Apply the Phase 1 tier labels. Flag all vendor-hosted or brand-owned quotes as `[CONFIRMED -- BRAND OWNED]` and note they are excluded from the organic first-person count.
 
-### Source Tracking Table
+### Source Weighting Model
 
-After the voice appendix, produce a per-avatar source tracking table:
+Sources are weighted when the brief constructs profiles. State this model in the appendix so it carries into the brief. Each quote already shows its tier; the weighting is how much that tier counts:
 
-| Avatar | Tier 1 harvested (Reddit/YT) | Tier 2 fetchable | Tier 3 Amazon | Vendor-hosted (excluded) | Total first-person voice | Quota met (Y/N) | Notes |
-|---|---|---|---|---|---|---|---|
+- **W1 First-party:** brand-owned analytics (quiz, sales, email, ad platform). Highest weight; the only data about this brand's actual buyers. Usually absent at this stage, which is why profiles end with first-party validation items.
+- **W2 Tier 2 verified or post-purchase voice:** review platforms and patient forums. High weight; closest to actual buyers and lived experience.
+- **W3 Reddit:** high weight for raw emotion, identity, and current-market freshness. Treat as community discourse, subject to vocal-minority and brigading skew.
+- **W4 YouTube:** lower weight. Multi-year stale and creator-audience skewed. Vocabulary and objections, not current behavior.
+- **Vendor and testimonial content:** excluded from the organic first-person count entirely.
 
-Amazon's cell reads "logged gap" for every row. Vendor-hosted quotes are counted separately and never folded into the first-person total. Surface honest thin-avatar flags in the Notes column.
+
+### Corroboration Map (Format and Rule)
+
+This defines the corroboration rule and the map format only; no map output is produced at this stage. The authoritative per-avatar map is produced in the final report, because most load-bearing claims emerge from the Deep Research pass. The brief (Step 9, item 2f) is what requires Deep Research to produce and embed the completed map.
+
+The rule: every load-bearing strategic claim (a claim that drives a pricing, entry-SKU, spend, or creative decision) must be supported by two or more independent sources, ideally spanning at least two tiers. Any load-bearing claim resting on a single source is flagged single-source and demoted to the Hypotheses Requiring Validation subsection. Format:
+
+CORROBORATION MAP -- Avatar [name]
+Claim: [the strategic claim] | Sources: [source A (tier)], [source B (tier)] | Status: corroborated / single-source (demote)
+...
+
+
+### Source Tracking Table (Pre-Brief Harvested Corpus)
+
+After the voice appendix, produce a per-avatar table of the corpus on hand at this stage. This is the pre-brief harvested corpus, not the final source balance:
+
+| Avatar | Distinct Reddit threads / communities | Distinct YouTube videos | Tier 1 first-person quotes | Phase 1 carried voice (fetchable) | Vendor-hosted (excluded) | Tier 3 Amazon | Saturation reached (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|---|
+
+Amazon reads "logged gap" for every row. Vendor-hosted quotes are counted separately and never folded into the first-person total. Tier 2 fetching and the final Tier 1 vs Tier 2 balance happen during Deep Research, not at this stage, and are reported in the brief's post-research source balance table (Step 9), not here. Surface honest thin-avatar flags in the Notes column.
 
 ## Step 5: Synthesize Research Context
 
@@ -271,13 +296,13 @@ Everything else in the profile template (Sections B-I, K, L) is universal and sh
 Before outputting the final brief, present:
 
 ```
-AVATAR RESEARCH BRIEF (v2.1.0) BUILDING: [Brand]
+AVATAR RESEARCH BRIEF (v2.1.1) BUILDING: [Brand]
 Verdict: [verdict] ([confidence])
 Segments derived: [count] ([names with priority tier])
 Awareness coverage: [stages covered]
 High-risk avatars: [names or none]
 Phase 1 voice on hand: [count] quotes ([fetchable] fetchable / [vendor] vendor-hosted excluded)
-Known gap to close: verbatim Reddit + YouTube first-person voice
+Tier 1 Reddit + YouTube voice: harvested and embedded (Step 3). Tier 2: pulled by Deep Research during the research pass.
 Phase 1 Context Loaded:
 Validated Segments: [count] ([names])
 Priority Order: [ordered list with rationale]
@@ -290,7 +315,7 @@ Personas to Research: [count]
 [...]
 
 Awareness Stage Coverage: [stages covered]
-Harvest Map: [subreddits and YouTube queries per avatar — brief summary]
+Harvest Map: [subreddits and YouTube queries per avatar -- brief summary]
 Expected Output: [count] avatars x 1,500+ words = [total]+ words
 Plus: comparison table, strategic synthesis (500+ words), Creative Engine Registry
 Confirm or adjust persona count/selection:
@@ -303,7 +328,11 @@ Deliver the complete customized avatar research brief as a single document for D
 The brief must contain all 10 sections:
 1. Context (populated from Steps 1-5)
 2. Research Methodology (populated from Step 6)
-2b. Reversed-Fetch Rule and Accessibility Tiers — must explicitly state: (a) Do not attempt to directly fetch Reddit, Amazon, or YouTube. First-person voice from Reddit and YouTube is PROVIDED in the embedded Voice Appendix and is the primary first-person voice source for this research. (b) Supplement with the Tier 2 directly-fetchable sources, named per avatar. (c) Amazon is a logged blind spot. Do not fabricate Amazon reviews. If Amazon voice would be cited, mark it as a logged gap instead.
+2b. Reversed-Fetch Rule and Accessibility Tiers -- must explicitly state: (a) Do not attempt to directly fetch Reddit, Amazon, or YouTube. First-person voice from Reddit and YouTube is PROVIDED in the embedded Voice Appendix and is the primary first-person voice source for this research. (b) Supplement with the Tier 2 directly-fetchable sources, named per avatar, pulling from at least three distinct Tier 2 sources per prioritized avatar so Tier 1 does not structurally dominate. (c) Amazon is a logged blind spot. Do not fabricate Amazon reviews. If Amazon voice would be cited, mark it as a logged gap instead.
+2c. Source Weighting and Corroboration -- must state: (a) construct each profile weighting sources W1 first-party, then W2 Tier 2, then W3 Reddit, then W4 YouTube, with vendor content excluded; where sources conflict, the higher weight governs the claim and the conflict is noted. (b) Every load-bearing claim (pricing, entry-SKU, spend, or creative decision) must cite at least two independent sources, ideally across at least two tiers; a single-source claim goes into Hypotheses Requiring Validation, not the main body. (c) No single Reddit thread or YouTube video may supply more than half of any one avatar's first-person quotes.
+2d. Foundational-Citation Integrity -- before relying on any foundational or heavily-cited category study, check it for retraction, correction, or expression of concern. Exclude or flag any that carry one, and state that the check was performed. This prevents a discredited anchor study from silently propagating into positioning.
+2e. How We Sourced This Research (client-facing) -- embed the standard methodology section (canonical text below) verbatim and instruct Deep Research to carry it into the final report. It explains the three access tiers, the weighting model, the two-source rule, and the label glossary in plain client language, because these reports are shared with clients.
+2f. Post-Research Source Accounting -- the brief must require Deep Research to produce in its final output, per prioritized avatar: (a) a post-research source balance table showing the distinct Tier 2 sources actually pulled (at least three per prioritized avatar) and the Tier 1 vs Tier 2 balance of the final corpus; and (b) the completed Corroboration Map artifact (each load-bearing claim mapped to its two or more independent sources, or marked single-source and demoted to Hypotheses Requiring Validation). The Step 4 weighting model and the 2c rules govern how both are built. The pre-brief Step 4 table is the harvested corpus only; this post-research accounting is where Tier 2 depth and tier balance are actually evidenced.
 3. Research Instructions with persona definitions (from Step 2)
 4. Awareness Stage Mapping (from Step 2)
 5. Avatar Profile Structure (from Step 7, mostly universal)
@@ -312,6 +341,25 @@ The brief must contain all 10 sections:
 8. Quality Standards (universal + brand writing standards)
 9. Expected Output (customized word count)
 10. Final Note (customized brand applications)
+
+**Canonical text for section 2e (How We Sourced This Research), embed verbatim:**
+
+```
+How We Sourced This Research
+
+Customer voice is harder to gather cleanly than it was even two years ago. Many of the places real buyers actually talk, Reddit, YouTube, and Amazon among them, now block automated research tools by default, so a general research pass quietly returns thin or empty results from exactly the sources that matter most. To work around that, this report uses a layered sourcing method and labels every quote so you can see precisely where it came from and how much weight it carries. The short version: nothing here is asserted without a traceable source, and where a source could not be reached, we say so rather than guess.
+
+The three source tiers.
+Tier 1, harvested directly. Reddit and YouTube. We collect this voice ourselves, up front, using a dedicated harvesting tool, because general research tools can no longer reach it reliably. This is the rawest and most current first-person language in the report.
+Tier 2, directly verifiable. Patient forums and review platforms that are still openly accessible, such as Diabetes UK, Mayo Clinic Connect, WebMD, Drugs.com, and AgingCare. This voice sits closest to real buyers and post-purchase experience, which is why it carries high weight.
+Tier 3, the known blind spot. Amazon. Its reviews are not reliably accessible to research tools, so instead of guessing, we log Amazon as a documented gap. We never invent or paraphrase reviews we could not actually read.
+
+How much each source counts. Not every source carries equal weight when we build the profiles. W1, your own first-party data (quiz, sales, email, ad platform), outranks everything because it describes your actual customers. W2, Tier 2 verified voice, is high weight and closest to real buyers. W3, Reddit, is high weight for emotion, identity, and current language, but treated as community discussion. W4, YouTube, is lower weight: often older and shaped by who follows a channel. Brand-owned or vendor testimonials are excluded from the voice count entirely.
+
+The two-source rule for decisions. Any claim that drives a real decision, which product to lead with, how to price it, or where to spend, must be supported by at least two independent sources, ideally from different tiers. A claim resting on a single source is not presented as a finding; it moves into Hypotheses Requiring Validation, flagged as a lead to test rather than a conclusion to act on.
+
+The labels you will see. [CONFIRMED] is a named, checkable source with a real quote and a date from the last four years. [CONFIRMED - DATED] is the same but older than four years. [CONFIRMED - BRAND OWNED] is brand or vendor content, used only as an example of language, never as proof of effectiveness. [INFERRED] is a reasoned conclusion drawn from confirmed material, with the reasoning shown. [HYPOTHESISED] is a plausible idea with no direct source yet, and only ever appears in the validation sections. W1 through W4 mark the weighting tier of a given quote.
+```
 
 Also generate a summary:
 
@@ -347,16 +395,17 @@ The generated research brief must pass this checklist before being delivered to 
 
 RESEARCH INTEGRITY CHECKLIST
 Source Logs: [ ] Stage 1 source logs are present for all avatars before any profiles [ ] Standard avatars have minimum 5 consumer quotes each [ ] HIGH-RISK avatars have minimum 3 consumer quotes each, or gap acknowledged [ ] All quotes include platform, month/year, and URL or community context [ ] All published data points include direct verbatim quote, URL, and date
+Harvest Depth, Weighting, and Source Accounting (v2.1.1): [ ] Each prioritized avatar harvested across at least 3 communities and at least 5 distinct threads [ ] At least 8 first-person quotes per prioritized avatar (harvest floor; distinct from the in-profile minimum) [ ] At least 2 distinct YouTube videos per prioritized avatar [ ] Saturation reached, or honest non-saturation logged, per prioritized avatar [ ] No single thread or video supplies more than half of any avatar's first-person quotes [ ] Source weighting model (W1-W4, vendor excluded) stated in the brief [ ] Brief requires Deep Research to produce the post-research source balance table (at least 3 distinct Tier 2 per prioritized avatar; Tier 1 vs Tier 2 balance) and the completed Corroboration Map artifact [ ] Foundational or heavily-cited category studies checked for retraction, correction, or expression of concern
 Confidence Tiers: [ ] Every factual claim in every profile body carries a tier label [ ] Every [CONFIRMED] claim includes a verbatim quote (max 30 words), URL, and month/year [ ] No source cited as [CONFIRMED] is brand-owned content -- those are [CONFIRMED -- BRAND OWNED] [ ] All sources older than 4 years carry [CONFIRMED -- DATED] label [ ] No [HYPOTHESISED] content appears in main profile body outside its dedicated subsection
 Mandatory Subsections: [ ] "Evidence That Challenges This Avatar Hypothesis" present in every profile [ ] "Research Gaps and Unknowns" present in every profile [ ] "Hypotheses Requiring Validation" present in every profile [ ] HIGH-RISK profiles carry the explicit flag and have honest thin sections where data was absent
 Prohibited Inferences: [ ] No GCC-specific symptom data inferred from Western studies without [INFERRED -- cross-regional] label [ ] No GCC national behaviour inferred from expat behaviour [ ] No hijab-specific behaviour inferred from general Muslim-population data [ ] No cross-regional minoxidil or perimenopause data used without explicit flagging [ ] No purchase behaviour inferred from demographic proxies alone [ ] No awareness stage assigned without a sourced basis
-Output Completeness: [ ] Stage 1 logs appear before all profiles [ ] All profiles complete with Sections A through L plus three mandatory subsections [ ] Summary Comparison Table present [ ] Strategic Synthesis present (minimum 500 words) [ ] Creative Engine Avatar Registry complete for all avatars [ ] Two new registry fields (Confidence Profile, Key Unknowns) present for all avatars [ ] Confirmed Scientific Anchors appendix present [ ] Compliance note at end of appendix confirms GCC compliance and writing standards
+Output Completeness: [ ] Stage 1 logs appear before all profiles [ ] All profiles complete with Sections A through L plus three mandatory subsections [ ] Summary Comparison Table present [ ] Strategic Synthesis present (minimum 500 words) [ ] Creative Engine Avatar Registry complete for all avatars [ ] Two new registry fields (Confidence Profile, Key Unknowns) present for all avatars [ ] Confirmed Scientific Anchors appendix present [ ] How We Sourced This Research client-facing section present [ ] Compliance note at end of appendix confirms GCC compliance and writing standards
 
 ```
 
 ## Compliance and Regulatory Findings
 
-Compliance and regulatory findings surfaced during avatar research — including but not limited to FDA/FTC enforcement context, DSHEA structure-function rules, warning letter language, scientific expressions of concern, ingredient safety data, and advertising platform policy — are **research outputs, not creative guardrails**.
+Compliance and regulatory findings surfaced during avatar research -- including but not limited to FDA/FTC enforcement context, DSHEA structure-function rules, warning letter language, scientific expressions of concern, ingredient safety data, and advertising platform policy -- are **research outputs, not creative guardrails**.
 
 The skill's job is to surface them accurately, completely, and in context. How the brand applies that information is the brand's decision.
 
@@ -366,7 +415,7 @@ The skill's job is to surface them accurately, completely, and in context. How t
 
 2. The brief must not instruct Deep Research to avoid specific claims, angles, phrases, or language patterns on compliance grounds. It may note that a claim or phrase sits within a category that a named regulatory body has scrutinised, but the notation is informational only.
 
-3. The Language to Avoid list in Section L of each avatar profile is driven by what resonates or alienates this specific avatar psychologically — not by compliance concerns. Compliance context may be noted in the Research Gaps or Confirmed Scientific Anchors sections but does not populate the Language to Avoid list.
+3. The Language to Avoid list in Section L of each avatar profile is driven by what resonates or alienates this specific avatar psychologically -- not by compliance concerns. Compliance context may be noted in the Research Gaps or Confirmed Scientific Anchors sections but does not populate the Language to Avoid list.
 
 4. Downstream skills (copywriting-guide, funnel-builder, video-script-generator, angle-roadmap, ad-style-generator) follow the same rule unless the client explicitly instructs restriction. If a client instructs "apply compliance restrictions to all downstream creative," that instruction overrides this default.
 

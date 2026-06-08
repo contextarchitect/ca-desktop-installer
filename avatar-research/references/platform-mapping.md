@@ -119,7 +119,7 @@ Map the specific online communities, platforms, and content types where each cus
 
 **Instagram (Dominant discovery platform):**
 - Primary product discovery channel across all GCC demographics
-- Arabic and English content coexist — research both
+- Arabic and English content coexist -- research both
 - Influencer posts drive disproportionate purchase intent vs other regions
 - Stories and Reels engagement higher than feed posts
 - Comment sections contain authentic product feedback
@@ -136,7 +136,7 @@ Map the specific online communities, platforms, and content types where each cus
 - Used for brand discovery and promotion, especially among younger demographics
 - Spotlight and Discover used for product content
 
-**WhatsApp (Community layer — cannot be directly researched):**
+**WhatsApp (Community layer -- cannot be directly researched):**
 - Recommendation culture happens in WhatsApp groups
 - "Word of mouth via WhatsApp" is a legitimate acquisition channel in GCC
 - Group buying and collective purchasing common
@@ -153,8 +153,8 @@ Map the specific online communities, platforms, and content types where each cus
 - Less dominant for D2C product review than UK Trustpilot
 
 **Reddit (Niche, English-speaking):**
-- r/dubai (300K+) — expat community, product recommendations
-- r/saudiarabia — growing but smaller
+- r/dubai (300K+) -- expat community, product recommendations
+- r/saudiarabia -- growing but smaller
 - English-language, skews toward expat and internationally-educated nationals
 - Valuable for premium/international brand perception
 
@@ -162,12 +162,12 @@ Map the specific online communities, platforms, and content types where each cus
 - Amazon.ae reviews (UAE, growing)
 - Noon reviews (regional competitor to Amazon)
 - Google Shopping reviews
-- Category-specific platforms limited — social proof primarily lives on Instagram
+- Category-specific platforms limited -- social proof primarily lives on Instagram
 
 ### GCC Health & Wellness Specific
 
 - Instagram health and wellness influencers (many operate bilingually)
-- Ramadan health content (fasting, nutrition, sleep cycles — seasonal research spike)
+- Ramadan health content (fasting, nutrition, sleep cycles -- seasonal research spike)
 - "Natural" and "halal" wellness communities
 - Traditional medicine (hijama, herbal) communities overlap with modern supplement audience
 
@@ -181,14 +181,14 @@ Map the specific online communities, platforms, and content types where each cus
 
 ### GCC Key Behavioral Notes
 
-- **Influencer trust is significantly higher than Western markets** — paid partnerships less stigmatized
-- **Visual-first platforms dominate** — text-heavy forums less relevant than in UK/US
-- **Bilingual research required** — English captures expat sentiment, Arabic captures national sentiment; both matter
-- **Friday brunch culture and social shopping** — weekend discovery patterns differ from Western
-- **Gifting culture** — Eid, Ramadan, and social occasions drive significant gifting purchases
-- **Premium brand preference in UAE** — value positioning may underperform vs premium positioning
-- **Price sensitivity gradient** — UAE least price-sensitive → KSA moderate → other GCC markets more price-sensitive
-- **Expat vs national segments** — very different platform behaviors, language preferences, and price sensitivity
+- **Influencer trust is significantly higher than Western markets** -- paid partnerships less stigmatized
+- **Visual-first platforms dominate** -- text-heavy forums less relevant than in UK/US
+- **Bilingual research required** -- English captures expat sentiment, Arabic captures national sentiment; both matter
+- **Friday brunch culture and social shopping** -- weekend discovery patterns differ from Western
+- **Gifting culture** -- Eid, Ramadan, and social occasions drive significant gifting purchases
+- **Premium brand preference in UAE** -- value positioning may underperform vs premium positioning
+- **Price sensitivity gradient** -- UAE least price-sensitive → KSA moderate → other GCC markets more price-sensitive
+- **Expat vs national segments** -- very different platform behaviors, language preferences, and price sensitivity
 
 ---
 
@@ -196,13 +196,10 @@ Map the specific online communities, platforms, and content types where each cus
 
 ### Health & Wellness / Supplements
 
-**Primary research platforms (in priority order):**
-1. Reddit category-specific subs (raw, unfiltered, anonymous)
-2. Trustpilot/Amazon reviews of competitors (post-purchase reality)
-3. Patient forums (health-specific context, high emotional honesty)
-4. Facebook support groups (community advice, peer recommendations)
-5. TikTok supplement reviews (younger demographic, visual before/after)
-6. YouTube long-form reviews (detailed, comparison-oriented)
+**Research source tiers for this category (see SKILL.md Step 2.5 and the reversed-fetch rule):**
+- Tier 1, provided in the Voice Appendix and not fetched by Deep Research: Reddit category-specific subs (raw, unfiltered, anonymous) and YouTube long-form reviews (detailed, comparison-oriented). These are harvested via the socialvault MCP and embedded; Deep Research must not fetch them directly.
+- Tier 2, fetched by Deep Research during the research pass: competitor reviews on Trustpilot and equivalent review platforms (post-purchase reality), patient forums (health-specific context, high emotional honesty), Facebook support groups (community advice, peer recommendations), and TikTok supplement reviews (younger demographic, visual before/after).
+- Tier 3, logged blind spot, not fetched: Amazon reviews. Record as a gap; never fabricate Amazon voice.
 
 **What to look for:**
 - "I've tried everything" language (indicates segment sophistication)

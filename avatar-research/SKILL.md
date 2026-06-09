@@ -1,6 +1,6 @@
 ---
 name: avatar-research
-version: "2.1.1"
+version: "2.1.2"
 description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Includes live MCP harvest of Reddit and YouTube first-person voice via socialvault tools (reversed-fetch rule: never direct-fetch Reddit/YouTube/Amazon). Harvest is source-diversity and saturation based; sources are weighted (first-party over Tier 2 forums over Reddit over YouTube) with a two-source corroboration rule for decision-driving claims. Reads Phase 1 (Business Validation) output and produces a fully customized, voice-seeded avatar brief optimized for Deep Research. Trigger on: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. Also trigger when user provides a business validation report and wants customer profiles derived from it."
 ---
 
@@ -31,12 +31,21 @@ If Phase 1 is not available, the skill can still generate an avatar brief but wi
 
 ```
 1. INGEST     -> Read Phase 1 report + braindump
-2. EXTRACT    -> Pull validated segments, positioning, voice data, competitive context
-3. SYNTHESIZE -> Merge into avatar research context
-4. CUSTOMIZE  -> Generate research brief from template
-5. PRESENT    -> Show summary, confirm persona count
-6. OUTPUT     -> Deliver research-ready brief
+2. MAP        -> Classify platforms into access tiers (Step 2.5)
+3. HARVEST    -> Live Reddit + YouTube voice via socialvault MCP (Step 3, mandatory)
+4. SYNTHESIZE -> Merge harvested voice + context into avatar research context
+5. CUSTOMIZE  -> Generate research brief from template
+6. PRESENT    -> Show summary, confirm persona count
+7. OUTPUT     -> Deliver research-ready brief, em-dash clean
 ```
+
+## Execution Model (read before running)
+
+This skill runs in the current chat using the socialvault and GitHub MCP tools. It performs the Reddit and YouTube voice harvest itself, live, in this session (Step 3). It then outputs a single research brief. That brief is pasted into Deep Research as a separate, later step. Deep Research never touches the MCP and is never the harvester.
+
+Two hard rules follow and must never be violated:
+1. Never skip the Step 3 MCP harvest, and never defer it to Deep Research. The harvest is mandatory and is performed here, by you, now. A brief produced without a completed Step 3 harvest is invalid.
+2. Never write the Deep Research brief so that Deep Research gathers, searches, browses, or researches Reddit or YouTube by any means. Their first-person voice is already harvested and embedded in the Voice Appendix, which is Deep Research's only Tier 1 input. Folding Reddit or YouTube into the Deep Research scope is the most common failure of this skill and is prohibited.
 
 ## Step 1: Ingest Phase 1 Output
 
@@ -146,7 +155,7 @@ Print this as a headed **ACCESSIBILITY-TIERED HARVEST MAP** before running the l
 
 ## Step 3: Live MCP Harvest
 
-Run the Tier 1 harvest now, against the map derived in Step 2.5. This is a live pass using the socialvault MCP tools. It runs before the Deep Research brief is generated, not after.
+Run the Tier 1 harvest now, against the map derived in Step 2.5. This is a live pass using the socialvault MCP tools, performed by you in this session. It runs before the Deep Research brief is generated, not after. This step is mandatory and must never be skipped or handed to Deep Research. If the socialvault tools are unavailable, stop and report; do not substitute a Deep Research pass for the harvest.
 
 ### Required Tools
 - `reddit_subreddit_search` (filter: posts, sort: top or relevance, timeframe: year)
@@ -269,15 +278,15 @@ From Phase 1 customer voice repository: select 8-10 strongest direct quotes with
 
 Read `references/platform-mapping.md` for geography and category-specific platform guidance.
 
-Based on geography and category detected, generate the "Where to Find Each Avatar" section with:
+Based on geography and category detected, generate the "Where to Find Each Avatar" section for Deep Research, scoped to Tier 2 directly-fetchable sources only. Reddit and YouTube are harvested by this skill in Step 3 and supplied as the Voice Appendix, never listed here as Deep Research targets. Generate it with:
 
-**For each platform category:**
+**For each Tier 2 platform category:**
 - Specific named communities with member counts (from Phase 1 demand validation data where available)
 - Content types that surface genuine opinions
 - Demographic skew notes
 - Platform-specific language patterns
 
-**The critical principle:** People speak differently on Reddit vs MumsNet vs TikTok vs Facebook Groups. The research brief must direct Deep Research to the specific communities where each persona drops their guard and reveals true motivations.
+**The critical principle:** People speak differently on Reddit vs MumsNet vs TikTok vs Facebook Groups, which is why this skill harvests Reddit and YouTube itself in Step 3. The brief directs Deep Research only to the Tier 2 directly-fetchable communities where each persona reveals true motivations; the Reddit and YouTube voice is already captured in the Voice Appendix and must not be re-researched.
 
 ## Step 7: Customize Avatar Profile Template
 
@@ -296,7 +305,7 @@ Everything else in the profile template (Sections B-I, K, L) is universal and sh
 Before outputting the final brief, present:
 
 ```
-AVATAR RESEARCH BRIEF (v2.1.1) BUILDING: [Brand]
+AVATAR RESEARCH BRIEF BUILDING: [Brand]
 Verdict: [verdict] ([confidence])
 Segments derived: [count] ([names with priority tier])
 Awareness coverage: [stages covered]
@@ -328,11 +337,12 @@ Deliver the complete customized avatar research brief as a single document for D
 The brief must contain all 10 sections:
 1. Context (populated from Steps 1-5)
 2. Research Methodology (populated from Step 6)
-2b. Reversed-Fetch Rule and Accessibility Tiers -- must explicitly state: (a) Do not attempt to directly fetch Reddit, Amazon, or YouTube. First-person voice from Reddit and YouTube is PROVIDED in the embedded Voice Appendix and is the primary first-person voice source for this research. (b) Supplement with the Tier 2 directly-fetchable sources, named per avatar, pulling from at least three distinct Tier 2 sources per prioritized avatar so Tier 1 does not structurally dominate. (c) Amazon is a logged blind spot. Do not fabricate Amazon reviews. If Amazon voice would be cited, mark it as a logged gap instead.
+2b. Reversed-Fetch Rule and Accessibility Tiers -- must explicitly state: (a) Do not fetch, search, browse, crawl, or otherwise research Reddit, Amazon, or YouTube by any means, and do not include them in the research scope. First-person voice from Reddit and YouTube is PROVIDED in the embedded Voice Appendix and is the only Tier 1 first-person voice source for this research; treat it as already-gathered provided context, not a target to re-gather. (b) Supplement with the Tier 2 directly-fetchable sources, named per avatar, pulling from at least three distinct Tier 2 sources per prioritized avatar so Tier 1 does not structurally dominate. (c) Amazon is a logged blind spot. Do not fabricate Amazon reviews. If Amazon voice would be cited, mark it as a logged gap instead.
 2c. Source Weighting and Corroboration -- must state: (a) construct each profile weighting sources W1 first-party, then W2 Tier 2, then W3 Reddit, then W4 YouTube, with vendor content excluded; where sources conflict, the higher weight governs the claim and the conflict is noted. (b) Every load-bearing claim (pricing, entry-SKU, spend, or creative decision) must cite at least two independent sources, ideally across at least two tiers; a single-source claim goes into Hypotheses Requiring Validation, not the main body. (c) No single Reddit thread or YouTube video may supply more than half of any one avatar's first-person quotes.
 2d. Foundational-Citation Integrity -- before relying on any foundational or heavily-cited category study, check it for retraction, correction, or expression of concern. Exclude or flag any that carry one, and state that the check was performed. This prevents a discredited anchor study from silently propagating into positioning.
-2e. How We Sourced This Research (client-facing) -- embed the standard methodology section (canonical text below) verbatim and instruct Deep Research to carry it into the final report. It explains the three access tiers, the weighting model, the two-source rule, and the label glossary in plain client language, because these reports are shared with clients.
+2e. How We Sourced This Research (client-facing) -- embed the standard methodology section (canonical text below) verbatim. The brief must instruct Deep Research, in imperative terms, that it MUST reproduce this section verbatim as a standalone "How We Sourced This Research" section in the final report, including in full both the weighting rules (how much W1 through W4 each count) and the label legend (what every [CONFIRMED], [CONFIRMED - DATED], [CONFIRMED - BRAND OWNED], [INFERRED], [HYPOTHESISED], and W1 through W4 tag means and how to read it). This section is not optional and must not be summarized or dropped; a final report that omits the label legend or the weighting rules is incomplete and must be regenerated. These reports are shared with clients, who need the key to read the tags.
 2f. Post-Research Source Accounting -- the brief must require Deep Research to produce in its final output, per prioritized avatar: (a) a post-research source balance table showing the distinct Tier 2 sources actually pulled (at least three per prioritized avatar) and the Tier 1 vs Tier 2 balance of the final corpus; and (b) the completed Corroboration Map artifact (each load-bearing claim mapped to its two or more independent sources, or marked single-source and demoted to Hypotheses Requiring Validation). The Step 4 weighting model and the 2c rules govern how both are built. The pre-brief Step 4 table is the harvested corpus only; this post-research accounting is where Tier 2 depth and tier balance are actually evidenced.
+2g. Writing standards (em-dash ban) -- the brief must state, as a hard writing standard Deep Research must follow in the final report: use no em dashes, en dashes, or horizontal-bar characters anywhere in the output (prose, tables, headings, or labels). Use periods, commas, parentheses, or spaced hyphens instead. This applies to the entire final report without exception.
 3. Research Instructions with persona definitions (from Step 2)
 4. Awareness Stage Mapping (from Step 2)
 5. Avatar Profile Structure (from Step 7, mostly universal)
@@ -388,6 +398,10 @@ After research completes:
   → If Product Deep Research completed, cross-reference product affinity per avatar
 ```
 
+### Output Hygiene (em-dash sweep)
+
+Before delivering the brief, scan it and confirm it contains zero em dashes, en dashes, or horizontal-bar characters; replace any with periods, commas, parentheses, or spaced hyphens. The brief you output must itself be em-dash clean, and it must carry the em-dash ban forward to Deep Research via item 2g so the final report is clean too.
+
 ### Pre-Submission Quality Checklist
 
 The generated research brief must pass this checklist before being delivered to the user. Do not deliver the brief if any item fails.
@@ -395,11 +409,11 @@ The generated research brief must pass this checklist before being delivered to 
 
 RESEARCH INTEGRITY CHECKLIST
 Source Logs: [ ] Stage 1 source logs are present for all avatars before any profiles [ ] Standard avatars have minimum 5 consumer quotes each [ ] HIGH-RISK avatars have minimum 3 consumer quotes each, or gap acknowledged [ ] All quotes include platform, month/year, and URL or community context [ ] All published data points include direct verbatim quote, URL, and date
-Harvest Depth, Weighting, and Source Accounting (v2.1.1): [ ] Each prioritized avatar harvested across at least 3 communities and at least 5 distinct threads [ ] At least 8 first-person quotes per prioritized avatar (harvest floor; distinct from the in-profile minimum) [ ] At least 2 distinct YouTube videos per prioritized avatar [ ] Saturation reached, or honest non-saturation logged, per prioritized avatar [ ] No single thread or video supplies more than half of any avatar's first-person quotes [ ] Source weighting model (W1-W4, vendor excluded) stated in the brief [ ] Brief requires Deep Research to produce the post-research source balance table (at least 3 distinct Tier 2 per prioritized avatar; Tier 1 vs Tier 2 balance) and the completed Corroboration Map artifact [ ] Foundational or heavily-cited category studies checked for retraction, correction, or expression of concern
+Harvest Depth, Weighting, and Source Accounting: [ ] Each prioritized avatar harvested across at least 3 communities and at least 5 distinct threads [ ] At least 8 first-person quotes per prioritized avatar (harvest floor; distinct from the in-profile minimum) [ ] At least 2 distinct YouTube videos per prioritized avatar [ ] Saturation reached, or honest non-saturation logged, per prioritized avatar [ ] No single thread or video supplies more than half of any avatar's first-person quotes [ ] Source weighting model (W1-W4, vendor excluded) stated in the brief [ ] Brief requires Deep Research to produce the post-research source balance table (at least 3 distinct Tier 2 per prioritized avatar; Tier 1 vs Tier 2 balance) and the completed Corroboration Map artifact [ ] Foundational or heavily-cited category studies checked for retraction, correction, or expression of concern
 Confidence Tiers: [ ] Every factual claim in every profile body carries a tier label [ ] Every [CONFIRMED] claim includes a verbatim quote (max 30 words), URL, and month/year [ ] No source cited as [CONFIRMED] is brand-owned content -- those are [CONFIRMED -- BRAND OWNED] [ ] All sources older than 4 years carry [CONFIRMED -- DATED] label [ ] No [HYPOTHESISED] content appears in main profile body outside its dedicated subsection
 Mandatory Subsections: [ ] "Evidence That Challenges This Avatar Hypothesis" present in every profile [ ] "Research Gaps and Unknowns" present in every profile [ ] "Hypotheses Requiring Validation" present in every profile [ ] HIGH-RISK profiles carry the explicit flag and have honest thin sections where data was absent
 Prohibited Inferences: [ ] No GCC-specific symptom data inferred from Western studies without [INFERRED -- cross-regional] label [ ] No GCC national behaviour inferred from expat behaviour [ ] No hijab-specific behaviour inferred from general Muslim-population data [ ] No cross-regional minoxidil or perimenopause data used without explicit flagging [ ] No purchase behaviour inferred from demographic proxies alone [ ] No awareness stage assigned without a sourced basis
-Output Completeness: [ ] Stage 1 logs appear before all profiles [ ] All profiles complete with Sections A through L plus three mandatory subsections [ ] Summary Comparison Table present [ ] Strategic Synthesis present (minimum 500 words) [ ] Creative Engine Avatar Registry complete for all avatars [ ] Two new registry fields (Confidence Profile, Key Unknowns) present for all avatars [ ] Confirmed Scientific Anchors appendix present [ ] How We Sourced This Research client-facing section present [ ] Compliance note at end of appendix confirms GCC compliance and writing standards
+Output Completeness: [ ] Stage 1 logs appear before all profiles [ ] All profiles complete with Sections A through L plus three mandatory subsections [ ] Summary Comparison Table present [ ] Strategic Synthesis present (minimum 500 words) [ ] Creative Engine Avatar Registry complete for all avatars [ ] Two new registry fields (Confidence Profile, Key Unknowns) present for all avatars [ ] Confirmed Scientific Anchors appendix present [ ] How We Sourced This Research section present in the final report, including the full label legend (all tag meanings) and the W1 through W4 weighting rules [ ] Final report contains zero em dashes, en dashes, or horizontal-bar characters [ ] Compliance note at end of appendix confirms GCC compliance and writing standards
 
 ```
 

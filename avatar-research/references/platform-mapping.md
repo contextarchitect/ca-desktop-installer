@@ -2,7 +2,14 @@
 
 ## Purpose
 
-Map the specific online communities, platforms, and content types where each customer segment speaks honestly. People behave differently across platforms: Reddit gets raw frustration, Facebook Groups get community advice, TikTok gets performance and aspiration, Trustpilot gets post-purchase reality. The avatar brief must direct Deep Research to the right places for each persona.
+This file is an inventory of where each audience's voice lives. It is used two ways: to plan the Step 3 MCP harvest (Reddit and YouTube), and to generate the Deep Research "Where to Find Each Avatar" guidance (Tier 2 sources only). People behave differently across platforms: Reddit gets raw frustration, Facebook Groups get community advice, TikTok gets performance and aspiration, Trustpilot gets post-purchase reality.
+
+One tier rule governs every list in this file, in every geography and every category, regardless of how a list is captioned:
+- Tier 1: Reddit and YouTube. Harvested by this skill in Step 3 and provided in the Voice Appendix. Never a Deep Research target; Deep Research must not fetch, search, or browse them.
+- Tier 3: Amazon. A logged blind spot, never fetched. If Amazon voice would be cited, record it as a gap and never fabricate it.
+- Tier 2: everything else (review platforms, patient and beauty forums, Facebook groups, Instagram, TikTok, Trustpilot, G2, Capterra, and so on). These are the only sources Deep Research is directed to.
+
+Where any list below names Reddit, YouTube, or Amazon, treat them under this rule. The lists are an inventory of where voice lives, not a license to point Deep Research at Tier 1 or Tier 3 sources.
 
 ---
 
@@ -210,44 +217,36 @@ Map the specific online communities, platforms, and content types where each cus
 
 ### Beauty & Skincare
 
-**Primary research platforms:**
-1. Reddit r/SkincareAddiction, r/30PlusSkinCare, etc.
-2. YouTube "dermatologist reacts" and ingredient breakdown content
-3. Instagram skincare communities and influencer comments
-4. TikTok #skincare, #skintok
-5. Sephora/Boots reviews
-6. Beauty forum communities (Makeupalley, etc.)
+**Research source tiers for this category (see SKILL.md Step 2.5 and the reversed-fetch rule):**
+- Tier 1, provided in the Voice Appendix and not fetched by Deep Research: Reddit skincare subs (r/SkincareAddiction, r/30PlusSkinCare, and similar) and YouTube "dermatologist reacts" and ingredient-breakdown content. Harvested via the socialvault MCP and embedded; Deep Research must not fetch them directly.
+- Tier 2, fetched by Deep Research during the research pass: Instagram skincare communities and influencer comments, TikTok #skincare and #skintok, Sephora and Boots reviews, and beauty forum communities (Makeupalley and similar).
+- Tier 3, logged blind spot, not fetched: Amazon reviews. Record as a gap; never fabricate Amazon voice.
 
 ### SaaS / Software
 
-**Primary research platforms:**
-1. G2, Capterra, TrustRadius reviews
-2. Reddit industry-specific subs
-3. Hacker News (technical audience)
-4. Twitter/X (professional opinions)
-5. Product Hunt (launch reception)
-6. Slack/Discord professional communities
+**Research source tiers for this category (see SKILL.md Step 2.5 and the reversed-fetch rule):**
+- Tier 1, provided in the Voice Appendix and not fetched by Deep Research: Reddit industry-specific subs, plus YouTube reviews or walkthroughs where relevant. Harvested via the socialvault MCP and embedded; Deep Research must not fetch them directly.
+- Tier 2, fetched by Deep Research during the research pass: G2, Capterra, and TrustRadius reviews, Hacker News (technical audience), Twitter/X (professional opinions), Product Hunt (launch reception), and public Slack or Discord communities where reachable. A gated Slack or Discord community that cannot be reached is logged as a gap, not fabricated.
+- Tier 3, logged blind spot, not fetched: Amazon reviews where the product is sold there. Record as a gap; never fabricate Amazon voice.
 
 ### General D2C / Physical Products
 
-**Primary research platforms:**
-1. Amazon reviews (product-specific)
-2. Reddit category subs
-3. YouTube unboxing and review content
-4. TikTok haul and review content
-5. Facebook marketplace groups
-6. Trustpilot brand reviews
+**Research source tiers for this category (see SKILL.md Step 2.5 and the reversed-fetch rule):**
+- Tier 1, provided in the Voice Appendix and not fetched by Deep Research: Reddit category subs and YouTube unboxing and review content. Harvested via the socialvault MCP and embedded; Deep Research must not fetch them directly.
+- Tier 2, fetched by Deep Research during the research pass: TikTok haul and review content, Facebook groups, and Trustpilot brand reviews.
+- Tier 3, logged blind spot, not fetched: Amazon reviews. Record as a gap; never fabricate Amazon voice.
 
 ---
 
 ## Platform-Persona Mapping Template
 
-For each persona in the brief, include this mapping:
+For each persona in the brief, include this mapping. Only the Tier 2 field is a Deep Research target; the Tier 1 field lists Step 3 harvest targets already captured in the Voice Appendix, never to be re-researched by Deep Research.
 
 ```
 PERSONA: [Name]
 Primary Platforms: [2-3 where they're most active]
-Specific Communities: [Named subreddits/groups/forums with sizes]
+Tier 1 harvest targets (Step 3, in the Voice Appendix, NOT Deep Research targets): [named subreddits and YouTube channels with sizes]
+Tier 2 Deep Research targets: [named forums, review platforms, Facebook groups, Instagram, TikTok, with sizes]
 Content That Triggers Engagement: [What makes them comment vs lurk]
 Anonymous vs Named: [Where they speak freely vs curate image]
 Review Behavior: [Do they leave reviews? What prompts one?]

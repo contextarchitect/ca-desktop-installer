@@ -210,7 +210,7 @@ For each claimed differentiator: actually different? defensible? valued by custo
 - Competitive moat assessment
 - Response timeline estimate
 
-**3.5 Competitor Product Ranges** (lightweight — feeds downstream Product Portfolio Research)
+**3.5 Competitor Product Ranges** (lightweight - feeds downstream Product Portfolio Research)
 For each direct competitor analyzed in 3.1-3.2, also document:
 - Full product range beyond their hero product (all SKUs with pricing)
 - Bundle structures and subscription offerings
@@ -220,9 +220,34 @@ Keep to 2-3 sentences per competitor. This is a scan, not a deep-dive.
 
 ---
 
+### Positioning Guardrails / Moat Map (required output section)
+
+Derive this map from PART 3, specifically 3.4 Differentiation Assessment (STRONG / MODERATE / WEAK) and 3.3 White Space. Every classified item carries exactly one disposition, derived from two independent axes so the same item cannot satisfy two dispositions.
+
+Score each differentiator or positioning angle assessed in PART 3 on two axes:
+- can_lead (Y/N): Y only if rated STRONG in 3.4 (genuinely different, defensible, customer-valued) AND brand-world-safe (does not pull toward a foreign world).
+- usable_in_copy (Y/N): N if the item is untrue, unsupported, off-world, or off-strategy (for example a feature/spec war); Y otherwise.
+
+Derive the disposition by this fixed order, first match wins:
+1. usable_in_copy = N  ->  AVOID (does not appear as a brand claim)
+2. else can_lead = Y   ->  LEAD (anchors positioning, mission, primary angles)
+3. else                ->  SUPPORT (proof point or conversion lever only; never leads)
+
+Output a table with one row per item and these columns: Item | 3.4 rating | can_lead | usable_in_copy | Disposition | Reason and commoditizers. The can_lead and usable_in_copy values are the reason code; name the competitors that commoditize the item where relevant. If a disposition has no items, add a row stating "none" for it rather than omitting it.
+
+Then state:
+- Brand world: the competitive world this brand occupies, derived from product, price tier, and customer (for example fine watchmaking and refined menswear; clinical/scientific supplements; mass-market value). One or two sentences.
+- World-filter note: any true attribute whose usual phrasing pulls toward a foreign world should be re-registered into the brand's world (for example "the steel used in fine watch cases," not "the material used in medical implants"), not discarded. A re-registered attribute can be usable_in_copy = Y in the brand's own language.
+
+Binding rule for downstream phases and for PART 4 below: only LEAD items may anchor primary identity, mission, tagline, or a priority-1 angle. SUPPORT items appear only as proof or conversion. AVOID items do not appear as claims. A high emotional-trigger score does not override this map. See `_frameworks/positioning-guardrails.md`.
+
+---
+
 ### PART 4: STRATEGIC RECOMMENDATIONS
 
 Complete ONLY the section matching the verdict:
+
+All positioning, value proposition, and GO / CONDITIONAL GO / PIVOT recommendations in this section must be consistent with the Positioning Guardrails / Moat Map above. Primary positioning anchors only on LEAD items; SUPPORT items may be cited as proof or conversion only; AVOID items must not appear in the recommended positioning.
 
 **4A: GO Strategy** - Value prop, positioning, channels, pricing, unit economics
 **4B: CONDITIONAL GO** - What's missing, required validations with test design, decision framework with timeline and scenarios

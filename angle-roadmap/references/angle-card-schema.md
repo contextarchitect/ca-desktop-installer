@@ -22,6 +22,10 @@ Market Sophistication Match: [How this angle accounts for market sophistication 
 
 Lead Emotion: [The primary emotional trigger this angle opens with]
 Trigger Score: [From the scorecard - X/10]
+Lead Differentiator: [The exact Phase 1 Moat Map differentiator label/id this angle's lead framing rests on, OR the sentinel "none (pure emotional/identity hook, no differentiation claim)", OR the sentinel "ungrounded (no Phase 1 Moat Map or derivable competitive analysis)"]
+  Required, non-empty. The "none" sentinel is a deliberate classification meaning the angle makes no differentiation claim and hands differentiation downstream; it is distinct from an unfilled field (an unfilled field is a defect). The "ungrounded" sentinel means the moat input itself is missing (Step 0 fail-safe): it is NOT a "no claim" judgment, it is a "cannot judge" state, and it is distinct from "none". This is the durable source field. The Moat Disposition below is re-derived from this differentiator's row in the Phase 1 Moat Map (or is "non-differentiator" when this field is the "none" sentinel, or "ungrounded" when this field is the "ungrounded" sentinel), not self-declared. QA (the Quality Checklist scan) and the Creative Engine registry compare this field against the Moat Map so a mis-tag is caught mechanically.
+Moat Disposition: [LEAD / SUPPORT / AVOID / non-differentiator / ungrounded]
+  The Moat Map disposition (angle-roadmap Step 0) of the Lead Differentiator above, or "non-differentiator" if the angle leads on a pure emotional or identity driver with moat grounding present, or "ungrounded" if no Moat Map or derivable competitive analysis exists to judge against. This is the second axis to Trigger Score: intensity vs defensibility. It gates prioritization (Step 7) - a SUPPORT-led angle is not eligible for priority 1 or primary cold-traffic budget (cold_traffic: false) regardless of Trigger Score; an AVOID-led angle is not produced; an ungrounded angle is not eligible for priority 1 or primary cold-traffic budget (Slot Type supporting or retargeting, cold_traffic: false) until the moat input is supplied. "non-differentiator" is primary-eligible only when grounding exists and the angle's core claim has been checked against the Moat Map.
 Core Desire: [The deepest-core desire this angle promises to fulfill]
 Desire Chain: [The full chain - surface -> functional -> emotional -> core]
 
@@ -114,7 +118,12 @@ If this angle has only one bio-marker (single-symptom product, or root cause pro
 
 --- TESTING METADATA ---
 
-Testing Priority: [1-N ranking]
+Testing Priority: [1-N ranking within the angle's Slot Type queue]
+  Testing Priority is an ordering WITHIN a queue, not a grant of primary status. It does not by itself confer a primary slot or cold-traffic budget. The primary cold-traffic queue is ranked 1-N over primary-eligible angles only (Slot Type primary); supporting and retargeting angles are ranked in their own queues. A SUPPORT-led or ungrounded angle never holds a rank in the primary queue, so a fail-safe (all-ungrounded) roadmap has no primary rank-1 card at all. Downstream consumers selecting an angle for a primary or cold-traffic slot read Slot Type and Cold Traffic Eligible, never the bare rank number.
+Slot Type: [primary / supporting / retargeting]
+  Set by Step 7 prioritization, gated by Moat Disposition. Primary requires a LEAD lead, or a non-differentiator lead with moat grounding present. SUPPORT-led angles are supporting or retargeting only; an ungrounded angle is supporting or retargeting only until moat input is supplied; an AVOID-led angle is not in the roadmap.
+Cold Traffic Eligible: [true / false]
+  The durable cold-traffic flag (registry field: cold_traffic) consumed by the Step 8 testing roadmap and the Section 9 Creative Engine registry. Per Step 0 / Step 7: false for a SUPPORT-led or ungrounded angle regardless of Trigger Score; true requires a LEAD lead or a grounded non-differentiator lead.
 Priority Rationale: [Why this angle should be tested at this priority]
 Success Signal: [What would indicate this angle is working - CTR threshold, engagement type, etc.]
 Kill Signal: [What would indicate this angle should be retired]

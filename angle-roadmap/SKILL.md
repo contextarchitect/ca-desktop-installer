@@ -1,6 +1,6 @@
 ---
 name: angle-roadmap
-version: "1.3.0"
+version: "1.4.0"
 description: "Synthesize Phase 1 (Business Validation) and Phase 2 (Avatar Research) outputs into a Brand Angle Roadmap: root cause narrative with analogy, solution mechanism narrative, scored emotional triggers, layered desire chains, alternative solution positioning, and structured angle cards. The roadmap becomes the required input for ad-style-generator and funnel-builder skills - it bridges avatar research to creative execution. Trigger on: 'build angle roadmap', 'define angles', 'angle development', 'run Phase 4.5', 'marketing angles for [brand]', 'root cause narrative', 'what angles should we run'. Also trigger when the user has completed Phase 2 and wants to move toward ad/funnel creation but hasn't defined angles yet."
 ---
 
@@ -53,6 +53,9 @@ Each angle card gets used multiple times across these downstream skills. The sam
 ## Workflow
 
 ```
+STEP 0: POSITIONING GUARDRAILS (MOAT MAP GATE)
+  -> Read Phase 1 Moat Map; establish which differentiators may lead
+
 STEP 1: ROOT CAUSE & MECHANISM NARRATIVES
   -> 1A: Root cause narrative (scientific, 4th-grade, analogy, copywriting section)
   -> 1B: Solution mechanism narrative (same 4 layers + product mapping)
@@ -82,6 +85,25 @@ STEP 6: STRUCTURAL SCORING (conditional)
 STEP 7: PRIORITIZATION & OUTPUT
   -> Rank angles by testing priority, deliver as Brand Angle Roadmap document
 ```
+
+## Step 0: Positioning Guardrails (Moat Map Gate)
+
+Read this before scoring any trigger. It governs which angles may lead and which may be priority 1. It is not Schwartz-gated; it applies to every brand.
+
+Read the Positioning Guardrails / Moat Map from the Phase 1 report: the LEAD / SUPPORT / AVOID disposition of every differentiator, the named brand world, and the binding rule.
+
+The invariant (stated once here; every step below reinforces it, none weakens it):
+- An angle may lead on a LEAD differentiator or on a genuine non-differentiator emotional or identity hook (one that makes no differentiation claim and hands differentiation to the funnel and brand downstream). Priority-1 and primary cold-traffic-budget angles may use either of those leads. A SUPPORT or AVOID differentiator may never be the differentiator a primary-slot angle rests on.
+- A SUPPORT differentiator (commoditized but true) may appear only in supporting or retargeting angles, never as the lead of a priority-1 angle. A high emotional-trigger score does not change this.
+- An AVOID differentiator is not angle material; do not build an angle that leads on it.
+
+Trigger intensity and moat defensibility are different axes. Step 2 scores how visceral a trigger is; Step 0 records how defensible the differentiator behind it is. Prioritization (Step 7) needs both, and this is the exact separation whose absence lets a loud but commoditized trigger reach priority 1.
+
+Fallback when the Moat Map block is absent (legacy Phase 1 report): do not skip the gate and do not error. Derive each differentiator's disposition inline from the Phase 1 competitive and differentiation analysis using the two-axis fixed order: score can_lead (STRONG and brand-world-safe) and usable_in_copy (false if untrue, unsupported, off-world, or off-strategy); then by fixed order, first match wins: usable_in_copy false gives AVOID, else can_lead gives LEAD, else SUPPORT. Tell the operator the dispositions were derived inline because the report predates the Moat Map.
+
+If neither a Moat Map nor any Phase 1 competitive/differentiation analysis is available (for example, angle-roadmap is run without a Phase 1 report at all), do not guess dispositions. Flag the gap and ask the operator to supply the Phase 1 Moat Map or competitive analysis. Until that grounding exists, the gate fails safe: no angle may be assigned a priority-1 or primary cold-traffic slot, and no differentiator may be tagged LEAD, SUPPORT, or AVOID. Angles may still be generated and tested as supporting/retargeting until the moat input is provided.
+
+See the canonical `_frameworks/positioning-guardrails.md` in `contextarchitect/context-architect-brands` for the full filter definition.
 
 ## Step 1: Root Cause & Mechanism Narratives
 
@@ -237,6 +259,8 @@ Phase 2 avatar profiles contain emotional data spread across Sections E (pain/de
 - **Intensity** - how visceral is the language? ("I want to crawl into a hole and die" = 9-10. "It's kind of frustrating" = 3-4.)
 - **Actionability** - can this emotion be directly addressed by the product? A trigger that the product genuinely resolves scores higher than one it can only acknowledge.
 
+For each trigger, also record the Moat Map disposition of the differentiator it is tied to (LEAD / SUPPORT / AVOID, per Step 0), or "non-differentiator" if the trigger is a pure emotional or identity driver, or "ungrounded" if no Moat Map or derivable competitive analysis exists (Step 0 fail-safe). Trigger score measures intensity, not defensibility. A SUPPORT or AVOID trigger may score high and still be barred from leading a priority-1 angle (Step 7). Record disposition next to the score so prioritization has both axes.
+
 **Output format:**
 
 ```
@@ -245,6 +269,7 @@ EMOTIONAL TRIGGER SCORECARD: [Brand Name]
 Cross-Avatar Triggers (appear across multiple avatars):
 1. [Trigger Name] - [Score]/10
    Avatars affected: [list]
+   Moat disposition: [LEAD / SUPPORT / AVOID / non-differentiator / ungrounded] ([differentiator it is tied to])
    Key quotes: ["...", "...", "..."]
 
 2. [Trigger Name] - [Score]/10
@@ -252,8 +277,8 @@ Cross-Avatar Triggers (appear across multiple avatars):
 
 Avatar-Specific Triggers:
 [Avatar Name]:
-1. [Trigger] - [Score]/10 - ["quote"]
-2. [Trigger] - [Score]/10 - ["quote"]
+1. [Trigger] - [Score]/10 - Moat disposition: [LEAD / SUPPORT / AVOID / non-differentiator / ungrounded] - ["quote"]
+2. [Trigger] - [Score]/10 - Moat disposition: [LEAD / SUPPORT / AVOID / non-differentiator / ungrounded] - ["quote"]
 ...
 ```
 
@@ -387,6 +412,7 @@ This is where everything comes together. Each angle card combines one emotional 
 9. **Recommend a format from funnel-builder's format library.** Read `../funnel-builder/references/format-library.md` for the 9 named formats plus the Fake-Complaint sub-format. Select based on the angle's awareness stage and resistance level (category maturity + price-tier + alternative-stack). The format selection matrix in format-library.md drives this decision. Add the selected format name to the angle card's "Recommended Format" field.
 10. **Consider multi-bio-marker pivots.** If the same root cause produces multiple felt symptoms (e.g., low testosterone manifests as energy/libido/recovery/focus/mood), identify the primary bio-marker for this angle and the secondary pivots. The Rosabella corpus showed that the same angle can run profitably across 4-7 different symptom entries when the underlying root cause + mechanism are unified. If the brand's product addresses only one symptom, mark this field "N/A - single-symptom angle."
 11. Provide headline direction (2-3 example headlines, each passing `copywriting-guide §8.4 Hook Quality Checklist` - open loop, one specific claim, identity marker, specificity, first-person where brand voice allows).
+12. Record which differentiator this angle leads on, in two card fields. Set **Lead Differentiator** to the exact Phase 1 Moat Map label/id the angle's core claim rests on, or to the sentinel "none (pure emotional/identity hook, no differentiation claim)" if the angle makes no differentiation claim, or to the sentinel "ungrounded (no Phase 1 Moat Map or derivable competitive analysis)" if the Step 0 fail-safe applies. Set **Moat Disposition** (re-derived from that differentiator's Moat Map row) to exactly one of LEAD / SUPPORT / AVOID / non-differentiator / ungrounded - use "non-differentiator" when Lead Differentiator is the none sentinel, and "ungrounded" when it is the ungrounded sentinel. Per the Step 0 invariant: an angle leading on a SUPPORT differentiator is a supporting or retargeting angle and is not eligible for priority 1; an angle leading on an AVOID differentiator is not produced; an ungrounded angle is supporting or retargeting only (not priority 1, cold_traffic: false) until the moat input is supplied.
 
 (If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, Step 6 below adds a structured awareness/sophistication framework on top of step 7 above. If it does not exist, treat the awareness stage choice as a generic strategic call.)
 
@@ -527,12 +553,14 @@ If any pressure test fails, revise before finalizing the angle.
 
 Rank angles by testing priority using these criteria:
 
-1. **Trigger score** - higher-scored triggers get priority
+1. **Trigger score, gated by moat disposition** - higher-scored triggers get priority, but a high score does not override the Step 0 invariant. Priority 1 and primary cold-traffic budget go only to angles that lead on a LEAD differentiator, or on a non-differentiator emotional/identity driver when moat grounding exists and the claim has been checked against the Moat Map. An angle leading on a SUPPORT differentiator is eligible only for supporting or retargeting slots regardless of its trigger score; mark it cold_traffic: false. An angle leading on an AVOID differentiator is not in the roadmap. An ungrounded angle (no Moat Map or derivable competitive analysis, per the Step 0 fail-safe) is eligible only for supporting or retargeting slots, cold_traffic: false, until the moat input is supplied.
 2. **Avatar coverage** - angles that work across multiple avatars get priority
 3. **Awareness stage coverage** - ensure the top 5 angles cover at least 2 awareness stages
 4. **Format diversity** - the top 5 should include at least one image ad angle, one UGC/video angle, and one advertorial angle
 5. **Alternative attack diversity** - avoid putting all top angles against the same alternative
 6. **Structural-move diversity (only if `schwartz-applied.md` exists for this brand):** avoid putting all top angles at the same Schwartz move (e.g., five Stage 4 mechanism-naming angles)
+
+First assign each angle a Slot Type (primary / supporting / retargeting) using the moat gate in criterion 1, then rank Testing Priority 1-N **within** each Slot Type queue. Testing Priority is a within-queue ordering; rank 1 is not by itself a primary slot or a cold-traffic grant. The primary cold-traffic budget is assigned only to angles with Slot Type primary and Cold Traffic Eligible true; downstream consumers select the primary/cold-traffic angle by reading those two fields, never the bare rank number. Under the Step 0 fail-safe, every angle is supporting or retargeting, so the primary queue is empty and no angle is primary or cold-traffic eligible regardless of its rank.
 
 ### Output: Brand Angle Roadmap Document
 
@@ -542,6 +570,11 @@ Deliver the complete roadmap as a single markdown file using `create_file` + `pr
 # Brand Angle Roadmap: [Brand Name]
 Generated: [date]
 Inputs: Phase 1 ([date]), Phase 2 ([date]), Product docs
+
+## 0. Moat Grounding Notice
+[Include this notice ONLY when the run is ungrounded (Step 0 fail-safe: no Phase 1 Moat Map and no Phase 1 competitive/differentiation analysis to derive dispositions from). Omit it entirely when grounding exists. When present, place it here, above Section 1, so the operator sees it first:
+
+> NOTICE - NO MOAT GROUNDING. No Phase 1 Moat Map was found and there was no competitive/differentiation analysis to derive one from. Every angle's Moat Disposition is "ungrounded", the primary queue is empty, and no angle is eligible for a priority-1 slot or cold-traffic budget. These angles are usable as supporting/retargeting tests only. To prioritize for cold traffic, supply the Phase 1 Business Validation report with its Positioning Guardrails / Moat Map, or an inline Moat Map.]
 
 ## 1. Root Cause Narrative
 [Full output from Step 1A]
@@ -568,14 +601,18 @@ If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, each car
 
 ## 8. Testing Roadmap
 [Top 5 angles to test first, with recommended:
+- Lead Differentiator, Moat Disposition, Slot Type, Cold Traffic Eligible (the durable moat fields, carried verbatim from each angle card)
 - Format per angle (from format-library.md)
 - Lead variant priority (which of the 3 POVs to test first)
 - Bio-marker priority (when angle has multi-bio-marker pivots)
-- Budget allocation suggestion (% split across angles)]
+- Budget allocation suggestion (% split across angles). Cold-traffic budget may be allocated only to angles with Slot Type primary and Cold Traffic Eligible true; a top Testing Priority rank does not by itself qualify an angle for cold-traffic budget. Under the Step 0 fail-safe (all angles ungrounded), no angle qualifies for cold-traffic budget.]
 
 ## 9. Creative Engine Integration
 [Angle Registry - structured data for each angle, formatted
-for import into Creative Engine's angle entity table]
+for import into Creative Engine's angle entity table. Each entry carries the
+durable moat fields so the registry can re-check disposition: lead_differentiator,
+moat_disposition (LEAD / SUPPORT / AVOID / non-differentiator / ungrounded), slot_type
+(primary / supporting / retargeting), cold_traffic (true / false).]
 ```
 
 ### After Delivery
@@ -638,6 +675,17 @@ Before delivering the roadmap, verify:
 - [ ] Core feeling identified (`copywriting-guide §8.7`) - one of vindication / loss aversion / betrayal / desperation / identity
 - [ ] Headline directions pass `copywriting-guide §8.4 Hook Quality Checklist`
 - [ ] Multi-Bio-Marker Pivots field populated (specific pivots OR "N/A - single-symptom angle")
+
+**Moat Map scan (mechanical; run against the Phase 1 Moat Map before delivering):**
+- [ ] For every angle card, the Lead Differentiator field names the exact Phase 1 Moat Map differentiator (or the non-differentiator sentinel), and the recorded Moat Disposition is re-derived from that differentiator's row in the Phase 1 Moat Map - not trusted from the card's self-declared tag
+- [ ] For every priority-1 or primary-budget angle, the differentiator it actually rests on is identified by reading the angle's core claim, not by trusting the card's tag, then checked against the Phase 1 Moat Map. A "none / non-differentiator" classification holds only if the angle genuinely makes no differentiation claim AND moat grounding exists to confirm it. A primary angle that on reading rests on a SUPPORT or AVOID differentiator is a finding even if the card tags it LEAD or none.
+- [ ] If no Moat Map or derivable competitive analysis exists (Step 0 fail-safe), no angle is ungrounded-and-primary: every angle's Moat Disposition is "ungrounded", Slot Type is supporting or retargeting, and Cold Traffic Eligible is false. "non-differentiator" is used as a primary-eligible classification only when grounding exists; an ungrounded angle mis-tagged "non-differentiator" to reach a primary slot is a finding.
+- [ ] No priority-1 or primary cold-traffic-budget angle leads on a SUPPORT or AVOID differentiator (a high trigger score is never a waiver)
+- [ ] No angle in the roadmap leads on an AVOID differentiator
+- [ ] Every SUPPORT-led angle has Slot Type supporting or retargeting and Cold Traffic Eligible false (registry field cold_traffic: false)
+- [ ] The durable fields (Lead Differentiator, Moat Disposition, Slot Type, Cold Traffic Eligible) are carried into the Section 8 testing roadmap and the Section 9 Creative Engine registry output, so downstream consumers can re-check disposition
+
+This scan checks every angle by re-deriving its lead differentiator's disposition from the Phase 1 Moat Map, regardless of trigger score and regardless of the card's self-declared tag. Any angle whose lead framing rests on a SUPPORT or AVOID differentiator and sits in a primary slot is a finding to resolve before delivery.
 
 **Step 1C UGC Creator Brief:**
 - [ ] Hook line is 5-9 words and would survive sound-off scroll-stop

@@ -1,18 +1,18 @@
 ---
 name: brand-analyzer
-version: "1.0.0"
+version: "1.1.0"
 description: "Phase 3 brand guidelines builder and existing brand analyzer. PRIMARY USE: Create comprehensive brand guidelines for new projects by synthesizing Phase 1 (Business Validation) and Phase 2 (Avatar Research) reports into a complete brand identity document. Trigger on: 'create brand guidelines', 'run Phase 3', 'brand guidelines', 'build brand identity', 'brand guidelines for [brand]'. SECONDARY USE: Analyze, audit, or document existing brands. Trigger on: 'analyze [brand]', 'brand audit', 'brand analysis', 'assess brand health', 'evaluate [brand] brand'."
 ---
 
-# Brand Analyzer — Phase 3 Brand Guidelines Builder & Brand Analysis Tool
+# Brand Analyzer - Phase 3 Brand Guidelines Builder & Brand Analysis Tool
 
 ## Overview
 
 This skill has two modes of operation:
 
-**Mode A — Phase 3 Pipeline (Primary):** Build comprehensive brand guidelines for a new project by extracting and synthesizing data from Phase 1 (Business Validation) and Phase 2 (Avatar Research) reports. This is the standard workflow when setting up a new brand within the ContextArchitect pipeline: Business Validation → Avatar Research → **Brand Guidelines** → Copywriting Guide → Funnels → Ad Creatives.
+**Mode A - Phase 3 Pipeline (Primary):** Build comprehensive brand guidelines for a new project by extracting and synthesizing data from Phase 1 (Business Validation) and Phase 2 (Avatar Research) reports. This is the standard workflow when setting up a new brand within the ContextArchitect pipeline: Business Validation → Avatar Research → **Brand Guidelines** → Copywriting Guide → Funnels → Ad Creatives.
 
-**Mode B — Existing Brand Analysis (Secondary):** Analyze, audit, or document an existing external brand. Provides brand health scoring, consistency evaluation, competitive analysis, and improvement recommendations.
+**Mode B - Existing Brand Analysis (Secondary):** Analyze, audit, or document an existing external brand. Provides brand health scoring, consistency evaluation, competitive analysis, and improvement recommendations.
 
 ## Mode Detection
 
@@ -31,7 +31,7 @@ This skill has two modes of operation:
 
 ---
 
-## MODE A: Phase 3 Pipeline — Build Brand Guidelines from Research
+## MODE A: Phase 3 Pipeline - Build Brand Guidelines from Research
 
 ### Purpose
 
@@ -41,19 +41,19 @@ The skill extracts everything derivable from the research, derives brand identit
 
 ### Required Inputs
 
-1. **Phase 2 Avatar Research Report** (PRIMARY) — provides customer emotional landscapes, visual preferences, language patterns, tone requirements, aspirational identities, and the cross-avatar synthesis that drives voice and visual direction
-2. **Phase 1 Business Validation Report** (PRIMARY) — provides market positioning, competitive landscape, product architecture, messaging hierarchy, regulatory boundaries, and founder directives
+1. **Phase 2 Avatar Research Report** (PRIMARY) - provides customer emotional landscapes, visual preferences, language patterns, tone requirements, aspirational identities, and the cross-avatar synthesis that drives voice and visual direction
+2. **Phase 1 Business Validation Report** (PRIMARY) - provides market positioning, competitive landscape, product architecture, messaging hierarchy, regulatory boundaries, and founder directives
 
 ### Optional Inputs
 
-- **Client braindump** — may contain founder preferences on visual direction, brand name rationale, or specific creative constraints not captured in Phase 1
-- **Existing brand assets** — if the brand already has a logo, colors, or other visual identity elements, these should be documented rather than reinvented
+- **Client braindump** - may contain founder preferences on visual direction, brand name rationale, or specific creative constraints not captured in Phase 1
+- **Existing brand assets** - if the brand already has a logo, colors, or other visual identity elements, these should be documented rather than reinvented
 
 ### What Happens If Phase 1 or Phase 2 Is Missing
 
 | Available | Behavior |
 |-----------|----------|
-| Phase 1 + Phase 2 | Full pipeline — extract, derive, minimal questions |
+| Phase 1 + Phase 2 | Full pipeline - extract, derive, minimal questions |
 | Phase 2 only | Can build voice, tone, visual direction from avatars. Will need user input on market positioning, competitive context, product architecture |
 | Phase 1 only | Can build positioning, architecture, competitive context. Will need user input on customer emotional landscape, visual preferences, language patterns |
 | Neither | Do NOT proceed with Mode A. Ask user to provide research outputs, or offer to switch to Mode B if they want a brand analysis instead |
@@ -76,6 +76,9 @@ Read the business validation report and extract these data points. Each feeds a 
 | Founder Directives (🗣️) | Strategic preferences, non-negotiables, creative constraints | Brand governance, flexibility zones |
 | Product Expansion Roadmap | Future products, launch sequence, format strategy | Brand architecture, sub-brand potential |
 | Survey/Customer Data | Purchase drivers, satisfaction metrics, information gaps | Brand promise validation, proof strategy |
+| Positioning Guardrails / Moat Map | LEAD/SUPPORT/AVOID disposition per differentiator, the named brand world, the binding rule | GOVERNS Step 3 (see Step 3.0); binds every high-authority slot (positioning, competitive differentiation narrative, mission, vision, all brand values, all core voice characteristics, tagline, primary message, boilerplate, brand promise, only-brand claim, non-negotiables; see the Step 6 mechanical scan for the exhaustive inventory including subslots) |
+
+The Positioning Guardrails / Moat Map (emitted by Phase 1 business-validation 1.1.0 and later) is not just another input. It is a governing constraint over Step 3. Extract it in full. If the Phase 1 report has no Moat Map block (produced before business-validation 1.1.0), see the fallback in Step 3.0.
 
 ### Step 2: Extract from Phase 2 (Avatar Research)
 
@@ -98,6 +101,20 @@ Read the avatar research report and extract these data points across ALL persona
 
 This is the critical synthesis step. Rather than asking the user to define these from scratch, DERIVE them from the extracted data.
 
+#### 3.0 Apply the Positioning Guardrails (Moat Map gate)
+
+Before deriving any identity element, establish the moat constraint that governs the rest of Step 3. Read the Positioning Guardrails / Moat Map from the Phase 1 report.
+
+- Every high-authority slot may anchor only on LEAD differentiators or non-differentiator brand principles.
+- SUPPORT differentiators appear only in 2.3 Messaging support pillars and proof points; they never anchor or appear in any high-authority slot.
+- AVOID differentiators do not appear as brand claims anywhere in the guidelines.
+
+Global invariant (applies to every high-authority slot, no exceptions): no high-authority slot may be anchored by or contain a SUPPORT or AVOID differentiator, and there is no "secondary slot" exception. The high-authority slots are positioning, the competitive differentiation narrative (what sets the brand apart), mission, vision, all brand values, all core voice characteristics, tagline, primary message, boilerplate, brand promise, only-brand claim, and non-negotiables. The Step 6 mechanical Moat Map scan holds the canonical, exhaustive inventory of these slots and their document subslots; this list and every other slot list in the skill are realizations of that inventory. SUPPORT differentiators appear only in 2.3 Messaging (supporting pillars) and proof points. AVOID differentiators do not appear as claims at all. Any per-slot rule below is reinforcement of this single invariant, not a separate or weaker rule.
+
+A high-intensity Phase 2 emotional trigger does not override this. When a Phase 2 trigger (Step 2, Section F) is strong, map it to its differentiator's Moat Map disposition before using it. A strong trigger tied to a SUPPORT or AVOID item informs emotional tone and supporting messaging only; it cannot become primary identity. This gate is the defense against promoting a loud but commoditized trigger to identity. See `_frameworks/positioning-guardrails.md`.
+
+Fallback when the Moat Map block is absent (legacy Phase 1 report): do not skip the gate and do not error. Build the dispositions inline from the report's own competitive and differentiation analysis (3.4 Differentiation Assessment STRONG/MODERATE/WEAK and 3.3 White Space, or the equivalent competitive section), applying the exact two-axis logic and fixed order from `_frameworks/positioning-guardrails.md`. For each differentiator, score two axes: can_lead (STRONG and brand-world-safe) and usable_in_copy (false if untrue, unsupported, off-world, or off-strategy). Derive the disposition by fixed order, first match wins: (1) if usable_in_copy is false, AVOID; (2) else if can_lead, LEAD; (3) else SUPPORT. Record this as an inline table (Item | rating | can_lead | usable_in_copy | Disposition | Reason) so the derivation is auditable. Tell the operator the Phase 1 report predates the Moat Map and the dispositions were derived inline, so they can confirm. If the report lacks even the competitive data to derive dispositions, flag the gap to the operator before proceeding rather than guessing.
+
 #### 3.1 Derive Brand Archetype
 
 Cross-reference:
@@ -111,21 +128,25 @@ Use `references/brand_archetypes.md` for the full archetype framework. Identify 
 #### 3.2 Derive Visual Direction
 
 Synthesize Section K (Visual Preferences) across ALL personas to find:
-- **Shared visual preferences** — elements that resonate across multiple personas (these become primary visual direction)
-- **Visual deal-breakers** — anything flagged as negative by ANY major persona (these become "visual don'ts")
-- **Persona-specific adaptations** — visual elements that serve specific segments in targeted creative (noted but don't drive the core identity)
+- **Shared visual preferences** - elements that resonate across multiple personas (these become primary visual direction)
+- **Visual deal-breakers** - anything flagged as negative by ANY major persona (these become "visual don'ts")
+- **Persona-specific adaptations** - visual elements that serve specific segments in targeted creative (noted but don't drive the core identity)
 
 Map the shared preferences to specific visual identity decisions: color palette direction, typography style, photography approach, layout philosophy.
 
 #### 3.3 Derive Voice and Tone
 
+Core voice characteristics are brand principles describing how the brand communicates; they are not differentiators. Per the Step 3.0 global invariant, a SUPPORT or AVOID differentiator must never become a core voice characteristic (pillar 1 or any later pillar). A SUPPORT differentiator belongs in 2.3 Messaging, not in the voice set.
+
 Synthesize Section L (Messaging) and Section D (Authentic Voice) across ALL personas:
-- **Shared vocabulary** — words/phrases that resonate across multiple personas → core brand vocabulary
-- **Universal avoidance list** — words flagged as negative by ANY persona → brand vocabulary prohibitions
-- **Tone spectrum** — map each persona's preferred tone to define the brand's tone range (the brand voice stays consistent; tone adapts by context/audience)
-- **Formality level** — derived from audience sophistication + competitive positioning
+- **Shared vocabulary** - words/phrases that resonate across multiple personas → core brand vocabulary
+- **Universal avoidance list** - words flagged as negative by ANY persona → brand vocabulary prohibitions
+- **Tone spectrum** - map each persona's preferred tone to define the brand's tone range (the brand voice stays consistent; tone adapts by context/audience)
+- **Formality level** - derived from audience sophistication + competitive positioning
 
 #### 3.4 Derive Positioning Statement
+
+Anchor the positioning on a LEAD item per Step 3.0. The differentiator named in the positioning statement must be a LEAD item, never a SUPPORT or AVOID item.
 
 Combine:
 - Phase 1 key differentiator + competitive white space
@@ -135,6 +156,8 @@ Combine:
 Format: "For [target], [Brand] is the [category] that [key differentiator] because [reason to believe]."
 
 #### 3.5 Derive Brand Values
+
+No brand value may be a SUPPORT or AVOID differentiator per Step 3.0. Values are LEAD differentiators or brand principles not tied to a commoditized attribute. A commoditized-but-true attribute is expressed in 2.3 Messaging as a supporting pillar or proof point, never as a brand value.
 
 Extract from:
 - Phase 2 Strategic Synthesis shared patterns → what all personas value
@@ -146,8 +169,8 @@ For each value: define what it means, how it manifests in practice, and what it 
 #### 3.6 Derive Reference Brands
 
 From Phase 1 competitive landscape, categorize:
-- **Brands to study** — competitors or adjacent brands whose specific elements (not whole identity) are worth learning from. Extract the SPECIFIC element to study (e.g., "Thorne: clinical credibility and COA presentation" not just "Thorne")
-- **Brands to avoid emulating** — competitors or adjacent brands whose positioning, visual identity, or messaging represents what this brand should NOT be. State WHY each should be avoided.
+- **Brands to study** - competitors or adjacent brands whose specific elements (not whole identity) are worth learning from. Extract the SPECIFIC element to study (e.g., "Thorne: clinical credibility and COA presentation" not just "Thorne")
+- **Brands to avoid emulating** - competitors or adjacent brands whose positioning, visual identity, or messaging represents what this brand should NOT be. State WHY each should be avoided.
 
 ### Step 4: Gap-Fill Questions
 
@@ -175,6 +198,21 @@ After completing Steps 1-3, identify what CANNOT be derived from the research. T
 
 Use the template at `assets/phase3_brand_guidelines_template.md` to generate the complete document.
 
+#### Step 5 Moat Map contract (binds generation, not just derivation)
+
+The Step 3.0 gate binds the document slots, not only the Step 3 derivation. When populating the template, these high-authority slots may anchor only on LEAD items; SUPPORT items appear as supporting pillars and proof points only; AVOID items do not appear as claims:
+- 1.1 Positioning Statement, the Only-Brand claim, and the Competitive Differentiation narrative
+- 1.2 Mission Statement
+- 1.3 Brand Vision (Vision Narrative and Vision Statement): an identity-level future-state claim; anchor on LEAD items only
+- 1.4 Brand Values: no value may be a SUPPORT or AVOID differentiator. Values are LEAD differentiators or brand principles not tied to a commoditized attribute. A commoditized-but-true attribute is expressed in 2.3 Messaging as a supporting pillar or proof point, never as a brand value.
+- 1.6 Brand Promise
+- 2.1 Brand Voice core characteristics (names and definitions), their examples, and the Do/Don't rows. No core voice characteristic may be a SUPPORT or AVOID differentiator.
+- 2.3 Primary Brand Message, and the Message Hierarchy table where Lead With = LEAD items and Support With = SUPPORT items
+- 2.4 Tagline Candidates and Primary Recommendation
+- 2.7 Boilerplate (25/50/100 word)
+
+5.2 Non-Negotiable Brand Elements carries regulatory, legal, and safety prohibitions only. A supporting proof point (for example a commoditized-but-true attribute) does not belong there; it lives in 2.3 Messaging. The template annotates each of these slots; honor the annotations.
+
 #### Output Structure (Five Sections)
 
 **Section 1: Brand Strategy Foundation**
@@ -197,7 +235,7 @@ Use the template at `assets/phase3_brand_guidelines_template.md` to generate the
 
 **Section 3: Visual Identity**
 - 3.1 Logo System (concept direction, variations, usage rules, do's and don'ts)
-- 3.2 Color Palette (primary, secondary, accent, neutral — with rationale connecting to avatar preferences and archetype)
+- 3.2 Color Palette (primary, secondary, accent, neutral - with rationale connecting to avatar preferences and archetype)
 - 3.3 Typography (primary, secondary, utility typefaces with hierarchy and usage)
 - 3.4 Photography Style (philosophy, people, product, lifestyle, scientific/abstract imagery guidelines)
 - 3.5 Iconography and Illustration (style, when to use, category-specific requirements)
@@ -223,7 +261,7 @@ Use the template at `assets/phase3_brand_guidelines_template.md` to generate the
 **Format:**
 - Clear section headers and subheaders for navigation
 - Tables and matrices where appropriate for quick reference
-- Specific examples throughout — not just principles, but illustrations of how they apply
+- Specific examples throughout - not just principles, but illustrations of how they apply
 - Do's and don'ts formatted for easy scanning
 - Color recommendations with hex codes where specified
 - Reference brand citations with the SPECIFIC element to learn from
@@ -241,26 +279,52 @@ Use the template at `assets/phase3_brand_guidelines_template.md` to generate the
 - Describe mood board concepts in enough detail to brief a designer
 
 **Critical success criteria:**
-1. **Unifies all personas** — every recommendation resonates across all primary avatars without fragmenting the brand
-2. **Anchored in research** — every major decision traces back to specific data points from Phase 1 or Phase 2
-3. **Enables downstream phases** — the copywriting guide (Phase 4) should be able to extract voice, tone, and positioning directly from this document
-4. **Differentiates from competitors** — visual and verbal identity should be ownable and distinct from the competitive set identified in Phase 1
-5. **Allows flexibility** — principles over rigid rules; enable smart adaptation across contexts
-6. **Addresses trust barriers** — incorporates trust signal strategy derived from avatar objections
+1. **Unifies all personas** - every recommendation resonates across all primary avatars without fragmenting the brand
+2. **Anchored in research** - every major decision traces back to specific data points from Phase 1 or Phase 2
+3. **Enables downstream phases** - the copywriting guide (Phase 4) should be able to extract voice, tone, and positioning directly from this document
+4. **Differentiates from competitors** - visual and verbal identity should be ownable and distinct from the competitive set identified in Phase 1
+5. **Allows flexibility** - principles over rigid rules; enable smart adaptation across contexts
+6. **Addresses trust barriers** - incorporates trust signal strategy derived from avatar objections
 
 **What to explicitly exclude:**
 - Full avatar profiles (those live in the Phase 2 document; include only a condensed summary)
 - Website wireframes, social media calendars, ad creative, email sequences (those are Phases 4-6)
-- Tactical executions of any kind — this document defines the playing field, not the plays
+- Tactical executions of any kind - this document defines the playing field, not the plays
 
 ### Step 6: Deliver and Handoff
+
+Before presenting the guidelines to the operator, run the strategic coherence review (see `_frameworks/strategic-coherence-review.md`).
+
+Mechanical Moat Map scan (run first; this is the gate, not the per-slot annotations). Using the Moat Map table (the LEAD/SUPPORT/AVOID disposition of every differentiator):
+1. Scan every high-authority section block in the generated document, and within each block scan EVERY generated field it contains, not a selected list of fields. Scanning is block-based on purpose: enumerating individual fields always leaves a newer field uncovered, so the unit of coverage is the whole block. This enumeration is the canonical, exhaustive inventory; every other slot list in this skill (the global invariant, the extraction row, the Step 5 contract, the Brand Consistency Checklist, and Pass 2 below) is a shorthand realization of it, and where any of those is narrower this list governs. The high-authority blocks, each scanned in full including every current and future field, are:
+   - 1.1 Brand Positioning Statement block: the Positioning Statement, the "Only Brand That..." claim, and the Competitive Differentiation narrative.
+   - 1.2 Mission block: the Mission Statement (Brand Purpose is principle-level, but scan it too).
+   - 1.3 Brand Vision block: the Vision Narrative and the Vision Statement (an identity-level future-state claim).
+   - 1.4 Brand Values block: every value and every field under each value, including In Practice and Explicitly Rejects.
+   - 1.6 Brand Promise block.
+   - 2.1 Brand Voice block: every core voice characteristic and every field around it, including its illustrative examples, its Do/Don't rows, and the How Voice Flexes Across Contexts table.
+   - 2.3 Messaging block: the Primary Brand Message and the Message Hierarchy "Lead With" column.
+   - 2.4 Tagline block: every tagline candidate and the Primary Recommendation.
+   - 2.7 Boilerplate block: the 25/50/100-word boilerplate and any product/category descriptions.
+   - 5.2 Non-Negotiable Brand Elements block.
+   - the Brand Consistency Checklist entries.
+   The named subfields are reminders of fields easy to miss, not the boundary of the scan: if a block contains a generated field not named here, it is still in scope. The block list is the concrete enumeration, not the definition. The defining property is semantic: any generated field anywhere in the document that makes an identity-level or differentiation claim (states what the brand is, promises, stands for, or what sets it apart) is high-authority and in scope even if its block is not listed above. When in doubt about a field, scan it.
+2. For each block, and every generated field within it, identify which differentiators its content draws on.
+3. If any field draws on a differentiator marked SUPPORT or AVOID, that is a finding. Rebuild the field from LEAD differentiators and brand principles. SUPPORT differentiators are permitted only in 2.3 Messaging support pillars and proof points; AVOID differentiators nowhere.
+This scan checks the finished document against the Moat Map directly and does not depend on any per-slot annotation being individually correct. It is the single point at which the invariant is enforced over the whole document.
+
+- Pass 1 (targeted): confirm every primary-identity slot anchors only on a LEAD item and that no AVOID item appears as a claim.
+- Pass 2 (coherence): read each high-authority block (the same block inventory the mechanical scan in step 1 covers, read in full including every field) against the corrected hierarchy and confirm none places a SUPPORT or AVOID item at the authority level of a LEAD item, and that no voice example uses a SUPPORT attribute as the exemplar. The high-authority blocks in this template are: 1.1 Positioning Statement, Only-Brand claim, and Competitive Differentiation narrative; 1.2 Mission; 1.3 Brand Vision (Vision Narrative and Vision Statement); 1.4 Brand Values in full (names, definitions, In Practice, Explicitly Rejects; no value is a SUPPORT or AVOID differentiator); 1.6 Brand Promise; 2.1 Brand Voice core characteristics (names and definitions), examples, Do/Don't rows, and the How Voice Flexes Across Contexts table; 2.3 Primary Brand Message and the Message Hierarchy Lead-With column; 2.4 Tagline Candidates and Primary Recommendation; 2.7 Boilerplate and any product/category descriptions; 5.2 Non-Negotiable Brand Elements; and the Brand Consistency Checklist. Where this list is narrower than the mechanical-scan inventory, that inventory governs.
+- A finding is a finding even when the content is factually true.
+- Final pass (mandatory): a cold read by a fresh instance with no prior context, given only the braindump, the Phase 1 guardrails, and the generated document. The producing instance cannot clear its own work. See `_frameworks/strategic-coherence-review.md`.
+Resolve findings before presenting.
 
 After generating the guidelines document:
 
 1. Save as `brand-guidelines-[BRANDNAME]-[YYYY-MM-DD].md`
 2. Summarize the key identity decisions made (archetype, positioning, voice pillars, visual direction)
 3. Note any areas where the user should make a final creative decision (e.g., logo execution, final color hex selection)
-4. Confirm readiness for Phase 4 (Copywriting Guide) — the brand guidelines should contain everything the copywriting-guide skill needs to extract
+4. Confirm readiness for Phase 4 (Copywriting Guide) - the brand guidelines should contain everything the copywriting-guide skill needs to extract
 
 ---
 
@@ -338,12 +402,12 @@ Perform comprehensive analysis using the framework from `references/brand_analys
 
 **Key Analysis Areas:**
 
-1. **Brand Identity** — Mission/vision clarity, values authenticity, personality expression, archetype fit
-2. **Visual Identity** — Logo effectiveness, color appropriateness, typography hierarchy, imagery consistency
-3. **Voice and Messaging** — Voice consistency, tone adaptation, message clarity, value proposition strength
-4. **Target Audience Alignment** — Audience definition, brand-audience fit, messaging resonance
-5. **Market Position** — Competitive differentiation, unique value proposition, positioning clarity
-6. **Brand Consistency** — Cross-channel consistency, touchpoint alignment, quality standards
+1. **Brand Identity** - Mission/vision clarity, values authenticity, personality expression, archetype fit
+2. **Visual Identity** - Logo effectiveness, color appropriateness, typography hierarchy, imagery consistency
+3. **Voice and Messaging** - Voice consistency, tone adaptation, message clarity, value proposition strength
+4. **Target Audience Alignment** - Audience definition, brand-audience fit, messaging resonance
+5. **Market Position** - Competitive differentiation, unique value proposition, positioning clarity
+6. **Brand Consistency** - Cross-channel consistency, touchpoint alignment, quality standards
 
 ### Step 5: Generate Output Document
 
@@ -356,10 +420,10 @@ Create the appropriate deliverable based on analysis type:
 ### Step 6: Provide Recommendations
 
 Based on analysis, provide actionable recommendations using the prioritization framework:
-- **High Impact + Low Effort**: Quick wins — do immediately
-- **High Impact + High Effort**: Strategic initiatives — plan carefully
-- **Low Impact + Low Effort**: Nice-to-haves — do when possible
-- **Low Impact + High Effort**: Avoid — not worth resources
+- **High Impact + Low Effort**: Quick wins - do immediately
+- **High Impact + High Effort**: Strategic initiatives - plan carefully
+- **Low Impact + Low Effort**: Nice-to-haves - do when possible
+- **Low Impact + High Effort**: Avoid - not worth resources
 
 ### Step 7: Create Implementation Roadmap
 
@@ -428,7 +492,7 @@ This skill is Phase 3 in the ContextArchitect brand development pipeline:
 ```
 Phase 1: Business Validation  →  Market, product, competitive, regulatory context
 Phase 2: Avatar Research       →  Customer personas with emotional depth, visual/verbal preferences
-Phase 3: Brand Guidelines      →  THIS SKILL (Mode A) — synthesizes Phase 1+2 into brand identity
+Phase 3: Brand Guidelines      →  THIS SKILL (Mode A) - synthesizes Phase 1+2 into brand identity
 Phase 4: Copywriting Guide     →  Extracts voice, tone, positioning from Phase 3 + avatars from Phase 2
 Phase 5: Funnel Development    →  Uses brand guidelines + copywriting guide + avatars
 Phase 6: Ad Creatives          →  Uses all above for brand-consistent creative generation

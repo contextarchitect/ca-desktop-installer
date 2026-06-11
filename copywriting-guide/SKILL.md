@@ -1,6 +1,6 @@
 ---
 name: copywriting-guide
-version: "1.2.0"
+version: "1.3.0"
 description: "Generate a complete Human-Centered Copywriting Guide for any brand by extracting voice, tone, archetype language, and humanization rules from avatar research and brand guidelines. Use this skill whenever the user wants to create a copywriting guide, content writing standards, brand voice guide, humanization guidelines, or AI detection firewall for a brand. Trigger on phrases like: 'run Phase 4', 'copywriting guide', 'writing guide', 'brand voice guide', 'humanization rules', 'content standards', 'how should this brand write'. This skill reads Phase 2 (Avatar Research) output and Phase 3 (Brand Guidelines) as primary inputs and generates a complete, ready-to-use copywriting manual that any LLM can follow to produce human-sounding, brand-consistent copy."
 ---
 
@@ -36,6 +36,7 @@ This skill requires TWO primary inputs:
 ## Workflow Overview
 
 ```
+0. MOAT GATE    -> Read moat dispositions; bind which differentiators canonical examples may lead on
 1. INGEST       -> Read avatar research + brand guidelines
 2. EXTRACT      -> Pull voice inputs from both sources
 3. MAP          -> Map archetypes to copy requirements
@@ -45,6 +46,25 @@ This skill requires TWO primary inputs:
 7. HUMANIZE     -> Run the AI Detection Firewall
 8. OUTPUT       -> Deliver complete guide
 ```
+
+## Step 0: Positioning Guardrails (Moat Map Gate)
+
+Read this before extracting any messaging or writing any example. It governs which differentiators the guide's canonical examples and approved messaging may lead on. It is not Schwartz-gated; it applies to every brand. It governs brand-specific canonical examples and approved messaging only; it does not constrain the universal structural rules (Step 8) or the universal mechanics and forbidden-vocabulary lists of the AI Detection Firewall (Step 4), which are brand-agnostic copy mechanics. The exemption is for those mechanics and prohibition lists only: any brand-copy example sentence generated to illustrate a firewall rule is a canonical example like any other and is subject to this gate.
+
+Establish the LEAD / SUPPORT / AVOID disposition of each differentiator, in this source priority:
+1. The Phase 1 Positioning Guardrails / Moat Map, if the Phase 1 report is available.
+2. Otherwise, the dispositions already embedded in the Phase 3 Brand Guidelines (brand-analyzer 1.1.0 and later carry LEAD / SUPPORT / AVOID into the guidelines).
+3. Otherwise, derive each disposition inline from the available competitive and differentiation analysis using the canonical two-axis fixed order: score can_lead (STRONG and brand-world-safe) and usable_in_copy (false if untrue, unsupported, off-world, or off-strategy); then first match wins: usable_in_copy false gives AVOID, else can_lead gives LEAD, else SUPPORT. Tell the operator the dispositions were derived inline.
+4. If none of the above yields dispositions, the run is ungrounded, and the gate fails closed on differentiator-led content. Without grounding there is no basis to tell LEAD from SUPPORT or AVOID, so do not present any canonical example, core promise, voice pillar exemplar, content example, or approved message that leads on a differentiator. Generate only non-differentiator emotional/identity examples, and leave every differentiator-led slot as an explicit placeholder ("[differentiator-led example pending moat input]"). Add the loud notice in Step 9.5.
+
+The invariant (stated once here; every step below reinforces it, none weakens it):
+- Canonical examples and approved primary messaging may lead only on a LEAD differentiator or on a non-differentiator emotional or identity driver. This covers archetype core promises and example paragraphs (Step 2), voice pillar "sounds like" exemplars (Step 3), content-type example copy (Step 5), the category messaging framework's approved messages and mechanism explanation (Step 6), and the worked technique examples (Step 7, when present).
+- A SUPPORT differentiator (commoditized but true) may appear only as a supporting proof point inside a piece of copy, never as a canonical example, a core promise, a voice pillar exemplar, or a primary approved message.
+- An AVOID differentiator does not appear.
+
+This is the defense against the canonical-example failure: a true but commoditized attribute, the kind any competitor also has, becoming the example the whole brand voice is taught from. Proof strength and quotability are not moat defensibility.
+
+See the canonical `_frameworks/positioning-guardrails.md` in `contextarchitect/context-architect-brands` for the full filter definition.
 
 ## Step 1: Ingest and Extract
 
@@ -72,6 +92,8 @@ The avatar research is the most important input because it determines HOW copy s
 | Values | Core values, rejected values | Cultural considerations |
 | Messaging Framework | Core message, elevator pitch, taglines | Approved language, taglines |
 
+When extracting taglines, approved language, and positioning, carry their Moat Map dispositions (Step 0). A SUPPORT or AVOID item extracted from Phase 3 is recorded for reference but is not promoted to a canonical example or a primary approved message in this guide.
+
 ### From Business Validation (Claim Boundaries)
 
 | Validation Section | What to Extract | Feeds Into |
@@ -95,6 +117,8 @@ SENTENCE STRUCTURE: [Derived from their sophistication level and platform prefer
 CORE PROMISE: [From Section L "Aspirational Identity" or Section H primary want]
 EXAMPLE PARAGRAPH: [Write a 4-6 sentence sample targeting this archetype specifically]
 ```
+
+CORE PROMISE and EXAMPLE PARAGRAPH lead on a LEAD differentiator or a non-differentiator emotional/identity driver (Step 0), never on a SUPPORT or AVOID differentiator. An emotional or identity lead is the common, allowed case; the gate bites only when an example leads on a commoditized (SUPPORT) or off-strategy (AVOID) differentiator.
 
 ### Tone Calibration Logic
 
@@ -129,6 +153,8 @@ Each pillar needs:
 - 3 "Sounds like" example phrases
 - 3 "Doesn't sound like" anti-examples
 - Application guidance
+
+Voice pillar "sounds like" exemplars must not be built around a SUPPORT or AVOID differentiator (Step 0).
 
 ## Step 4: Construct AI Detection Firewall
 
@@ -177,6 +203,8 @@ From business validation regulatory findings + brand guidelines positioning:
 3. **Claim boundaries** - what can be said, what requires qualification, what's prohibited
 4. **Competitor comparison rules** - how to reference competitors (or not)
 
+Approved messages and the mechanism explanation lead on LEAD differentiators or non-differentiator drivers; a SUPPORT differentiator appears only as a supporting proof point, never as the primary approved message (Step 0).
+
 ## Step 7: Add the Seven-Technique Structural Layer
 
 **Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
@@ -200,6 +228,8 @@ Pick the technique FIRST. Write the move in the brand's voice SECOND. Run the AI
 ### Writing Each Technique in Brand Voice
 
 For each technique, the copywriting guide should include a "what this looks like in our voice" worked example drawn from the brand's actual archetype profiles.
+
+Each worked example leads on a LEAD differentiator or a non-differentiator driver, not a SUPPORT or AVOID differentiator (Step 0).
 
 **Intensification.** Build 3-5 vivid scenes of the prospect already living the result, each from a different angle. Phase 4's "Show, Don't Tell" rule is intensification by another name; this layer formalizes it.
 
@@ -387,6 +417,21 @@ A 4-phase self-check that any LLM runs after writing content:
 **Phase 3: Emotional Resonance** - target emotion achieved, empathy present, aspiration without pandering
 **Phase 4: Specificity and Differentiation** - no vague statements, concrete scenarios, mechanism clear
 
+## Step 9.5: Moat Map Scan (pre-output gate)
+
+Run this against the Step 0 dispositions before presenting the guide. It is the single point where the invariant is enforced over the whole generated guide, and it reads the actual generated text rather than trusting any label.
+
+For every canonical example and approved-messaging element the guide generated (archetype core promises and example paragraphs from Step 2, voice pillar "sounds like" exemplars AND "doesn't sound like" anti-examples from Step 3, content-type example copy from Step 5, the category messaging framework's approved messages and mechanism explanation from Step 6, the worked technique examples from Step 7 if present, any before/after bad examples, and any brand-copy example sentence used to illustrate a Step 4 firewall rule), do two reads: (1) identify the differentiator the element's lead framing rests on and check its Step 0 disposition; (2) scan the full text of the element for every differentiator it mentions anywhere, lead or secondary.
+
+Findings:
+- Any positive canonical example, core promise, voice pillar exemplar, or primary approved message whose lead framing rests on a SUPPORT or AVOID differentiator is a finding. Rebuild it on a LEAD differentiator or a non-differentiator emotional/identity driver; a SUPPORT attribute may remain only as a supporting proof point inside the copy, not as the lead.
+- Any element that mentions an AVOID differentiator anywhere - lead or secondary, as claim, proof, or comparison, and including inside a "doesn't sound like" anti-example or a before/after bad example - is a finding; remove the AVOID framing entirely. Per Step 0, an AVOID differentiator does not appear at all, not merely "not as the lead." In an anti-example, warn against the mistake by describing it, not by reproducing the AVOID claim verbatim.
+- A "doesn't sound like" anti-example or before/after bad example MAY legitimately use a SUPPORT differentiator as the thing it warns against (for example, "don't lead on [commoditized attribute]"); that is the anti-example doing its job and is not a finding. The SUPPORT finding fires only when a SUPPORT differentiator leads a positive canonical example.
+
+This scan checks every generated element by the property of the differentiator it actually rests on (and, for AVOID, by any mention), regardless of how vivid or proof-heavy the element is. It does not apply to the universal structural rules (Step 8) or to the universal mechanics and forbidden-vocabulary lists of the firewall (Step 4), which are brand-agnostic; it DOES apply to any brand-copy example sentence generated inside the firewall section.
+
+If the run is ungrounded (Step 0 item 4), the gate fails closed: confirm that no presented canonical example, core promise, voice pillar exemplar, content example, or approved message leads on a differentiator, and that every differentiator-led slot is an explicit placeholder. State at the head of the output: no moat grounding was available, differentiator-led canonical examples are withheld as placeholders, and a Phase 1 Moat Map or moat-graded Phase 3 Brand Guidelines should be supplied before the guide is used to anchor brand voice.
+
 ## Step 10: Present and Output
 
 Present summary:
@@ -430,6 +475,8 @@ Sections populated:
   - Category messaging framework with claim boundaries
   - Before/after examples
   - Quick reference card
+
+Moat Map scan (Step 9.5): [PASSED - all canonical examples and approved messaging lead on LEAD or non-differentiator drivers, no AVOID differentiator appears anywhere | UNGROUNDED - no moat grounding; differentiator-led examples withheld as placeholders, notice emitted at head of guide]
 
 Next: Add this guide as a knowledge base file to the brand's Claude Project.
 All content creation should reference this guide before writing.

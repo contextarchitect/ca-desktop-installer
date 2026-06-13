@@ -40,57 +40,79 @@ Write-Host "============================================================" -Foreg
 Write-Host ""
 
 # -------------------------------------------------------
-# Locate Claude Desktop config to find the correct
-# skills directory (handles direct install + Store install)
+# Locate the active Claude Desktop data directory.
+#
+# Two install methods produce two completely different paths:
+#
+#   Store / MSIX / WinGet:
+#     %LOCALAPPDATA%\Packages\Claude_<hash>\LocalCache\Roaming\Claude\
+#
+#   Direct .exe installer:
+#     %APPDATA%\Claude\
+#
+# We detect by install method, NOT by searching for config files.
+# Searching for claude_desktop_config.json is unreliable - the file
+# may exist in stale install remnants or backup copies. Using
+# Get-AppxPackage queries the live Windows package registry instead,
+# which is authoritative for Store/MSIX installs.
 # -------------------------------------------------------
 Write-Host "Locating Claude Desktop installation..." -ForegroundColor Yellow
 
-$searchRoots = @(
-    "$env:LOCALAPPDATA\Packages",
-    "$env:APPDATA",
-    "$env:LOCALAPPDATA"
-)
+$claudeDataDir = $null
+$installMethod = $null
 
-$foundConfigs = @()
-foreach ($root in $searchRoots) {
-    if (Test-Path $root) {
-        Get-ChildItem -Path $root -Recurse -Filter "claude_desktop_config.json" -ErrorAction SilentlyContinue |
-            ForEach-Object { $foundConfigs += $_.FullName }
+# --- Method 1: Store / MSIX / WinGet (Get-AppxPackage is authoritative) ---
+try {
+    $pkg = Get-AppxPackage -Name "Claude" -ErrorAction SilentlyContinue
+    if (-not $pkg) {
+        # WinGet and some MSIX installers register under a different family name
+        $pkg = Get-AppxPackage | Where-Object { $_.Name -like "*Claude*" -or $_.PackageFamilyName -like "*Claude*" } | Select-Object -First 1
     }
-}
-
-if ($foundConfigs.Count -gt 0) {
-    $claudeConfigFile = $foundConfigs[0]
-    $claudeConfigDir  = Split-Path $claudeConfigFile -Parent
-    Write-Host "  OK  Config found: $claudeConfigFile" -ForegroundColor Green
-} else {
-    # Config doesn't exist yet - find the Claude data directory
-    $claudeConfigDir = $null
-
-    # Check Windows Store package location first
-    $storeBase = "$env:LOCALAPPDATA\Packages"
-    if (Test-Path $storeBase) {
-        $claudePkg = Get-ChildItem -Path $storeBase -Directory -Filter "AnthropicPBC.Claude*" -ErrorAction SilentlyContinue |
-                     Select-Object -First 1
-        if ($claudePkg) {
-            $claudeConfigDir = Join-Path $claudePkg.FullName "LocalCache\Roaming\Claude"
+    if ($pkg) {
+        # PackageFamilyName gives us the stable folder name under Packages
+        $pkgDataPath = "$env:LOCALAPPDATA\Packages\$($pkg.PackageFamilyName)\LocalCache\Roaming\Claude"
+        if (Test-Path (Split-Path $pkgDataPath)) {
+            $claudeDataDir = $pkgDataPath
+            $installMethod = "Windows Store / MSIX (package: $($pkg.PackageFamilyName))"
         }
     }
-
-    # Fall back to standard direct-install location
-    if (-not $claudeConfigDir) {
-        $claudeConfigDir = "$env:APPDATA\Claude"
-    }
-
-    $claudeConfigFile = Join-Path $claudeConfigDir "claude_desktop_config.json"
-    Write-Host "  !   No config found. Will use: $claudeConfigDir" -ForegroundColor Yellow
-    Write-Host "      (Run setup.ps1 after this script to create the config)" -ForegroundColor Yellow
+} catch {
+    # Get-AppxPackage can fail in restricted environments - treat as not found
 }
 
-$DEST_DIR = Join-Path $claudeConfigDir "..\..\skills\context-architect"
-$DEST_DIR = [System.IO.Path]::GetFullPath($DEST_DIR)
+# --- Method 2: Direct .exe installer ---
+if (-not $claudeDataDir) {
+    $directPath = "$env:APPDATA\Claude"
+    if (Test-Path $directPath) {
+        $claudeDataDir = $directPath
+        $installMethod = "Direct installer (%APPDATA%\Claude)"
+    }
+}
 
-Write-Host "  OK  Skills destination: $DEST_DIR" -ForegroundColor Green
+# --- Neither found: warn and prompt ---
+if (-not $claudeDataDir) {
+    Write-Host ""
+    Write-Host "  !!  Could not detect Claude Desktop installation." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "  Expected locations:" -ForegroundColor Yellow
+    Write-Host "    Store/WinGet: %LOCALAPPDATA%\Packages\Claude_<hash>\LocalCache\Roaming\Claude"
+    Write-Host "    Direct .exe:  %APPDATA%\Claude"
+    Write-Host ""
+    Write-Host "  Make sure Claude Desktop is installed and has been launched at least once."
+    Write-Host "  Download from: https://claude.ai/download"
+    Write-Host ""
+    exit 1
+}
+
+# Skills live alongside the Claude config, two levels up from the Roaming\Claude dir:
+#   Store: Packages\Claude_<hash>\LocalCache\Roaming\Claude  -> skills at Packages\Claude_<hash>\LocalCache\Roaming\Claude\..\..\skills
+#   Wait - skills actually sit inside the same Claude data dir, not relative to Packages root.
+#   Claude reads skills from: <claudeDataDir>\skills\context-architect
+$DEST_DIR = Join-Path $claudeDataDir "skills\context-architect"
+
+Write-Host "  OK  Install method : $installMethod" -ForegroundColor Green
+Write-Host "  OK  Claude data dir: $claudeDataDir" -ForegroundColor Green
+Write-Host "  OK  Skills target  : $DEST_DIR" -ForegroundColor Green
 Write-Host ""
 
 # -------------------------------------------------------
@@ -113,8 +135,9 @@ $skills = if ($Mode -eq 'brand') {
 }
 
 $skillNames = $skills | ForEach-Object { $_.Name }
+$excluded   = $allSkills.Count - $skills.Count
 
-Write-Host "  $($skills.Count) skills selected ($($allSkills.Count) total, $($allSkills.Count - $skills.Count) excluded for brand mode)" -ForegroundColor Cyan
+Write-Host "  $($skills.Count) skills selected ($($allSkills.Count) total, $excluded excluded for brand mode)" -ForegroundColor Cyan
 Write-Host ""
 
 # -------------------------------------------------------
@@ -128,7 +151,6 @@ if ($hasGit) {
     if (Test-Path "$DEST_DIR\.git") {
         Write-Host "Updating existing skills install..."
         git -C $DEST_DIR pull --ff-only
-        # Re-apply sparse-checkout in case mode changed
         Push-Location $DEST_DIR
         git sparse-checkout set $skillNames
         Pop-Location
@@ -140,7 +162,6 @@ if ($hasGit) {
         }
 
         New-Item -ItemType Directory -Force -Path (Split-Path $DEST_DIR) | Out-Null
-
         git clone --filter=blob:none --sparse $REPO_URL $DEST_DIR
 
         Push-Location $DEST_DIR

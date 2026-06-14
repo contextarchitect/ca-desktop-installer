@@ -18,6 +18,26 @@ $API_BASE = "https://api.github.com/repos/contextarchitect/ca-desktop-installer/
 $OUT_DIR  = $PSScriptRoot
 if (-not $OUT_DIR) { $OUT_DIR = (Get-Location).Path }  # fallback when run via iex
 
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+function New-SkillZip {
+    param([string]$SourceDir, [string]$ZipPath)
+    # Build zip entry-by-entry using ZipFile so paths are always relative
+    # (Compress-Archive embeds folder names even with -Path "dir\*", which
+    # causes Claude Desktop to reject the zip with "invalid characters")
+    if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
+    $zip = [System.IO.Compression.ZipFile]::Open($ZipPath, 'Create')
+    try {
+        Get-ChildItem -Path $SourceDir -Recurse -File | ForEach-Object {
+            # Entry name = path relative to SourceDir, forward slashes
+            $entryName = $_.FullName.Substring($SourceDir.Length).TrimStart('\', '/').Replace('\', '/')
+            [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $entryName) | Out-Null
+        }
+    } finally {
+        $zip.Dispose()
+    }
+}
+
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host "  ContextArchitect - Download All Skills" -ForegroundColor Cyan
@@ -25,7 +45,6 @@ Write-Host "============================================================" -Foreg
 Write-Host "  Saving zips to: $OUT_DIR" -ForegroundColor Cyan
 Write-Host ""
 
-# Read skill list from VERSION manifest
 $versionContent = (Invoke-WebRequest -Uri "$RAW_BASE/VERSION" -UseBasicParsing).Content
 $skills = $versionContent -split "`n" |
     Where-Object { $_ -match '=\d' } |
@@ -39,24 +58,21 @@ Write-Host ""
 
 $downloaded = 0
 $failed     = @()
-$tempBase   = Join-Path $env:TEMP "ca-skills-$$"
+$tempBase   = Join-Path $env:TEMP "ca-skills-$PID"
 
 foreach ($skill in $skills) {
-    $zipName  = "$($skill.Name).zip"
-    $zipPath  = Join-Path $OUT_DIR $zipName
-    $tempDir  = Join-Path $tempBase $skill.Name
+    $zipPath = Join-Path $OUT_DIR "$($skill.Name).zip"
+    $tempDir = Join-Path $tempBase $skill.Name
 
     try {
-        # Fetch folder listing from GitHub API
         $entries = (Invoke-WebRequest -Uri "$API_BASE/$($skill.Name)" -UseBasicParsing).Content | ConvertFrom-Json
-
         New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
 
         foreach ($entry in $entries) {
             if ($entry.type -eq 'file') {
                 Invoke-WebRequest -Uri $entry.download_url -OutFile (Join-Path $tempDir $entry.name) -UseBasicParsing
             } elseif ($entry.type -eq 'dir') {
-                $subDir     = Join-Path $tempDir $entry.name
+                $subDir = Join-Path $tempDir $entry.name
                 New-Item -ItemType Directory -Force -Path $subDir | Out-Null
                 $subEntries = (Invoke-WebRequest -Uri $entry.url -UseBasicParsing).Content | ConvertFrom-Json
                 foreach ($sub in $subEntries) {
@@ -67,10 +83,7 @@ foreach ($skill in $skills) {
             }
         }
 
-        # Zip it
-        if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-        Compress-Archive -Path "$tempDir\*" -DestinationPath $zipPath
-
+        New-SkillZip -SourceDir $tempDir -ZipPath $zipPath
         Write-Host "  OK  $($skill.Name) v$($skill.Version)" -ForegroundColor Green
         $downloaded++
     } catch {
@@ -79,7 +92,6 @@ foreach ($skill in $skills) {
     }
 }
 
-# Cleanup temp
 if (Test-Path $tempBase) { Remove-Item $tempBase -Recurse -Force -ErrorAction SilentlyContinue }
 
 Write-Host ""

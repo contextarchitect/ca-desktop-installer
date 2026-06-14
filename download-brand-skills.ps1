@@ -27,6 +27,22 @@ $EXCLUDE = @(
     'breakthrough-advertising'
 )
 
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+function New-SkillZip {
+    param([string]$SourceDir, [string]$ZipPath)
+    if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
+    $zip = [System.IO.Compression.ZipFile]::Open($ZipPath, 'Create')
+    try {
+        Get-ChildItem -Path $SourceDir -Recurse -File | ForEach-Object {
+            $entryName = $_.FullName.Substring($SourceDir.Length).TrimStart('\', '/').Replace('\', '/')
+            [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $entryName) | Out-Null
+        }
+    } finally {
+        $zip.Dispose()
+    }
+}
+
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host "  ContextArchitect - Download Brand (Production) Skills" -ForegroundColor Cyan
@@ -49,23 +65,21 @@ Write-Host ""
 
 $downloaded = 0
 $failed     = @()
-$tempBase   = Join-Path $env:TEMP "ca-skills-$$"
+$tempBase   = Join-Path $env:TEMP "ca-skills-$PID"
 
 foreach ($skill in $skills) {
-    $zipName  = "$($skill.Name).zip"
-    $zipPath  = Join-Path $OUT_DIR $zipName
-    $tempDir  = Join-Path $tempBase $skill.Name
+    $zipPath = Join-Path $OUT_DIR "$($skill.Name).zip"
+    $tempDir = Join-Path $tempBase $skill.Name
 
     try {
         $entries = (Invoke-WebRequest -Uri "$API_BASE/$($skill.Name)" -UseBasicParsing).Content | ConvertFrom-Json
-
         New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
 
         foreach ($entry in $entries) {
             if ($entry.type -eq 'file') {
                 Invoke-WebRequest -Uri $entry.download_url -OutFile (Join-Path $tempDir $entry.name) -UseBasicParsing
             } elseif ($entry.type -eq 'dir') {
-                $subDir     = Join-Path $tempDir $entry.name
+                $subDir = Join-Path $tempDir $entry.name
                 New-Item -ItemType Directory -Force -Path $subDir | Out-Null
                 $subEntries = (Invoke-WebRequest -Uri $entry.url -UseBasicParsing).Content | ConvertFrom-Json
                 foreach ($sub in $subEntries) {
@@ -76,9 +90,7 @@ foreach ($skill in $skills) {
             }
         }
 
-        if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-        Compress-Archive -Path "$tempDir\*" -DestinationPath $zipPath
-
+        New-SkillZip -SourceDir $tempDir -ZipPath $zipPath
         Write-Host "  OK  $($skill.Name) v$($skill.Version)" -ForegroundColor Green
         $downloaded++
     } catch {

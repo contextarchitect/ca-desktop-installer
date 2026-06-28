@@ -1,6 +1,6 @@
 ---
 name: duplicate-pages
-version: "2.0.0"
+version: "2.0.1"
 description: >
   Duplicate any high-converting page for a brand - either from a Figma design
   file the brand controls (Mode 1) or from a competitor's live page (Mode 2).
@@ -137,7 +137,8 @@ Procedure detail in `_reference/em-dash-sweep.md`.
 
 - Building a funnel page (advertorial, listicle, PAS, AIDA, or any of the
   7 funnel formats) - use `funnel-builder`. Funnel pages are copy-first,
-  image-generated via Nano Banana, and deploy via Funnel Factory. They do not
+  image-generated via Nano Banana, and deploy via a Lovable implementation
+  prompt. They do not
   start from a design source.
 - Building a long-form static ad - use `long-form-static-builder`.
 - Generating ad images from scratch - use `ad-style-generator` or the

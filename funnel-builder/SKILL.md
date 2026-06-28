@@ -1,7 +1,7 @@
 ---
 name: funnel-builder
-version: "2.6.0"
-description: "Create high-converting funnel pages for e-commerce brands using a 9-format library (Advertorial, Listicle 3-variant, PAS, AIDA, SPS, 4P, Long-Form, BAB, Problem Stack, plus the Fake-Complaint sub-format). Handles the complete workflow: format selection based on awareness x resistance, objection-handling architecture, image generation prompts via Nano Banana, copy creation following brand voice and the universal structural copywriting rules, and deployment via the Funnel Factory pipeline (default) or Lovable implementation prompts (on request). Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, copywriting guide, and angle roadmap as inputs."
+version: "3.0.0"
+description: "Create high-converting funnel pages for e-commerce brands using a 9-format library (Advertorial, Listicle 3-variant, PAS, AIDA, SPS, 4P, Long-Form, BAB, Problem Stack, plus the Fake-Complaint sub-format). Handles the complete workflow: format selection based on awareness x resistance, objection-handling architecture, image generation via the KIE MCP (Nano Banana Pro) by default, copy creation following brand voice and the universal structural copywriting rules, and deployment via a Lovable implementation prompt. Use when user says 'build a funnel', 'create an advertorial', 'create a listicle', 'funnel page for [avatar/topic]', 'run Phase 5', or references funnel/landing page creation for any brand. Reads avatar research, brand guidelines, copywriting guide, and angle roadmap as inputs."
 ---
 
 # Funnel Builder Skill
@@ -25,7 +25,7 @@ This skill builds landing pages with their own URLs (advertorials and listicles 
 
 For Facebook in-feed ad copy where the entire advertorial body lives as the ad's primary text - the reader scrolls inside the ad, not on a separate page - use `long-form-static-builder` instead. The two skills produce structurally different outputs:
 
-- `funnel-builder` -> Landing page with hero image, sections, CTAs, deployed via Funnel Factory pipeline or Lovable
+- `funnel-builder` -> Landing page with hero image, sections, CTAs, deployed via a Lovable implementation prompt
 - `long-form-static-builder` -> Ad primary text (2,500-3,500 words full / 1,000-1,400 medium / 200-300 fake-complaint) plus a Reddit-native image spec, paste-ready for Meta Ads Manager
 
 If the user says "build me an advertorial" without context, ask which they mean. The two formats serve different funnel positions: long-form-static is the ad itself; funnel-builder produces the page that ad clicks through to. A typical campaign uses both - a long-form-static ad drives clicks to a funnel-built landing page, which then drives conversion.
@@ -139,22 +139,27 @@ Before building the first funnel for any brand, collect these configuration inpu
 
 8. Free shipping threshold: Is there one? What amount?
    [User provides]
+
+9. Regional/regulatory compliance or required disclaimers: Any compliance
+   language, claim restrictions, or disclaimers this brand's pages must carry?
+   (e.g. health-claim rules, financial disclaimers, regional advertising rules,
+    or none.) [User provides, default: none]
 ```
 
 **Question Set 3: Image & Video Rules**
 
 ```
-9. Brand-specific image rules: Any restrictions on imagery?
+10. Brand-specific image rules: Any restrictions on imagery?
 
-10. Product reference images: Do you have product photography that
+11. Product reference images: Do you have product photography that
     Nano Banana should use as reference? Provide REF numbers or filenames.
 
-11. Brand-specific documents: Do you have any of the following?
+12. Brand-specific documents: Do you have any of the following?
     - Ad Style Catalogue
     - Visual Design Guidelines
     - Product Photography Reference Index
 
-12. Video assets: Do you have existing videos to include on funnel pages?
+13. Video assets: Do you have existing videos to include on funnel pages?
     See references/video-guidance.md for format and placement specifications.
 ```
 
@@ -162,13 +167,18 @@ Before building the first funnel for any brand, collect these configuration inpu
 
 ## Workflow
 
+**Canonical execution order. Do not reorder. Each step's inputs come from the step before it.** When in doubt about what to do next, return to this spine.
+
 ```
 STAGE 0: PLANNING & ALIGNMENT
-  → Identify traffic source and reader state
-  → Select format from the library (Advertorial / Listicle 3-variant / PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint sub-format)
-  → Choose target avatar + awareness stage
-  → Map content structure and image requirements
-  → Map objections from avatar research to sections
+  0.1  Identify traffic source and reader state
+  0.2  Select format (FINAL, full 9-format decision)  <- all downstream structure depends on this
+  0.3  Avatar-image alignment check
+  0.4  Pull angle card's Schwartz scores (gated: only if schwartz-applied.md exists)
+  0.5  Pull angle card's Lead Framing Route
+  0.6  Map content structure (uses the format finalized in 0.2)
+  0.7  Map objections to sections (uses the format finalized in 0.2)
+  --- Stage 0 exit gate: format final, content structure mapped, objections mapped, routing metadata pulled ---
 
 STAGE 1: COPY CREATION
   → Apply the Universal Structural Copywriting Rules (copywriting-guide §8) throughout
@@ -177,21 +187,19 @@ STAGE 1: COPY CREATION
   → Write lead (tease of full content)
   → Write headline (checked against five-element framework AND Hook Quality Checklist §8.4)
   → Run deletion pass, simplicity check, humanity check
-  → Run Yes-Yes-Yes causal chain self-test (NEW build step)
+  → Run Yes-Yes-Yes causal chain self-test
+  --- Stage 1 exit gate: all copy complete and self-tested ---
 
-STAGE 2: IMAGE PROMPT PREPARATION
-  → Generate Nano Banana Pro prompts
-  → Include prompts in pipeline spec (Stage 3A) OR user generates externally (Stage 3B)
+STAGE 2: IMAGE GENERATION
+  → Generate Nano Banana Pro prompts for each image slot from the 0.6 content map
+  → Generate the images via the KIE MCP (Nano Banana Pro) by default, applying the brand's image rules from config
+  → Prompts-only (no generation) ONLY when the user explicitly asks for prompts
+  --- Stage 2 exit gate: funnel images generated (or prompts delivered on explicit request) ---
 
-STAGE 3A: PIPELINE DEPLOY (DEFAULT)
-  → Generate structured JSON spec
-  → Deploy via deploy_funnel MCP tool (images generated automatically by pipeline)
-  → QA review
-
-STAGE 3B: LOVABLE IMPLEMENTATION (ON REQUEST)
-  → User generates images from Stage 2 prompts
-  → Generate complete Lovable prompt
-  → User uploads images + pastes prompt
+STAGE 3: LOVABLE IMPLEMENTATION (sole deployment path)
+  → Verify Stage 2 funnel images exist for THIS funnel (pre-flight gate)
+  → Generate a single complete Lovable prompt (copy + image URLs + brand system + compliance + tracking)
+  → User pastes prompt into Lovable
   → QA review
 ```
 
@@ -211,11 +219,17 @@ Before anything else, determine what ad format will drive traffic. This determin
 | Targeted image + copy | Filtered, problem-aware | Go deeper into root cause + mechanism |
 | Advertorial ad copy | Emotionally warmed | Logical validation → Listicle (logic variant) |
 
-**Step 0.2: Select Funnel Type + Variant**
+**Step 0.2: Select Format (FINAL)**
 
-Note: the angle card carries a `Recommended Format` strategic default (see `../angle-roadmap/references/angle-card-schema.md`). This matrix is the operational override and applies when the actual traffic source contradicts the angle card's recommendation.
+This is the single, authoritative format decision. The format chosen here is final and drives every downstream step (content structure in 0.6, objection mapping in 0.7, section architecture in Stage 1). Do not defer or re-open it later in Stage 0.
 
-Based on traffic source and awareness stage (universal 3-value field, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction):
+Read `references/format-library.md` for the 9 named formats and the format selection matrix. Select the format based on: traffic source (from Step 0.1), awareness stage (the universal 3-value field: Problem-aware / Solution-aware / Product-aware, from Phase 2 avatar research; see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction), resistance level (category maturity + price-tier + alternative-stack), and ad-format-to-page alignment (the COMBO PATTERN where advertorial-ad-copy → listicle-logic-page is one example).
+
+The default is **Advertorial** unless one of the 8 alternative formats fits the audience better. Most ContextArchitect funnels use Advertorial or Listicle; the other 7 formats are for specific audience/resistance fits.
+
+Note: the angle card carries a `Recommended Format` strategic default (see `../angle-roadmap/references/angle-card-schema.md`). The matrix below is the operational override and applies when the actual traffic source contradicts the angle card's recommendation.
+
+Quick-reference signal map (use alongside the full matrix in format-library.md):
 
 | Signal | Recommended |
 |--------|-------------|
@@ -225,6 +239,8 @@ Based on traffic source and awareness stage (universal 3-value field, see `_fram
 | Skeptical audience, tried alternatives, needs full journey | Advertorial (full 9-section) |
 | Emotional connection needed beyond features | Advertorial |
 | Advertorial ad copy → landing page | Listicle - Logic variant (COMBO PATTERN) |
+
+**Output of this step:** Final format name + the format's reference file (advertorial-framework.md, listicle-framework.md, or the format-library.md entry for the chosen format). Steps 0.6 and 0.7 consume this directly.
 
 **Step 0.3: Avatar-Image Alignment Check**
 
@@ -275,7 +291,7 @@ The angle card carries a Lead Framing Route field (see `../angle-roadmap/referen
 
 **Step 0.6: Map Content Structure**
 
-Read the appropriate reference file based on the format selected in Step 0.2 (rough advertorial-vs-listicle choice). If Step 0.8 below selects one of the 7 alternative formats from `references/format-library.md` (PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint), use that file's entry as the structural reference instead and revisit this mapping after the format is finalized.
+Read the reference file for the format finalized in Step 0.2. Because the format is already final, this mapping is done once, with no revisiting:
 
 - Advertorial → `references/advertorial-framework.md`
 - Listicle → `references/listicle-framework.md`
@@ -301,16 +317,6 @@ Map each objection to the section(s) where it gets addressed. The mapping table 
 - **Fake-Complaint:** Objections handled implicitly through the customer-voice complaint frame.
 
 **Output of this step:** A list mapping each named objection to the section(s) that will address it. This list becomes a Stage 1 writing constraint.
-
-**Step 0.8: Select Format from Library**
-
-Read `references/format-library.md` for the 9 named formats and the format selection matrix.
-
-Select the format based on: traffic source (from Step 0.1), awareness stage (universal 3-value field, from Phase 2 avatar research), resistance level (category maturity + price-tier + alternative-stack), and ad-format-to-page alignment (the COMBO PATTERN where advertorial-ad-copy → listicle-logic-page is one example).
-
-The default is **Advertorial** unless one of the 8 alternative formats fits the audience better. Most ContextArchitect funnels use Advertorial or Listicle; the other 7 formats are for specific audience/resistance fits.
-
-**Output of this step:** Selected format name + the format's reference (advertorial-framework.md, listicle-framework.md, or the format-library.md entry for the chosen format).
 
 ### Stage 1: Copy Creation
 
@@ -375,7 +381,11 @@ If the conversation already contains images generated by ad-style-generator for 
 
 **Stage 2 generates the funnel's image set from scratch, every time.** Even if related ad images exist in context, they are not substitutes. Skipping Stage 2 because "we have images already" is the production failure mode this callout is designed to prevent.
 
-**All images are generated in Nano Banana Pro. Never in Lovable.**
+**Default behavior: generate the images, do not just hand over prompts.** For every image slot in the 0.6 content map, write the Nano Banana Pro prompt AND generate the image via the KIE MCP (Nano Banana Pro). The generated image URLs are what feed the Stage 3 Lovable prompt. Generating is the default and does not require asking the user first.
+
+**Prompts-only is the explicit opt-out.** Deliver prompts without generating ONLY when the user explicitly asks for prompts (e.g. "just give me the prompts", "I'll generate the images myself"). When in doubt, generate.
+
+**All images are generated in Nano Banana Pro (via the KIE MCP). Never in Lovable.**
 **All videos are provided by the user (pre-existing assets). Video generation is not part of this workflow.**
 
 **Before writing any image prompts, check for brand-specific documents:**
@@ -383,7 +393,7 @@ If the conversation already contains images generated by ad-style-generator for 
 2. Search for Visual Design Guidelines → if found, apply infographic specs
 3. Search for Product Photography Reference Index → if found, verify all REF numbers
 
-Read brand-specific image rules from configuration before writing any prompts.
+Read the brand's image rules from configuration (Question Set 3) before writing any prompts, and apply them to every generated image. These rules are whatever the brand defined (for example demographic or representation constraints, setting restrictions, or style limits) and vary by brand. A brand may have several, one, or none; apply exactly what is configured and add nothing.
 
 **Universal image generation rules:**
 
@@ -399,158 +409,27 @@ Read brand-specific image rules from configuration before writing any prompts.
 
 6. **Root Cause Infographic (MANDATORY for advertorials):** Every advertorial must include at least one infographic/diagram visualizing the root cause analogy. This is a System 1 support visual, not decoration.
 
-7. **Brand Logo Loading (MANDATORY):** Before completing Stage 2, locate the brand's logo file. Search the brand's `brand-assets/<brand>/` folder for any file with "logo" in the filename (e.g., `logo.png`, `logo-primary.svg`, `brand-logo-white.png`). Record the public URL of the logo file for inclusion in the Stage 3B Lovable prompt (or Stage 3A pipeline spec if using pipeline deploy).
+7. **Brand Logo Loading (MANDATORY):** Before completing Stage 2, locate the brand's logo file. Search the brand's `brand-assets/<brand>/` folder for any file with "logo" in the filename (e.g., `logo.png`, `logo-primary.svg`, `brand-logo-white.png`). Record the public URL of the logo file for inclusion in the Stage 3 Lovable prompt.
 
    If no file matching "logo" is found, surface the gap to the user: "No logo file found in `brand-assets/<brand>/`. Either upload a logo to that folder first, OR confirm you want to proceed without a logo (the funnel will render with text-only branding)." Do not silently proceed; the logo is part of the funnel's visual identity and missing it is a degradation worth surfacing.
 
 **Video assets:** If the user has videos to include, read `references/video-guidance.md` for placement, dimension, and naming specifications.
 
-**Deliverable:** Complete set of Nano Banana prompts with filenames, purposes, and reference image instructions. Plus video placement map if videos are included. Output as a markdown file if over 500 words.
+**Deliverable:** The generated funnel image set (URLs from the KIE MCP), each tagged with its filename, purpose, and the section/slot it fills, plus the prompts used. Plus a video placement map if videos are included. Output the prompt set as a markdown file if over 500 words. If the user opted for prompts-only, deliver the prompts and stop here; the user will generate the images before Stage 3.
 
-**For Stage 3A (Pipeline Deploy):** Proceed directly. No need to wait for image generation. The pipeline generates images from the prompts automatically.
+Once the funnel images exist, proceed to Stage 3. If the user opted for prompts-only, Stage 2 ends here: resume at Stage 3 only after the user returns with the generated funnel images. Stage 3 builds a Lovable prompt around real image URLs, so it cannot run on prompts alone.
 
-**For Stage 3B (Lovable Implementation):** Wait for user confirmation ("Images ready" / "Images generated") before proceeding.
+### Stage 3: Lovable Implementation
 
-### Stage 3: Output
-
-**Stage 3 has two output modes. Stage 3A (Pipeline Deploy) is the default. Stage 3B (Lovable Prompt) is available on explicit request.**
-
-#### Stage 3A: Pipeline Deploy (Default)
-
-Generate a structured JSON spec that the Funnel Factory pipeline accepts. This spec can be deployed via:
-- **Creative Engine** (primary): The CE Funnel Builder generates the spec, handles image generation with reference images, and deploys via the FF REST API. The full workflow (copy → images → deploy) runs within a single CE conversation.
-- **MCP tool** (Claude Desktop): The `deploy_funnel` MCP tool deploys via the Funnel Factory connector at `mcp.econstructor.ai`.
-- **Manual**: Output the spec as JSON for manual deployment.
-
-The pipeline handles everything automatically: image generation (concurrent via Kie.ai from the prompts in the spec), HTML rendering with brand design tokens (auto-extracted from brand-guidelines.md), tracking pixel injection, and deployment to Cloudflare Pages. Total time: ~90 seconds.
-
-Read `references/visual-design.md` for section-level layout patterns when determining image placement and section structure.
-
-**The JSON spec must follow this exact schema:**
-
-```json
-{
-  "brand_id": "<brand key, e.g., 'regrowth' not 'regrowthplus'>",
-  "funnel_type": "advertorial" | "listicle",
-  "slug": "<lowercase-hyphenated-max-80-chars>",
-  "update": false,
-  "metadata": {
-    "avatar_name": "<target avatar name>",
-    "awareness_stage": "problem_aware" | "solution_aware" | "product_aware",
-    "price_point": "low_ticket" | "mid_ticket" | "high_ticket",
-    "traffic_source": "<ad format driving traffic>",
-    "created_by": "claude_desktop"
-  },
-  "copy": {
-    "headline": "<main headline text>",
-    "subheadline": "<subheadline text>",
-    "authority_line": "<byline, e.g., 'By Dr. Sarah Mitchell, Trichologist | March 2026'>",
-    "urgency_banner": "<urgency banner text, or null if none>",
-    "sections": [
-      {
-        "id": "<unique_section_id>",
-        "type": "<section_type>",
-        "heading": "<section heading, or null>",
-        "body": "<full section body copy>",
-        "image_ref": "<matching ref from images array, or null>"
-      }
-    ],
-    "faq": [
-      {
-        "question": "<FAQ question>",
-        "answer": "<FAQ answer>"
-      }
-    ],
-    "guarantee": {
-      "text": "<guarantee headline>",
-      "details": "<guarantee details>"
-    },
-    "social_proof": [
-      {
-        "name": "<reviewer name>",
-        "rating": 5,
-        "text": "<review text>",
-        "verified": true
-      }
-    ]
-  },
-  "images": [
-    {
-      "ref": "<unique ref matching image_ref in sections>",
-      "purpose": "<what this image shows>",
-      "prompt": "<complete Nano Banana Three-Layer Model prompt>",
-      "dimensions": "1200x800" | "800x600",
-      "position": "above_fold" | "inline"
-    }
-  ],
-  "profile": "problem-aware" | "solution-aware" | "product-aware" | "standard",
-  "variations": {},
-  "config": {
-    "cta_text": "<CTA button text>",
-    "cta_url": "<CTA destination URL>"
-  }
-}
-```
-
-**Schema Rules:**
-
-1. **brand_id** should use the pipeline's preferred brand key (e.g., `regrowth`). The pipeline resolves aliases automatically - `regrowth-plus`, `regrowthplus`, or the GitHub repo name will also work. When deploying via Creative Engine, the brand slug from the CE database is used directly (CE sends `brand.slug`, FF resolves it).
-2. **slug** must be lowercase, hyphenated, no special characters, max 80 chars
-3. **copy.sections** is an ordered array. The pipeline renders sections in the order they appear. Section selection is YOUR responsibility based on awareness stage and funnel type.
-4. **Section types for advertorials:** `lead`, `background_story`, `root_cause`, `consequences`, `mechanism`, `product_buildup`, `product_reveal`, `close`, `social_proof`, `urgency`
-5. **Section types for listicles:** `opening`, `item`, `cta_mid`, `cta_final`, `guarantee`
-6. **images[].ref** must match a `copy.sections[].image_ref` value. The hero image uses `position: "above_fold"`.
-7. **images[].prompt** must be a complete Nano Banana Three-Layer Model prompt (Visible Layer + Constraint Layer + Exclusion Layer). Do not use shorthand.
-8. **profile** maps to page layout config on the pipeline: `problem-aware`, `solution-aware`, `product-aware` for both advertorials and listicles. The pipeline has awareness-stage-specific profiles for each funnel type (different CTA positions, list lengths, and layout parameters by awareness stage). Falls back to `standard` if a specific profile doesn't exist.
-9. **config.cta_text** and **config.cta_url** override brand defaults for this specific funnel. Always include them explicitly.
-10. **copy.urgency_banner** can be null if no urgency banner is needed.
-11. **metadata** is stored in the deployment log but does not affect rendering.
-12. **variations** is empty `{}` for now. Used for A/B testing in Phase 2.
-
-**Section Mapping from Advertorial Architecture:**
-
-| Advertorial Section | Spec Location |
-|---|---|
-| Section 1: Above the Fold | `headline`, `subheadline`, `authority_line` in top-level `copy.*`. Urgency banner in `copy.urgency_banner`. Hero image in `images[]` with `position: "above_fold"` |
-| Section 2: The Lead | `{ "id": "lead", "type": "lead", "heading": null, "body": "..." }` |
-| Section 3: Background Story | `{ "id": "background_story", "type": "background_story", "heading": "...", "body": "..." }` |
-| Section 4: Root Cause | `{ "id": "root_cause", "type": "root_cause", "heading": "...", "body": "...", "image_ref": "root-cause-infographic" }` |
-| Section 5: Consequences | `{ "id": "consequences", "type": "consequences", "heading": null, "body": "..." }` |
-| Section 6: Unique Mechanism | `{ "id": "mechanism", "type": "mechanism", "heading": "...", "body": "...", "image_ref": "mechanism-diagram" }` |
-| Section 7: Product Buildup | `{ "id": "product_buildup", "type": "product_buildup", "heading": null, "body": "..." }` |
-| Section 8: Product Reveal | `{ "id": "product_reveal", "type": "product_reveal", "heading": "...", "body": "...", "image_ref": "product-hero" }` |
-| Section 9: The Close | `social_proof` entries in `copy.social_proof[]`, guarantee in `copy.guarantee`, urgency as `{ "type": "urgency" }` section |
-
-**What the spec does NOT contain (pipeline resolves from brand config):**
-- Colors, fonts, logo URL (auto-extracted from brand-guidelines.md)
-- Tracking pixels and pixel code (from funnel-config.md / brands.json)
-- UTM passthrough script (embedded in templates)
-- Payment plan details, free shipping info (from funnel-config.md)
-- GCC compliance rules, image ethnicity rules (from funnel-config.md)
-
-**After generating the spec, offer to deploy immediately:**
-
-> "The funnel spec is ready. Would you like me to deploy it now using the Funnel Factory pipeline? It will generate images, render the page, and publish to [brand domain]. Takes about 90 seconds."
-
-If the user confirms, call the `deploy_funnel` MCP tool with the spec as a JSON string.
-
-If the MCP connector is not available in this conversation, output the spec as a downloadable JSON file using `create_file` + `present_files` so the user can deploy from a conversation where the connector is enabled.
-
-**Output format:** Always save the spec as `{slug}-spec.json` using `create_file` + `present_files`. If also deploying via MCP, provide both the file and the deployment.
-
-#### Stage 3B: Lovable Implementation (On Request)
-
-**Use only when the user explicitly requests Lovable output.**
-
-Trigger phrases: "output as Lovable prompt", "Lovable format", "Stage 3B", "I want to use Lovable"
+Lovable is the sole deployment path for this skill. The output of Stage 3 is a single, complete Lovable prompt that the user pastes into Lovable to render and publish the funnel page. Every asset (copy, generated images, brand design system, regional/regulatory compliance, payment and shipping details, tracking) is produced outside Lovable and handed to it fully formed. Lovable executes; it does not create assets.
 
 ### MANDATORY Pre-Flight Gate: Verify Stage 2 Completed for This Funnel
 
-**Before writing any Lovable prompt, you MUST verify that Stage 2 (Image Generation) was completed FOR THIS SPECIFIC FUNNEL.** Skipping this gate is the most common Stage 3B failure mode in production. The failure shape: the conversation already contains images from an earlier ad-generation task (via ad-style-generator), and the funnel images appear "already done" when they are not.
+**Before writing any Lovable prompt, you MUST verify that Stage 2 (Image Generation) was completed FOR THIS SPECIFIC FUNNEL.** Skipping this gate is the most common Stage 3 failure mode in production. The failure shape: the conversation already contains images from an earlier ad-generation task (via ad-style-generator), and the funnel images appear "already done" when they are not.
 
 **Run these four checks in order. If ANY check fails, STOP and resolve before continuing:**
 
-1. **Funnel images exist as a distinct artifact.** A Stage 2 deliverable for THIS funnel should exist in conversation: either a markdown file listing the Nano Banana prompts, OR a set of generated image URLs explicitly tagged as funnel images (not ad images). If you only see ad images in context, Stage 2 was NOT done for this funnel.
+1. **Funnel images exist as a distinct artifact.** A set of generated funnel image URLs (from the KIE MCP by default, or user-supplied after a prompts-only handoff), explicitly tagged as funnel images (not ad images), should exist in conversation. A prompts-only markdown with no generated images does NOT satisfy this gate, because Stage 3 embeds real image URLs. If you only see ad images, or only prompts, Stage 2 image generation was NOT completed for this funnel.
 
 2. **Image count matches the funnel's section structure.** The Stage 0.6 content map identified specific image slots (hero, root cause infographic, mechanism diagram, product hero, testimonial visuals, etc.). The Stage 2 deliverable should have one image per planned slot. If the count does not match, Stage 2 was incomplete.
 
@@ -562,7 +441,7 @@ Trigger phrases: "output as Lovable prompt", "Lovable format", "Stage 3B", "I wa
 
 > "Before I build the Lovable prompt, I need to confirm Stage 2 (funnel image generation) was completed for this funnel. The images currently in context appear to be [ad images / from a different task / missing]. Funnel images are distinct in purpose, format, and dimensions from ad images. Let me generate the funnel images first."
 
-Then run Stage 2 properly: generate the Nano Banana prompts for each funnel image slot identified in Stage 0.6, present them for approval, wait for image generation, then return to Stage 3B.
+Then run Stage 2 properly: write the Nano Banana prompt for each funnel image slot identified in Stage 0.6 and generate each image via the KIE MCP (Nano Banana Pro), then return to Stage 3 with the generated funnel images.
 
 **Do NOT proceed with the Lovable prompt until all funnel images exist and are approved.** Even if the user asked you to "just generate the Lovable prompt," push back. The skill workflow requires the gate.
 
@@ -582,8 +461,11 @@ Generate a single, complete Lovable prompt containing:
   - If no logo file exists in `brand-assets/<brand>/`, surface this gap to the user before generating the prompt: "No logo file found in `brand-assets/<brand>/`. Either upload a logo to that folder first, OR confirm you want to ship the funnel without a logo (Lovable will render with text-only branding)."
 - Video embed instructions if applicable (see `references/video-guidance.md`)
 - Section-level layout specifications (from `references/visual-design.md`)
+- **Awareness-stage CTA placement:** key the first CTA's position to traffic warmth. Per the above-the-fold First CTA rule in `references/visual-design.md`, warm / product-aware traffic can carry the first CTA above the fold, while cold / earlier-awareness traffic gets the first CTA later, after the full run-up. State the stage-appropriate first-CTA position explicitly in the prompt. (`references/visual-design.md` documents the first-CTA warmth rule; it does not define a full stage-by-stage layout or section-depth system, so do not invent one beyond first-CTA positioning.)
 - Brand design system (colors, typography from brand guidelines)
 - Component specifications (CTA buttons, urgency banner, trust icons, review cards, guarantee section per visual-design.md)
+- **Payment plans and free shipping (from brand config):** if the brand configured BNPL providers or a free-shipping threshold (Question Set 1 and Question Set 2), state them where they belong on the page (near price/CTA and in the close). Omit if not configured.
+- **Regional/regulatory compliance and disclaimers (from brand config Question Set 2, if any):** if the brand configured compliance language, claim restrictions, or required disclaimers, include them verbatim in the page (typically footer and near any claim). If the brand has none, omit entirely. This is brand-specific: include exactly what is configured and add nothing.
 - Tracking pixel code in `<head>` section (all configured pixels)
 - UTM passthrough script in `<head>` section (MANDATORY, see reference framework)
 - Technical requirements (responsive, accessible, performant)
@@ -743,12 +625,14 @@ After Stage 3, verify against this checklist:
 - [ ] Payment plans mentioned if configured
 
 **Technical:**
-- [ ] **Stage 3A:** Spec validates against pipeline JSON schema (all required fields present, brand_id correct, slug valid)
-- [ ] **Stage 3A:** All `images[].ref` values match an `image_ref` in `copy.sections[]`
-- [ ] **Stage 3A:** Image prompts follow Three-Layer Model (not shorthand)
-- [ ] **Stage 3B:** Tracking pixels included in `<head>` (all configured platforms)
-- [ ] **Stage 3B:** UTM passthrough script included in `<head>` (MANDATORY)
-- [ ] **Stage 3B:** All images referenced by correct filename
+- [ ] **Funnel images exist** for every slot in the 0.6 content map (generated via the KIE MCP by default, or user-supplied after a prompts-only handoff), with their URLs carried into the Lovable prompt
+- [ ] Image prompts follow the Three-Layer Model (not shorthand)
+- [ ] All images referenced in the Lovable prompt by correct filename, with download-locally instruction (Kie.ai URLs are temporary)
+- [ ] Tracking pixels included in `<head>` (all configured platforms)
+- [ ] UTM passthrough script included in `<head>` (MANDATORY)
+- [ ] Payment plans and free shipping included in the Lovable prompt if configured
+- [ ] Regional/regulatory compliance and disclaimers included if configured (omitted cleanly if the brand has none)
+- [ ] Awareness-stage first-CTA placement specified in the Lovable prompt (per the visual-design.md first-CTA warmth rule)
 - [ ] Video embeds responsive and properly placed (if applicable)
 - [ ] Mobile responsive design specified
 - [ ] Sticky mobile CTA specified
@@ -771,8 +655,7 @@ After Stage 3, verify against this checklist:
 
 ## What This Skill Does NOT Do
 
-- Does not generate images (Stage 3A: pipeline generates from prompts automatically; Stage 3B: user generates from Nano Banana prompts externally)
 - Does not generate videos (accepts user-provided video assets for placement)
-- Does not handle brand visual identity for pipeline deployment (pipeline extracts colors/fonts from brand-guidelines.md automatically)
 - Does not create brand strategy (reads previous phase outputs)
+- Does not deploy or host the page (produces a Lovable prompt; the user runs it in Lovable to render and publish)
 - Does not handle quiz funnels (future addition)

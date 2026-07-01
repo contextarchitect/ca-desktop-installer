@@ -1,6 +1,6 @@
 ---
 name: competitor-ad-intelligence
-version: "0.2.0"
+version: "0.11.0"
 description: "Automate competitor ad research end to end. Given one or more competitors, retrieve their top-performing Meta ads ranked by reach via the TrendTrack MCP, tag and group them against the ContextArchitect creative taxonomy (ad-analysis-tagger dimensions, ad-style-generator style catalogue, video-script-generator format set), and generate concept transpositions, not duplicates, of those winners rebuilt in a target brand's own identity: static images via the Kie image path (nano-banana-prompting by default, gpt-image-2-prompting on request), and video as scripts via video-script-generator (script only, no video rendered). Trigger on: competitor ad research, analyze competitor ads, what is [competitor] running, pull [competitor] winning ads, competitor creative teardown, swipe [competitor], tag [competitor] ads, what ads is [competitor] scaling. This is the Claude Desktop prototype of the Creative Engine (CE) Phase F competitor-intelligence feature; it runs manually in Desktop where the TrendTrack, Meta Ads, and Kie MCPs are connected."
 ---
 
@@ -76,8 +76,38 @@ Never start retrieval from a brand-name search without resolving first. Brand-na
 2. **De-pollute (hard rule).** Drop every returned row whose advertiser identity or landing-page domain does not match the resolved competitor from Step A. This uses only data already in the `search_ads` response; it costs nothing extra. Rationale: a live Nutrafol search returned the real hair brand plus several ads from an unrelated dropshipper with a similar name, so brand-name search must always be filtered against the resolved identity before ranking.
 3. **Dedupe by creative, then rank.** After de-pollution and before ranking and output, dedupe or visibly group the survivors by creative asset id, so the top N winners are N distinct creatives, not the same creative under multiple ad ids. Then rank the distinct creatives by reach and take the top N (the requested count). Rationale: the trial's reach-ranked top 3 contained the same creative twice. While ranking, detect when a winning static is a carousel cover (a numbered listicle opener, a view-profile style CTA); flag it (carried into the output deliverable) and note that the downstream carousel cards are not retrieved by this skill.
 4. **Scan each survivor.** For each ad in the top N, call `scan_ad` with the Meta Ad Library URL or the ad id. Capture the image asset URL on `medias.trendtrack.io`, the reach, the days running, and the scaling verdict.
-5. **Tag and bucket.** Get the actual image into vision before tagging. `scan_ad` returns an image asset URL, not a viewable image, and vision cannot read a bare URL. In Desktop, instruct the operator to open or download the asset URL and provide the image back, then tag from the provided image. Never assign visual tags from a URL alone. (Creative Engine will fetch the asset server-side later, closing this loop automatically.) With the image in hand, tag the ad via `../ad-analysis-tagger/SKILL.md` across its six dimensions. Assign a visual style by matching against the `../ad-style-generator/references/style-catalogue.md` style catalogue. For each ad, flag whether it fits an existing style bucket or is a candidate new style, with a one-line rationale.
-6. **Generate (on request): the concept-transposition pipeline.** Generation is opt-in per run, not automatic. Follow the Generation method section above (transpose, do not duplicate; load the brand kit first), then run these six moves in order:
+5. **Tag and bucket -- PAUSE gate (Desktop).** `scan_ad` returns an image asset URL, not a viewable image, and vision cannot read a bare URL.
+
+   **STOP HERE. Do not proceed to tagging until images are in hand.**
+
+   Present the operator with a numbered list of all N image asset URLs from the top winners. Instruct them:
+
+   > "Please open each URL below, screenshot or save the image, and return them in this conversation. Label each image with its ad number before pasting it (e.g. write 'Ad 1:' then paste the image, 'Ad 2:' then the next image, and so on). Do not proceed until all images are returned with their labels."
+
+   Before tagging, verify the returned set: every top-winner ad must have exactly one labeled image. If any image is missing, if any ad number appears more than once, or if any image arrives without a label, STOP immediately. List which ads are missing or ambiguous, and ask the operator to correct the mapping before proceeding. Do not tag any ad until the full labeled set is confirmed complete.
+
+   Once the operator returns all images, tag each ad via `../ad-analysis-tagger/SKILL.md` across its six dimensions, using the returned image as the visual input. The analysis purpose for each ad is: identify the transposable visual structure and distinctive device so it can be rebuilt in the target brand's identity. Assign a visual style by matching against the `../ad-style-generator/references/style-catalogue.md` style catalogue. For each ad, flag whether it fits an existing style bucket or is a candidate new style, with a one-line rationale.
+
+   (Creative Engine will fetch the asset server-side later, closing this operator step automatically.)
+6. **Fit assessment and recommendation -- PAUSE gate.**
+
+   After tagging all N ads, produce a fit assessment table before any generation begins. The table evaluates each ad's transposability specifically against the target brand's product and category. Do not assess fit in the abstract; assess it against what the target brand actually sells.
+
+   For each ad, output:
+   - **Ad #** and a one-line description (competitor name, visual style, primary claim)
+   - **Fit score**: High / Medium / Low
+   - **Transposability rationale**: one to two sentences explaining why this ad structure does or does not port to the target product. Flag genuine non-fits explicitly -- for example, if the competitor's ad is built around a product category the target brand does not sell, and no honest analog exists, call it a non-fit rather than forcing a transposition.
+   - **Recommended action**: Proceed / Proceed with modification / Skip (with reason)
+
+   After the table, provide a brief ranked recommendation: which ads are the highest-value transposition candidates and why, from the perspective of the target brand's avatar and angle roadmap.
+
+   **STOP HERE. Present the table and recommendation to the operator. Ask:**
+
+   > "Which of the above would you like to generate? Please confirm the ads you want to proceed with (by number), and specify the image model: Nano Banana (default) or GPT Image 2."
+
+   Do not begin generation until the operator responds with confirmed ad numbers and a model choice.
+
+7. **Generate (on request): the concept-transposition pipeline.** Generation is opt-in per run, not automatic. Follow the Generation method section above (transpose, do not duplicate; load the brand kit first), then run these six moves in order:
    1. Load the target brand kit (palette, fonts, product reference, voice) per the brand-kit step above.
    2. Analyze the original with `../ad-analysis-tagger/SKILL.md`. Extract the transposable concept and isolate the single most distinctive device, the element that actually makes the ad work.
    3. Strip the source brand's identity: palette, fonts, product form, naming, and any competitor wording.
@@ -95,21 +125,91 @@ The video lane is the only lane that writes to TrendTrack, because it seeds trac
 
 1. Call list_tracked_brands. Read the current tracked total, and split the run's competitors into already-tracked (re-adding is a zero-credit idempotent no-op) and new (each consumes one of the 30 Pro slots when seeded).
 2. Surface a seed plan in the run output before seeding: the new competitors that will be tracked, the already-tracked ones that will no-op, the resulting tracked total, and the remaining slots against the 30-slot cap. The run never seeds invisibly.
-3. Conditional confirmation gate. Proceed without pausing only when both of these hold: the run is in the owner's own workspace, and the resulting tracked total stays at or below 25 of 30. Otherwise pause and require explicit operator confirmation before seeding, specifically when seeding would push the total above 25, or when operating in any workspace other than the owner's. Routine owner-workspace runs under the threshold stay hands-free; the gate exists only to prevent silent exhaustion of shared capacity and unintended writes in a client workspace.
+3. Conditional confirmation gate. Proceed without pausing only when BOTH of these hold: the run is in the owner's own workspace, AND the resulting tracked total stays at or below 25 of 30. When both hold, seeding may proceed hands-free.
+
+   STOP HERE if either condition is not met (seeding would push total above 25, or workspace is not the owner's own). Present the seed plan to the operator and ask:
+
+   > "This run would seed [N] new competitor(s): [list]. This would bring the tracked total to [X] of 30 slots[, and/or this does not appear to be the owner workspace]. Please confirm before I proceed. Do not call add_to_brandtracker until you explicitly confirm."
+
+   Do not call add_to_brandtracker until the operator responds with explicit confirmation. The gate exists to prevent silent slot exhaustion and unintended writes in client workspaces.
 4. Hard capacity invariant (absolute, checked before the confirmation gate, not confirmable). Before any add_to_brandtracker call, compute the current tracked total plus the count of distinct new competitors this run would seed. If that sum exceeds 30, the Pro cap, do not call add_to_brandtracker at all. Stop and report: the run would exceed the 30-slot cap, so the operator must either delete existing trackers to free slots, or reduce or split the competitor set to fit, then re-run. This is evaluated before the confirmation gate: an over-cap run aborts and is never offered the pause-and-confirm path. The pause above 25 is a clearable warning; exceeding 30 is never seeded, even with confirmation.
 5. Partial-seed handling. Even with the invariant, a stale tracked count or an unrelated add failure can interrupt a multi-competitor seed mid-batch. On any add failure during seeding, stop seeding immediately and report the partial state: the trackers created this run by brandtracker_id, the competitors that failed and why, and the current slot count. Never report the run as successful on a partial seed. In ephemeral mode, delete the trackers created this run per the ephemeral cleanup rule. In persistent mode, retain them, since they are valid intended trackers, but surface the incomplete run so the operator can free slots and re-run for the remainder.
 
 This preflight supersedes any wording elsewhere in this skill that suggests seeding is unconditionally automatic.
 
-1. **Ensure tracked.** Run the pre-write safety preflight above first. If the resolved competitor is absent, call `add_to_brandtracker` with its `facebookPageId` or `domain`, then capture the returned `brandtracker_id`. Seeding is automated and hands-free for routine owner-workspace runs, but it is always subject to the capacity preflight (the seed plan is shown every time), the conditional confirmation gate, and the hard capacity invariant above (no seeding above 30, even with confirmation). (See the tracker lifecycle section for the persistent-vs-ephemeral default.)
+1. **Ensure tracked.** Run the pre-write safety preflight above first. If the resolved competitor is absent, call `add_to_brandtracker` with its `facebookPageId` or `domain`, then capture the returned `brandtracker_id`. Seeding proceeds hands-free only when the conditional confirmation gate in the preflight has passed (owner workspace AND total at or below 25). When the gate requires confirmation, do not call add_to_brandtracker until the operator explicitly confirms. Seeding is always subject to the capacity preflight (seed plan shown every time), the conditional confirmation gate, and the hard capacity invariant (no seeding above 30, even with confirmation). (See the tracker lifecycle section for the persistent-vs-ephemeral default.)
 2. **Pull transcripts.** Call `get_brandtracker_transcripts` for that `brandtracker_id`, with `sortBy` set to `totalImpressions`, `usageCount`, or `longestRunning`, and `time_period` starting at `last30d`, widened if the result is empty. `time_period` takes a fixed enum, never a day-count: `live`, `last24h`, `last3d`, `last7d`, `last30d`, `last3m`, `last6m`, `last1y`. A value like `last90d` is not in the enum and errors; widen by stepping to `last3m`, `last6m`, or `last1y` instead. The grouped usage-count and longest-running fields are themselves the video winner signal: a transcript reused across many ads or running a long time is a proven script.
 3. **Capture the `.mp4` assets.** For each top transcript, call `scan_ad` on the sample ad to capture the `.mp4` asset URL and the reach magnitude. The transcript tool gives the spoken words plus usage and longevity; `scan_ad` returns the `.mp4` URL and the reach number. Keying and the Gemini handoff follow the Gemini video handoff contract below; this step does not restate the mechanism. These `.mp4` link(s) feed both the deliverable and the standard Gemini visual pass.
-4. **Build the brief: transcript brief plus a standard Gemini visual pass.** The transcript-based brief is the immediate output: from the transcript text plus its metadata, infer the opening hook (first line), the script structure and arc, the approximate pacing (from transcript length), and the awareness stage. The Gemini visual pass is a standard step, not optional; it is the visual-execution enrichment that the transcript cannot supply (in the trial it caught a format mis-tag and surfaced the on-screen-text, edit-rhythm, and compliance layer). Produce the visual brief via the Gemini video handoff contract below. The skill then tags the returned briefs via `../ad-analysis-tagger/SKILL.md` and match-and-flags them against the `../video-script-generator/SKILL.md` format set (fits an existing format, or candidate new format). The Gemini brief is source-side analysis only; the applied layer, mapping the concept onto a specific target brand, is produced by the generation pipeline once the target brand kit is loaded, not by this analysis pass.
-5. **Generate (on request): concept-transposed script.** Follow the Generation method section above: load the target brand kit first (palette, fonts, product reference, voice); transpose the concept, do not duplicate; strip the source brand's identity and any competitor wording; and preserve the distinctive device via the target product's honest analog (the device-analog rule). With the kit loaded, write the target-brand script and any on-screen copy in the brand voice through its `copywriting-guide.md` before finalizing the generation handoff, and instruct not to reuse any competitor wording. `../video-script-generator/SKILL.md` then produces the script in the matched format, rebuilt in the target brand's voice and avatar, not a copy of the source ad. The product facts come from the brand's `image-reference-index.md`; the product image REF is a hard stop only if a first frame is actually rendered downstream in the video tools (a script-only output does not hard-stop on it, per the brand-kit gate). No video is rendered here. Output the script plus the format and hook rationale, and the three-part transposition (kept, stripped, applied). Generation is opt-in per run.
+4. **Build the transcript brief, then hand off to operator for Gemini visual pass -- PAUSE gate.**
+
+   **Part A -- Transcript brief (Claude executes).** From the transcript text plus its metadata, produce the transcript brief: opening hook (first line), script structure and arc, approximate pacing (from transcript length), and awareness stage. This is the immediate output Claude can produce without the video file.
+
+   **Part B -- Gemini visual pass (operator-executed manual step). STOP HERE.**
+
+   Claude cannot execute the Gemini pass. Present the operator with:
+
+   1. The `.mp4` download links for each winning video (from the asset mapping table per the Gemini handoff contract).
+   2. The exact canonical Gemini prompt from the Gemini video handoff contract section below, pre-filled with the correct N (number of videos) and the correct filenames from the asset mapping table.
+   3. These instructions:
+
+   > "Please download each `.mp4` file using the links above, keeping the exact filename shown (e.g. `123456.mp4`). Upload all files to Gemini along with the prompt above. When Gemini returns the analysis, paste the full output back into this conversation. Do not return partial results -- paste the complete Gemini response for all videos before I continue."
+
+   **Part C -- Gemini return validation gate, then tagging (Claude executes, after operator returns Gemini output).**
+
+   Before tagging anything, validate the returned Gemini output against the asset mapping table built in step 3. Validation has two levels that must both pass.
+
+   **Level 1 -- Structural validation (filename headings):**
+   - Every winning video in the mapping table must have exactly one section in the Gemini output headed by its exact `<asset_id>.mp4` filename.
+   - No expected filename may be missing.
+   - No filename may appear more than once.
+   - No section heading may reference a filename not in the mapping table.
+
+   **Level 2 -- Content validation (field completeness, per section):**
+   For each filename section that passes Level 1, verify the section contains substantive responses for all nine gated fields listed below. These nine are the validation set; they are the fields that feed tagging, fit assessment, and generation. The remaining Gemini prompt fields (1. Format and length, 8. Audio, 10. Persuasion read) are enrichment: valuable when present, but not gating. Duration and coverage completeness are verified through the G0 self-audit block requirement rather than by gating on field 1 directly.
+
+   The nine gated fields are:
+   - G0: Self-audit block -- a SELF-AUDIT block must be present for this video, headed with the exact filename, containing all four sub-checks (actual duration, last beat timestamp vs duration, product moments completeness, transposition bullet count) and an overall PASS or FAIL verdict; a missing self-audit block, an incomplete block, or an overall FAIL verdict fails G0; G2 and G5 completeness are verified through this block, not independently by Claude
+   - G1: Hook visual -- shot type, setting, and on-screen text at the 3-second mark (maps to prompt field 2)
+   - G2: Beat-by-beat structure -- every beat covered start to finish, each with what is said and what is shown, timestamped; coverage completeness is verified by the G0 self-audit beat-timestamp sub-check, not by Claude independently; a section where the G0 self-audit beat sub-check is FAIL fails G2 (maps to prompt field 3)
+   - G3: On-screen text -- verbatim transcription or an explicit "none" (maps to prompt field 4)
+   - G4: Shot and edit rhythm -- shot types and cut frequency present (maps to prompt field 5)
+   - G5: Product moments -- every product appearance enumerated with how it is shown and for how long, or an explicit "none" if the product never appears; coverage completeness is verified by the G0 self-audit product-moments sub-check, not by Claude independently; a section where the G0 self-audit product-moments sub-check is FAIL fails G5 (maps to prompt field 6)
+   - G6: Talent and setting -- creator type, wardrobe, location, and vibe present (maps to prompt field 7)
+   - G7: CTA -- verbal CTA and on-screen CTA described, or explicit "none" for each (maps to prompt field 9)
+   - G8: Transposition brief -- 4 to 6 kept/stripped bullets as required by the canonical Gemini prompt; fewer than 4 bullets, or bullets present but none in the kept/stripped split format, fails G8 (maps to prompt field 11)
+
+   A section fails Level 2 if any gated field (G0 through G8) is missing, empty, refusal-only, or non-substantive (a single word, a placeholder, or a restatement of the field name rather than actual visual content). There is no missing-field tolerance: all nine gated fields (G0 through G8) must be present and substantive. G0 requires a PASS verdict in the Gemini self-audit block; G2 and G5 completeness are verified through that block, not independently by Claude. Enrichment fields that are absent do not trigger a failure.
+
+   If both levels pass for all videos: proceed to tagging. Tag the combined brief (transcript brief + Gemini visual analysis) for each video via `../ad-analysis-tagger/SKILL.md` and match-and-flag against the `../video-script-generator/SKILL.md` format set (fits an existing format, or candidate new format with one-line rationale). The Gemini brief is source-side analysis only; the applied layer is produced by the generation pipeline after the target brand kit is loaded, not by this pass.
+
+   If validation fails for one or more videos: STOP immediately. Report which videos failed validation and why. State the exact failure reason per video: for Level 1 failures, report the structural cause (missing section, duplicate heading, unrecognized filename, or filename mismatch); for Level 2 failures, report which specific field(s) failed and why (missing, empty, refusal-only, or non-substantive), quoting the field name from the canonical nine (G0 through G8); for G0 failures, report which self-audit sub-check failed (duration, beat timestamp, product moments, or transposition bullet count) and state the overall self-audit verdict. Do not tag any video, proceed to fit assessment, or generate scripts for any video until the operator resolves the issue. Present two options to the operator:
+
+   > "One or more videos did not return a valid Gemini section. Options:
+   > 1. Re-run: download the missing video(s) again, re-upload to Gemini with the same prompt, and return the corrected output.
+   > 2. Explicit skip: confirm which video(s) to drop from this run. Skipped videos will not be tagged, fit-assessed, or scripted.
+   >
+   > Please choose an option and respond before I continue."
+5. **Fit assessment and model confirmation -- PAUSE gate.**
+
+   After tagging all winning videos, produce a fit assessment table before any script generation begins. Assess each video's transposability specifically against the target brand's product and category -- not in the abstract.
+
+   For each video, output:
+   - **Video #** and a one-line description (competitor name, inferred format, primary claim or hook)
+   - **Fit score**: High / Medium / Low
+   - **Transposability rationale**: one to two sentences on why this video structure does or does not port to the target product. Flag genuine non-fits explicitly -- if the competitor's video concept depends on a product category, talent type, or claim the target brand cannot honestly make, call it a non-fit rather than forcing a transposition.
+   - **Recommended action**: Proceed / Proceed with modification / Skip (with reason)
+
+   After the table, provide a brief ranked recommendation: which videos are the highest-value transposition candidates, from the perspective of the target brand's avatar and angle roadmap.
+
+   **STOP HERE. Present the table and recommendation to the operator. Ask:**
+
+   > "Which of the above would you like to generate scripts for? Please confirm the videos you want to proceed with (by number). Note: video generation produces scripts only -- no video is rendered."
+
+6. **Generate (on request): concept-transposed script.** Follow the Generation method section above: load the target brand kit first (palette, fonts, product reference, voice); transpose the concept, do not duplicate; strip the source brand's identity and any competitor wording; and preserve the distinctive device via the target product's honest analog (the device-analog rule). With the kit loaded, write the target-brand script and any on-screen copy in the brand voice through its `copywriting-guide.md` before finalizing the generation handoff, and instruct not to reuse any competitor wording. `../video-script-generator/SKILL.md` then produces the script in the matched format, rebuilt in the target brand's voice and avatar, not a copy of the source ad. The product facts come from the brand's `image-reference-index.md`; the product image REF is a hard stop only if a first frame is actually rendered downstream in the video tools (a script-only output does not hard-stop on it, per the brand-kit gate). No video is rendered here. Output the script plus the format and hook rationale, and the three-part transposition (kept, stripped, applied). Generation is opt-in per run.
 
 ## Gemini video handoff contract (authoritative, single source of truth)
 
-This is the only place in the skill that describes how `.mp4` assets are keyed and fed to Gemini; every other mention defers here. For each winning video, `scan_ad` returns the `.mp4` URL whose basename is the asset id. The lane persists a mapping table in the report: asset id to winner (ad id, reach, transcript group, source `.mp4` URL). The operator downloads each winning video keeping the `<asset_id>.mp4` filename (the URL basename already is the asset id), uploads those named files to Gemini with the batched, filename-keyed analysis prompt below, and each returned teardown keys back to its winner through the table by its `<asset_id>.mp4` heading. Fallback: if any video cannot be downloaded or its asset id cannot be determined, mark that winner's visual brief unavailable, proceed transcript-only for that winner, and flag the gap. Never attach a visual brief without a confirmed asset-id key. The Gemini pass operates on the uploaded named files, not on raw URLs. Creative Engine automates this same contract, keyed on the asset id.
+This is the only place in the skill that describes how `.mp4` assets are keyed and fed to Gemini; every other mention defers here. For each winning video, `scan_ad` returns the `.mp4` URL whose basename is the asset id. The lane persists a mapping table in the report: asset id to winner (ad id, reach, transcript group, source `.mp4` URL). The operator downloads each winning video keeping the `<asset_id>.mp4` filename (the URL basename already is the asset id), uploads those named files to Gemini with the batched, filename-keyed analysis prompt below, and each returned teardown keys back to its winner through the table by its `<asset_id>.mp4` heading. Fallback: if any video cannot be downloaded or its asset id cannot be determined, do not silently proceed transcript-only. Instead, STOP and report to the operator which video(s) could not be keyed, and ask for an explicit decision: re-attempt the download, or explicitly confirm that video is skipped from this run. A skipped video is excluded from tagging, fit assessment, and script generation. Transcript-only continuation is not an autonomous Claude fallback; it requires explicit operator confirmation per video. Never attach a visual brief without a confirmed asset-id key. The Gemini pass operates on the uploaded named files, not on raw URLs. Creative Engine automates this same contract, keyed on the asset id.
 
 Canonical Gemini prompt (keep it filename-keyed):
 
@@ -154,6 +254,18 @@ Canonical Gemini prompt (keep it filename-keyed):
    Watch each video start to finish. Be specific and timestamped. If something is
    absent, write "none"; do not invent. Match each analysis to the correct file by its
    filename.
+
+   After completing the teardown for each video and before moving to the next, add a
+   SELF-AUDIT block in exactly this format:
+
+   SELF-AUDIT: [filename]
+   - Actual video duration: [mm:ss or seconds]
+   - Last beat timestamp in section 3: [timestamp] -- PASS if within 10% of duration, FAIL if not
+   - Product moment timestamps in section 6: [list] or none -- PASS if all visible appearances captured or explicitly stated none, FAIL if you noticed appearances not listed
+   - Transposition bullets in section 11: [count] -- PASS if 4-6 present, FAIL if fewer than 4
+   - Overall: PASS or FAIL
+
+   If the overall result is FAIL, append a one-line reason and correct the failing section(s) before proceeding to the next video.
    ```
 
 ### Video depth caveat (state this in any video-lane report)

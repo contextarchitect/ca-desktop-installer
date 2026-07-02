@@ -1,6 +1,6 @@
 ---
 name: competitor-ad-intelligence
-version: "0.11.0"
+version: "0.12.0"
 description: "Automate competitor ad research end to end. Given one or more competitors, retrieve their top-performing Meta ads ranked by reach via the TrendTrack MCP, tag and group them against the ContextArchitect creative taxonomy (ad-analysis-tagger dimensions, ad-style-generator style catalogue, video-script-generator format set), and generate concept transpositions, not duplicates, of those winners rebuilt in a target brand's own identity: static images via the Kie image path (nano-banana-prompting by default, gpt-image-2-prompting on request), and video as scripts via video-script-generator (script only, no video rendered). Trigger on: competitor ad research, analyze competitor ads, what is [competitor] running, pull [competitor] winning ads, competitor creative teardown, swipe [competitor], tag [competitor] ads, what ads is [competitor] scaling. This is the Claude Desktop prototype of the Creative Engine (CE) Phase F competitor-intelligence feature; it runs manually in Desktop where the TrendTrack, Meta Ads, and Kie MCPs are connected."
 ---
 
@@ -39,6 +39,8 @@ This skill composes three layers. Keep them distinct when reasoning about a run.
 This section governs every generation step in both lanes. Read it before running any image or video generation.
 
 **Principle.** Generation transposes the concept, it does not duplicate the ad. Keep what makes the original work (its structure and its single most distinctive device). Strip the source brand's identity entirely (its palette, fonts, product form, and naming). Rebuild the concept in the target brand's own identity, using the target brand's real product. A faithful copy of a competitor ad is a failure, not a success.
+
+Clarification for high Visual-Layout Replicability ads: when the tagger scores a static's layout as highly cloneable (4-5), faithfully reproducing the LAYOUT GRAMMAR (composition, hierarchy, framing, treatment, slot positions) is correct and expected; that is not what 'duplicate' means here. Duplication means copying the source brand's identity, product, or copy content. Cloning the layout while replacing all brand identity, product, and copy is a transposition, not a duplicate. The content-leak rule enforces the line: layout grammar clones, source content never does.
 
 **Brand resolution (the skill is brand-agnostic).** The target brand is a parameter; resolve everything from it, never from a fixed brand or path. Two repos hold the brand inputs, keyed by the same `<brand-slug>`:
 
@@ -88,6 +90,16 @@ Never start retrieval from a brand-name search without resolving first. Brand-na
 
    Once the operator returns all images, tag each ad via `../ad-analysis-tagger/SKILL.md` across its six dimensions, using the returned image as the visual input. The analysis purpose for each ad is: identify the transposable visual structure and distinctive device so it can be rebuilt in the target brand's identity. Assign a visual style by matching against the `../ad-style-generator/references/style-catalogue.md` style catalogue. For each ad, flag whether it fits an existing style bucket or is a candidate new style, with a one-line rationale.
 
+   The tagger now returns a Visual-Layout Replicability score (1-5) for each static, distinct from the overall replicability score. Read it and set the execution path per ad:
+
+   - Score 4-5 (CLONE path): the layout is the replication target. The tagger's Visual Element Classification provides the exact per-element instructions. Reproduce CLONE elements directly (geometry, hierarchy, framing, treatment only, never source text or pixels). Substitute ADAPT elements with a product-contextually relevant equivalent for the target brand (using the contextual function the tagger named). Replace STRIP-REPLACE elements with the target brand's equivalent in the compositional role the tagger named. For MIXED elements, reproduce the clone_aspects (layout grammar) and rewrite the replace_aspects (source content) in the target brand's voice. Never reproduce source text, claims, headlines, or branded pixels; the words in every cloned slot are rewritten.
+   - Score 3 (PARTIAL-CLONE path): the tagger's partial Visual Element Classification table contains the surviving elements, which can still include CLONE, ADAPT, STRIP-REPLACE, and MIXED rows. Apply the SAME four-bucket handling as the CLONE path to that partial Visual Element Classification table: reproduce CLONE elements directly (layout grammar only), substitute ADAPT elements with the target-contextual equivalent, replace STRIP-REPLACE elements with the target brand's equivalent in the named compositional role, and for MIXED elements reproduce clone_aspects while rewriting replace_aspects in the target brand's voice. Separately, treat every element in the tagger's 'Entangled Elements Excluded From Clone' section as do-not-clone and transpose those concept-only. Do not reproduce entangled elements.
+   - Score 1-2 (TRANSPOSE path): the layout is not the replication target. Extract the concept and the single most distinctive device, rebuild creatively in the target brand's identity. The classification is not produced at this score.
+   - Not-produced, reason 'visual-layout replicability 1-2, concept-only target': this is the same as the Score 1-2 TRANSPOSE path. Route to TRANSPOSE. (The tagger emits this reason instead of a classification when the layout is not the replication target.)
+   - Not-produced, reason 'non-static input': this should not occur in the statics lane, which feeds only static images. If it does (a misclassified asset, a carousel/video mismatch, or a missing image), STOP. Do not assign an execution path and do not generate. Report the affected ad to the operator and ask them to confirm whether it belongs in the video lane or should be dropped. Generation for that ad does not proceed until a valid static Visual Element Classification exists.
+
+   Record the execution path (CLONE / PARTIAL-CLONE / TRANSPOSE) per ad; it carries to the fit assessment table in Step B.6 and to generation in Step B.7. The content-leak rule is absolute on every path: source text, claims, and branded pixels are never reproduced, only layout grammar is.
+
    (Creative Engine will fetch the asset server-side later, closing this operator step automatically.)
 6. **Fit assessment and recommendation -- PAUSE gate.**
 
@@ -96,7 +108,14 @@ Never start retrieval from a brand-name search without resolving first. Brand-na
    For each ad, output:
    - **Ad #** and a one-line description (competitor name, visual style, primary claim)
    - **Fit score**: High / Medium / Low
-   - **Transposability rationale**: one to two sentences explaining why this ad structure does or does not port to the target product. Flag genuine non-fits explicitly -- for example, if the competitor's ad is built around a product category the target brand does not sell, and no honest analog exists, call it a non-fit rather than forcing a transposition.
+   - **Execution path**: CLONE / PARTIAL-CLONE / TRANSPOSE (from the Visual-Layout Replicability routing in Step B.5)
+   - **Transposability rationale**: one to two sentences on why this ad ports to the target product. Flag genuine non-fits explicitly; if the ad is built around a product category the target brand does not sell and no honest analog exists, call it a non-fit rather than forcing it.
+   - **Leak-control inventory** (mandatory for CLONE and PARTIAL-CLONE ads; not length-capped; the operator must see every item before confirming generation): list, one line per item, every element that will be rewritten, substituted, or excluded:
+       - Each ADAPT element and its target-brand contextual substitution.
+       - Each STRIP-REPLACE element and its target-brand equivalent in the named compositional role.
+       - Each MIXED element's replace_aspects: the source copy, claims, or branded overlay that will be rewritten in the target brand's voice.
+       - For PARTIAL-CLONE ads: each item in the tagger's 'Entangled Elements Excluded From Clone' section with its do-not-clone note (transposed concept-only, not cloned).
+     If a category has no items, state 'none' for that category explicitly. Do not compress, summarize, or omit items; this inventory is the operator's leak-control checkpoint and every leak-prone element must appear. For TRANSPOSE ads, state 'Leak-control inventory: not applicable (concept-only transposition)'.
    - **Recommended action**: Proceed / Proceed with modification / Skip (with reason)
 
    After the table, provide a brief ranked recommendation: which ads are the highest-value transposition candidates and why, from the perspective of the target brand's avatar and angle roadmap.
@@ -109,7 +128,11 @@ Never start retrieval from a brand-name search without resolving first. Brand-na
 
 7. **Generate (on request): the concept-transposition pipeline.** Generation is opt-in per run, not automatic. Follow the Generation method section above (transpose, do not duplicate; load the brand kit first), then run these six moves in order:
    1. Load the target brand kit (palette, fonts, product reference, voice) per the brand-kit step above.
-   2. Analyze the original with `../ad-analysis-tagger/SKILL.md`. Extract the transposable concept and isolate the single most distinctive device, the element that actually makes the ad work.
+   2. The tagger analysis and the Visual-Layout Replicability routing were completed in Step B.5. Do not re-run the tagger. Read the recorded execution path:
+      - CLONE path: the replication targets are the tagger's CLONE and MIXED clone_aspects; carry the layout grammar forward verbatim into the prompt. ADAPT, STRIP-REPLACE, and MIXED replace_aspects are substituted with the target brand's equivalents per the tagger's named functions and roles.
+      - PARTIAL-CLONE path: apply the same four-bucket handling as the CLONE path to the partial Visual Element Classification table (clone CLONE elements and MIXED clone_aspects; substitute ADAPT and STRIP-REPLACE; rewrite MIXED replace_aspects). Do not reproduce anything in the tagger's 'Entangled Elements Excluded From Clone' section; those are concept-only.
+      - TRANSPOSE path: extract the transposable concept and the single most distinctive device, the element that makes the ad work.
+      On every path, apply the content-leak rule: reproduce layout grammar only, never source text, claims, headlines, or branded pixels.
    3. Strip the source brand's identity: palette, fonts, product form, naming, and any competitor wording.
    4. Device-analog preservation. If the distinctive device depends on the source product's physical form, find the target product's honest analog rather than copying the form or dropping the device. Worked example: a competitor supplement ad whose device was cracking a capsule to expose the powder transposes to a shampoo brand as the formula pouring and swirling from the intact bottle.
    5. Write the target-brand headline and any on-image copy now, in the target brand's voice through its `copywriting-guide.md` (the target brand's file under `<brand-slug>/`, not the `_skills/copywriting-guide/` skill), passing the relevant compliance check (for GCC brands, GCC compliance). This happens before prompt construction.

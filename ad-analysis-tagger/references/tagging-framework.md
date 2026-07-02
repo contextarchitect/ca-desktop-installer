@@ -146,6 +146,49 @@ When scoring, identify:
 
 A score-4 ad with replicability diagnostics becomes a template the brand can reuse on 3-4 other angles.
 
+### Dimension 5B: Visual-Layout Replicability Contract (canonical, static image ads only)
+
+This block is the single source of truth for Visual-Layout Replicability scoring, bucketing, and output. SKILL.md and output-template.md reference this contract and do not restate its rules. If any rule needs to change, change it here only.
+
+**What it measures.** How directly this ad's visual LAYOUT can be cloned onto another brand's product. Distinct from Dimension 5 overall Replicability (which measures whether the CONCEPT ports across angles and brands). An ad can score low on one and high on the other.
+
+**The 1-5 scale.**
+- 5: Fully templated. Swap product, setting, and copy and the grammar holds unchanged. The mandatory replacement of source brand identity, product, copy, and claims (the STRIP-REPLACE and ADAPT rows that EVERY clone requires) does NOT count against a 5; that replacement is the baseline every clone-with-substitution performs. Score 5 means no layout or supporting element needs change beyond that baseline swap.
+- 4: Mostly templated. All four boundary checks pass, but at least one supporting element needs substitution or adaptation BEYOND the baseline source-identity replacement (for example, a graphic element or a compositional detail that does not carry over cleanly even after the normal product/copy swap). Score 4 preserves one-to-one content slots; any required slot addition or removal fails boundary check #2 and caps the score at 3.
+- 3: Partially templated. Passes the floor gate but at least one boundary check fails; some grammar is reusable while other elements are entangled with the specific product, claim, or talent.
+- 2: Largely bespoke. Fails the floor gate; a recognizable layout structure exists but is source-bound (legible slots and composition that work only because of this specific product, claim, or talent); cloning produces a hollow shell.
+- 1: Fully bespoke. Fails the floor gate; no coherent transferable visual grammar or reusable composition exists at all.
+
+**Floor gate (evaluate FIRST, before any boundary check).** Score 3 or above requires at least one named, content-independent visual grammar element that survives target substitution (a layout slot, a composition pattern, a framing/POV, or a treatment that holds regardless of product or claim). If no meaningful layout grammar survives, the score is 1-2, not 3. Do not run the boundary checks for a layout that fails the floor gate.
+
+**Boundary checks (evaluate only after the floor gate passes).** Apply all four:
+1. Spatial hierarchy survives target substitution without redesign.
+2. Content slots map one-to-one to target-brand content without adding or removing slots.
+3. Camera/framing/POV survives without reshooting the concept.
+4. Overlay and graphic treatments survive without redrawing.
+
+Scoring from the checks:
+- All four pass AND no element needs change beyond the baseline source-identity replacement (STRIP-REPLACE and ADAPT rows only): score 5.
+- All four pass (including one-to-one slot mapping) BUT at least one supporting element needs change BEYOND that baseline (a change not accounted for by the normal STRIP-REPLACE/ADAPT swap, and not involving adding or removing a content slot): score 4.
+
+Rule of thumb: mandatory source-identity replacement never triggers score 4; only additional, non-baseline layout changes do. A clean branded static that clones perfectly after the normal swap is a 5, not a 4.
+- Floor gate passed but one or more checks fail: score 3.
+- Floor gate failed: score 1-2 (never 3). Choose within 1-2 deterministically: score 2 when a recognizable layout structure exists but is source-bound (its slots and composition are legible but work only because of this specific product, claim, or talent); score 1 when no coherent transferable visual grammar or reusable composition exists at all.
+
+**The four buckets (used at score 3, 4, and 5).** Every classified visual element is exactly one of:
+- CLONE: layout grammar reproduced directly (composition, spatial hierarchy, framing, graphic treatment, bubble/badge styling, POV/angle, content-slot positions). CLONE reproduces geometry, hierarchy, framing, and visual treatment ONLY. It NEVER means copying literal source pixels, source text, headlines, body copy, or claims. Words that fill a cloned text slot are always rewritten in the target brand's voice; only the slot's position, size, and styling clone.
+- ADAPT: setting and props whose function is product-contextual authenticity, not structural grammar. For each, name the contextual function it serves (e.g. 'gym floor = fitness/health product context') so downstream knows what kind of setting to substitute.
+- STRIP-REPLACE: source brand and product identity (competitor packshots, logos, packaging form, brand palette and fonts, brand naming, proprietary UI screenshots, claims badges, product-specific demonstrations, AND source copy content: headlines, body text, claims, competitor wording). Never cloned as source pixels or source words even when compositionally central. For each, name the compositional role it fills (e.g. 'center product hero', 'trust badge') so downstream replaces it with the target brand's equivalent in the same role.
+- MIXED: an element that is both cloneable layout grammar and source-specific content (a headline block, a body-copy list, a branded text overlay). Never forced into a single bucket. A MIXED row populates BOTH clone_aspects (the layout grammar reproduced: slot position, size, styling, hierarchy) AND replace_aspects (the source content rewritten in the target brand's voice: the actual words, claims, or branding). No CLONE or MIXED element ever applies 'reproduce directly' to source text, claims, or branded pixels.
+
+**Output by score.**
+- Score 4-5: full Visual Element Classification table (all four buckets), and the entangled-elements exclusion section states 'Not applicable (full clone, no entangled elements)' at score 5, or 'Not applicable (score 4; see bucket table for the minor element's ADAPT/STRIP-REPLACE/MIXED handling)' at score 4.
+- Score 3: PARTIAL classification. The bucket table contains SURVIVING elements ONLY (the reusable grammar, classified into the four buckets). All entangled non-surviving elements go ONLY in the dedicated 'Entangled Elements Excluded From Clone' section, never in the bucket table. For each entangled element, the exclusion record states why substitution fails (its entanglement with the specific product, claim, or talent) and the do-not-clone instruction for downstream (for example, transpose the concept only, do not reuse the layout).
+- Score 1-2: no classification. Not-produced reason: 'visual-layout replicability 1-2, concept-only target'.
+- Non-static input: no score, no classification. Not-produced reason: 'non-static input'.
+
+These two not-produced reasons are distinct and must not be interchanged.
+
 ## Dimension 6: Swipe-Fitness
 
 Score 1-5: would this ad work as a reference in another brand's swipe file?

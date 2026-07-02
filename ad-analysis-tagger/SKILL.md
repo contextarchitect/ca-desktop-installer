@@ -1,6 +1,6 @@
 ---
 name: ad-analysis-tagger
-version: "1.0.0"
+version: "1.1.0"
 description: "Take any winning ad (transcript / image / both) and produce a structured tagged breakdown across six dimensions: hook style (matched against copywriting-guide §8.4 + §8.8), script structure (matched against funnel-builder format-library.md 9 formats + Fake-Complaint sub-format), core feeling (matched against copywriting-guide §8.7), awareness/sophistication scoring (universal 3-value + gated Schwartz 6-value enum), replicability (1-5 score for templatability), and swipe-fitness (1-5 score for swipe-file value). Use when user says 'tag this ad', 'analyze this ad', 'why did this ad work', 'tag this for swipe file', 'audit this ad', 'replicability of this ad', or references ad analysis / tagging / swipe-file work. Reads angle-roadmap, copywriting-guide, funnel-builder/format-library.md, ad-style-generator/style-catalogue.md, and the awareness-vocabulary framework doc as cross-reference inputs. The most cross-skill-dense skill in the ContextArchitect catalogue."
 ---
 
@@ -87,7 +87,7 @@ STEP 3: SIX-DIMENSION TAGGING
     - Dimension 2 (Script structure): funnel-builder format-library.md + ad-style-generator style-catalogue.md
     - Dimension 3 (Core feeling): copywriting-guide §8.7
     - Dimension 4 (Awareness/sophistication): universal 3-value + gated Schwartz when available (see _frameworks/awareness-vocabulary.md for the universal-vs-gated distinction)
-    - Dimension 5 (Replicability): 1-5 score with diagnostics
+    - Dimension 5 (Replicability): 1-5 score with diagnostics (overall concept portability). For static image ads, ALSO produce Visual-Layout Replicability exactly per the canonical contract in `references/tagging-framework.md` Dimension 5B. All scoring rules, buckets, thresholds, output-by-score behavior, and not-produced states live in that contract; follow it directly and do not restate any of it here.
     - Dimension 6 (Swipe-fitness): 1-5 score with diagnostics
   -> Plus conditional sections: Identification-Before-Mechanism compliance, Discovery Story detection, Cross-Variant tagging
 
@@ -194,6 +194,7 @@ Before delivering an analysis:
 - [ ] Core feeling is exactly one of the five from §8.7 (or dilution flagged as finding)
 - [ ] Universal awareness uses 3-value field with framework doc reference at first use
 - [ ] Replicability score 1-5 with diagnostics (angle-specific / brand-specific / template-shaped breakdown)
+- [ ] Visual-Layout Replicability produced exactly per the canonical contract in tagging-framework.md Dimension 5B (static image ads only): score, classification, entangled-elements handling, and not-produced states all governed by the contract, not restated here.
 - [ ] Swipe-fitness score 1-5 with diagnostics (most distinctive / category-specific / new pattern flag)
 - [ ] Identification-Before-Mechanism compliance scored (pass/partial/fail with finding)
 - [ ] Discovery Story detection if applicable (7-stage breakdown)

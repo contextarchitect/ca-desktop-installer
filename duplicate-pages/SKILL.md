@@ -1,6 +1,6 @@
 ---
 name: duplicate-pages
-version: "2.0.1"
+version: "3.0.0"
 description: >
   Duplicate any high-converting page for a brand - either from a Figma design
   file the brand controls (Mode 1) or from a competitor's live page (Mode 2).
@@ -84,7 +84,7 @@ modes.
 | Component count per section | Image cropping treatment |
 | Layout orientation per section | Hover and active states |
 | Verbatim copy (operator-approved) | Semantic HTML tag choice |
-| Asset URLs | Font scale within type system |
+| Asset identity (which asset appears in which slot) | Font scale within type system |
 | What the skill explicitly prohibits | Micro-animations |
 | Spatial positioning of major elements | Grid vs flex implementation |
 
@@ -150,7 +150,6 @@ All reference files are shared across both modes.
 
 - `_reference/intent-spec-template.md` - prose-brief template for Lovable.
 - `_reference/asset-manifest-template.md` - asset role-to-filename mapping format.
-- `_reference/asset-upload-script-template.ps1` - PowerShell upload script for Mode 1.
 - `_reference/lovable-remediation-patterns.md` - fix-up ladder templates.
 - `_reference/brand-token-extraction.md` - how to extract brand tokens from Figma variables.
 - `_reference/em-dash-sweep.md` - em-dash sweep procedure.

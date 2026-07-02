@@ -6,6 +6,8 @@ This is the validation test pass for `figma-to-lovable` Mode 1. The iteration pr
 
 **This directory is reference material.** Do not copy these files when starting a new PDP - use the templates in `_skills/figma-to-lovable/_reference/` instead. This example shows what a real iteration produced; the templates are what new iterations start from.
 
+> **Historical (pre-v3, CDN era).** This example is a pre-v3 iteration. Its asset transport - the upload script, Supabase hosting, and asset-URL resolution - is historical and no longer part of the skill; v3 Mode 1 attaches exported files directly to the Lovable prompt. The 9-bug ledger and the fix-up escalation arc below remain valid and transport-agnostic.
+
 ## Files in this directory
 
 ```

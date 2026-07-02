@@ -12,7 +12,6 @@ The operator collects the following before the pipeline starts:
 | Section node IDs | Operator selects in Figma | List of `<file-key>:<node-id>` pairs |
 | Brand identity | Brand-guidelines doc, designer interview, or `_reference/brand-token-extraction.md` output | Filled brand-identity block |
 | Verbatim copy | Client copy document, brand voice doc | One block of text per section |
-| Asset destination | Operator | Supabase URL + bucket + path |
 
 ### Figma node-selection checklist
 
@@ -40,85 +39,75 @@ If the designer cannot point to a clear set of section frames, the file is not M
 - The node-selection checklist above is walked end-to-end. Specifically, the operator can name which sticky/floating elements, hidden states, modal/overlay components, and off-canvas asset sheets are included or explicitly excluded.
 - Brand palette has hex codes for every locked role (background, text, accent gradient).
 - Copy is verbatim from a source document, not improvised. No paraphrased TBD blocks.
-- Supabase bucket exists and the anon/service key has upload permission (test with a single small file before Step 3).
 
 If any of these fail, halt and resolve before proceeding.
 
 ## Step 2: Figma extraction
 
+The manifest is now a lightweight inventory: it records which asset fills which slot (semantic role to exported filename), not a CDN destination.
+
 For each section node ID:
 
 1. Run `Figma:get_metadata nodeId=<node>`. This returns the section's child elements with their bounds and types.
 2. Run `Figma:get_design_context nodeId=<node>`. This returns the JSX export with Tailwind classes and asset hash references.
-3. For each asset hash encountered in the JSX export, add a row to the asset manifest with:
-   - `figma_node_id` = the node containing the asset reference
-   - `figma_hash` = the hash from the JSX
-   - `semantic_role` = the operator's description of what this asset is (e.g. "hero benefit card icon - card 1 - For Nights She Can't Walk After"). Operator authors this by reading the surrounding JSX context.
-   - `parent_section` = which page section this belongs to (e.g. `Hero`)
-   - `parent_component` = which sub-component (e.g. `HeroBenefitCards`)
-   - `target_filename` = the filename to upload as (operator chooses, with semantic naming)
-   - `target_url` = full Supabase public URL (constructed from base + filename)
-   - `extension` = lowercase, no dot (`svg`, `png`, `webp`, `jpg`)
-   - `optimize` (optional; default is `false`) - set `true` for raster assets that should run through ImageMagick optimization; omit, blank, or `false` skips optimization (SVG rows ignore this column either way)
+3. For each asset hash encountered in the JSX export, add a row to the asset manifest. The columns mirror `_reference/asset-manifest-template.md` exactly:
+   - **Required** (validation A; a blank value fails the manifest):
+     - `figma_hash` = the hash from the JSX
+     - `semantic_role` = the operator's description of what this asset is (e.g. "hero benefit card icon - card 1 - For Nights She Can't Walk After"). Operator authors this by reading the surrounding JSX context.
+     - `target_filename` = the filename to export as (operator chooses, with semantic naming)
+   - **Recommended** (validation warns if blank):
+     - `figma_node_id` = the node containing the asset reference
+     - `parent_section` = which page section this belongs to (e.g. `Hero`)
+     - `parent_component` = which sub-component (e.g. `HeroBenefitCards`)
+   - **Optional** (default behavior applies if blank):
+     - `notes` = free-form operator notes (duplicate flag, designer note)
+     - `aspect_ratio` = native aspect ratio when known (feeds the placeholder-box fallback in the intent-spec template)
 4. After all sections are processed, run the duplicate-hash check: any `figma_hash` appearing in more than one row triggers a content-review flag (`_reference/asset-manifest-template.md` Bug 4 prevention). Confirm with the designer whether reuse is intentional.
 
 Also extract brand identity at this step: pick a representative node and follow `_reference/brand-token-extraction.md`.
 
-**Gate before Step 3.** Confirm:
+**Gate before Step 3.** Confirm the manifest passes the validation contract in `_reference/asset-manifest-template.md`:
 
-- The manifest has one row per asset reference (no duplicates dropped, no rows missing).
-- Every row has a `semantic_role` that an operator unfamiliar with the page could understand.
-- Every `target_url` is constructed from the agreed Supabase base + bucket + path + filename.
-- Duplicate-hash flags resolved with the designer (or explicitly accepted as intentional reuse).
+- **A. Schema completeness:** every row has non-blank `figma_hash`, `semantic_role`, and `target_filename`.
+- **B. target_filename safety:** every `target_filename` is a leaf name only (no path separators, no `..`, no absolute path).
+- **C. target_filename uniqueness:** no two rows share a `target_filename` (case-insensitive).
+- **F. Duplicate figma_hash:** any `figma_hash` in more than one row is surfaced for designer content review (intentional reuse) - not fatal.
+- One row per asset reference (no duplicates dropped, no rows missing); each `semantic_role` understandable to an operator unfamiliar with the page.
 
-If any of these fail, return to Step 2 for the affected rows.
+If any of A, B, or C fail, return to Step 2 for the affected rows.
 
-## Step 3: Asset upload
+## Step 3: Asset export
 
-1. Run `_reference/asset-upload-script-template.ps1` with parameters:
-   - `-ManifestPath <path-to-asset-manifest.csv>`
-   - `-SupabaseUrl <project URL>`
-   - `-SupabaseBucket <bucket name>`
-   - `-SupabasePath <bucket-relative path>`
-   - `-AnonKey <upload key>`
+1. Name the design-folder slug for this page: kebab-case (e.g. `pdp-v1`). Create one local folder with that name to hold every exported asset for this design.
 
-2. **Preflight stage (runs first).** Before any download or upload, the script runs `Test-ManifestPreflight` over every manifest row. Preflight hard-fails (exit 1) on:
-   - Required column blank (figma_hash, semantic_role, target_filename, target_url, extension)
-   - Unsafe target_filename (path separators, `..`, absolute paths, disallowed characters)
-   - Duplicate target_filename across rows
-   - extension column not matching target_filename suffix
-   - target_url not matching the computed public URL
-   See `_reference/asset-manifest-template.md` "Validation contract" for the full checklist. If preflight fails, no downloads happen; fix the manifest and re-run from this step.
+2. In Figma, select the layers/frames the manifest lists and export them via the native Figma Export panel. Choose the format the design uses per asset (SVG for vector; PNG, WebP, or JPG for raster). Export into the design folder from step 1.
 
-3. **Per-row stages (run only after preflight passes).** For each row: download from Figma localhost (required), optimize via ImageMagick (enhancement, may SKIP if not installed), WebP conversion (REQUIRED-FOR-WEBP rows; aborts the row if the source is not already WebP and cwebp is missing), upload to Supabase (required).
+3. **Resolve blank or duplicate layer names before exporting.** A blank layer name produces an invalid `..png` path, and duplicate names collide on export (one file overwrites another). Rename so every exported file has a distinct, safe filename that matches the manifest's `target_filename`. There is no CDN upload, no PowerShell, and no Supabase preflight in this step.
 
-4. The script writes a `upload-results.csv` to the work directory with the public URL of each uploaded asset.
-
-5. **Verify each URL manually.** Open at least 3-5 uploaded URLs in browser tabs to confirm the assets render. Pay attention to assets the script's enhancement stages may have changed (raster optimization should not visibly degrade quality).
+4. Confirm one exported file exists per manifest row. The exported files attach directly to the Lovable prompt in Step 5.
 
 **Gate before Step 4.** Confirm:
 
-- Preflight passed (no PREFLIGHT [A]-[E] errors in the script output). If preflight failed, fix the manifest and re-run Step 3 from the top.
-- Per-row script summary shows zero rows in states other than `UPLOADED` (no `DOWNLOAD_FAILED`, `WEBP_CONVERSION_FAILED`, `WEBP_TOOL_MISSING`, `UPLOAD_FAILED`).
-- 3-5 spot-checked URLs render in a browser.
-- Any preflight [F] duplicate-hash warnings are resolved with the designer (intentional reuse) or addressed by replacing duplicates with distinct assets and re-running.
+- One exported file exists in the design folder for every manifest row.
+- Every exported filename matches its manifest `target_filename` (safe leaf name: no path separators, no `..`).
+- No two rows resolve to the same exported filename (duplicate names collide on export).
+- Duplicate-hash flags resolved with the designer (intentional reuse) or replaced with distinct assets.
 
-If a URL 404s or the asset is visibly broken, return to Step 3 for that row.
+If any of these fail, return to Step 3 (or Step 2 for manifest fixes).
 
 ## Step 4: Intent-spec generation
 
 1. Open `_reference/intent-spec-template.md`.
 2. Fill the brand-identity block from the Step 2 extraction output.
-3. Fill the asset base URL from the Supabase upload destination.
-4. For each section, write a section block describing structure, elements, asset references, and verbatim copy. Asset URLs come from the manifest (look up by `semantic_role`), never from memory (Bug 8 prevention).
-5. Remove all `>` instructional commentary lines from the template.
-6. Run the em-dash sweep on the filled spec (`_reference/em-dash-sweep.md`).
-7. Run the pre-paste checklist at the bottom of `_reference/intent-spec-template.md`.
+3. For each section, write a section block describing structure, elements, asset references, and verbatim copy. Asset references use the exported filename from the manifest (look up by `semantic_role`), never from memory (Bug 8 prevention).
+4. Remove all `>` instructional commentary lines from the template.
+5. Run the em-dash sweep on the filled spec (`_reference/em-dash-sweep.md`).
+6. Run the pre-paste checklist at the bottom of `_reference/intent-spec-template.md`.
 
 **Gate before Step 5.** Confirm:
 
 - Every `[BRACKETED_PLACEHOLDER]` from the template has been replaced.
-- Every asset URL in the spec exists in the manifest (`target_url` column).
+- Every asset reference in the spec matches a `target_filename` in the manifest.
 - Body copy in every section is verbatim from the source content document (no AI paraphrasing).
 - Section count in the page-structure block matches the number of section blocks below.
 - `grep -nP '\x{2014}' <spec.md>` returns zero hits.
@@ -128,7 +117,7 @@ If any of these fail, fix and re-run the gate.
 ## Step 5: Lovable paste
 
 1. Open a **fresh** Lovable project (not an existing project, even for the same brand). Reusing projects can introduce state from prior conversations that affects generation quality.
-2. Paste the complete intent-spec as a single prompt.
+2. Paste the complete intent-spec as a single prompt and attach the exported assets from the design folder. Lovable accepts at most 10 attachments per prompt: attach up to 10 alongside the intent-spec paste, then send follow-up prompt(s) attaching the remainder until every manifest row's asset has been attached. Lovable persists attached assets in the project.
 3. Wait for Lovable's first generation to complete. Typical time: 60-180 seconds for a 12-section PDP.
 4. Open the rendered preview in the default Lovable preview viewport.
 5. Capture a screenshot of the page from above the fold to the bottom of the page (scroll if needed; multiple screenshots are fine).
@@ -136,6 +125,7 @@ If any of these fail, fix and re-run the gate.
 
 **Gate before Step 6.** Confirm:
 
+- Every manifest row's asset was attached (initial prompt plus any follow-ups); none left un-attached.
 - All N sections rendered (count them; check for omissions or merged sections).
 - No console errors in the Lovable preview devtools that indicate broken asset references.
 - Initial brand palette colors look correct at desktop (you are checking for catastrophic palette failures, not subtle drift).
@@ -180,7 +170,7 @@ In each of these cases, halt and escalate to the operator or the skill author ra
 - `SKILL.md` for the high-level 6-step summary
 - `_reference/intent-spec-template.md` for the spec template
 - `_reference/asset-manifest-template.md` for the manifest format
-- `_reference/asset-upload-script-template.ps1` for the upload script
+- `_reference/asset-upload-script-template.ps1` deprecated (v3.0.0); Mode 1 no longer uploads to a CDN, assets attach directly to the Lovable prompt
 - `_reference/lovable-remediation-patterns.md` for the fix-up escalation ladder
 - `_reference/brand-token-extraction.md` for the brand identity block
 - `_reference/em-dash-sweep.md` for the universal pre-output sweep

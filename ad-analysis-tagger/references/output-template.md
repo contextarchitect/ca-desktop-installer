@@ -84,6 +84,30 @@ Per `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)`:
 
 ---
 
+## Visual-Layout Replicability (static image ads only)
+
+Populated per the canonical Visual-Layout Replicability Contract in `../references/tagging-framework.md` Dimension 5B. This template provides the output shape only; the contract governs scoring, bucketing, and which sections are produced at each score.
+
+**Visual-Layout Replicability Score:** [1-5, or not-produced reason per tagging-framework.md Dimension 5B]
+
+**Visual Element Classification:** [full table, partial table, or not-produced reason, exactly per tagging-framework.md Dimension 5B]
+
+| Element | Description | Bucket | Clone aspects | Replace aspects | Rationale | Contextual function / compositional role | Target-brand replacement guidance |
+|---|---|---|---|---|---|---|---|
+| [id] | [description] | [bucket per Dimension 5B] | [per Dimension 5B] | [per Dimension 5B] | [rationale] | [per Dimension 5B] | [per Dimension 5B] |
+
+### Entangled Elements Excluded From Clone
+
+[Populate or omit per tagging-framework.md Dimension 5B.]
+
+| Element | Description | Why substitution fails | Do-not-clone note |
+|---|---|---|---|
+| [id] | [description] | [per Dimension 5B] | [per Dimension 5B] |
+
+Not-produced reason: [per tagging-framework.md Dimension 5B]
+
+---
+
 ## Swipe-Fitness Diagnostics
 
 **Score:** [N]/5

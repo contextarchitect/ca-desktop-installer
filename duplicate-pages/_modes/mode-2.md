@@ -200,7 +200,9 @@ Only GENERATE slots go to Kie.ai. Document classification in state doc first.
   subsequent product shots if drift appears.
 - Asset workflow: Kie.ai MCP generates in-session. Temp URLs go directly into
   Lovable prompt with instruction to download and store locally on first
-  render. No Supabase upload step. Different from Mode 1.
+  render. Both modes deliver assets straight into Lovable: Mode 1 by prompt
+  attachment, Mode 2 by temp URL in prompt text with a download-and-store-on-
+  first-render instruction.
 
 ### Step 3c: Layer B extraction and operator review
 

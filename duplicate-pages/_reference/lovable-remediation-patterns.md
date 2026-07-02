@@ -34,7 +34,7 @@ I need you to fix [N] specific issues in the current page. Each fix is described
 - [Specific class change, e.g. "Add `w-[120px] h-[24px]` to the `<img>` tag at line ~42"]
 - [Defensive fallback if applicable, e.g. "Also add `style={{ objectFit: 'contain' }}` as a defensive fallback"]
 
-[Specify the affected asset URLs / component file paths verbatim. No paraphrasing.]
+[Specify the affected assets (attached filenames or URLs) / component file paths verbatim. No paraphrasing.]
 
 After this change [DESCRIBE_EXPECTED_VISUAL_RESULT].
 

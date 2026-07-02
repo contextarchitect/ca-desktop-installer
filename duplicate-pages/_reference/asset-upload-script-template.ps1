@@ -1,4 +1,13 @@
 # =============================================================================
+# DEPRECATED as of v3.0.0.
+# -----------------------------------------------------------------------------
+# Mode 1 no longer uploads assets to a CDN. Assets now attach directly to the
+# Lovable prompt, and Lovable persists them in the project (see
+# _modes/mode-1.md and _reference/operator-workflow.md). This script is retained
+# for history only. DO NOT RUN. The body below is left intact for reference.
+# =============================================================================
+
+# =============================================================================
 # Figma-to-Lovable asset upload script (PowerShell template)
 # -----------------------------------------------------------------------------
 # Downloads assets from the Figma local-render server, optionally optimizes

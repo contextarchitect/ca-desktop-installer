@@ -1,7 +1,7 @@
 ---
 name: ad-analysis-tagger
-version: "1.1.0"
-description: "Take any winning ad (transcript / image / both) and produce a structured tagged breakdown across six dimensions: hook style (matched against copywriting-guide §8.4 + §8.8), script structure (matched against funnel-builder format-library.md 9 formats + Fake-Complaint sub-format), core feeling (matched against copywriting-guide §8.7), awareness/sophistication scoring (universal 3-value + gated Schwartz 6-value enum), replicability (1-5 score for templatability), and swipe-fitness (1-5 score for swipe-file value). Use when user says 'tag this ad', 'analyze this ad', 'why did this ad work', 'tag this for swipe file', 'audit this ad', 'replicability of this ad', or references ad analysis / tagging / swipe-file work. Reads angle-roadmap, copywriting-guide, funnel-builder/format-library.md, ad-style-generator/style-catalogue.md, and the awareness-vocabulary framework doc as cross-reference inputs. The most cross-skill-dense skill in the ContextArchitect catalogue."
+version: "1.1.1"
+description: "Take any winning ad (transcript / image / both) and produce a structured tagged breakdown across six dimensions: hook style (matched against the Hook Quality Checklist and Authority Hook Patterns; canonical source copywriting-guide skill §8.4 + §8.8), script structure (matched against funnel-builder format-library.md 9 formats + Fake-Complaint sub-format), core feeling (matched against the Five Core Feelings Library; canonical source copywriting-guide skill §8.7), awareness/sophistication scoring (universal 3-value + gated Schwartz 6-value enum), replicability (1-5 score for templatability), and swipe-fitness (1-5 score for swipe-file value). Use when user says 'tag this ad', 'analyze this ad', 'why did this ad work', 'tag this for swipe file', 'audit this ad', 'replicability of this ad', or references ad analysis / tagging / swipe-file work. Reads angle-roadmap, copywriting-guide, funnel-builder/format-library.md, ad-style-generator/style-catalogue.md, and the awareness-vocabulary framework doc as cross-reference inputs. The most cross-skill-dense skill in the ContextArchitect catalogue."
 ---
 
 # Ad Analysis Tagger Skill
@@ -83,9 +83,9 @@ STEP 2: CROSS-REFERENCE LOADING (conditional)
 STEP 3: SIX-DIMENSION TAGGING
   -> Apply tagging-framework.md across all 6 dimensions
   -> For each dimension: tag against canonical references
-    - Dimension 1 (Hook): copywriting-guide §8.4 + §8.8 + first-line patterns
+    - Dimension 1 (Hook): the Hook Quality Checklist + Authority Hook Patterns (canonical source: copywriting-guide skill §8.4 + §8.8) + first-line patterns [v1.1.1 xref-fix]
     - Dimension 2 (Script structure): funnel-builder format-library.md + ad-style-generator style-catalogue.md
-    - Dimension 3 (Core feeling): copywriting-guide §8.7
+    - Dimension 3 (Core feeling): the Five Core Feelings Library (canonical source: copywriting-guide skill §8.7) [v1.1.1 xref-fix]
     - Dimension 4 (Awareness/sophistication): universal 3-value + gated Schwartz when available (see _frameworks/awareness-vocabulary.md for the universal-vs-gated distinction)
     - Dimension 5 (Replicability): 1-5 score with diagnostics (overall concept portability). For static image ads, ALSO produce Visual-Layout Replicability exactly per the canonical contract in `references/tagging-framework.md` Dimension 5B. All scoring rules, buckets, thresholds, output-by-score behavior, and not-produced states live in that contract; follow it directly and do not restate any of it here.
     - Dimension 6 (Swipe-fitness): 1-5 score with diagnostics
@@ -110,6 +110,10 @@ This skill is the densest cross-skill consumer in ContextArchitect. The followin
 ### §8.5 Disambiguation Discipline (Session 9)
 
 Every reference to `copywriting-guide §8.5` carries the full title `(Identification-Before-Mechanism Rule)` to disambiguate from the gated Schwartz technique #2 Identification. This discipline is now load-bearing across 5 skills (copywriting-guide as source, plus funnel-builder + angle-roadmap + ad-style-generator + this skill).
+
+### §8.4 / §8.7 / §8.8 Rubric-Resolution Discipline (v1.1.1)
+
+Every reference to the Hook Quality Checklist (copywriting-guide §8.4), the Five Core Feelings Library (copywriting-guide §8.7), and the Authority Hook Patterns (copywriting-guide §8.8) names the rubric first and cites the numeric section only as canonical provenance. At runtime the reader opens the BRAND `copywriting-guide.md`, whose §8 is Cultural Considerations, so a bare numeric reference dangles. The rubric itself is embedded in `references/tagging-framework.md`, so tagging never depends on resolving the number against whichever guide is open. This mirrors the §8.5 discipline above. [v1.1.1 xref-fix]
 
 ### Awareness-Vocabulary Disambiguation (Session 14)
 
@@ -188,10 +192,10 @@ Before delivering an analysis:
 
 **Universal dimensions (always):**
 - [ ] All 6 dimensions tagged (or explicitly marked unavailable due to input limitations)
-- [ ] Hook §8.4 score is 0-5 with sub-checks itemized
+- [ ] Hook Quality Checklist score (canonical source: copywriting-guide skill §8.4) is 0-5 with sub-checks itemized [v1.1.1 xref-fix]
 - [ ] Format tag matches canonical name from `../funnel-builder/references/format-library.md` (or "Custom" with description)
 - [ ] Visual style tag matches canonical name from `../ad-style-generator/references/style-catalogue.md` (image ads only; or "Custom-visual")
-- [ ] Core feeling is exactly one of the five from §8.7 (or dilution flagged as finding)
+- [ ] Core feeling is exactly one of the five from the Five Core Feelings Library (canonical source: copywriting-guide skill §8.7) (or dilution flagged as finding) [v1.1.1 xref-fix]
 - [ ] Universal awareness uses 3-value field with framework doc reference at first use
 - [ ] Replicability score 1-5 with diagnostics (angle-specific / brand-specific / template-shaped breakdown)
 - [ ] Visual-Layout Replicability produced exactly per the canonical contract in tagging-framework.md Dimension 5B (static image ads only): score, classification, entangled-elements handling, and not-produced states all governed by the contract, not restated here.

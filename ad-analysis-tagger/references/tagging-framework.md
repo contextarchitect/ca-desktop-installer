@@ -6,9 +6,9 @@ Six tagging dimensions for analyzing winning ads. Every analyzed ad gets tagged 
 
 The hook is the first line of body copy (or the visible-in-feed caption text for static image ads). Tag the hook against:
 
-### 1A: Hook Quality Checklist (`copywriting-guide §8.4 Hook Quality Checklist`)
+### 1A: Hook Quality Checklist (rubric embedded in tagging-framework.md; canonical source: copywriting-guide skill §8.4)
 
-Score on the 5-point check from §8.4:
+Score on the 5-point check in the Hook Quality Checklist (rubric embedded in tagging-framework.md; canonical source: copywriting-guide skill §8.4) [v1.1.1 xref-fix]:
 - **Opens a loop** (yes/no): does the hook create curiosity rather than close one with a fact statement?
 - **One specific claim** (yes/no): does the hook focus on one thing rather than two or three?
 - **First-person voice** (yes/no): is the narrator first-person? (Some brand voices intentionally use third-person; mark as "brand-voice override" if so.)
@@ -17,9 +17,9 @@ Score on the 5-point check from §8.4:
 
 Total score: 0-5. Hooks scoring 4-5 are strong; 2-3 are workable; 0-1 are weak.
 
-### 1B: Authority Hook Pattern (`copywriting-guide §8.8 Authority Hook Patterns`)
+### 1B: Authority Hook Pattern (rubric embedded in tagging-framework.md; canonical source: copywriting-guide skill §8.8)
 
-If the hook invokes authority, tag which of the 4 named patterns:
+If the hook invokes authority, tag which of the 4 named Authority Hook Patterns (rubric embedded in tagging-framework.md; canonical source: copywriting-guide skill §8.8) [v1.1.1 xref-fix]:
 - **Classic**: named specialist endorsement
 - **Doctor's Surprise**: authority surprised by the result
 - **Doctor's Skepticism**: authority disagreed but data proved them wrong
@@ -37,7 +37,7 @@ Match against the corpus pattern catalogue:
 - **Inside-information pattern**: "Most [demographic] don't know this about [topic]." Curiosity gap.
 - **Single-word punch**: "Finally." / "Stop." / "Listen." Fragment hooks. Strongest in retargeting.
 
-Most ads use one pattern. Some hybrid two. Multi-pattern hooks usually score worse on the §8.4 "one specific claim" check.
+Most ads use one pattern. Some hybrid two. Multi-pattern hooks usually score worse on the Hook Quality Checklist "one specific claim" check (canonical source: copywriting-guide skill §8.4) [v1.1.1 xref-fix].
 
 ## Dimension 2: Script Structure
 
@@ -88,7 +88,7 @@ If the ad's visual doesn't match any of the 14, tag as "Custom-visual" and descr
 
 ## Dimension 3: Core Feeling
 
-Tag against `copywriting-guide §8.7 The Five Core Feelings Library`. Pick exactly ONE:
+Tag against the Five Core Feelings Library (rubric embedded in tagging-framework.md; canonical source: copywriting-guide skill §8.7) [v1.1.1 xref-fix]. Pick exactly ONE:
 
 1. **Vindication**: "I was right all along; the system was wrong."
 2. **Loss aversion**: "I lost something I want back."
@@ -96,7 +96,7 @@ Tag against `copywriting-guide §8.7 The Five Core Feelings Library`. Pick exact
 4. **Desperation**: "I will try anything that might work."
 5. **Identity**: "I want to be the kind of person who [does this thing]."
 
-Per §8.7, an ad that tries to serve more than one core feeling dilutes them all. If the ad seems to serve multiple, mark the dominant one and note the dilution as a finding.
+Per the Five Core Feelings Library (canonical source: copywriting-guide skill §8.7), an ad that tries to serve more than one core feeling dilutes them all. If the ad seems to serve multiple, mark the dominant one and note the dilution as a finding.
 
 ## Dimension 4: Awareness and Sophistication Scoring
 

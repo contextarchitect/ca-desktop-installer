@@ -4,7 +4,7 @@
 
 Nothing works in isolation. The ad, the headline, the landing page, the close — they form one continuous experience. Before selecting a funnel type, you must understand:
 
-1. **Where is the audience on the awareness ladder?** (Problem Aware → Solution Aware → Product Aware → Most Aware)
+1. **Where is the audience on the awareness ladder?** The universal 3-value enum (Problem-aware / Solution-aware / Product-aware) is canonical for format selection. When avatar research emits a 5-value stage (Unaware / Problem Aware / Solution Aware / Product Aware / Most Aware), map it to the 3-value enum via `_frameworks/awareness-vocabulary.md`: Unaware maps to Problem-aware handling with mandatory filtering, and the middle three map directly. A Most Aware audience exits before format selection: funnel-builder is not the right asset (the reader enters at the offer), so it exits at the Step 0.1 awareness early-exit gate rather than selecting a page format.
 2. **What ad format is driving traffic?** (This determines what the reader already knows and feels)
 3. **What emotional state did the ad leave them in?** (This determines whether the funnel should lead with logic or emotion)
 
@@ -19,10 +19,10 @@ Before selecting funnel type or writing any content, identify the traffic source
 | Ad Type | Reader State on Arrival | Headline Must... | Page Must... | Recommended Funnel |
 |---------|------------------------|-------------------|---------------|--------------------|
 | Ugly/clickbait image (no context) | Curious, unfiltered, no product awareness | Filter to avatar + create relevance | Full emotional journey: story → root cause → mechanism → product | Advertorial (full 9-section) |
-| UGC / day-in-the-life | Curious about product, low emotional investment | Lean into emotional weight, no need to re-filter | Can abbreviate problem section; focus on root cause → mechanism → product | Advertorial or Listicle (emotion variant) |
-| Long-form VSL / mini-VSL | Emotionally invested, may be product-curious | Match VSL tone, don't repeat the emotional arc | Focus on logic: root cause + mechanism + product validation | Listicle (logic variant) |
+| UGC / day-in-the-life | Curious about product, low emotional investment | Lean into emotional weight, no need to re-filter | Can abbreviate problem section; focus on root cause → mechanism → product | Advertorial or Listicle (Emotion) |
+| Long-form VSL / mini-VSL | Emotionally invested, may be product-curious | Match VSL tone, don't repeat the emotional arc | Focus on logic: root cause + mechanism + product validation | Listicle (Logic) |
 | Targeted image + headline copy | Filtered to avatar, problem-aware | Go deeper into specifics, can skip broad filtering | Can start at root cause or mechanism | Advertorial (abbreviated) or Listicle |
-| Advertorial as ad copy (long primary text) | Emotionally warmed, product-curious | Bridge to logical validation | Logic-focused reinforcement of what the ad established | Listicle (logic variant) — COMBO PATTERN |
+| Advertorial as ad copy (long primary text) | Emotionally warmed, product-curious | Bridge to logical validation | Logic-focused reinforcement of what the ad established | Listicle (Logic), COMBO PATTERN |
 | Quiz / interactive | Self-identified, high intent | Acknowledge their quiz results, feel personalized | Personalized solution positioning | Advertorial (product-aware variant) |
 
 ### Filtering Rules
@@ -41,10 +41,14 @@ If the ad ALREADY filters (mentions the condition, targets precisely, uses avata
 
 | Awareness Stage | Low-Ticket | Mid-Ticket | High-Ticket |
 |----------------|------------|------------|-------------|
-| Problem Aware | Listicle (education) or Advertorial (story) | Advertorial (full 9-section) | Advertorial (deep trust + full journey) |
-| Solution Aware | Listicle (logic or product variant) | Either (based on ad type) | Advertorial (extensive mechanism + buildup) |
-| Product Aware | Listicle (product variant, short) | Advertorial (social proof + close heavy) | Advertorial (case study + premium positioning) |
-| Most Aware | Direct to product page | Direct to product page | Direct to product page |
+| Problem Aware | Listicle (Logic), education-focused, or Advertorial (story) | Advertorial (full 9-section) | Advertorial (deep trust + full journey) |
+| Solution Aware | Listicle (Logic) or Listicle (Product) | Either (based on ad type) | Advertorial (extensive mechanism + buildup) |
+| Product Aware | Listicle (Product), short-form | Advertorial (social proof + close heavy) | Advertorial (case study + premium positioning) |
+
+This matrix is expressed in the universal 3-value enum, which is canonical for format selection. A 5-value producer stage collapses to these three via the normative 5-to-3 mapping in `_frameworks/awareness-vocabulary.md` before use:
+
+- **Input mapped from Unaware (folds into Problem Aware):** filtering-required, long-form lead. Treat as the low-context / unfiltered traffic case in the Ad-to-Page table above.
+- **Most Aware:** does not reach this matrix. funnel-builder exits at the Step 0.1 awareness early-exit gate before format selection, because a most-aware reader enters at the offer rather than through an interstitial funnel page (the RMBC entry-point rule). Route the ad directly to the product page or offer; do not build a funnel page.
 
 ### Decision Signals
 

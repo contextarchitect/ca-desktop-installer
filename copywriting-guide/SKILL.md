@@ -1,6 +1,6 @@
 ---
 name: copywriting-guide
-version: "1.3.0"
+version: "1.4.0"
 description: "Generate a complete Human-Centered Copywriting Guide for any brand by extracting voice, tone, archetype language, and humanization rules from avatar research and brand guidelines. Use this skill whenever the user wants to create a copywriting guide, content writing standards, brand voice guide, humanization guidelines, or AI detection firewall for a brand. Trigger on phrases like: 'run Phase 4', 'copywriting guide', 'writing guide', 'brand voice guide', 'humanization rules', 'content standards', 'how should this brand write'. This skill reads Phase 2 (Avatar Research) output and Phase 3 (Brand Guidelines) as primary inputs and generates a complete, ready-to-use copywriting manual that any LLM can follow to produce human-sounding, brand-consistent copy."
 ---
 
@@ -207,7 +207,7 @@ Approved messages and the mechanism explanation lead on LEAD differentiators or 
 
 ## Step 7: Add the Seven-Technique Structural Layer
 
-**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+**Gating check (run before this section).** Look for `schwartz-applied.md` at the brand repo root (alongside `angle-roadmap.md`). If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
 
 Voice rules govern HOW copy sounds. The seven techniques govern WHAT MOVE the copy is making structurally. Both layers run on every piece of brand content. This step adds a structural framework section to the copywriting guide so writers (human or LLM) know which technique to deploy in which moment.
 
@@ -294,6 +294,8 @@ Every transition between sections must be earned with an explicit transition sen
 - Social Proof to CTA ("Here's how to get started yourself.")
 
 Missing bridges are the #1 failure mode in long-form copy. The reader hits an unearned section break and disengages. A bridge can be one sentence; it must exist.
+
+**Bucket-brigade connectors** are the workhorse technique for building these bridges and keeping momentum inside a section. They are short, curiosity-carrying phrases that hand the reader from one line to the next: "Here's the thing...", "But it gets worse...", "And that's when...", "So here's what happened...", "Which is exactly why...". Use them both at section transitions (as the bridge sentence's opener) and mid-section to stop the reader from settling. They are a tool for this principle, not a separate rule.
 
 **Self-test:** Read the copy out loud. At every section change, ask: "did the previous paragraph earn the next one?" If the answer is "the next paragraph just starts," there's a missing bridge.
 
@@ -408,6 +410,30 @@ Four named patterns for invoking authority. Pick one per piece; combining them f
 
 Reference: Sufian Anatomy of a Winning Ad, lines 178-212.
 
+### 8.9 Claim-Proof Adjacency
+
+Every claim carries its proof beside it, not paragraphs away. Proof is meaningless until the reader knows what it is proving, and a claim left naked while the reader waits for evidence reads as hype.
+
+Wrong: a "clinically shown" claim in the hook, with the study cited eight paragraphs later in a "The Science" section most readers never reach.
+Right: the claim and its proof point sit in the same beat. "Around week six my readings dropped into the normal range. A 2022 University of Maryland study measured the same effect across 287 people."
+
+The rule applies to every claim type: results, mechanism, authority, social proof. When you make a claim, the proof is the next sentence or the next line, not a distant section. This is the line-level companion to Gradualization (Step 7): gradualization sequences claims; adjacency keeps each claim's proof welded to it.
+
+### 8.10 The First-Draft-to-Final Process (body first, lead last)
+
+This is the universal drafting workflow for any long-form piece, regardless of brand or format. The core rule: **write the body first and the lead last.** You cannot write a great opening until you know the whole argument you are opening.
+
+1. **Vomit draft.** Write the body top to bottom from the outline, fast, no editing, no lead. Follow the bullets in order.
+2. **Write the lead last.** Now that the argument exists, write the opening 3-4 paragraphs to set it up. This is why, roughly 90% of the time, the lead comes last.
+3. **Read it out loud, start to finish.** Mark anything you stumble on or anything that sounds written-not-spoken.
+4. **Cut 15-20%.** Kill throat-clearing, redundant proof, and any sentence that does not move the reader forward. The first cut is the biggest lift.
+5. **Check claim-proof adjacency (§8.9).** Walk every claim; is the proof right next to it?
+6. **Check the spine** against the canonical persuasive-spine statement in funnel-builder Core Principles ("The Persuasive Spine and Entry Point" in `../funnel-builder/SKILL.md`); do not re-enumerate the order here. For non-funnel formats the same macro-order still applies through the argument body.
+7. **Forbidden-construction pass.** Hunt the banned list (`references/humanization-rules.md`) and remove every instance.
+8. **Sleep on it, final read.** Fresh eyes catch the last clunkers.
+
+This process is the single canonical home for the body-first-lead-last workflow. Format-specific skills instantiate it rather than restate it: `funnel-builder` Stage 1's writing order (body sections first, then lead, then headline, then deletion/spine/forbidden passes) is this process applied to the 9-section advertorial, and cross-references here.
+
 ## Step 9: Generate Humanization Checklist
 
 A 4-phase self-check that any LLM runs after writing content:
@@ -449,10 +475,10 @@ Guide Contents:
   Archetypes: [count] with full copy profiles
   Content Guides: [count] content types covered
   Humanization Rules: [count] rules in AI Detection Firewall
-  Universal Structural Rules: 8 rules (Bridge, Open-Loop, Time-Delay, Hook Quality, Identification-Before-Mechanism, Discovery Story, Five Core Feelings, Authority Hooks)
-  Structural Moves: [include this line ONLY if `schwartz-applied.md` exists; 7 techniques with worked examples]
+  Universal Structural Rules: 10 rules (Bridge, Open-Loop, Time-Delay, Hook Quality, Identification-Before-Mechanism, Discovery Story, Five Core Feelings, Authority Hooks, Claim-Proof Adjacency, First-Draft-to-Final Process)
+  Structural Moves: [include this line ONLY if `schwartz-applied.md` exists at the brand repo root; 7 techniques with worked examples]
 
-Total Sections: 12 + 2 appendices (13 + 2 if `schwartz-applied.md` exists)
+Total Sections: 12 + 2 appendices (13 + 2 if `schwartz-applied.md` exists at the brand repo root)
 Estimated Length: [word count]
 
 Confirm or adjust:
@@ -468,8 +494,8 @@ Sections populated:
   - [count] voice pillars with examples
   - AI Detection Firewall ([count] rules)
   - [count] archetype copy profiles with sample paragraphs
-  - Universal Structural Rules (The Bridge Principle, The Open-Loop Principle, The Time-Delay Introduction Rule, Hook Quality Checklist, Identification-Before-Mechanism Rule, The Discovery Story Format, The Five Core Feelings Library, Authority Hook Patterns)
-  - Structural moves: [include this line ONLY if `schwartz-applied.md` exists; 7 techniques with worked examples]
+  - Universal Structural Rules (The Bridge Principle, The Open-Loop Principle, The Time-Delay Introduction Rule, Hook Quality Checklist, Identification-Before-Mechanism Rule, The Discovery Story Format, The Five Core Feelings Library, Authority Hook Patterns, Claim-Proof Adjacency, The First-Draft-to-Final Process)
+  - Structural moves: [include this line ONLY if `schwartz-applied.md` exists at the brand repo root; 7 techniques with worked examples]
   - Humanization checklist (4 phases)
   - [count] content type quick guides
   - Category messaging framework with claim boundaries

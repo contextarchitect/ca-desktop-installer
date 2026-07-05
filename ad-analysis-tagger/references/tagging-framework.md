@@ -44,9 +44,9 @@ Most ads use one pattern. Some hybrid two. Multi-pattern hooks usually score wor
 Tag against the canonical format library at `../../funnel-builder/references/format-library.md`. The 9 named formats + 1 sub-format:
 
 - Advertorial (9-section long-form)
-- Listicle-Logic
-- Listicle-Emotion
-- Listicle-Product
+- Listicle (Logic)
+- Listicle (Emotion)
+- Listicle (Product)
 - PAS (Problem-Agitate-Solution)
 - AIDA (Attention-Interest-Desire-Action)
 - SPS (Story-Problem-Solution)
@@ -86,6 +86,8 @@ For image ads (static or hero image of video ads), tag against the catalogue at 
 
 If the ad's visual doesn't match any of the 14, tag as "Custom-visual" and describe.
 
+Dimension 2B is the single authority for visual-style assignment across the ContextArchitect ad skills. Any consumer (for example competitor-ad-intelligence) reads the style assigned here and does not re-assign it. A "Custom-visual" determination here is the authoritative candidate-new-style signal; consumers add only the across-the-set bucketing view on top of this assignment and do not raise an independent candidate-new-style flag. [v1.2.0 sd-wave]
+
 ## Dimension 3: Core Feeling
 
 Tag against the Five Core Feelings Library (rubric embedded in tagging-framework.md; canonical source: copywriting-guide skill §8.7) [v1.1.1 xref-fix]. Pick exactly ONE:
@@ -107,7 +109,7 @@ Use the universal 3-value field (Problem-aware / Solution-aware / Product-aware,
 - Body content focus (mechanism explanation vs alternative comparison vs price/offer)
 - Implied prerequisite knowledge (does the ad assume the viewer knows the category exists?)
 
-### 4B: Gated Schwartz Awareness Stage (only when `phase-4.5-angle-roadmap/schwartz-applied.md` exists for the brand)
+### 4B: Gated Schwartz Awareness Stage (only when `schwartz-applied.md` exists at the brand repo root)
 
 If the brand has Schwartz onboarding, also tag against the formal 6-value enum:
 - Unaware
@@ -119,7 +121,7 @@ If the brand has Schwartz onboarding, also tag against the formal 6-value enum:
 
 The gated value provides operational copy mechanics. The universal field is the strategic call.
 
-### 4C: Sophistication Stage Score (gated, only when `phase-4.5-angle-roadmap/schwartz-applied.md` exists)
+### 4C: Sophistication Stage Score (gated, only when `schwartz-applied.md` exists at the brand repo root)
 
 If the brand has Schwartz onboarding, score the angle's sophistication 1-5 per `../../angle-roadmap/SKILL.md` Step 6.
 
@@ -152,6 +154,8 @@ This block is the single source of truth for Visual-Layout Replicability scoring
 
 **What it measures.** How directly this ad's visual LAYOUT can be cloned onto another brand's product. Distinct from Dimension 5 overall Replicability (which measures whether the CONCEPT ports across angles and brands). An ad can score low on one and high on the other.
 
+**Target-agnostic scoring (single rule).** All 5B scoring is target-agnostic: judge layout portability against a hypothetical same-category brand, never against a specific target brand. The tagger has no target-brand input, so a per-source-ad 5B analysis is cacheable and transposes to many brands (tag once, transpose to many). Target-specific physical-form compatibility is explicitly OUT of scope here; it is owned by the consumer's `product_form_compat` field (competitor-ad-intelligence Step B.6). Every "survives substitution" check below means survives substitution onto a hypothetical same-category brand, and all replacement guidance is role-level, not keyed to any one brand. Where the bucket definitions below say a slot is "rewritten in the target brand's voice" or that a STRIP-REPLACE/MIXED element becomes "the target brand's equivalent", those phrases name the CONSUMER's downstream replacement ACTION performed off-tagger during transposition (a role-level mapping), not a tagger scoring input: the tagger records only the source-side role, and the consumer maps that role to its own brand. So 5B scoring and bucketing stay target-agnostic even though the downstream action they describe is brand-specific. [v1.2.0 sd-wave]
+
 **The 1-5 scale.**
 - 5: Fully templated. Swap product, setting, and copy and the grammar holds unchanged. The mandatory replacement of source brand identity, product, copy, and claims (the STRIP-REPLACE and ADAPT rows that EVERY clone requires) does NOT count against a 5; that replacement is the baseline every clone-with-substitution performs. Score 5 means no layout or supporting element needs change beyond that baseline swap.
 - 4: Mostly templated. All four boundary checks pass, but at least one supporting element needs substitution or adaptation BEYOND the baseline source-identity replacement (for example, a graphic element or a compositional detail that does not carry over cleanly even after the normal product/copy swap). Score 4 preserves one-to-one content slots; any required slot addition or removal fails boundary check #2 and caps the score at 3.
@@ -159,11 +163,11 @@ This block is the single source of truth for Visual-Layout Replicability scoring
 - 2: Largely bespoke. Fails the floor gate; a recognizable layout structure exists but is source-bound (legible slots and composition that work only because of this specific product, claim, or talent); cloning produces a hollow shell.
 - 1: Fully bespoke. Fails the floor gate; no coherent transferable visual grammar or reusable composition exists at all.
 
-**Floor gate (evaluate FIRST, before any boundary check).** Score 3 or above requires at least one named, content-independent visual grammar element that survives target substitution (a layout slot, a composition pattern, a framing/POV, or a treatment that holds regardless of product or claim). If no meaningful layout grammar survives, the score is 1-2, not 3. Do not run the boundary checks for a layout that fails the floor gate.
+**Floor gate (evaluate FIRST, before any boundary check).** Score 3 or above requires at least one named, content-independent visual grammar element that survives substitution onto a hypothetical same-category brand (a layout slot, a composition pattern, a framing/POV, or a treatment that holds regardless of product or claim). If no meaningful layout grammar survives, the score is 1-2, not 3. Do not run the boundary checks for a layout that fails the floor gate.
 
 **Boundary checks (evaluate only after the floor gate passes).** Apply all four:
-1. Spatial hierarchy survives target substitution without redesign.
-2. Content slots map one-to-one to target-brand content without adding or removing slots.
+1. Spatial hierarchy survives substitution onto a hypothetical same-category brand without redesign.
+2. Content slots map one-to-one to a same-category brand's replacement content without adding or removing slots.
 3. Camera/framing/POV survives without reshooting the concept.
 4. Overlay and graphic treatments survive without redrawing.
 
@@ -204,11 +208,17 @@ Swipe-fitness differs from Replicability. Replicability is "can this brand reuse
 ### 6A: Swipe-Fitness Diagnostics
 
 When scoring, identify:
-- The single most distinctive element (the thing other brands could learn from)
+- The distinctiveness read for swipe purposes: what other brands could learn from. For the single load-bearing element, reference the named `distinctive_device` output (see the Distinctive Device section below) rather than restating a separate, differently worded element. [v1.2.0 sd-wave]
 - The category-specific elements that other brands would need to translate
 - Whether the ad demonstrates a NEW pattern (worth adding to ContextArchitect's hook patterns or format library) or a known pattern executed well
 
 Score-5 ads are the basis for swipe-file collections. They become reference material for ad-style-generator when generating ads for the same archetype across categories.
+
+## Distinctive Device (named output: `distinctive_device`)
+
+Every analyzed ad produces exactly ONE named `distinctive_device` output, defined as: the single element that makes the ad work and must survive transposition. This is the canonical producer field for the ad's load-bearing device. It is stated once here and emitted in the output template; no other section restates or re-derives it, and downstream consumers (competitor-ad-intelligence and CE) read this exact field name. In CE it becomes a typed column, so the name is fixed here. [v1.2.0 sd-wave]
+
+The `distinctive_device` differs in PURPOSE from the swipe-fitness distinctiveness read above: swipe-fitness asks what other brands could learn from (swipe-file value), while `distinctive_device` names the element that must be preserved when the ad is transposed to another brand. When both are recorded, the swipe-fitness diagnostic references `distinctive_device` for the load-bearing element instead of naming a second one, so there is one producer field, not two.
 
 ## Cross-Variant Tagging (when applicable)
 

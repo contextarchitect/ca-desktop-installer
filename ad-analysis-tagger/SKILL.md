@@ -1,6 +1,6 @@
 ---
 name: ad-analysis-tagger
-version: "1.1.1"
+version: "1.2.0"
 description: "Take any winning ad (transcript / image / both) and produce a structured tagged breakdown across six dimensions: hook style (matched against the Hook Quality Checklist and Authority Hook Patterns; canonical source copywriting-guide skill §8.4 + §8.8), script structure (matched against funnel-builder format-library.md 9 formats + Fake-Complaint sub-format), core feeling (matched against the Five Core Feelings Library; canonical source copywriting-guide skill §8.7), awareness/sophistication scoring (universal 3-value + gated Schwartz 6-value enum), replicability (1-5 score for templatability), and swipe-fitness (1-5 score for swipe-file value). Use when user says 'tag this ad', 'analyze this ad', 'why did this ad work', 'tag this for swipe file', 'audit this ad', 'replicability of this ad', or references ad analysis / tagging / swipe-file work. Reads angle-roadmap, copywriting-guide, funnel-builder/format-library.md, ad-style-generator/style-catalogue.md, and the awareness-vocabulary framework doc as cross-reference inputs. The most cross-skill-dense skill in the ContextArchitect catalogue."
 ---
 
@@ -28,7 +28,7 @@ This is Phase 6.5 in the brand development workflow: Business Validation -> Avat
 - For generating new ad concepts (use `ad-style-generator` instead)
 - For producing creative briefs (use `ad-style-generator`)
 - For analyzing landing page funnels (use `funnel-builder`'s pressure-test methodology)
-- For analyzing video scripts at the script-construction level (use `video-script-generator` once that skill ships in Session 13)
+- For analyzing video scripts at the script-construction level (use `video-script-generator`)
 - For brand-level audits (use `brand-analyzer`)
 
 This skill is specifically for ad-level structural analysis with the goal of pattern extraction.
@@ -39,9 +39,10 @@ This skill is specifically for ad-level structural analysis with the goal of pat
 
 1. **The ad itself** in one of these forms:
    - Static image (uploaded image file)
-   - Video transcript (text)
+   - Video transcript (text, with no visual description; if a textual visual brief also accompanies the transcript, use the combined shape below instead)
    - Image + transcript (both, for video ads)
    - Long-form static (image + Facebook in-feed primary text)
+   - Transcript + visual brief (textual): a transcript plus a textual description of the visuals (for example a Gemini video brief). Visual-style tagging is permitted from the described visuals but flagged text-derived, not vision-derived; Dimension 5B is not produced (reason 'non-static input'). See the Input-Type Output Sub-Format table in `references/output-template.md`. [v1.2.0 sd-wave]
    - Pure video without transcript: ask user to provide transcript first OR proceed with limited analysis flagging the gap
 
 2. **Brand context**: which brand is this ad from / for? When the brand is ContextArchitect-managed, brand context loading determines awareness stage (universal 3-value field, see `_frameworks/awareness-vocabulary.md` for the universal-vs-gated distinction) and the gated Schwartz dimensions. When the ad is external/swipe-file, ask user for category (supplements, beauty, finance, etc.) so style and format expectations are calibrated.
@@ -51,6 +52,7 @@ This skill is specifically for ad-level structural analysis with the goal of pat
    - Is this swipe-file worthy (swipe-fitness scoring)
    - Can we template this for other angles (replicability scoring)
    - Audit for weaknesses (find structural gaps)
+   - Extract the transposable structure and the named `distinctive_device` for a cross-brand rebuild (`transposition extraction`, orchestrated by competitor-ad-intelligence / CE); this purpose activates Dimension 5B emphasis and always populates the named `distinctive_device` output. [v1.2.0 sd-wave]
 
 ### From Brand Documents (Read Conditionally)
 
@@ -62,7 +64,7 @@ If the ad is from a ContextArchitect-managed brand:
 
 6. **Copywriting Guide (Phase 4)**: for voice baseline (what brand voice this ad should match).
 
-7. **Schwartz onboarding file** (`phase-4.5-angle-roadmap/schwartz-applied.md`): if it exists, gated dimensions of the analysis are unlocked (Schwartz 6-value awareness enum, sophistication scoring, technique density, 38-method headline tagging).
+7. **Schwartz onboarding file** (`schwartz-applied.md` at the brand repo root, alongside `angle-roadmap.md`): if it exists, gated dimensions of the analysis are unlocked (Schwartz 6-value awareness enum, sophistication scoring, technique density, 38-method headline tagging).
 
 If the ad is external (swipe file, competitor research), brand documents are NOT required. The skill performs universal-only analysis (no gated dimensions).
 
@@ -77,7 +79,7 @@ STEP 1: INPUT INTAKE
 
 STEP 2: CROSS-REFERENCE LOADING (conditional)
   -> If managed brand: load angle-roadmap, brand guidelines, copywriting guide
-  -> If `schwartz-applied.md` exists: load gated dimensions
+  -> If `schwartz-applied.md` exists at the brand repo root: load gated dimensions
   -> If external: skip cross-reference loading
 
 STEP 3: SIX-DIMENSION TAGGING
@@ -127,7 +129,7 @@ Subsequent references in the same section don't repeat the qualifier.
 ### Format Name Canonical Match
 
 Format names match the canonical list at `../funnel-builder/references/format-library.md` exactly:
-- Advertorial / Listicle-Logic / Listicle-Emotion / Listicle-Product / PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint
+- Advertorial / Listicle (Logic) / Listicle (Emotion) / Listicle (Product) / PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint
 
 Capitalization, hyphenation, and naming exact match. "Long Form" without hyphen is wrong; "Problem-Stack" with hyphen is wrong.
 
@@ -147,7 +149,7 @@ This skill is the second downstream consumer of the Lead Variants section (after
 
 ## Schwartz Structural Layer (Gated Tagging Dimensions)
 
-**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages (in the gated 6-value sense), the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+**Gating check (run before this section).** Look for `schwartz-applied.md` at the brand repo root (alongside `angle-roadmap.md`). If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages (in the gated 6-value sense), the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
 
 When the brand has Schwartz onboarding, the analysis includes 4 additional tagging dimensions:
 
@@ -199,14 +201,15 @@ Before delivering an analysis:
 - [ ] Universal awareness uses 3-value field with framework doc reference at first use
 - [ ] Replicability score 1-5 with diagnostics (angle-specific / brand-specific / template-shaped breakdown)
 - [ ] Visual-Layout Replicability produced exactly per the canonical contract in tagging-framework.md Dimension 5B (static image ads only): score, classification, entangled-elements handling, and not-produced states all governed by the contract, not restated here.
-- [ ] Swipe-fitness score 1-5 with diagnostics (most distinctive / category-specific / new pattern flag)
+- [ ] Distinctive Device named output (`distinctive_device`) produced: the single element that makes the ad work and must survive transposition (one canonical producer field)
+- [ ] Swipe-fitness score 1-5 with diagnostics (category-specific / new pattern flag; the distinctiveness read references the named `distinctive_device` output, it does not restate a second element)
 - [ ] Identification-Before-Mechanism compliance scored (pass/partial/fail with finding)
 - [ ] Discovery Story detection if applicable (7-stage breakdown)
 - [ ] Cross-variant tagging if applicable (Lead Variant from `../angle-roadmap/SKILL.md` Step 5.5 + Multi-Bio-Marker Pivot)
 - [ ] §8.5 references carry full title "Identification-Before-Mechanism Rule"
 - [ ] Em-dash policy: zero em dashes in the analysis output
 
-**Gated dimensions (only if `schwartz-applied.md` exists for the brand):**
+**Gated dimensions (only if `schwartz-applied.md` exists at the brand repo root):**
 - [ ] Schwartz 6-value awareness enum tagged
 - [ ] Sophistication Stage Score 1-5 assigned
 - [ ] Technique density tagged and compared to rule

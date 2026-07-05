@@ -22,7 +22,7 @@ The power of an advertorial is that it never feels like selling. It feels like s
 6. UNIQUE MECHANISM: How the fix works; directly aligned with root cause
 7. PRODUCT BUILDUP: Why this product had to exist; premium perceived value
 8. PRODUCT REVEAL: The reward, not a pitch; reader self-convinces
-9. CLOSE: Testimonials → Price architecture → Guarantee → Final CTA
+9. CLOSE: Testimonials → Anchoring → price elements per configured pricing policy → Value stack → Guarantee → Final CTA (risk reversal precedes the ask; future-pacing sits inside the close)
 ```
 
 **The Yes-Yes-Yes Causal Chain:**
@@ -66,6 +66,8 @@ If any link is weak or the chain breaks, the entire conversion architecture fail
 16. FAQ SECTION (accordion-style): mandatory for mid/high-ticket
 17. [MOBILE STICKY CTA]: triggers at 40% scroll
 ```
+
+**The close region spans components 13-15** in the canonical close order (see the Section 9 Close ordering invariant below): Social Proof / Testimonials (13), then the offer and value case (14: price anchoring, price reveal, bundles, value stack), then risk reversal (14: the guarantee), then optional urgency (14), then the ask (15: the Final CTA). Components 13 and 15 belong to the close even though they are numbered separately from the Close Section (14); risk reversal precedes the ask, and positive future-pacing sits inside the close.
 
 ---
 
@@ -301,6 +303,14 @@ If any of the three fails, the mechanism section is structurally weak. For the f
 - Time-bound: "In 90 days, you could be..."
 - Identity-focused: "Imagine looking in the mirror and recognizing yourself again"
 
+**Pricing-policy branch (applies to 9c and 9d; the mechanical enforcement is Mechanical Output Scan item 5).** The brand's configured pricing display policy (from `funnel-config.md`, Question Set 1) is one of three values. The 9c and 9d bodies below are written for **show-pricing**; the other two policies modify them as stated:
+
+- **show-pricing:** 9c and 9d stand exactly as written below. Alternatives carry actual prices; the reveal shows regular price, current/bundle price, and the per-day cost. The brand's numeric price appears.
+- **show-savings-only:** the brand's base/regular price is WITHHELD. 9c still anchors against alternatives with their actual prices (those anchor the saving); 9d shows the savings figure or percentage and the value framing, but NOT the brand's absolute regular/current price. Scan item 5 expects the savings figure present and the brand base price absent.
+- **no-pricing:** NO numeric price string of any kind appears, neither the brand's price nor any alternative's dollar figure. 9c anchors against the alternatives qualitatively (by category, effort, and relative magnitude, for example "a fraction of a single specialist visit") with no dollar figures; 9d becomes a value reveal in savings-percentage and relative terms only ("[X]% off today", per-day framing stated without a dollar amount). Savings percentages are permitted; they are not price strings. Scan item 5 expects zero numeric price strings.
+
+The close order is unchanged across all three policies; only the price elements shown differ.
+
 **9c. Price Anchoring (BEFORE revealing your price)**
 - List 3-4 expensive alternatives with actual prices
 - Make comparison categories natural:
@@ -344,6 +354,8 @@ If any of the three fails, the mechanism section is structurally weak. For the f
 - Reader has already sold themselves
 - CTA language reflects achievement: "Start My Transformation" not "Buy Now"
 
+**Close ordering invariant.** The QA-enforced close architecture is: Testimonials, Anchoring, price elements per configured pricing policy, Value stack, Guarantee, CTA. Proof comes first, then the offer and value case, then risk reversal (the guarantee), then the ask (the final CTA). Risk reversal precedes the ask, and positive future-pacing (9b) sits inside the close. Here "the ask" means the final CTA of the close; interim mid-close CTAs (for example a CTA at the price or offer point) are permitted and do not violate the risk-reversal-precedes-the-ask order.
+
 **Psychology triggers at play in the close:**
 - **Self-Determination Theory:** Autonomy (I'm choosing, not being sold), Competence (this is simple, I can do it), Connection (this was made for me)
 - **COM-B Framework:** Capability (makes sense, I understand how it works), Opportunity (available now, risk-free), Motivation (I care enough, stakes are real)
@@ -356,9 +368,9 @@ Every advertorial must explicitly address 3-5 named objections from avatar resea
 
 ### Sourcing Objections
 
-Pull objections from Phase 2 Avatar Research. Each archetype's primary 1-2 objections become this advertorial's required-handle list. Combined across all archetypes, target 3-5 distinct named objections per advertorial.
+Pull objections from Phase 2 Avatar Research "Objection Mapping Per Avatar" (the top 3 objections per archetype) plus each archetype's Section L "Key Objection to Overcome". Combined across all archetypes, these become this advertorial's required-handle list. Then union the angle card's `Key Objection to Preempt` into that same list (inherited at funnel-builder Step 0.5.1) and give it the same coverage as the rest. Target 3-5 distinct named objections per advertorial.
 
-If avatar research lacks explicit objection language, derive from:
+If avatar research lacks explicit objection language, derive from (the L/G/F degraded-input fallback):
 - Section L "Language to Avoid" (these often signal objections)
 - Section G "Buying Behavior" decision blockers
 - Section F "Emotional Landscape" trust requirements

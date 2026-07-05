@@ -1,6 +1,6 @@
 # Ad Analysis Output Template
 
-Every ad analysis follows this structure. Sections marked (gated) are produced only when `phase-4.5-angle-roadmap/schwartz-applied.md` exists for the brand.
+Every ad analysis follows this structure. Sections marked (gated) are produced only when `schwartz-applied.md` exists at the brand repo root (alongside `angle-roadmap.md`).
 
 ## Output Format
 
@@ -8,15 +8,15 @@ Every ad analysis follows this structure. Sections marked (gated) are produced o
 AD ANALYSIS: [Ad name or identifier]
 
 **Source:** [Where this ad came from: brand campaign, swipe file, competitor research]
-**Format:** [Static image / Video transcript / Image + transcript / Long-form static]
+**Format:** [Static image / Video transcript / Image + transcript / Long-form static / Transcript + visual brief (textual)]
 **Date analyzed:** [YYYY-MM-DD]
 
 ---
 
 ## Summary Scorecard
 
-🪝 **Hook style:** [Pattern name(s)] | §8.4 score: [N]/5 | Authority: [Classic / Doctor's Surprise / Doctor's Skepticism / Study/Research / no-authority]
-📐 **Script structure:** [Format name from format-library.md] | Visual style: [Style #N from style-catalogue.md, image ads only]
+🪝 **Hook style:** [Pattern name(s)] | Hook Quality: [N]/5 (§8.4) | Authority: [Classic / Doctor's Surprise / Doctor's Skepticism / Study/Research / no-authority]
+📐 **Script structure:** [Format name from format-library.md] | Visual style: [Style #N from style-catalogue.md; image ads, or Transcript + visual brief (textual) flagged text-derived]
 🎯 **Core feeling:** [Vindication / Loss aversion / Betrayal / Desperation / Identity]
 🎚️ **Awareness:** [Problem-aware / Solution-aware / Product-aware] (universal)
    [Schwartz: Unaware / Problem Aware / Solution Aware / Product Aware / Most Aware / Solution-Switching] (gated)
@@ -33,14 +33,14 @@ AD ANALYSIS: [Ad name or identifier]
 For text ads:
 | Line | Content | Tags |
 |------|---------|------|
-| 1 | [hook line] | 🪝 [hook pattern] / §8.4: [score] / §8.5: [pass/partial/fail] |
+| 1 | [hook line] | 🪝 [hook pattern] / Hook Quality: [score]/5 (§8.4) / Ident-Before-Mechanism: [pass/partial/fail] (§8.5) |
 | 2 | [body line] | 🎯 [core feeling cue] |
 | ... | ... | ... |
 
 For image ads:
 | Element | Description | Tags |
 |---------|-------------|------|
-| Headline | [text] | 🪝 [hook pattern] / §8.4: [score] |
+| Headline | [text] | 🪝 [hook pattern] / Hook Quality: [score]/5 (§8.4) |
 | Visual hook | [description] | 📐 [style number from catalogue] |
 | Body copy | [text] | [tags] |
 | ... | ... | ... |
@@ -92,7 +92,7 @@ Populated per the canonical Visual-Layout Replicability Contract in `../referenc
 
 **Visual Element Classification:** [full table, partial table, or not-produced reason, exactly per tagging-framework.md Dimension 5B]
 
-| Element | Description | Bucket | Clone aspects | Replace aspects | Rationale | Contextual function / compositional role | Target-brand replacement guidance |
+| Element | Description | Bucket | Clone aspects | Replace aspects | Rationale | Contextual function / compositional role | Replacement guidance (role-level, target-agnostic) |
 |---|---|---|---|---|---|---|---|
 | [id] | [description] | [bucket per Dimension 5B] | [per Dimension 5B] | [per Dimension 5B] | [rationale] | [per Dimension 5B] | [per Dimension 5B] |
 
@@ -108,10 +108,16 @@ Not-produced reason: [per tagging-framework.md Dimension 5B]
 
 ---
 
+## Distinctive Device
+
+**`distinctive_device`:** [the single element that makes the ad work and must survive transposition]
+
+---
+
 ## Swipe-Fitness Diagnostics
 
 **Score:** [N]/5
-**Most distinctive element:** [the thing other brands could learn from]
+**Distinctive element (swipe purposes):** [what other brands could learn from; for the load-bearing element that must survive transposition, see the `distinctive_device` output above]
 **Category-specific dependencies:** [what other brands would need to translate]
 **New pattern flag:** [Yes/No: is this a pattern worth adding to ContextArchitect's catalogues?]
 **Recommended swipe file placement:** [hook-pattern collection / format example / style example / not-recommended]
@@ -140,7 +146,7 @@ Not-produced reason: [per tagging-framework.md Dimension 5B]
 
 - **Use exact canonical names.** Format names match `../../funnel-builder/references/format-library.md` exactly. Style names match `../../ad-style-generator/references/style-catalogue.md` exactly. Variant names match `../../angle-roadmap/SKILL.md` Step 5.5 exactly. Section names from `copywriting-guide §8.x` carry full title at first use.
 - **Cite the section number.** When referencing copywriting-guide §8.x, always include the section number AND the full title (per the §8.5 disambiguation discipline established in Session 9 for the Identification-Before-Mechanism Rule, and applied to all §8.x cross-references).
-- **Universal-vs-gated separation.** Universal scoring (the 3-value awareness, replicability, swipe-fitness, core feeling, hook, format, style) always applies. Gated scoring (Schwartz 6-value awareness, sophistication 1-5, technique density, 38-method headline tagging) only applies when `phase-4.5-angle-roadmap/schwartz-applied.md` exists.
+- **Universal-vs-gated separation.** Universal scoring (the 3-value awareness, replicability, swipe-fitness, core feeling, hook, format, style) always applies. Gated scoring (Schwartz 6-value awareness, sophistication 1-5, technique density, 38-method headline tagging) only applies when `schwartz-applied.md` exists at the brand repo root.
 - **Missing inputs flag specific dimensions.** Static image only -> Hook Quality scored from headline + caption only; format detection limited; section-by-section tagging limited. Transcript only -> Visual style scoring unavailable. Note these gaps in the output.
 - **Custom and Custom-visual are valid tags.** Not every ad fits the named formats and styles. Custom tags surface candidates for future format library / style catalogue additions.
 
@@ -151,5 +157,8 @@ Not-produced reason: [per tagging-framework.md Dimension 5B]
 | Static image only | Element table (Headline / Visual hook / Body copy / CTA) | Yes (Style 1-14 from catalogue) | Limited (no narrative arc visible) |
 | Video transcript only | Line table (numbered transcript lines) | Unavailable, mark "transcript-only" | Full (narrative arc readable from transcript) |
 | Image + transcript | Both element + line tables | Yes | Full |
+| Transcript + visual brief (textual) | Line table for transcript + a described-visuals notes block (text-derived) | Permitted from the described visuals, flagged text-derived not vision-derived | Full (narrative arc readable from transcript) |
 | Long-form static (image + Facebook in-feed primary text) | Line table for primary text + element table for image | Yes (typically REDDIT-NATIVE per `../../long-form-static-builder/references/image-spec.md`) | Full |
 | Pure video without transcript | Mark all tagging as "transcript required for full analysis" and ask user to provide transcript | Hero-frame element table only | Unavailable |
+
+For the "Transcript + visual brief (textual)" input (a transcript plus a textual description of the visuals, for example a Gemini video brief), Dimension 2B visual-style tagging is permitted from the described visuals but MUST be flagged text-derived, not vision-derived. Dimension 5B (Visual-Layout Replicability) is not produced for this input; its not-produced reason is the exact string 'non-static input' (per Dimension 5B in tagging-framework.md). This row differs from "Video transcript only" (which has no visual layer, so visual style is unavailable) precisely because the textual visual brief carries the described visual layer. [v1.2.0 sd-wave]

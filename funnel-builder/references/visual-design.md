@@ -6,6 +6,22 @@ This reference defines the visual layout patterns, component designs, and sectio
 
 Brand-specific design elements (colors, typography choices, logo placement) come from the brand guidelines (Phase 3). This document covers structural layout, component patterns, and visual hierarchy that apply universally.
 
+## Section Name Mapping (copy architecture to design sections)
+
+This file's design sections are grouped for layout, not one-per-copy-section, so their headings do not match the canonical 9-section copy architecture number-for-number. This is the adapter: when assembling the Lovable prompt, map each copy section to its design section(s) here rather than guessing by name. The copy architecture (see `advertorial-framework.md`) is canonical.
+
+| Copy section (9-section architecture) | Design section(s) in this file |
+|---|---|
+| 1. Above the Fold | 1. ABOVE THE FOLD |
+| 2. Lead | 2. LEAD |
+| 3. Background Story | 3. BACKGROUND STORY |
+| 4. Root Cause | 4. ROOT CAUSE |
+| 5. Consequences | Consequences placement note under 4. ROOT CAUSE (the consequence progression visual) |
+| 6. Unique Mechanism | 5. UNIQUE MECHANISM |
+| 7. Product Buildup | PRODUCT BUILDUP design block (below, between 5. UNIQUE MECHANISM and 6. PRODUCT REVEAL) |
+| 8. Product Reveal | 6. PRODUCT REVEAL |
+| 9. Close | 7. SOCIAL PROOF + 8. CLOSE: PRODUCT VALUE FARMING + OFFER + 9. CLOSE: PERSONAL CORE BELIEF + FINAL CTA |
+
 ## Global Layout Rules
 
 ### Content Container
@@ -219,6 +235,8 @@ The above-the-fold section is the most component-dense area. It must capture att
 - Reinforces the root cause concept from a different angle
 - Full content width
 
+**Consequences placement note (copy section 5):** Copy Section 5 (Consequences / negative future pacing) has no separate design block; its visual is the consequence progression visual specified above (the Stage 1 to Stage 4 deterioration strip), rendered between Root Cause and Unique Mechanism.
+
 ---
 
 ### 5. UNIQUE MECHANISM
@@ -250,6 +268,30 @@ The above-the-fold section is the most component-dense area. It must capture att
 - Bold the mechanism name when introduced (branded name)
 - Explain in simple cause → effect language
 - Short paragraphs, no walls of text
+
+---
+
+### PRODUCT BUILDUP (copy section 7, precedes Product Reveal)
+
+**Visual treatment:** Builds perceived value and credibility BEFORE the product is named. The product is still not shown clearly here (that is the Product Reveal's job); imagery is about difficulty, rigor, and partnership, so the reveal that follows feels earned.
+
+**Components:**
+
+**Creation-story / credibility visuals (1-2):**
+- Lab, formulation, R&D, testing, or founder-at-work imagery: the "why it had to exist and how hard it was to get right" story
+- Real photography, not renders or stock
+- Full content width or side-by-side
+- Do NOT show the finished product clearly here; keep it partial, in-context, or absent (the reveal owns the clear product shot)
+
+**Credential / partnership strip (optional):**
+- Row of quality/credential marks: clinical dose callouts, third-party testing, FDA-registered facility, expert/lab partnership logos
+- Understated authority styling (grayscale or muted), evenly spaced
+- Reinforces rigor without pitching
+
+**Buildup body text:**
+- Short paragraphs on why existing alternatives miss the root cause and why this had to be built from scratch
+- Bold the difficulty and credibility phrases
+- The named primary alternative (the angle card's Alternative Attack, concentrated in copy Section 7) can carry an inline comparison callout, but numeric brand pricing stays out of this section
 
 ---
 
@@ -356,6 +398,11 @@ The above-the-fold section is the most component-dense area. It must capture att
 - Example: "✗ No more hiding your feet" / "✓ Easy 15-minute daily ritual"
 
 **Sub-section B: Price Architecture**
+
+**Pricing-policy branch (F-3):** Render this sub-section per the brand's configured pricing display policy (from `funnel-config.md`), one of three values. The mechanical enforcement is Mechanical Output Scan item 5 in `../SKILL.md`.
+- **show-pricing:** the components below stand as written (numeric anchors, strikethrough original, discounted price, per-use cost).
+- **show-savings-only:** withhold the brand's base/regular price and the strikethrough amount; the offer card shows the savings figure or percentage. Alternative anchor prices may still appear in the story-driven justification.
+- **no-pricing:** no numeric price of any kind (brand or alternatives). The offer card carries savings-percentage language only (for example "[X]% OFF today"), the story-driven justification anchors qualitatively against the alternatives, and the per-use breakdown is stated in relative terms with no dollar figure.
 
 **Section headline:**
 - Pattern: "How Can You Get Your Hands on the [Product]?"

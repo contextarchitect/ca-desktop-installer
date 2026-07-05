@@ -1,6 +1,6 @@
 ---
 name: avatar-research
-version: "2.1.2"
+version: "2.2.0"
 description: "Generate deep customer avatar research briefs for D2C and e-commerce brands. Includes live MCP harvest of Reddit and YouTube first-person voice via socialvault tools (reversed-fetch rule: never direct-fetch Reddit/YouTube/Amazon). Harvest is source-diversity and saturation based; sources are weighted (first-party over Tier 2 forums over Reddit over YouTube) with a two-source corroboration rule for decision-driving claims. Reads Phase 1 (Business Validation) output and produces a fully customized, voice-seeded avatar brief optimized for Deep Research. Trigger on: 'run Phase 2', 'avatar research', 'customer avatars', 'buyer personas', 'psychographic profiles', 'audience research', 'who is my customer'. Also trigger when user provides a business validation report and wants customer profiles derived from it."
 ---
 
@@ -188,6 +188,36 @@ Run searches across one or two communities and pull comments from two or three d
 - **No single thread or video may supply more than half of any one avatar's first-person quotes.** If it does, the harvest is too narrow; widen it before proceeding.
 - **Economy guardrail:** the binding constraint is saturation, not a call cap. Allow up to approximately 20-25 comment-pull calls per prioritized avatar before forcing a stop-and-log. If saturation is reached earlier, stop earlier. If the guardrail is hit before saturation, log that the avatar did not saturate. Never pad with fabricated or paraphrased voice.
 
+### RMBC Extraction Categories (tag while harvesting)
+
+As you pull each usable quote, tag it into an extraction category so the Voice Appendix (Step 4) and the Deep Research profiles (Sections A-L) are pre-sorted. These are the RMBC Stage 1.2 categories reconciled against this skill's existing harvest and profile structure. Most already have a home; add the two thin ones as explicit tags.
+
+| RMBC extraction category | Where it already lives (tag toward it) |
+|---|---|
+| 1. Verbatim complaint language | Section D "What They Complain About Most", Section E complaints |
+| 2. Verbatim desire language | Section E "biggest secret desire", Section H desire framework |
+| 3. Failed-solution history | Competitive Context Per Avatar (items 1-5), Section C failures |
+| 4. Identity markers | Section C (Identity and Values), Section H "Wants to BE", Section L Aspirational Identity |
+| 5. Specific moments (ADD as explicit tag) | Currently implicit in Section I Empathy Map + Section E. Tag concrete scenes explicitly: the named moment where pain peaks (the mirror before a meeting, the untagged photo). Named moments beat symptom lists and feed the downstream "Specific Opening Moment" brief field. |
+| 6. Objections and skepticism | Objection Mapping Per Avatar, Section L Key Objection |
+| 7. Beliefs and misconceptions | Section F beliefs, Section E "built-in bias", "the story they tell themselves" (this is the Root Cause Narrative seed: what they wrongly blame) |
+| 8. Product facts and proof assets | Boundary: product facts are Product Deep Research / Business Validation, not avatar voice. Capture only the proof *preferences* (Section G Social Proof Requirements, Confirmed Scientific Anchors appendix). Do not fabricate product facts here. |
+| 9. Emotional drivers | Section F Emotional Landscape, Section E emotional questions |
+| 10. Market sophistication signals | Awareness Stage assignment (Step 2), Section F beliefs |
+| Mechanism seeds (ADD as explicit tag) | New. A scratch list of possible hidden problem-causes and solution-explanations you notice while reading voice. This is the raw material for the Mechanism-Seed Test below and for `../angle-roadmap` Step 1 Mechanism Derivation. Not a finding; a lead to hand upstream. |
+
+### Research Completion Test (5-part done-gate)
+
+Harvest and synthesis are not "done" when you are tired of them. They are done when the corpus passes all five gates below. This is the RMBC Stage 1.4 completion test as an explicit done-gate for this skill.
+
+1. **Avatar Test.** Can you describe the buyer as one specific person, including the moment their pain peaks, without inventing anything? (Feeds Section A + the Specific Moments tag.)
+2. **Verbatim Test.** Do you have real customer quotes filed by category? The RMBC floor is 15-20 quotes across the research; this skill's per-avatar floors (at least 8 first-person quotes per prioritized avatar, at least 3 per deprioritized) satisfy it in aggregate. Use the per-avatar floors as the operative numbers; do not treat 15-20 as a competing third count.
+3. **Why-It-Failed Test.** Can you explain, in the customer's own logic, why everything they tried before did not work? (Feeds Competitive Context Per Avatar items 4-5.)
+4. **Mechanism-Seed Test.** Can you name at least one plausible hidden cause of the problem AND one specific reason this product addresses it? Record these as the Mechanism Seeds tagged above. If you cannot, the research is not ready to hand to angle-roadmap's Mechanism Derivation.
+5. **Diminishing-Returns Test.** This is the SAME rule as the Saturation stopping rule above, not a second one: research is done when new sources stop surprising you (two consecutive threads surface no new theme). If you are still getting surprised, keep going. Do not restate saturation as a separate gate; this gate simply names it as the completion criterion.
+
+Pass all five and stop collecting. More research past this point is procrastination. If the Mechanism-Seed Test cannot be passed, flag it: the brand may lack a derivable mechanism, which is a finding angle-roadmap needs, not a failure to hide.
+
 ### Harvest Log
 
 After completing the harvest, print a **HARVEST LOG** in this format:
@@ -334,6 +364,25 @@ Confirm or adjust persona count/selection:
 
 Deliver the complete customized avatar research brief as a single document for Deep Research.
 
+### RMBC research-document reconciliation
+
+The RMBC manual (Stage 1.3) describes a 12-section "finished research document." This skill's final Deep Research report already covers it; the mapping is below, and only one element is a genuine addition. Fill the gap; do not build a parallel 12-section document.
+
+| RMBC research-doc section | Where it already lives in this skill's output |
+|---|---|
+| 1. Product Summary | Brief Context (Steps 1-5), braindump product portfolio |
+| 2. The Avatar | Profile Section A + full persona |
+| 3. Verbatim Pain Bank | Voice Appendix (Step 4) + Sections D/E |
+| 4. Verbatim Desire Bank | Voice Appendix + Section H |
+| 5. Specific Moments | Section I Empathy Map + the Specific Moments extraction tag (Step 3) |
+| 6. Failed Solutions | Competitive Context Per Avatar |
+| 7. False Beliefs / Misconceptions | Section F beliefs, Section E |
+| 8. Product Facts & Ingredients | Boundary: Product Deep Research / Business Validation, not avatar voice |
+| 9. Proof Assets | Confirmed Scientific Anchors appendix |
+| 10. Objections | Objection Mapping Per Avatar, Section L |
+| 11. Competitive Landscape | Competitive Context Per Avatar + Phase 1 |
+| 12. Raw Mechanism Candidates (ADD) | New. The Mechanism Seeds tagged in Step 3. Instruct Deep Research to surface, per prioritized avatar, a short scratch list of plausible hidden problem-causes and solution-explanations noticed in the voice. This is a lead for `../angle-roadmap` Step 1 Mechanism Derivation, explicitly marked as unvalidated (tier `[HYPOTHESISED]` unless a source supports it), never presented as a finding. |
+
 The brief must contain all 10 sections:
 1. Context (populated from Steps 1-5)
 2. Research Methodology (populated from Step 6)
@@ -409,7 +458,7 @@ The generated research brief must pass this checklist before being delivered to 
 
 RESEARCH INTEGRITY CHECKLIST
 Source Logs: [ ] Stage 1 source logs are present for all avatars before any profiles [ ] Standard avatars have minimum 5 consumer quotes each [ ] HIGH-RISK avatars have minimum 3 consumer quotes each, or gap acknowledged [ ] All quotes include platform, month/year, and URL or community context [ ] All published data points include direct verbatim quote, URL, and date
-Harvest Depth, Weighting, and Source Accounting: [ ] Each prioritized avatar harvested across at least 3 communities and at least 5 distinct threads [ ] At least 8 first-person quotes per prioritized avatar (harvest floor; distinct from the in-profile minimum) [ ] At least 2 distinct YouTube videos per prioritized avatar [ ] Saturation reached, or honest non-saturation logged, per prioritized avatar [ ] No single thread or video supplies more than half of any avatar's first-person quotes [ ] Source weighting model (W1-W4, vendor excluded) stated in the brief [ ] Brief requires Deep Research to produce the post-research source balance table (at least 3 distinct Tier 2 per prioritized avatar; Tier 1 vs Tier 2 balance) and the completed Corroboration Map artifact [ ] Foundational or heavily-cited category studies checked for retraction, correction, or expression of concern
+Harvest Depth, Weighting, and Source Accounting: [ ] Each prioritized avatar harvested across at least 3 communities and at least 5 distinct threads [ ] At least 8 first-person quotes per prioritized avatar (harvest floor; distinct from the in-profile minimum) [ ] At least 2 distinct YouTube videos per prioritized avatar [ ] Saturation reached, or honest non-saturation logged, per prioritized avatar [ ] No single thread or video supplies more than half of any avatar's first-person quotes [ ] Source weighting model (W1-W4, vendor excluded) stated in the brief [ ] Brief requires Deep Research to produce the post-research source balance table (at least 3 distinct Tier 2 per prioritized avatar; Tier 1 vs Tier 2 balance) and the completed Corroboration Map artifact [ ] Foundational or heavily-cited category studies checked for retraction, correction, or expression of concern [ ] 5-part Research Completion Test passed per prioritized avatar (Avatar, Verbatim, Why-It-Failed, Mechanism-Seed; Diminishing-Returns is the saturation rule, not a separate check) [ ] Raw Mechanism Candidates / mechanism seeds surfaced per prioritized avatar for handoff to angle-roadmap, marked unvalidated
 Confidence Tiers: [ ] Every factual claim in every profile body carries a tier label [ ] Every [CONFIRMED] claim includes a verbatim quote (max 30 words), URL, and month/year [ ] No source cited as [CONFIRMED] is brand-owned content -- those are [CONFIRMED -- BRAND OWNED] [ ] All sources older than 4 years carry [CONFIRMED -- DATED] label [ ] No [HYPOTHESISED] content appears in main profile body outside its dedicated subsection
 Mandatory Subsections: [ ] "Evidence That Challenges This Avatar Hypothesis" present in every profile [ ] "Research Gaps and Unknowns" present in every profile [ ] "Hypotheses Requiring Validation" present in every profile [ ] HIGH-RISK profiles carry the explicit flag and have honest thin sections where data was absent
 Prohibited Inferences: [ ] No GCC-specific symptom data inferred from Western studies without [INFERRED -- cross-regional] label [ ] No GCC national behaviour inferred from expat behaviour [ ] No hijab-specific behaviour inferred from general Muslim-population data [ ] No cross-regional minoxidil or perimenopause data used without explicit flagging [ ] No purchase behaviour inferred from demographic proxies alone [ ] No awareness stage assigned without a sourced basis

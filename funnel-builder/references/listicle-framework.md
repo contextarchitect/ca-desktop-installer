@@ -260,7 +260,7 @@ Hit search intent immediately. No meta-language ("In this article...").
 
 ### Image Specifications
 - Aspect ratio: 1:1 (square) for list item images
-- Format: 1200x800px PNG (or as specified by brand)
+- Format: 1080x1080px PNG (square, matching the 1:1 aspect ratio above; or as specified by brand)
 - Rounded corners: 8px
 - Object-fit: contain
 - Alt text on every image

@@ -8,7 +8,6 @@ The default format for ContextArchitect funnels is **Advertorial** (the 9-sectio
 
 | Awareness | Resistance | Recommended Format(s) |
 |-----------|------------|-----------------------|
-| Unaware | Any | Advertorial (long, novel mechanism reveal) |
 | Problem-aware | Low | PAS, BAB, Problem Stack |
 | Problem-aware | High | Advertorial, Long-Form |
 | Solution-aware | Low | Listicle (Logic), 4P |
@@ -16,9 +15,12 @@ The default format for ContextArchitect funnels is **Advertorial** (the 9-sectio
 | Solution-aware | High (price-sensitive bottom-funnel) | Fake-Complaint (sub-format of listicle/static) |
 | Product-aware | Low | 4P, Listicle (Product) |
 | Product-aware | High | SPS, BAB |
-| Most-aware | Any | Listicle (Product), Fake-Complaint, BAB |
 
 In this matrix, "awareness" and "resistance" are used in their plain-language copywriting senses. Awareness is how much the reader already knows about their problem and the available solutions. Resistance is how skeptical the reader is, driven by category maturity, price sensitivity, and the number of alternatives the avatar has already tried. These are universal copywriting concepts and apply to every brand.
+
+The universal 3-value enum (Problem-aware / Solution-aware / Product-aware) is canonical for format selection, and this matrix is expressed entirely in those three stages. A producer (for example avatar research) may emit a 5-value stage; collapse it to the 3-value enum via the normative 5-to-3 mapping in `_frameworks/awareness-vocabulary.md` before reading this matrix. A Most Aware input never reaches this matrix: funnel-builder exits at the Step 0.1 awareness early-exit gate (in the funnel-builder skill) before format selection, because a most-aware reader enters at the offer rather than through an interstitial funnel page (the RMBC entry-point rule). This library defines buildable funnel-page formats only; direct-to-offer routing is not a format and does not live here. The one collapsed extreme this matrix does handle is Unaware:
+
+- **Input mapped from Unaware (folds into Problem-aware):** filtering-required, long-form lead. Filter the reader to the avatar and introduce the problem before treating them as Problem-aware, then lead long (Advertorial with a novel mechanism reveal).
 
 ---
 
@@ -40,11 +42,13 @@ The ContextArchitect default format. Reads like a first-person editorial story; 
 
 Numbered list of 5/7/9/11 items. Each item is a discrete claim, social proof, or comparison point.
 
-**Structure:** Opening, then numbered items, then CTA mid-page, then CTA final, then guarantee.
+**Structure:** Opening, then numbered items, then CTA mid-page, then guarantee, then CTA final. Risk reversal (the guarantee) precedes the final ask (the final CTA), matching `listicle-framework.md` and the canonical close order; the mid-page CTA is a permitted interim ask.
 
 **Use when:** Traffic was emotionally warmed by an ad and needs logical validation (Logic variant); audience is solution-aware comparing options (Product variant); audience is curious but needs emotional connection before product (Emotion variant).
 
 **Reference:** `listicle-framework.md` for variant selection and item sequencing.
+
+**Canonical variant names.** The three listicle variants are named `Listicle (Logic)`, `Listicle (Emotion)`, and `Listicle (Product)`, collectively `Listicle (3 Variants: Logic, Emotion, Product)`. These parenthetical forms are canonical across all skills. Downstream consumers that carry a format enum (the angle card's Recommended Format, the ad-analysis-tagger format list) must match them exactly. Hyphen-joined variant spellings (the variant appended to `Listicle` with a hyphen instead of a parenthetical) are non-canonical.
 
 ---
 
@@ -84,7 +88,7 @@ Story-led narrative; problem and solution are revealed through the story.
 
 **Use when:** Brand has a strong narrative voice; transformation-based selling; audience responds to identification before logic; medium-to-high-resistance categories where story camouflages the sales argument.
 
-**Avoid when:** Audience is most-aware and impatient (story feels like padding); ad budget requires short copy under 800 words.
+**Avoid when:** Audience is product-aware and time-pressed (story feels like padding); ad budget requires short copy under 800 words.
 
 **Reference:** Zakaria Video28.
 
@@ -169,7 +173,7 @@ When using any format above, the writing rules from `copywriting-guide §8 (Univ
 - **Bridges between sections** (`copywriting-guide §8.1 The Bridge Principle`): every transition between format sections needs an explicit bridge sentence
 - **Hook quality** (`copywriting-guide §8.4 Hook Quality Checklist`): every format's opening hook passes the 5-point check
 - **Identification before mechanism** (`copywriting-guide §8.5 Identification-Before-Mechanism Rule`): even short formats like 4P or PAS earn the right to explain before they explain
-- **One core feeling** (`copywriting-guide §8.7 The Five Core Feelings Library`): every format serves one core feeling; pick before writing
+- **One core feeling** (enum canonical source `copywriting-guide §8.7 The Five Core Feelings Library`): every format serves one core feeling; read it from the angle card's `Core Feeling` field. If it is absent, apply the schema's missing-field precedence (legacy card means pick one yourself; current-schema card means flag the defect and pick one to proceed; see the angle-card schema's Schema Version note and funnel-builder Step 0.5)
 - **Authority hooks** (`copywriting-guide §8.8 Authority Hook Patterns`): when invoking authority, pick one of the four named patterns
 
 The Format Library tells you WHAT structure to build. The Universal Structural Copywriting Rules tell you HOW TO BUILD it so it lands.

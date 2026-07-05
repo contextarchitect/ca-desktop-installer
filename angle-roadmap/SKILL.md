@@ -1,6 +1,6 @@
 ---
 name: angle-roadmap
-version: "1.4.0"
+version: "1.6.0"
 description: "Synthesize Phase 1 (Business Validation) and Phase 2 (Avatar Research) outputs into a Brand Angle Roadmap: root cause narrative with analogy, solution mechanism narrative, scored emotional triggers, layered desire chains, alternative solution positioning, and structured angle cards. The roadmap becomes the required input for ad-style-generator and funnel-builder skills - it bridges avatar research to creative execution. Trigger on: 'build angle roadmap', 'define angles', 'angle development', 'run Phase 4.5', 'marketing angles for [brand]', 'root cause narrative', 'what angles should we run'. Also trigger when the user has completed Phase 2 and wants to move toward ad/funnel creation but hasn't defined angles yet."
 ---
 
@@ -57,6 +57,7 @@ STEP 0: POSITIONING GUARDRAILS (MOAT MAP GATE)
   -> Read Phase 1 Moat Map; establish which differentiators may lead
 
 STEP 1: ROOT CAUSE & MECHANISM NARRATIVES
+  -> Mechanism Derivation: derive the Root Cause Narrative / Solution Mechanism Narrative via the 6-step process, then run the 5-criterion strength test (kill on 2+ fails); apply the fallback ladder if no unique mechanism; HARD RULE = never fabricate
   -> 1A: Root cause narrative (scientific, 4th-grade, analogy, copywriting section)
   -> 1B: Solution mechanism narrative (same 4 layers + product mapping)
   -> 1C: UGC creator brief (5 components for spoken delivery)
@@ -79,7 +80,7 @@ STEP 5.5: LEAD VARIANTS
   -> For each angle, produce 3 POV variants (first-person sufferer, first-person discoverer, third-person authority/witness)
 
 STEP 6: STRUCTURAL SCORING (conditional)
-  -> Run only if `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand
+  -> Run only if `schwartz-applied.md` exists at the brand repo root
   -> Apply the gated framework in Step 6 below; skip the step entirely otherwise
 
 STEP 7: PRIORITIZATION & OUTPUT
@@ -110,6 +111,57 @@ See the canonical `_frameworks/positioning-guardrails.md` in `contextarchitect/c
 This is the most important step. Every advertorial depends on sections 4-6 (root cause -> consequences -> mechanism), and every ad depends on being able to communicate WHY the problem exists and WHY this solution works - in a way that a tired person scrolling at midnight understands instantly.
 
 Step 1 produces three artifacts: the root cause narrative (1A), the solution mechanism narrative (1B), and the UGC creator brief (1C). The first two feed downstream copy work (advertorials, ads, listicles). The third feeds downstream video work, where a UGC creator records a 60-90 second clip explaining the root cause + mechanism in their own words on camera.
+
+### Mechanism Derivation (run before 1A and 1B)
+
+1A and 1B tell you how to *narrate* the root cause and the mechanism in four layers each. This section tells you how to *derive* them from research in the first place, and how to test whether the derived mechanism is strong enough to build a brand on. Run this derivation first; then narrate the winner in 1A (problem) and 1B (solution).
+
+**Terminology.** This skill uses the ContextArchitect names Root Cause Narrative and Solution Mechanism Narrative; the RMBC framework calls these the Unique Mechanism of the Problem (UMP) and Unique Mechanism of the Solution (UMS), per the canonical precedence in the angle-card schema's "Canonical sources and terminology" section. The Root Cause Narrative (1A) is the surprising hidden CAUSE that reframes blame; the Solution Mechanism Narrative (1B) is why the product uniquely defeats that cause. The Pain Matrix (Step 5 sub-step 8) already routes on these two; this section is where they are actually built. Narrate the Root Cause Narrative before the Solution Mechanism Narrative.
+
+#### The 6-step derivation process
+
+Starting from finished avatar research + product facts:
+
+1. **Isolate the ONE throbbing problem.** From the avatar's pain data, pick the single biggest, most emotional pain. Not three. One. Everything hangs off this. (This becomes the "One Throbbing Pain" the downstream Copy Brief carries.)
+2. **Find the hidden cause (this becomes the Root Cause Narrative).** Ask: what is the real, underlying reason this problem exists, especially a reason the buyer does not already know about? Pull from the avatar's false beliefs / misconceptions and the product facts. The best Root Cause Narrative reframes the problem off the buyer's fault ("not your genetics, not stress") and onto a hidden external villain they can now defeat.
+3. **Name the villain.** Give the cause a concrete, visualizable identity. "Mineral buildup" is okay. "A microscopic mineral cast that suffocates your follicles" is a mechanism. Make it something they can picture and hate. (This is the same standard the 1A analogy already asks for: visual, externalizes blame, implies a fix.)
+4. **Connect the product to the villain (this becomes the Solution Mechanism Narrative).** Ask: what specifically does the product do that neutralizes that exact cause? Pull the one or two ingredients/actions that directly kill the Step 3 villain. This must be a logical, one-to-one match: villain to the thing that defeats the villain.
+5. **Name the solution mechanism.** Give the product's process a proprietary-feeling name or a vivid metaphor (see naming rules below). "Chelation" is a fact; "a molecular magnet that pulls the mineral cast off your follicles" is a Solution Mechanism Narrative. This is the branded Mechanism Name that 1B carries.
+6. **Pressure-test believability.** Walk the chain out loud: hidden cause -> why it defeated everything else they tried -> why this product uniquely addresses it -> therefore the result is inevitable. If any link needs a leap of faith, the mechanism is weak. Fix the link or find a new one.
+
+#### The 5-criterion mechanism strength test
+
+Score every mechanism candidate against these five. A strong mechanism passes all five. **Kill rule: discard any candidate that fails two or more.**
+
+1. **Believable** - a normal, skeptical person accepts the logic without a leap of faith. Grounded in something real (an ingredient, a study, a physical fact).
+2. **Specific** - concrete and visualizable, not abstract. "Suffocates follicles with a mineral cast" beats "damages hair health."
+3. **Novel** - the buyer has not heard this exact framing before. If competitors already say it, it is not unique; dig deeper or reframe.
+4. **Singular** - ONE cause and ONE solution mechanism. Two competing mechanisms cancel each other out and confuse the reader. Pick the strongest culprit.
+5. **Emotionally reframing** - it moves blame off the buyer and onto a defeatable villain. This is what makes it feel like relief.
+
+This universal strength test runs on every brand, gated or not. It is distinct from and complementary to the Schwartz-gated Four-Hole Pressure Test (Step 6D): the 5-criterion test decides whether a mechanism is worth building on at all; the Four-Hole test checks a finished angle card's structural fit.
+
+#### Mechanism naming rules
+
+When you name the solution mechanism (derivation Step 5, narrated as the 1B Mechanism Name):
+
+- Use a vivid physical metaphor ("molecular magnet," "mineral cast," "the suffocation cycle") OR coin a proprietary term (Capitalized Name + "Complex / System / Method / Formula").
+- Keep it 2-4 words, sayable out loud, and picturable.
+- The name should imply the villain or the benefit, not just sound clever.
+
+#### When the product has NO genuinely unique mechanism (fallback ladder)
+
+Common and not fatal. Work down this ladder in preference order; take the highest rung that is true:
+
+1. **Unique the problem (lead with the Root Cause Narrative).** Even a generic product can attach to a unique problem mechanism. You do not need a unique ingredient if you are the first to name the hidden cause.
+2. **Unique the combination.** No single ingredient is new, but this specific blend / ratio / sequence is. Name the combination as the mechanism.
+3. **Unique the process / application.** Same ingredients, novel way of using them (timing, order, delivery).
+4. **Unique the origin.** A specific sourcing, formulation story, or context (for example, formulated for hard water in the GCC) carries the mechanism.
+5. **Category position as last resort.** "The first X built specifically for Y." Weaker than a true how-it-works mechanism, but better than a naked claim.
+
+#### HARD RULE (non-negotiable)
+
+**Never fabricate a mechanism that is not grounded in real product facts.** A made-up mechanism is compliance-adjacent risk: it produces refunds, chargebacks, and regulatory trouble. If the fallback ladder cannot reach a true rung, do not invent one. Flag the gap to the operator instead. This rule is not overridable by a strong trigger score or a tempting angle.
 
 ### 1A: Root Cause Narrative
 
@@ -368,7 +420,7 @@ This is where everything comes together. Each angle card combines one emotional 
 
 1. Start with the highest-scored cross-avatar emotional triggers (Step 2)
 2. For each trigger, pair it with the desire chain that best matches (Step 3)
-3. Identify the core feeling driving this angle (`copywriting-guide §8.7 The Five Core Feelings Library` - vindication / loss aversion / betrayal / desperation / identity). One core feeling per angle; do not blend.
+3. Identify the core feeling driving this angle (enum canonical source: `copywriting-guide §8.7 The Five Core Feelings Library`). One core feeling per angle; do not blend. Write it to the card's `Core Feeling` field (see `references/angle-card-schema.md`).
 4. Select the root cause framing that connects to this trigger (Step 1) - the same root cause can be framed differently depending on which emotion you're leading with
 5. Select the mechanism framing that resolves this specific trigger
 6. Select the alternative attack that's most relevant to this trigger/desire combination (Step 4)
@@ -401,9 +453,9 @@ This is where everything comes together. Each angle card combines one emotional 
    - **Deliberate routing decision:** UMP, UMS, aspiration, or curiosity, based on the routing table above.
    - **Deliberate skip:** "N/A" if the operator considered the Pain Matrix and chose to skip routing for this angle (e.g., the routing decision is genuinely ambiguous, or the angle explicitly tests a non-routed lead).
 
-   The 5-value enum is the sentinel. If Lead Framing Route is populated with any of these values, downstream consumers know the Pain Matrix step ran. If the field is truly absent (no value at all), downstream consumers treat the card as legacy (predates this schema extension) and use standard defaults silently.
+   The 5-value enum signals that the Pain Matrix step ran for this card: if Lead Framing Route is populated with any of these values, downstream consumers know sub-step 8 ran. Legacy versus defect is keyed on `Schema Version`, not on Lead Framing Route absence (see funnel-builder Step 0.5 and the schema's Card Structure). If Lead Framing Route is absent AND `Schema Version` is absent, the card is legacy (predates the versioned schema) and downstream consumers use standard defaults silently.
 
-   Truly absent Lead Framing Route on a card produced under this schema extension is a defect signal - it means sub-step 8 was skipped accidentally. Treat this as an integrity failure to be flagged in the angle roadmap's QA review.
+   If Lead Framing Route is absent but `Schema Version` is present, the card is current-schema and the missing field is a defect signal (sub-step 8 was skipped accidentally). Treat this as an integrity failure to be flagged in the angle roadmap's QA review.
 
    **Write the result to the angle card's Lead Framing Route field** (see `references/angle-card-schema.md` for the field's location in the schema).
 
@@ -414,7 +466,7 @@ This is where everything comes together. Each angle card combines one emotional 
 11. Provide headline direction (2-3 example headlines, each passing `copywriting-guide §8.4 Hook Quality Checklist` - open loop, one specific claim, identity marker, specificity, first-person where brand voice allows).
 12. Record which differentiator this angle leads on, in two card fields. Set **Lead Differentiator** to the exact Phase 1 Moat Map label/id the angle's core claim rests on, or to the sentinel "none (pure emotional/identity hook, no differentiation claim)" if the angle makes no differentiation claim, or to the sentinel "ungrounded (no Phase 1 Moat Map or derivable competitive analysis)" if the Step 0 fail-safe applies. Set **Moat Disposition** (re-derived from that differentiator's Moat Map row) to exactly one of LEAD / SUPPORT / AVOID / non-differentiator / ungrounded - use "non-differentiator" when Lead Differentiator is the none sentinel, and "ungrounded" when it is the ungrounded sentinel. Per the Step 0 invariant: an angle leading on a SUPPORT differentiator is a supporting or retargeting angle and is not eligible for priority 1; an angle leading on an AVOID differentiator is not produced; an ungrounded angle is supporting or retargeting only (not priority 1, cold_traffic: false) until the moat input is supplied.
 
-(If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, Step 6 below adds a structured awareness/sophistication framework on top of step 7 above. If it does not exist, treat the awareness stage choice as a generic strategic call.)
+(If `schwartz-applied.md` exists at the brand repo root, Step 6 below adds a structured awareness/sophistication framework on top of step 7 above. If it does not exist, treat the awareness stage choice as a generic strategic call.)
 
 **Angle naming convention:** Each angle gets a short, evocative name that captures the core narrative. Think of it as the "campaign theme" name. Examples: "The Internal Sabotage," "The Dependency Trap," "The Stolen Identity," "The Silent Storm."
 
@@ -470,7 +522,7 @@ For each angle card:
 
 **Important:** every variant must apply `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)` - the narrator must be specific enough that the reader feels seen before any mechanism explanation lands. A generic "people are realizing..." narrator fails this rule regardless of which POV you pick.
 
-(If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, the Required Schwartz Move from Step 6 below adds a constraint to which variants fit best for the angle's awareness x sophistication intersection. If it does not exist, treat variant selection as a Phase 2 emotional-register call only.)
+(If `schwartz-applied.md` exists at the brand repo root, the Required Schwartz Move from Step 6 below adds a constraint to which variants fit best for the angle's awareness x sophistication intersection. If it does not exist, treat variant selection as a Phase 2 emotional-register call only.)
 
 ### Output
 
@@ -478,7 +530,7 @@ For each angle card, the Lead Variants section produces 9 specific lines: 3 narr
 
 ## Step 6: Schwartz Scoring (Awareness + Sophistication)
 
-**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+**Gating check (run before this section).** Look for `schwartz-applied.md` at the brand repo root (alongside `angle-roadmap.md`). If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
 
 Every angle card carries two structural scores from Eugene Schwartz's Breakthrough Advertising framework. These scores determine downstream creative execution: which headline strategy, which advertorial section gets the most weight, which ad style fits the angle.
 
@@ -558,7 +610,7 @@ Rank angles by testing priority using these criteria:
 3. **Awareness stage coverage** - ensure the top 5 angles cover at least 2 awareness stages
 4. **Format diversity** - the top 5 should include at least one image ad angle, one UGC/video angle, and one advertorial angle
 5. **Alternative attack diversity** - avoid putting all top angles against the same alternative
-6. **Structural-move diversity (only if `schwartz-applied.md` exists for this brand):** avoid putting all top angles at the same Schwartz move (e.g., five Stage 4 mechanism-naming angles)
+6. **Structural-move diversity (only if `schwartz-applied.md` exists at the brand repo root):** avoid putting all top angles at the same Schwartz move (e.g., five Stage 4 mechanism-naming angles)
 
 First assign each angle a Slot Type (primary / supporting / retargeting) using the moat gate in criterion 1, then rank Testing Priority 1-N **within** each Slot Type queue. Testing Priority is a within-queue ordering; rank 1 is not by itself a primary slot or a cold-traffic grant. The primary cold-traffic budget is assigned only to angles with Slot Type primary and Cold Traffic Eligible true; downstream consumers select the primary/cold-traffic angle by reading those two fields, never the bare rank number. Under the Step 0 fail-safe, every angle is supporting or retargeting, so the primary queue is empty and no angle is primary or cold-traffic eligible regardless of its rank.
 
@@ -597,7 +649,7 @@ Inputs: Phase 1 ([date]), Phase 2 ([date]), Product docs
 ## 7. Angle Cards
 [All angle cards from Step 5, ordered by testing priority.
 Each card carries: Recommended Format (from funnel-builder format-library.md), Lead Variants (3 POV variants from Step 5.5), Multi-Bio-Marker Pivots (when applicable).
-If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, each card also carries the structural fields produced in Step 6.]
+If `schwartz-applied.md` exists at the brand repo root, each card also carries the structural fields produced in Step 6.]
 
 ## 8. Testing Roadmap
 [Top 5 angles to test first, with recommended:
@@ -627,7 +679,7 @@ Produced:
   - [N] emotional triggers scored and ranked
   - [N] desire chains across [N] avatars
   - [N] alternative solutions analyzed
-  - [N] angle cards defined, each with Recommended Format, 3 Lead Variants, and Multi-Bio-Marker Pivot consideration [if `schwartz-applied.md` exists, append: plus awareness + sophistication scores from Step 6]
+  - [N] angle cards defined, each with Recommended Format, 3 Lead Variants, and Multi-Bio-Marker Pivot consideration [if `schwartz-applied.md` exists at the brand repo root, append: plus awareness + sophistication scores from Step 6]
   - Testing roadmap with top 5 priorities
 
 Next steps:
@@ -643,6 +695,10 @@ Next steps:
 Before delivering the roadmap, verify:
 
 **Root Cause & Mechanism:**
+- [ ] Mechanism derived via the 6-step process (one throbbing pain, named villain, one-to-one product-to-villain match)
+- [ ] Chosen mechanism passes the 5-criterion strength test (believable, specific, novel, singular, emotionally reframing); no candidate failing 2+ criteria was kept
+- [ ] If the product has no genuinely unique mechanism, the fallback ladder was applied in preference order (problem-first before combination before process before origin before category position)
+- [ ] HARD RULE honored: the mechanism is grounded in real product facts, not fabricated (gap flagged to operator if the ladder could not reach a true rung)
 - [ ] Root cause analogy is visual, externalizes blame, implies a fix
 - [ ] 4th-grade explanation contains zero jargon
 - [ ] Mechanism analogy extends or mirrors the root cause analogy naturally
@@ -672,7 +728,7 @@ Before delivering the roadmap, verify:
 - [ ] No two angles are the same trigger + desire combination
 - [ ] Recommended ad formats are specified per angle
 - [ ] Recommended Format (from `../funnel-builder/references/format-library.md`) is specified per angle, with rationale referencing the format selection matrix
-- [ ] Core feeling identified (`copywriting-guide §8.7`) - one of vindication / loss aversion / betrayal / desperation / identity
+- [ ] Core feeling identified and written to the card's `Core Feeling` field (enum canonical source `copywriting-guide §8.7 The Five Core Feelings Library`)
 - [ ] Headline directions pass `copywriting-guide §8.4 Hook Quality Checklist`
 - [ ] Multi-Bio-Marker Pivots field populated (specific pivots OR "N/A - single-symptom angle")
 
@@ -703,7 +759,7 @@ This scan checks every angle by re-deriving its lead differentiator's dispositio
 - [ ] Variant 3 (Third-Person Authority or Witness) has specific narrator, voice register, and lead opening
 - [ ] All three variants apply `copywriting-guide §8.5 (Identification-Before-Mechanism Rule)` - narrator specificity is sufficient for identification
 
-**Schwartz Scoring (Step 6) (only if `schwartz-applied.md` exists for this brand):**
+**Schwartz Scoring (Step 6) (only if `schwartz-applied.md` exists at the brand repo root):**
 - [ ] Every angle has an Awareness Stage assigned
 - [ ] Every angle has a Sophistication Stage Score (1-5)
 - [ ] Every angle has a Required Schwartz Move articulated in one sentence

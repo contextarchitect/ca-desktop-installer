@@ -1,6 +1,6 @@
 ---
 name: ad-style-generator
-version: "1.6.0"
+version: "1.7.0"
 description: "Generate ad creative briefs and Nano Banana image prompts using a 14-style catalogue mapped to brand identity and avatar psychology. Use when user says 'create an ad', 'ad creative', 'generate ad images', 'ad style for [topic]', 'create a [SCIENCE-FRIENDLY/BA-EMOTION/REDDIT-NATIVE/US-VS-OTHERS/etc] ad', 'ad campaign for [avatar/product]', or references ad creative development for any brand. Reads brand guidelines, avatar profiles, copywriting guide, and angle roadmap to produce brand-consistent ad concepts with complete Nano Banana prompts. Style #13 (REDDIT-NATIVE) is the handoff target for long-form-static-builder. Style #14 (US-VS-OTHERS) is the polemical comparison style for Solution-Switching audiences."
 ---
 
@@ -35,7 +35,7 @@ The user then generates the image externally in Nano Banana and uses it wherever
 1. **Brand Guidelines (Phase 3)** - colors (hex codes), typography, logo treatment, visual identity rules, positioning
 2. **Avatar Profiles (Phase 2)** - target segments, awareness stages, emotional triggers, language preferences
 3. **Copywriting Guide (Phase 4)** - voice rules, forbidden vocabulary, tone per archetype
-4. **Angle Roadmap (Phase 4.5)** - the angle card driving this ad concept. If the brand has completed Schwartz onboarding (i.e., `phase-4.5-angle-roadmap/schwartz-applied.md` exists in the brand repo), the angle card will also carry Awareness Stage and Sophistication Stage Score; these determine the technique density and headline strategy (see Schwartz Structural Layer below). If the file does not exist, treat the angle card as the standard Phase 4.5 output.
+4. **Angle Roadmap (Phase 4.5)** - the angle card driving this ad concept. If the brand has completed Schwartz onboarding (i.e., `schwartz-applied.md` exists at the brand repo root, alongside `angle-roadmap.md`), the angle card will also carry Awareness Stage and Sophistication Stage Score; these determine the technique density and headline strategy (see Schwartz Structural Layer below). If the file does not exist, treat the angle card as the standard Phase 4.5 output.
 5. **Funnel Config (Phase 5)** - product reference images (REF numbers), image generation rules, visual restrictions
 
 If any of these are missing, note the gap and work with what's available. Brand Guidelines is the minimum requirement.
@@ -50,7 +50,7 @@ Ask the user to specify or help them determine:
 4. **Topic/angle** - which angle from the roadmap is this ad executing?
 5. **Style preference** - specific style requested, or should the skill recommend?
 
-If the user doesn't specify a style, use the Style Selection Framework in `references/style-catalogue.md` to recommend 2-3 appropriate styles based on the objective, avatar, and platform. If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, the gated section below adds structural inputs to the recommendation.
+If the user doesn't specify a style, use the Style Selection Framework in `references/style-catalogue.md` to recommend 2-3 appropriate styles based on the objective, avatar, and platform. If `schwartz-applied.md` exists at the brand repo root, the gated section below adds structural inputs to the recommendation.
 
 ## Workflow
 
@@ -73,13 +73,14 @@ STEP 1: CONTEXT LOADING (automatic)
 STEP 2: STYLE SELECTION (with user)
   → User specifies style OR skill recommends based on objective + avatar + platform.
   → If the angle card has a Lead Framing Route field populated (UMP / UMS / aspiration / curiosity), apply the Lead Framing Route style adjustment described after this workflow block.
-  → If `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand, also apply the structural mapping in the gated section below.
+  → If `schwartz-applied.md` exists at the brand repo root, also apply the structural mapping in the gated section below.
   → Read the specific style framework from references/style-catalogue.md
   → Confirm approach with user
 
 STEP 3: CREATIVE BRIEF (generate)
   → Concept description (what the ad shows)
-  → Headline (if `schwartz-applied.md` exists, follow the gated headline framework below; otherwise standard brand-voice headline)
+  → Selected Lead Variant (which of the card's 3 Lead Variants this ad's POV represents: variant label + narrator name, age, situation): the ad-to-funnel narrator handoff
+  → Headline (if `schwartz-applied.md` exists at the brand repo root, follow the gated headline framework below; otherwise standard brand-voice headline)
   → Body copy (following copywriting guide rules; if gated section applies, also apply its density guidance)
   → Layout description (composition, color zones, typography placement)
   → Avatar-visual alignment check
@@ -98,6 +99,16 @@ STEP 5: DELIVERY
   → If batch (multiple concepts), output as downloadable markdown file
   → User generates images in Nano Banana externally
 ```
+
+## Selected Lead Variant (Ad-to-Funnel Narrator Handoff)
+
+The angle card carries 3 Lead Variants (3 POV narrators on the same root cause, mechanism, and alternative attack; see `../angle-roadmap/references/angle-card-schema.md`). Step 3 selects ONE of them as the ad's POV and emits it as a `Selected Lead Variant` field: the variant label plus the narrator's name, age, and situation. This is the ad-to-funnel narrator handoff. When a funnel-builder page is built for the traffic this ad drives, funnel-builder reads this `Selected Lead Variant` (its Step 0.5.1 F-4 narrator rule prefers it first) so the funnel narrator is the exact POV the reader clicked, rather than an independently re-picked variant. Emit `Selected Lead Variant` on every brief, so the handoff exists whether or not a funnel is built later.
+
+Emit `Selected Lead Variant` under the same `Schema Version` precedence funnel-builder Step 0.5 applies (present / legacy / current-schema defect), keyed on `Schema Version`, never on the missing `Lead Variants` field itself:
+
+- **`Lead Variants` present:** emit the selected variant (label + narrator name, age, situation) as above.
+- **`Lead Variants` absent AND `Schema Version` absent (legacy card):** emit `Selected Lead Variant: none (legacy card, narrator derived from avatar research)`, so the downstream funnel knows there is no card-anchored POV to match.
+- **`Lead Variants` absent AND `Schema Version` present (current-schema defect):** surface a QA flag ("Angle card [name] declares Schema Version [X] but is missing Lead Variants. Re-run angle-roadmap for this angle.") and emit `Selected Lead Variant: DEFECT (Schema Version present, Lead Variants missing)` rather than the legacy `none` sentinel, so the downstream funnel-builder scan item 11 treats the ad-vs-funnel narrator match as unverifiable and flags it until the card is regenerated.
 
 ## Product Reference Lookup Requirement (MANDATORY)
 
@@ -133,13 +144,15 @@ The angle card may carry a Lead Framing Route field (see `../angle-roadmap/refer
 
 - **N/A (explicit field value):** operator considered the Pain Matrix and deliberately skipped routing for this angle. The 5-value enum's presence signals the Pain Matrix step ran. Use the standard style selection logic; no Lead Framing Route adjustment.
 
-**Field-presence handling (legacy vs current-schema distinction):**
+**Field-presence handling (evaluate in this precedence order, first match wins):**
 
-- **Field present (any of UMP / UMS / aspiration / curiosity / N/A):** the angle card was produced under the current schema (angle-roadmap Step 5 sub-step 8 ran). Apply the style preferences above per the field value.
-- **Field truly absent (legacy card):** angle card predates the Pain Matrix schema extension. Apply standard style selection logic silently. Do NOT halt the workflow.
-- **Field truly absent on what should be a current-schema card:** this is a defect signal from angle-roadmap Step 5 sub-step 8. Surface this to the operator as a QA flag: "Angle card [name] is missing Lead Framing Route. Either re-run angle-roadmap Step 5 sub-step 8 for this angle, OR confirm the card predates the Pain Matrix schema extension and should be treated as legacy."
+The card's `Schema Version` field is the legacy discriminator (see `../angle-roadmap/references/angle-card-schema.md`), but a populated `Lead Framing Route` is applied regardless of version. Do not infer legacy status from any missing field other than `Schema Version`. Evaluate in order:
 
-**Stacking with Schwartz technique density:** if `phase-4.5-angle-roadmap/schwartz-applied.md` exists for this brand and the angle has a Sophistication Stage Score, both the Schwartz density rule (Technique Density by Awareness Stage table in the Schwartz Structural Layer below) and the Lead Framing Route style adjustment apply simultaneously. Schwartz density rules constrain HOW MANY techniques to use per ad; Lead Framing Route adjusts WHICH STYLES are preferred. The two compose without conflict.
+1. **Lead Framing Route present (any of UMP / UMS / aspiration / curiosity / N/A):** apply the style preferences above per the field value. This holds regardless of `Schema Version` (a card can carry a valid route from before the `Schema Version` field existed).
+2. **Lead Framing Route absent AND `Schema Version` absent (legacy card):** the card predates the versioned schema. Apply standard style selection logic silently. Do NOT halt the workflow; do NOT prompt the operator to re-run angle-roadmap.
+3. **Lead Framing Route absent AND `Schema Version` present (current-schema defect):** a current-schema card is missing a required sibling field. Surface this to the operator as a QA flag: "Angle card [name] declares Schema Version [X] but is missing Lead Framing Route. Re-run angle-roadmap Step 5 sub-step 8 for this angle."
+
+**Stacking with Schwartz technique density:** if `schwartz-applied.md` exists at the brand repo root and the angle has a Sophistication Stage Score, both the Schwartz density rule (Technique Density by Awareness Stage table in the Schwartz Structural Layer below) and the Lead Framing Route style adjustment apply simultaneously. Schwartz density rules constrain HOW MANY techniques to use per ad; Lead Framing Route adjusts WHICH STYLES are preferred. The two compose without conflict.
 
 ## Brand Element Mapping
 
@@ -155,7 +168,7 @@ When reading brand documents, extract and map these elements to replace what wou
 | Avatar names + demographics | Avatar Profiles | "Best For" targeting |
 | Avatar emotional triggers | Avatar Profiles | Concept angle selection |
 | Avatar awareness stage | Avatar Profiles | Style selection weighting |
-| Angle structural fields (gated) | Angle Roadmap | Used only when `schwartz-applied.md` exists; see gated section |
+| Angle structural fields (gated) | Angle Roadmap | Used only when `schwartz-applied.md` exists at the brand repo root; see gated section |
 | Product REF numbers | Funnel Config | Product placement in ads |
 | Image restrictions | Funnel Config | Exclusion layer in prompts |
 | Forbidden vocabulary | Copywriting Guide | Ad copy constraints |
@@ -213,7 +226,7 @@ When the user requests multiple ad concepts:
 
 ## Schwartz Structural Layer (Style Selection + Headlines)
 
-**Gating check (run before this section).** Look for `phase-4.5-angle-roadmap/schwartz-applied.md` in the brand's GitHub repo. If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+**Gating check (run before this section).** Look for `schwartz-applied.md` at the brand repo root (alongside `angle-roadmap.md`). If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
 
 This section adds two structural inputs to ad creative selection:
 
@@ -348,7 +361,7 @@ Before delivering any ad concept:
 - [ ] Nano Banana prompt uses Three-Layer Model
 - [ ] Product reference images specified where applicable
 
-**Schwartz Structural Layer (only if `schwartz-applied.md` exists for this brand):**
+**Schwartz Structural Layer (only if `schwartz-applied.md` exists at the brand repo root):**
 - [ ] Style choice matches the technique the angle needs (Style-to-Schwartz mapping)
 - [ ] Technique density correct for the awareness stage (density rule)
 - [ ] Headline tagged with a Schwartz method on the brief

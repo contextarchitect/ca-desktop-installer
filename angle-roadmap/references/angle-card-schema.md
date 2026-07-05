@@ -2,12 +2,20 @@
 
 Each angle card is a complete, self-contained marketing strategy unit. It contains everything needed to brief an ad creative or funnel - the operator selects an angle card and the downstream skill (ad-style-generator or funnel-builder) uses it as the primary input.
 
+**Schema Version: 1.0.0.** This is the declared version of this schema document. Each generated card carries a `Schema Version` field set to this value at generation time; downstream consumers read it to distinguish current-schema cards from legacy cards (see funnel-builder Step 0.5). Bump this version whenever a card field is added, removed, or has its contract changed, and set the card template's default to match.
+
+**Missing-field precedence (applies to every required card field, for example Lead Framing Route and Core Feeling).** First match wins: (1) field present, use it (regardless of `Schema Version`); (2) field absent AND `Schema Version` absent, the card is legacy, so derive or default the field silently; (3) field absent AND `Schema Version` present, the card is a current-schema defect, so flag it in the QA review and derive a value to proceed. This is the single rule every consumer applies to a missing required field.
+
 ## Card Structure
 
 ```
 ANGLE: [Evocative name - 2-4 words]
 Angle ID: [BRAND]-ANG-[SEQUENTIAL_NUMBER]
   e.g., REGROWTH-ANG-001
+Schema Version: 1.0.0
+  (The angle-card-schema.md version this card was produced under, set to the schema's
+  declared version at generation time. Downstream consumers read it to tell current-schema
+  cards from legacy cards; see funnel-builder Step 0.5. Absent means a legacy card.)
 
 Summary: [One sentence that captures the complete narrative arc of this angle]
 
@@ -21,6 +29,9 @@ Market Sophistication Match: [How this angle accounts for market sophistication 
 --- EMOTIONAL CORE ---
 
 Lead Emotion: [The primary emotional trigger this angle opens with]
+Core Feeling: [The one core feeling this angle serves. Enum canonical source:
+  `copywriting-guide §8.7 The Five Core Feelings Library`. One core feeling per angle;
+  do not blend. Populated by angle-roadmap Step 5.]
 Trigger Score: [From the scorecard - X/10]
 Lead Differentiator: [The exact Phase 1 Moat Map differentiator label/id this angle's lead framing rests on, OR the sentinel "none (pure emotional/identity hook, no differentiation claim)", OR the sentinel "ungrounded (no Phase 1 Moat Map or derivable competitive analysis)"]
   Required, non-empty. The "none" sentinel is a deliberate classification meaning the angle makes no differentiation claim and hands differentiation downstream; it is distinct from an unfilled field (an unfilled field is a defect). The "ungrounded" sentinel means the moat input itself is missing (Step 0 fail-safe): it is NOT a "no claim" judgment, it is a "cannot judge" state, and it is distinct from "none". This is the durable source field. The Moat Disposition below is re-derived from this differentiator's row in the Phase 1 Moat Map (or is "non-differentiator" when this field is the "none" sentinel, or "ungrounded" when this field is the "ungrounded" sentinel), not self-declared. QA (the Quality Checklist scan) and the Creative Engine registry compare this field against the Moat Map so a mis-tag is caught mechanically.
@@ -56,7 +67,7 @@ Lead Framing Route: [UMP / UMS / aspiration / curiosity / N/A]
     - UMS (Unique Mechanism of Solution): lead downstream copy with the solution mechanism. Use when avatar has High Pain and High Awareness (Solution-aware or Product-aware).
     - aspiration: lead downstream copy with post-product identity / transformation framing. Use when avatar has Low Pain and High Awareness.
     - curiosity: cold-traffic discovery framing; Pain Matrix routing does not apply to this angle. Use when avatar has Low Pain and Low Awareness, OR when the angle is explicitly testing a non-pain-led approach.
-    - N/A: operator deliberately skipped the Pain Matrix for this angle. Downstream consumers treat N/A the same as absent field (graceful fallback to non-routed defaults).
+    - N/A (explicit value): operator deliberately skipped the Pain Matrix for this angle. N/A is a PRESENT Lead Framing Route value (its presence proves the Pain Matrix step ran); for routing it produces non-routed defaults (no section-weighting adjustment), the same routing OUTCOME as an absent field but NOT the same schema state. Do not treat N/A as an absent field: absent-field handling is reserved for the Schema Version precedence matrix (see funnel-builder Step 0.5).
 
 Reference: angle-roadmap SKILL.md Step 5 sub-step 8 for the Pain Matrix routing table, input definitions, and visceral-language criteria. Downstream consumers: funnel-builder Stage 0.5 (Lead Framing Route consumer) and ad-style-generator Step 2 (Style Selection adjustment).
 
@@ -66,7 +77,7 @@ Recommended Ad Formats:
   - [Format 1] - [why this format fits this angle]
   - [Format 2] - [why]
 
-Recommended Format: [name from funnel-builder format-library.md - one of: Advertorial / Listicle-Logic / Listicle-Emotion / Listicle-Product / PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint]
+Recommended Format: [name from funnel-builder format-library.md - one of: Advertorial / Listicle (Logic) / Listicle (Emotion) / Listicle (Product) / PAS / AIDA / SPS / 4P / Long-Form / BAB / Problem Stack / Fake-Complaint]
   Rationale: [Why this format matches this angle's awareness stage, resistance level, and emotional intensity. Reference funnel-builder/references/format-library.md format selection matrix.]
   Reference: [Path to the format's reference - e.g., `funnel-builder/references/advertorial-framework.md` for Advertorial, `funnel-builder/references/listicle-framework.md` for Listicle variants, or `funnel-builder/references/format-library.md` entry for the other 7 formats]
   Note: this is the strategic default for this angle. The funnel-builder Stage 0.2 traffic-source matrix (see `funnel-builder/SKILL.md`) overrides operationally if the actual traffic source contradicts the recommendation.
@@ -129,12 +140,18 @@ Success Signal: [What would indicate this angle is working - CTR threshold, enga
 Kill Signal: [What would indicate this angle should be retired]
 ```
 
+## Canonical sources and terminology
+
+**Narrative sources versus per-angle framings (no duplication).** The Brand Angle Roadmap document's top-level sections `## 1. Root Cause Narrative` and `## 2. Solution Mechanism Narrative` (produced by angle-roadmap Steps 1A and 1B) are the canonical, full narrative sources. The card's `Root Cause Frame` and `Mechanism Frame` fields are the per-angle condensations of those narratives (how this specific angle emphasizes them). A consumer that needs the full narrative reads the roadmap sections; a consumer that needs the per-angle framing reads the card fields. No narrative field is added to the card: duplicating a narrative onto the card would be drift. These four names (two roadmap sections, two card fields) are canonical; do not rename them.
+
+**ContextArchitect names are primary; RMBC labels are parenthetical aliases.** The ContextArchitect names are primary: Root Cause Narrative, Solution Mechanism Narrative, Root Cause Frame, Mechanism Frame. RMBC labels are aliases, written parenthetically on first use, as in "Root Cause Narrative (RMBC alias: UMP)" and "Solution Mechanism Narrative (RMBC alias: UMS)". An RMBC label is primary only where an existing enum value is itself literally UMP or UMS: the `Lead Framing Route` enum tokens `UMP` and `UMS` are literal values and stay as written.
+
 ## Angle Types
 
 Angles naturally fall into a few categories based on their lead emotion. A good roadmap has a mix:
 
 ### Pain-Led Angles
-Open with the emotional trigger directly. The reader sees their pain reflected and is drawn in by identification (`copywriting-guide §8.5 Identification-Before-Mechanism Rule`). Works best for problem-aware audiences and high-intensity triggers (score 7+). Lead emotion typically maps to one of the five core feelings (vindication / loss aversion / betrayal / desperation / identity per `copywriting-guide §8.7`).
+Open with the emotional trigger directly. The reader sees their pain reflected and is drawn in by identification (`copywriting-guide §8.5 Identification-Before-Mechanism Rule`). Works best for problem-aware audiences and high-intensity triggers (score 7+). Lead emotion typically maps to one of the five core feelings (see `copywriting-guide §8.7 The Five Core Feelings Library`).
 
 Example: "The Stolen Identity" - leads with identity loss, the feeling of not recognizing yourself anymore. Root cause framed as something that stole a part of who you are.
 
@@ -186,6 +203,7 @@ Receives the angle card and uses:
 - Alternative attack -> integrated into background story (section 3) or root cause (section 4)
 - Key objection -> addressed in close section (section 9)
 - Core desire -> the emotional destination the funnel builds toward
+- Core Feeling -> the single core feeling the whole funnel serves; Stage 1 READS it from the card (enum canonical source `copywriting-guide §8.7`) rather than re-deriving it. If it is absent, Stage 1 applies the missing-field precedence above: a legacy card (Schema Version absent) picks one silently; a current-schema card (Schema Version present) flags the missing-Core-Feeling defect and picks one to proceed
 - Recommended Format (one of 9 named formats from `../../funnel-builder/references/format-library.md` plus Fake-Complaint sub-format) -> determines the funnel structure
 - Lead Variants -> determines the narrator/POV for the funnel's body copy
 - UGC Creator Brief (from angle-roadmap Step 1C) -> source material when the funnel includes embedded video assets

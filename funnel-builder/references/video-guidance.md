@@ -4,6 +4,8 @@
 
 This skill does not generate videos. Videos are pre-existing brand assets provided by the user. This guide covers how to place, format, and specify videos within funnel page Lovable prompts.
 
+When the angle card carries a UGC Creator Brief (from angle-roadmap Step 1C), use it as the source material for the funnel's embedded video content and placement; this is the funnel-builder consumer the angle-card schema names for that brief.
+
 ## When to Include Video
 
 Video on landing pages increases conversion up to 80%, but 60% of viewers drop off after 2 minutes. Use video when:

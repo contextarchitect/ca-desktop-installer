@@ -113,9 +113,9 @@ GOOD: "It's the best option if you've tried pills and they didn't work."
 
 ## Rule 7: Em Dash Prohibition
 
-The em dash (—) is the single most common AI writing tell. Zero tolerance.
+The em dash (the long horizontal dash, Unicode U+2014) is the single most common AI writing tell. Zero tolerance.
 
-**The rule:** NEVER use — in any content. Search for it before finalizing. If found, rewrite.
+**The rule:** NEVER use it in any content. Search for it before finalizing. If found, rewrite.
 
 **Alternatives:**
 - Use a period and start a new sentence
@@ -123,7 +123,7 @@ The em dash (—) is the single most common AI writing tell. Zero tolerance.
 - Use parentheses for asides
 - Use a comma if the aside is short
 
-BAD: "The patch delivers compounds — including melatonin and valerian — directly through your skin."
+BAD (em dashes used as punctuation, shown here as [em dash]): "The patch delivers compounds [em dash] including melatonin and valerian [em dash] directly through your skin."
 GOOD: "The patch delivers compounds (including melatonin and valerian) directly through your skin."
 ALSO GOOD: "The patch delivers compounds directly through your skin: melatonin, valerian, and five more."
 
@@ -136,6 +136,7 @@ Certain openings and closings are so overused by AI that they're instantly recog
 **Forbidden openings:**
 - "In today's world..."
 - "Have you ever wondered..."
+- "Does this sound familiar?..."
 - "Imagine a world where..."
 - "What if I told you..."
 - "Welcome to [brand]..."
@@ -181,12 +182,30 @@ GOOD: "You put the patch on at 10pm. By 10:30, the melatonin is in your bloodstr
 
 ---
 
+## Rule 11: Direct-Response Forbidden Constructions (RMBC Stage 4.1)
+
+These are the forbidden constructions from the RMBC manual's Copy stage, merged here. Several converge with rules above (noted rather than duplicated); the genuinely new line-level bans are enforceable here, and the structural ones point to where they are enforced.
+
+**New line-level bans (enforce here):**
+- **No "does this sound familiar?" openings.** Dead on arrival. (Added to Rule 8 forbidden openings above.)
+- **No burying the product or over-educating before the reader cares.** If you are explaining mechanism before the reader feels seen and feels the pain, you have front-loaded a lecture. (This is the line-level tell of the Identification-Before-Mechanism structural rule, §8.5.)
+- **No "nobody-talks-this-way" language.** If you would not say it out loud to a friend, cut it. (Converges with the whole humanization intent; stated explicitly because it is the fastest self-check.)
+
+**Convergences (already covered above; do not duplicate, noted for completeness):**
+- No em dashes as a crutch. Already Rule 7 (zero tolerance) and the global em-dash ban.
+- No corporate/hype adjectives doing a fact's work ("revolutionary," "cutting-edge," "world-class," "game-changing"). Already Rule 1 (hype adjectives) and Rule 8 (forbidden closings).
+
+**Structural bans (enforced outside this file; cross-referenced so writers see the full RMBC list):**
+- No two competing mechanisms in the same argument. Enforced by the single-mechanism rule (copywriting-guide Step 7 Concentration/§8, angle-roadmap Mechanism Derivation "Singular" criterion, funnel-audit frame rule 11).
+- No paragraph-long CTAs; one ask, one line. Enforced by the one-ask rule (funnel-builder QA, funnel-audit frame rule 13).
+- No claim without adjacent proof. Enforced by Claim-Proof Adjacency (copywriting-guide §8.9).
+
 ## Brand-Specific Additions
 
-Beyond these 10 universal rules, each brand's guide should add:
+Beyond these 11 rules (10 universal humanization rules plus the direct-response forbidden-constructions set), each brand's guide should add:
 
-1. **Brand-specific forbidden words** — drawn from avatar research "language to avoid" sections
-2. **Brand-specific approved vocabulary** — drawn from avatar "language that resonates" sections
-3. **Category-specific claim rules** — from regulatory findings in business validation
-4. **Positioning-specific tone rules** — premium brands restrict casual language; budget brands restrict pretentious language
-5. **Geography-specific language notes** — UK English vs US English, regional colloquialisms
+1. **Brand-specific forbidden words** - drawn from avatar research "language to avoid" sections
+2. **Brand-specific approved vocabulary** - drawn from avatar "language that resonates" sections
+3. **Category-specific claim rules** - from regulatory findings in business validation
+4. **Positioning-specific tone rules** - premium brands restrict casual language; budget brands restrict pretentious language
+5. **Geography-specific language notes** - UK English vs US English, regional colloquialisms

@@ -2,6 +2,8 @@
 
 This template is populated by the skill with extracted context from Phase 1, client braindump, interview responses, and the loaded category reference file. Placeholders are marked with `{variable_name}`.
 
+(Skill-maintainer note, not part of the generated brief: product-deep-research v1.1.0 rescoped the sourcing instructions so this brief directs Deep Research only at directly-fetchable sources and never at platforms that block research agents. First-person voice and structured Amazon product/review data arrive via the separate Mindcase harvest route, per the skill workflow. See SKILL.md Step 5 and `_frameworks/source-accessibility-tiers.md`.)
+
 ---
 
 ## ANALYTICAL FRAMEWORK
@@ -12,7 +14,7 @@ You are a product strategist and market researcher specializing in e-commerce pr
 - Every product recommendation must strengthen the hero product's value proposition, not dilute it.
 - Follow the System Thinking Framework: each candidate must serve one of four strategic rationales (COMPLETION, AMPLIFICATION, PROTECTION, RETENTION). Products that don't fit any rationale are noise.
 - Separate evidence from inference. For every product candidate: what was verified (with source and date), what was inferred from patterns, and what remains unknown without supplier quotes, lab testing, or customer validation.
-- Prioritize customer JTBD evidence over founder intuition or competitor mimicry. "Competitors sell it" is not sufficient justification — "customers need it and competitors sell it poorly" is.
+- Prioritize customer JTBD evidence over founder intuition or competitor mimicry. "Competitors sell it" is not sufficient justification - "customers need it and competitors sell it poorly" is.
 - Apply base rate thinking: most product line extensions fail. Successful ones solve a real adjacent need, not just a revenue target.
 - Quantify everything possible: market size for each adjacent category, competitive pricing, potential margin, customer demand signals.
 
@@ -72,14 +74,26 @@ You are a product strategist and market researcher specializing in e-commerce pr
 
 ---
 
+## PROVIDED EVIDENCE (already harvested for you; do not re-fetch, do not fabricate)
+
+The platforms that block research agents (Reddit, YouTube, Amazon, Instagram, Twitter) were harvested separately and their results are attached below. Use only what appears here; where a slot reads "none attached", that evidence was not gathered, so rely on directly-fetchable sources for that point and mark it unavailable rather than inventing it.
+
+**Structured competitor product data and screened Amazon review themes:**
+{provided_competitor_evidence}
+
+**Customer voice appendix (first-person voice from harvested platforms):**
+{provided_voice_appendix}
+
+---
+
 ## RESEARCH RULES
 
 1. **Cite everything factual.** Every price point, market size figure, competitor offering, ingredient claim, and regulatory requirement must include publisher, title, and date. Note when sources conflict.
-2. **Separate evidence tiers.** For every finding, clearly mark: (a) VERIFIED — checked with source and date, (b) INFERRED — reasonable conclusion from patterns, (c) UNKNOWN — requires supplier quotes, lab testing, customer validation, or legal counsel.
-3. **Apply the System Thinking lens.** Every product candidate must be classified by strategic rationale: COMPLETION, AMPLIFICATION, PROTECTION, or RETENTION. If a candidate doesn't fit any, flag it as "STRATEGIC FIT: UNCLEAR — rationale needed."
-4. **Mine customer voice.** Search forums, Reddit, review sites, social media, support communities for evidence of demand. Quote directly. Look for both explicit requests ("I wish they made...") and implicit signals (complaints about gaps, workarounds customers build).
+2. **Separate evidence tiers.** For every finding, clearly mark: (a) VERIFIED - checked with source and date, (b) INFERRED - reasonable conclusion from patterns, (c) UNKNOWN - requires supplier quotes, lab testing, customer validation, or legal counsel.
+3. **Apply the System Thinking lens.** Every product candidate must be classified by strategic rationale: COMPLETION, AMPLIFICATION, PROTECTION, or RETENTION. If a candidate doesn't fit any, flag it as "STRATEGIC FIT: UNCLEAR - rationale needed."
+4. **Use customer voice, from reachable sources only.** Gather demand evidence from directly-fetchable sources (press, competitor and brand sites, public data, and the review platforms, support communities, and forums that permit open access). Do NOT attempt to fetch, search, browse, or crawl Reddit, Amazon, YouTube, Instagram, or Twitter: research agents are blocked from them and get dead ends or invite fabricated quotes. First-person voice from those platforms, and structured Amazon product and review data, appear in the PROVIDED EVIDENCE section above WHEN they were harvested; use whatever is attached there as already-gathered context. Where a provided-evidence slot reads "none attached", that evidence simply is not available: rely on directly-fetchable sources and mark the point unavailable, do not fabricate it. Quote directly from what you can reach or what is provided, and never invent a quote from a blocked platform. Look for both explicit requests ("I wish they made...") and implicit signals (complaints about gaps, workarounds customers build).
 5. **Challenge the obvious.** For each "obvious" product extension, investigate: why don't competitors already dominate here? Is the gap a real opportunity or a graveyard of failed attempts?
-6. **Keep recommendations actionable.** Every product recommendation must include sourcing complexity, margin potential, and a realistic timeline — not just "this would be cool."
+6. **Keep recommendations actionable.** Every product recommendation must include sourcing complexity, margin potential, and a realistic timeline - not just "this would be cool."
 
 ---
 
@@ -107,7 +121,7 @@ Prevents degradation, loss, or interruption of the hero product's benefits betwe
 - Evidence required: Customer complaints about benefit duration, competitor "maintenance" products, usage pattern data showing the vulnerability window.
 
 ### RETENTION
-Creates replenishment cycles, subscription anchors, or consumable accessories that increase lifetime value — but only when the replenishment genuinely serves the customer.
+Creates replenishment cycles, subscription anchors, or consumable accessories that increase lifetime value - but only when the replenishment genuinely serves the customer.
 - Test: "Does the customer genuinely need to repurchase this regularly, or are we engineering artificial consumption?"
 - Evidence required: Natural replacement cycles (wear-out, consumable), customer behavior showing repeat need, industry standards for replacement frequency.
 
@@ -117,7 +131,7 @@ Creates replenishment cycles, subscription anchors, or consumable accessories th
 
 ## RESEARCH TRACKS
 
-### Track 1 — Customer JTBD and Moments Map (Evidence-Led)
+### Track 1 - Customer JTBD and Moments Map (Evidence-Led)
 
 Map the customer's full journey with and around the hero product. Identify moments where adjacent products could solve real problems.
 
@@ -140,20 +154,22 @@ For each moment, identify:
 - Existing products from other brands addressing these moments
 - Gap between what exists and what customers want
 
-**Minimum evidence requirement:** {min_quotes}+ direct customer quotes showing real demand, sourced from forums, reviews, social media, support communities. Cite each source.
+**Minimum evidence requirement:** {min_quotes}+ direct customer quotes showing real demand, sourced from directly-fetchable sources and the PROVIDED EVIDENCE section (where a voice appendix is attached). Cite each source. Where no voice appendix is attached, meet this floor from directly-fetchable sources alone; do not fetch or fabricate quotes from blocked platforms (Reddit, Amazon, YouTube, Instagram, Twitter).
 
 ---
 
-### Track 2 — Competitor and Adjacent Brand Product Landscape
+### Track 2 - Competitor and Adjacent Brand Product Landscape
 
 Build a structured map of what competitors and adjacent brands sell beyond their hero products.
 
+**Structured competitor product data (ratings, ratings count, recent-purchase signals, price, search rank) and screened review text appear in the PROVIDED EVIDENCE section above when they were harvested.** Use that provided data for competitor ratings and reception instead of trying to fetch Amazon, which research agents cannot reliably reach. Where the provided-evidence slot reads "none attached" for a competitor, mark its ratings and reception unavailable rather than guessing. Fetch pricing and range details from directly-fetchable competitor and brand sites; do not guess ratings or reception you were not given.
+
 **Two separate classes to map:**
 
-**Class A — Direct competitors (same hero product category):**
-For each competitor: full product range listing, pricing for each product, positioning (functional vs lifestyle vs clinical), bundle structures, subscription offerings, product launch chronology (what did they add and when?), customer reception (reviews, ratings).
+**Class A - Direct competitors (same hero product category):**
+For each competitor: full product range listing, pricing for each product, positioning (functional vs lifestyle vs clinical), bundle structures, subscription offerings, product launch chronology (what did they add and when?), customer reception (from the provided structured data and screened review text, not fetched from Amazon).
 
-**Class B — Adjacent category leaders (brands serving the same customer for different needs):**
+**Class B - Adjacent category leaders (brands serving the same customer for different needs):**
 For each: product range architecture, how they built their range over time, bundling and cross-sell strategies, lessons applicable to {brand_name}.
 
 **For both classes, analyze:**
@@ -163,11 +179,11 @@ For each: product range architecture, how they built their range over time, bund
 - Notable gaps (what are customers asking for that nobody offers?)
 - Failed products (what did competitors try and discontinue? Why?)
 
-**Cite primary sources for all pricing, product details, and customer reception data.**
+**Cite primary sources for pricing and product details (from directly-fetchable sites). For competitor ratings, ratings count, recent-purchase signals, and review themes, cite the structured Amazon data and screened review text provided to you separately; do not fetch Amazon to gather them.**
 
 ---
 
-### Track 3 — Product Candidate Set (Range Blueprint)
+### Track 3 - Product Candidate Set (Range Blueprint)
 
 Generate {target_candidate_count} product concepts grouped into a coherent range architecture.
 
@@ -189,16 +205,16 @@ Generate {target_candidate_count} product concepts grouped into a coherent range
 | 4 | Value Proposition | What problem it solves, in customer language (no medical/regulated claims) |
 | 5 | Expected Price Range | With cited competitive references |
 | 6 | Suggested Format / Materials | And why this format (with alternatives considered) |
-| 7 | Manufacturing Complexity | Low / Medium / High — with rationale |
+| 7 | Manufacturing Complexity | Low / Medium / High - with rationale |
 | 8 | Margin Potential | Expected gross margin range based on category benchmarks |
-| 9 | Demand Evidence | Customer voice, search data, competitor traction — cite sources |
+| 9 | Demand Evidence | Customer voice, search data, competitor traction - cite sources |
 | 10 | Competitive Landscape | Who sells something similar, their pricing, their gaps |
-| 11 | Risk Assessment | Compliance/claims risk, cannibalization risk, execution risk — each rated Low/Med/High |
+| 11 | Risk Assessment | Compliance/claims risk, cannibalization risk, execution risk - each rated Low/Med/High |
 | 12 | Range Role | Entry point / Core / Premium / Replenishment / Bundle anchor |
 
 ---
 
-### Track 4 — Prioritization and MVP Roadmap
+### Track 4 - Prioritization and MVP Roadmap
 
 **Scoring Rubric:**
 
@@ -214,19 +230,19 @@ Generate {target_candidate_count} product concepts grouped into a coherent range
 {rubric_weight_adjustments_if_any}
 
 **Output:**
-1. **Scored ranking table** — All candidates with scores per criterion and weighted total
-2. **Top {top_n} to explore next** — With detailed rationale for each
-3. **Top {mvp_n} to build first** — With {mvp_timeline} MVP plan:
+1. **Scored ranking table** - All candidates with scores per criterion and weighted total
+2. **Top {top_n} to explore next** - With detailed rationale for each
+3. **Top {mvp_n} to build first** - With {mvp_timeline} MVP plan:
    - Prototyping approach and timeline
    - Minimum viable variants (how many SKUs to start)
    - Sampling and quality validation steps
    - Photography and content needs
    - Launch bundle strategy (how to introduce alongside hero)
-4. **{roadmap_timeframe} range roadmap** — Phase-by-phase expansion plan
+4. **{roadmap_timeframe} range roadmap** - Phase-by-phase expansion plan
 
 ---
 
-### Track 5 — Bundling, Pricing, and Merchandising Strategy
+### Track 5 - Bundling, Pricing, and Merchandising Strategy
 
 **Bundle Architecture:**
 Propose bundle archetypes based on customer moments and JTBD. For each bundle:
@@ -234,7 +250,7 @@ Propose bundle archetypes based on customer moments and JTBD. For each bundle:
 - Target price point with competitive benchmarks
 - Discount structure (% off individual prices)
 - Positioning and naming
-- Cross-sell triggers (when to present — PDP, cart, post-purchase, email)
+- Cross-sell triggers (when to present - PDP, cart, post-purchase, email)
 
 **Pricing Strategy:**
 - Price ladder analysis: how do new products fit the existing price architecture?
@@ -249,7 +265,7 @@ Propose bundle archetypes based on customer moments and JTBD. For each bundle:
 
 ---
 
-### Track 6 — Brand Coherence and Risk Assessment
+### Track 6 - Brand Coherence and Risk Assessment
 
 **Brand Fit Audit:**
 For each product candidate, evaluate:
@@ -273,7 +289,7 @@ For each product candidate, evaluate:
 - Are there products that compete with each other within the proposed range?
 
 **Operational Risk Assessment:**
-For each top candidate: supply chain risk, returns/warranty risk, inventory risk — with specific factors for each.
+For each top candidate: supply chain risk, returns/warranty risk, inventory risk - with specific factors for each.
 
 ---
 
@@ -297,9 +313,9 @@ Primary Avatar: [avatar name]
 Use Moment: [when in the customer journey]
 Price Point: [target price]
 Key Benefits:
-  1. [benefit — compliant language]
-  2. [benefit — compliant language]
-  3. [benefit — compliant language]
+  1. [benefit - compliant language]
+  2. [benefit - compliant language]
+  3. [benefit - compliant language]
 Visual Direction: [2-3 sentences on how this should look in ads and content]
 Bundle Affinity: [which other products this naturally pairs with]
 ```
@@ -324,16 +340,16 @@ Cross-sell Trigger: [PDP / cart / post-purchase / email / subscription upsell]
 
 Produce a structured research document ({language_preference}) with:
 
-1. **Executive Summary** — Range thesis (1 paragraph), top 3 opportunities, key risks, recommended first moves
-2. **Customer JTBD Map** — Top 10 unmet needs with evidence, organized by journey moment
-3. **Competitive Product Landscape** — Structured tables for direct competitors and adjacent brands, with citations
-4. **Range Blueprint** — All product candidate cards grouped by range role, with system thinking classification
-5. **Prioritization Matrix** — Scored ranking table with weighted criteria, top {top_n} highlighted
-6. **MVP Roadmap** — Top {mvp_n} products with {mvp_timeline} implementation plan
-7. **{roadmap_timeframe} Range Roadmap** — Phase-by-phase expansion plan
-8. **Bundling Strategy** — Bundle archetypes, pricing, cross-sell triggers
-9. **Risk Register** — Regulatory, brand coherence, operational, and cannibalization risks
-10. **Product & Bundle Registry** — Structured appendix for Creative Engine integration
+1. **Executive Summary** - Range thesis (1 paragraph), top 3 opportunities, key risks, recommended first moves
+2. **Customer JTBD Map** - Top 10 unmet needs with evidence, organized by journey moment
+3. **Competitive Product Landscape** - Structured tables for direct competitors and adjacent brands, with citations
+4. **Range Blueprint** - All product candidate cards grouped by range role, with system thinking classification
+5. **Prioritization Matrix** - Scored ranking table with weighted criteria, top {top_n} highlighted
+6. **MVP Roadmap** - Top {mvp_n} products with {mvp_timeline} implementation plan
+7. **{roadmap_timeframe} Range Roadmap** - Phase-by-phase expansion plan
+8. **Bundling Strategy** - Bundle archetypes, pricing, cross-sell triggers
+9. **Risk Register** - Regulatory, brand coherence, operational, and cannibalization risks
+10. **Product & Bundle Registry** - Structured appendix for Creative Engine integration
 
 ---
 
@@ -343,7 +359,7 @@ Before completing, verify:
 - [ ] Every product candidate has a clear System Thinking rationale (COMPLETION/AMPLIFICATION/PROTECTION/RETENTION) or is flagged UNCLEAR
 - [ ] Every price point and market figure is cited with source and date
 - [ ] VERIFIED / INFERRED / UNKNOWN clearly separated throughout
-- [ ] Customer voice evidence present (minimum {min_quotes} direct quotes with sources)
+- [ ] Customer voice evidence present (minimum {min_quotes} direct quotes with sources), drawn from directly-fetchable sources and the provided harvest; none fetched or fabricated from blocked platforms
 - [ ] Competitor product ranges mapped with primary source citations
 - [ ] Scoring rubric applied consistently to all candidates with weights shown
 - [ ] MVP roadmap is actionable (specific timeline, steps, costs)

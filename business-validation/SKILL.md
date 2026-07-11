@@ -1,6 +1,6 @@
 ---
 name: business-validation
-version: "1.1.0"
+version: "1.2.0"
 description: "Run rigorous, evidence-based business validation research for e-commerce and D2C brands. Use this skill whenever the user wants to validate a new business concept, assess market viability, research competitors, validate customer segments, or generate a research brief for Deep Research. Trigger on phrases like: 'validate this brand', 'run Phase 1', 'business validation', 'market research', 'is this viable', 'assess this opportunity', 'research this brand', 'run validation'. Also trigger when the user provides a client braindump or intake document and wants analysis. This skill handles the complete workflow from raw client information to a research-ready brief with structured context extraction, gap analysis, and auto-customized research instructions."
 ---
 
@@ -154,7 +154,7 @@ CONTRADICTION DETECTED:
 
 Read `references/research-brief-template.md` and populate it with the extracted data.
 
-The template has 6 sections requiring customization:
+The template has 7 sections requiring customization:
 
 1. **Context** - From Step 1 extraction (product, market, revenue, constraints, assumptions)
 2. **Research Focus Areas** - From Step 2 stage detection (auto-generated priorities)
@@ -162,6 +162,16 @@ The template has 6 sections requiring customization:
 4. **Special Instructions** - Geography + category specific (regulatory bodies, data sources, customer voice priorities)
 5. **Quality Standards** - Universal (confidence levels, minimum quotes, source requirements)
 6. **Output Requirements** - Full template structure adjusted for depth level
+7. **Provided Evidence** - The `{provided_evidence}` block, filled with any Amazon or voice evidence harvested for this Phase 1 brief, or "none attached" (see the Source Accessibility note below)
+
+### Source Accessibility: voice and review evidence [v1.2.0 amendment]
+
+Deep Research is a toolless web agent: it browses the open web and cannot reach the platforms that block research agents. Per `_frameworks/source-accessibility-tiers.md`, first-person voice and review data (Reddit, YouTube, Amazon, Instagram, Twitter) enter the pipeline through the Mindcase harvest route, NOT through Deep Research instructions. This is Phase 1, and it runs BEFORE Phase 2's social harvest, so the brief must be conditional and must never require or assume harvested evidence that was not actually attached:
+
+- **Social first-person voice** is harvested later, in Phase 2 (avatar-research Step 3), and embedded in that phase's Voice Appendix. It is usually NOT available at Phase 1, so the Phase 1 brief must not claim social voice is provided unless a Voice Appendix has actually been attached to it. When none is attached, the brief relies on directly-fetchable sources for voice and does not require harvested quotes.
+- **Amazon review and product evidence** for the concept CAN be gathered now, in this Phase 1 session, with a targeted `amazon_reviews_screened` (screened verified-purchase reviews, ingest only `ingest_rows`; skip a FLAGGED or non-`complete` pool) or `amazon_search_products` (structured product data) call. If you run it, attach the result to the brief's `{provided_evidence}` block; if you do not, that block reads "none attached" and the brief treats Amazon evidence as unavailable rather than fetched or guessed.
+
+Therefore the brief this skill generates must direct Deep Research only at directly-fetchable sources (press, industry reports, competitor and brand sites, public data, and the review platforms and forums that permit open access) and must explicitly instruct it not to attempt Reddit, Amazon, YouTube, Instagram, or Twitter. It must use provided harvested evidence only where that evidence is actually attached, and fall back to directly-fetchable sources (never fabrication) everywhere else. Amazon is no longer a blind spot: it is a harvested W2-equivalent source behind the contamination screen, available when harvested. Keep MCP tool names in this skill's workflow only; the generated brief itself must contain no tool names, since Deep Research cannot call them.
 
 ### Additional Research Threads (Always Include)
 

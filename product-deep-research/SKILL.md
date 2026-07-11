@@ -1,14 +1,14 @@
 ---
 name: product-deep-research
-version: "1.0.0"
-description: "Generate deep research prompts for e-commerce product portfolio strategy — hero product deep-dives, adjacent product discovery, range architecture, and bundling. Trigger on: 'product research', 'what products should we add', 'complementary products', 'adjacent products', 'product range', 'product expansion', 'bundling strategy', 'what else can we sell', 'range architecture', 'SKU expansion', 'product portfolio', 'product deep dive'. Also trigger after Phase 1 (Business Validation) when exploring product strategy before or alongside Phase 2. Reads Phase 1 report as primary context and generates a customized product research prompt for Deep Research. Covers JTBD mapping, competitor product landscapes, system thinking (COMPLETION/AMPLIFICATION/PROTECTION/RETENTION), prioritization rubrics, MVP roadmaps, and Creative Engine integration."
+version: "1.1.0"
+description: "Generate deep research prompts for e-commerce product portfolio strategy - hero product deep-dives, adjacent product discovery, range architecture, and bundling. Trigger on: 'product research', 'what products should we add', 'complementary products', 'adjacent products', 'product range', 'product expansion', 'bundling strategy', 'what else can we sell', 'range architecture', 'SKU expansion', 'product portfolio', 'product deep dive'. Also trigger after Phase 1 (Business Validation) when exploring product strategy before or alongside Phase 2. Reads Phase 1 report as primary context and generates a customized product research prompt for Deep Research. Covers JTBD mapping, competitor product landscapes, system thinking (COMPLETION/AMPLIFICATION/PROTECTION/RETENTION), prioritization rubrics, MVP roadmaps, and Creative Engine integration."
 ---
 
 # Product Deep Research Skill
 
 ## Purpose
 
-Transform a Phase 1 Business Validation report (and optionally a client braindump) into a fully customized, research-ready product portfolio research brief. This skill bridges the gap between "is this business viable?" (Phase 1) and "what should the complete product offering look like?" — covering hero product deep-dives, adjacent product discovery, range architecture, bundling strategy, and a prioritized MVP roadmap.
+Transform a Phase 1 Business Validation report (and optionally a client braindump) into a fully customized, research-ready product portfolio research brief. This skill bridges the gap between "is this business viable?" (Phase 1) and "what should the complete product offering look like?" - covering hero product deep-dives, adjacent product discovery, range architecture, bundling strategy, and a prioritized MVP roadmap.
 
 ## How This Complements Business Validation (Phase 1)
 
@@ -18,7 +18,7 @@ This skill answers: **"What products should this brand sell, and in what order?"
 Phase 1 produces: market validation, competitive landscape, avatar discovery, hypothesis testing.
 This skill consumes that output and produces: hero product analysis, adjacent product candidates, range architecture, bundling strategy, and a prioritized build plan.
 
-The key insight: Phase 1 deliberately avoids deep product strategy because it's focused on business viability. But once viability is established, the next critical question is product portfolio design — and that requires its own dedicated research with a different analytical framework.
+The key insight: Phase 1 deliberately avoids deep product strategy because it's focused on business viability. But once viability is established, the next critical question is product portfolio design - and that requires its own dedicated research with a different analytical framework.
 
 ## When to Use
 
@@ -40,11 +40,11 @@ The key insight: Phase 1 deliberately avoids deep product strategy because it's 
 ## Required Inputs
 
 **Primary (required):**
-1. **Phase 1 Business Validation Report** — provides market context, competitive landscape, validated segments, and hero product positioning
+1. **Phase 1 Business Validation Report** - provides market context, competitive landscape, validated segments, and hero product positioning
 
 **Secondary (improves quality significantly):**
-2. **Client braindump or intake document** — provides brand details, product portfolio, pricing, founder perspective
-3. **Brand guidelines** (if Phase 3 complete) — provides emotional territory, brand personality, positioning constraints
+2. **Client braindump or intake document** - provides brand details, product portfolio, pricing, founder perspective
+3. **Brand guidelines** (if Phase 3 complete) - provides emotional territory, brand personality, positioning constraints
 
 If Phase 1 is not available, the skill can still generate a brief but will require the user to provide hero product details, target market, pricing, and competitive context manually via interview.
 
@@ -69,7 +69,7 @@ Read the business validation report and extract these specific elements:
 
 | Section | What to Extract | Feeds Into |
 |---------|----------------|------------|
-| Executive Verdict | GO/CONDITIONAL GO status, key conditions | Research framing — only research product expansion for validated businesses |
+| Executive Verdict | GO/CONDITIONAL GO status, key conditions | Research framing - only research product expansion for validated businesses |
 | Problem Validation (1.3) | Core problem being solved, evidence quality | Hero product deep-dive context |
 | Market Size (1.5) | TAM/SAM/SOM, growth drivers, headwinds | Market sizing for adjacent categories |
 | Hypothesis Testing (1.6) | Validated vs contradicted assumptions | Product strategy constraints |
@@ -143,7 +143,7 @@ Detect the brand's product category from the Phase 1 report, then load the match
 | Fashion & Apparel | `fashion-apparel.md` | Clothing, accessories, footwear, jewelry |
 | Home & Lifestyle | `home-lifestyle.md` | Home goods, kitchen, organization, decor |
 
-If the brand doesn't fit any category file, use the default framework in `references/research-prompt-template.md` without a category overlay. The skill still works — it just won't have category-specific JTBD moments and regulatory detail pre-loaded.
+If the brand doesn't fit any category file, use the default framework in `references/research-prompt-template.md` without a category overlay. The skill still works - it just won't have category-specific JTBD moments and regulatory detail pre-loaded.
 
 If the brand spans multiple categories (e.g., a wellness brand selling supplements AND skincare), load the primary category reference and note the secondary in the research brief so Deep Research covers both.
 
@@ -162,10 +162,10 @@ This is the core analytical lens for all product expansion decisions. Every prop
 
 Four strategic rationales:
 
-1. **COMPLETION** — Fills a gap the hero product cannot address
-2. **AMPLIFICATION** — Enhances hero product efficacy through complementary mechanisms
-3. **PROTECTION** — Prevents degradation or loss of hero product benefits
-4. **RETENTION** — Creates genuine replenishment cycles or subscription anchors that increase LTV
+1. **COMPLETION** - Fills a gap the hero product cannot address
+2. **AMPLIFICATION** - Enhances hero product efficacy through complementary mechanisms
+3. **PROTECTION** - Prevents degradation or loss of hero product benefits
+4. **RETENTION** - Creates genuine replenishment cycles or subscription anchors that increase LTV
 
 Products that don't fit any rationale are flagged as "STRATEGIC FIT: UNCLEAR." The research should note the evidence and let the brand decide rather than discarding.
 
@@ -209,14 +209,26 @@ Read `references/research-prompt-template.md` and populate it with extracted con
 
 The template has these sections requiring customization:
 
-1. **Researcher Role and Rules** — Evidence standards, citation requirements, claim boundaries
-2. **Business Context** — From Step 2 structured context
-3. **System Thinking Framework** — Category-adapted COMPLETION/AMPLIFICATION/PROTECTION/RETENTION lens (from category reference file)
-4. **Research Tracks** — 6 mandatory tracks, emphasis adjusted by category and stage
-5. **Product Card Format** — Standardized evaluation template for each candidate
-6. **Prioritization Rubric** — Weighted scoring with category-appropriate criteria
-7. **Creative Engine Integration** — Output format compatible with downstream tools
-8. **Deliverables Format** — Output structure and quality requirements
+1. **Researcher Role and Rules** - Evidence standards, citation requirements, claim boundaries
+2. **Business Context** - From Step 2 structured context
+3. **System Thinking Framework** - Category-adapted COMPLETION/AMPLIFICATION/PROTECTION/RETENTION lens (from category reference file)
+4. **Research Tracks** - 6 mandatory tracks, emphasis adjusted by category and stage
+5. **Product Card Format** - Standardized evaluation template for each candidate
+6. **Prioritization Rubric** - Weighted scoring with category-appropriate criteria
+7. **Creative Engine Integration** - Output format compatible with downstream tools
+8. **Deliverables Format** - Output structure and quality requirements
+9. **Provided Evidence** - The `{provided_competitor_evidence}` and `{provided_voice_appendix}` blocks, filled from the Step 5a harvest (or "none attached")
+
+### Step 5a: Harvest and attach voice/review evidence (run BEFORE generating the brief) [v1.1.0 amendment]
+
+Deep Research is a toolless web agent: it browses the open web and cannot reach the platforms that block research agents (Reddit, YouTube, Amazon, Instagram, Twitter). Per `_frameworks/source-accessibility-tiers.md`, that evidence is gathered here, in this session, via the Mindcase harvest route and ATTACHED to the brief as provided context. It is NOT a Deep Research instruction, and the brief must never assume evidence that was not actually attached. Do this before populating the template:
+
+1. **Track 2 competitor product evidence (harvest now).** For each direct competitor with an Amazon presence, run `amazon_search_products` (keyword = competitor product) to capture the structured fields `rating`, `ratings_count`, `bought_past_month`, `price`, `search_rank`, and run `amazon_reviews_screened` on the top ASIN(s) for review themes. Ingest ONLY `ingest_rows`; if `ingest_allowed` is false or `state` is not `complete`, do not ingest that pool. Record each competitor's structured data and screened review summary, or write "none attached" for that competitor if you could not screen its pool CLEAN. Use the single marker "none attached" for every gap (a fully missing block or one competitor's missing data alike), so the brief has exactly one absence sentinel to consume. Never invent a rating or a review theme.
+2. **Social first-person voice.** This is harvested in Phase 2 (avatar-research Step 3) and arrives in that phase's Voice Appendix. If Phase 2 has run and its Voice Appendix is available to you, attach it; if not, this brief has no social voice appendix and must say so.
+
+Assemble what you actually gathered into a **Provided Evidence** block and insert it into the brief at the `{provided_competitor_evidence}` and `{provided_voice_appendix}` placeholders (Step 5 populates these along with the other template fields). Where a piece was not harvested, write "none attached" in its slot explicitly, so a downstream reader can see the absence rather than assume data exists.
+
+The generated brief must then CONSUME this attached evidence and direct Deep Research only at directly-fetchable sources (press, industry reports, competitor and brand sites, public data, and the review platforms and forums that permit open access), explicitly instructing it not to attempt Reddit, Amazon, YouTube, Instagram, or Twitter. Wherever a provided-evidence slot reads "none attached", the brief must fall back to directly-fetchable sources only and mark that evidence unavailable, never fabricate it. Amazon is no longer a blind spot: it is a harvested W2-equivalent source behind the contamination screen. Keep MCP tool names in this skill's workflow only; the generated brief itself must contain no tool names, since Deep Research cannot call them.
 
 ### Research Track Scope by Stage
 
@@ -266,7 +278,7 @@ Target Price: [price]
 Discount Structure: [% off individual]
 Positioning: [one sentence]
 Target Avatar: [primary avatar for this bundle]
-Cross-sell Trigger: [when to present — PDP, cart, post-purchase, email]
+Cross-sell Trigger: [when to present - PDP, cart, post-purchase, email]
 ```
 
 This structured output enables:
@@ -288,12 +300,12 @@ Stage: [stage] → [research scope]
 Category Reference: [loaded file or "default framework"]
 
 Research Scope:
-  Track 1 — Customer JTBD Map: [emphasis level]
-  Track 2 — Competitor Product Landscape: [# competitors to map]
-  Track 3 — Product Candidates: [target count] candidates
-  Track 4 — Prioritization: Top [N] with [timeframe] MVP plan
-  Track 5 — Bundling Strategy: [scope]
-  Track 6 — Brand Coherence & Risk: [scope]
+  Track 1 - Customer JTBD Map: [emphasis level]
+  Track 2 - Competitor Product Landscape: [# competitors to map]
+  Track 3 - Product Candidates: [target count] candidates
+  Track 4 - Prioritization: Top [N] with [timeframe] MVP plan
+  Track 5 - Bundling Strategy: [scope]
+  Track 6 - Brand Coherence & Risk: [scope]
   
 System Thinking Lens: COMPLETION / AMPLIFICATION / PROTECTION / RETENTION
 Category-Specific Focus: [key category considerations from reference file]
@@ -367,10 +379,10 @@ After research completes:
 
 ## References
 
-- `references/research-prompt-template.md` — Complete research prompt template with all 6 tracks and Creative Engine integration format
-- `references/categories/health-wellness.md` — Health, wellness, supplements category reference
-- `references/categories/beauty-haircare.md` — Beauty, skincare, haircare category reference
-- `references/categories/food-beverage.md` — Food and beverage category reference
-- `references/categories/fitness-sports.md` — Fitness, sports, athleisure category reference
-- `references/categories/fashion-apparel.md` — Fashion, apparel, accessories category reference
-- `references/categories/home-lifestyle.md` — Home goods, lifestyle, organization category reference
+- `references/research-prompt-template.md` - Complete research prompt template with all 6 tracks and Creative Engine integration format
+- `references/categories/health-wellness.md` - Health, wellness, supplements category reference
+- `references/categories/beauty-haircare.md` - Beauty, skincare, haircare category reference
+- `references/categories/food-beverage.md` - Food and beverage category reference
+- `references/categories/fitness-sports.md` - Fitness, sports, athleisure category reference
+- `references/categories/fashion-apparel.md` - Fashion, apparel, accessories category reference
+- `references/categories/home-lifestyle.md` - Home goods, lifestyle, organization category reference

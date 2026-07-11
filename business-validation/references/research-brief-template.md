@@ -2,6 +2,8 @@
 
 This is the compressed research brief template optimized for automated generation. It contains the structure and instructions needed for Deep Research execution, without the examples and explanations present in the full human-readable version (44KB) stored in GitHub at _frameworks/business-validation-prompt.md.
 
+(Skill-maintainer note, not part of the generated brief: business-validation v1.2.0 rescoped the sourcing instructions below so this brief directs Deep Research only at directly-fetchable sources and never at platforms that block research agents. First-person voice and review data arrive via the separate Mindcase harvest route, per the skill workflow. See SKILL.md Step 4 and `_frameworks/source-accessibility-tiers.md`.)
+
 ---
 
 ## ANALYTICAL FRAMEWORK
@@ -59,12 +61,20 @@ More weak evidence does not outweigh one piece of strong evidence.
 
 ---
 
+## PROVIDED EVIDENCE (already harvested for you; do not re-fetch, do not fabricate)
+
+The platforms that block research agents (Reddit, YouTube, Amazon, Instagram, Twitter) cannot be reached by you. Any voice or review evidence from them that was harvested for this brief is attached here. Use only what appears below; where this reads "none attached", that evidence was not gathered, so rely on directly-fetchable sources and do not assume or invent harvested quotes.
+
+{provided_evidence}
+
+---
+
 ## RESEARCH RULES
 
 1. Use current, trustworthy sources. Cite each non-obvious claim with publisher, title, and date. Note conflicting sources.
 2. State assumptions explicitly when information is missing. Mark confidence for each key finding as High/Medium/Low with rationale.
 3. Quantify everything possible: market size, growth rates, pricing bands, audience sizes, engagement metrics, success rates, failure rates, margins.
-4. Prioritize real customer voices: mine Reddit, forums, review sites, social media for unfiltered language. Quote directly. Look for both evidence of the problem AND satisfaction with current solutions.
+4. Prioritize real customer voices, but only from sources you can actually reach. Gather voice and evidence from directly-fetchable sources: press and industry analyses, competitor and brand sites, public data, and the review platforms and forums that permit open access. Do NOT attempt to fetch, search, browse, or crawl Reddit, Amazon, YouTube, Instagram, or Twitter: research agents are blocked from them, so those attempts return dead ends or invite fabricated quotes. First-person voice from those platforms, when it was harvested, appears in the PROVIDED EVIDENCE section above; treat whatever is attached there as already-gathered context. Where that section reads "none attached", rely only on the directly-fetchable sources and do not assume or invent harvested quotes. Quote directly from what you can reach or what is provided, and never fabricate a quote from a blocked platform. Look for both evidence of the problem AND satisfaction with current solutions.
 5. Keep writing crisp and actionable. Every recommendation must tie to evidence or an explicitly stated assumption.
 6. For each founder assumption, deliberately search for supporting AND contradicting evidence. Assess which body is stronger.
 7. Deliver all outputs in the formats specified below.
@@ -116,7 +126,7 @@ Expand beyond known competitors. Search for direct competitors (same problem, sa
 
 **1.4 Demand Validation**
 - Search interest (Google Trends, keyword volumes, direction)
-- Community activity (Reddit, forums, social, with engagement metrics)
+- Community activity signals from fetchable data (published community sizes, search interest, openly fetchable forum engagement). Reddit and social first-person voice, where harvested, is in the PROVIDED EVIDENCE section; do not fetch it here, and where none is attached, omit it rather than guessing.
 - Willingness-to-pay signals (current spending on alternatives)
 - Competitor traction (funding, growth, reviews)
 - Market adoption stage assessment
@@ -157,7 +167,7 @@ Test how the target audience actually responds to different message types:
 - Problem reframing vs direct solution pitches
 - Long-form education vs short-form direct response
 
-Cite evidence from: A/B test data from competitors, ad library creative analysis, forum discussions about what convinced buyers, review language patterns. Assess whether the founder's messaging thesis matches observed consumer behavior.
+Cite evidence from: competitor A/B test data and ad library creative analysis (directly fetchable), published case studies and press, and the review and community language in the PROVIDED EVIDENCE section where it was harvested. Do not fetch Reddit or Amazon to gather this; where no harvested language is attached, use only the directly-fetchable evidence. Assess whether the founder's messaging thesis matches observed consumer behavior.
 
 ---
 
@@ -172,7 +182,7 @@ For each:
 - Trigger events
 - Current alternatives and switching costs
 - Objections and belief shifts needed
-- Where they gather (subreddits with counts, forums, publications, influencers)
+- Where they gather (name the specific communities, forums, publications, and influencers; this is descriptive intel for later harvest planning, not a list of sources to fetch in this brief)
 - Language and keywords they use
 - Viability scores: pain intensity, willingness to pay, ease of reach (1-10 each)
 
@@ -298,7 +308,7 @@ For each: likelihood, impact, evidence, mitigation, residual risk
 Before completing, verify:
 - Every conclusion ties to specific evidence
 - Both supporting and contradicting evidence actively searched
-- Customer voice quotes present throughout (minimum {min_quotes})
+- Customer voice quotes present throughout (minimum {min_quotes}), drawn from directly-fetchable sources and any attached PROVIDED EVIDENCE; where no harvest is attached, the floor is met from directly-fetchable sources and no quotes are fabricated from blocked platforms
 - All numbers sourced with dates
 - Assumptions explicit with confidence levels
 - Founder assumptions tested fairly

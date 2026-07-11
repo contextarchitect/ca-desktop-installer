@@ -1,5 +1,7 @@
 # Stage, Geography, and Category Heuristics
 
+(Skill-maintainer note, business-validation v1.2.0: the customer-voice-source lists below were rescoped so the generated brief points Deep Research only at directly-fetchable sources. First-person voice and reviews from Reddit, Amazon, YouTube, Instagram, and Twitter arrive via the separate harvest step and are never Deep Research targets. See SKILL.md Step 4 and `_frameworks/source-accessibility-tiers.md`. Do not put harvest tool names into any string that ends up in the generated brief.)
+
 ## Stage-Based Research Priorities
 
 ### Pre-Launch (Revenue = $0)
@@ -7,14 +9,14 @@
 The core question: Does this problem exist, and will people pay to solve it?
 
 **Research priorities (in order):**
-1. Problem validation - Is the problem real and painful? Mine forums, Reddit, reviews for evidence.
+1. Problem validation - Is the problem real and painful? Gather evidence from directly-fetchable sources (press, published community data, and the forums and review platforms that permit open access); first-person Reddit, Amazon, and review voice arrives via the separate harvest and is not a Deep Research target.
 2. Demand validation - Is there active search demand? Check Google Trends, keyword volumes, community sizes.
 3. Willingness-to-pay - What do people currently spend on alternatives? What price sensitivity signals exist?
 4. Competitive landscape - Who else is solving this? Are they succeeding or failing?
 5. Basic market sizing - Is the addressable market large enough?
 
 **Research instructions to include:**
-- "Prioritize customer voice data. Find 20+ direct quotes showing the problem exists."
+- "Prioritize customer voice data. Find 20+ direct quotes showing the problem exists, drawn from directly-fetchable sources and any harvested voice attached in the PROVIDED EVIDENCE section; where none is attached, gather them from directly-fetchable sources only. Do not attempt to fetch blocked platforms (Reddit, Amazon, YouTube, Instagram, Twitter), and never fabricate a quote."
 - "Search for failed predecessors. If similar products launched and died, investigate why."
 - "Assess whether this is a 'stated preference' problem (people say they want it) vs 'revealed preference' (people actually pay for solutions)."
 
@@ -92,13 +94,12 @@ The core question: What breaks when we push harder, and what's the ceiling?
 - "Borderline products" guidance for supplements vs medicines classification
 - Novel Foods regulation for new ingredients
 
-**Customer voice sources (prioritize in this order):**
-1. Trustpilot UK (most common UK review platform)
-2. Reddit r/UKPersonalFinance, r/AskUK, category-specific UK subs
-3. MumsNet / Gransnet (if female 35+ demographic)
-4. UK Amazon reviews (amazon.co.uk, NOT .com)
-5. Feefo, Reviews.io (UK-specific review platforms)
-6. Category-specific forums
+**Customer voice sources.** First-person voice from Reddit, Amazon, YouTube, Instagram, and Twitter is harvested separately and provided outside the brief; the generated brief must NOT direct Deep Research at them. Point Deep Research only at the directly-fetchable UK sources it can reach:
+1. Trustpilot UK (most common UK review platform, openly fetchable)
+2. MumsNet / Gransnet (if female 35+ demographic)
+3. Feefo, Reviews.io (UK-specific review platforms)
+4. Category-specific forums that permit open access
+Harvested separately, never Deep Research targets: Reddit UK subs (r/UKPersonalFinance, r/AskUK, category subs) and amazon.co.uk reviews.
 
 **Data and market reports:**
 - Prioritize UK-specific market data over US or global
@@ -128,12 +129,11 @@ The core question: What breaks when we push harder, and what's the ceiling?
 - Supplement Facts panel requirements
 - GMP (Good Manufacturing Practice) compliance
 
-**Customer voice sources:**
-1. Reddit (category-specific subs, r/supplements, etc.)
-2. Amazon.com reviews
-3. BBB (Better Business Bureau)
-4. Trustpilot US
-5. Category-specific forums
+**Customer voice sources.** Reddit, Amazon, YouTube, Instagram, and Twitter are harvested separately and provided outside the brief; the brief must not send Deep Research to them. Point Deep Research only at directly-fetchable US sources:
+1. BBB (Better Business Bureau)
+2. Trustpilot US
+3. Category-specific forums that permit open access
+Harvested separately, never Deep Research targets: Reddit category subs (r/supplements, etc.) and amazon.com reviews.
 
 **Data and market reports:**
 - US market data is typically most abundant
@@ -171,13 +171,13 @@ When a brand operates across multiple markets:
 
 ### GCC Primary (UAE, KSA, Qatar, Kuwait, Oman, Bahrain)
 
-**Activation rule:** Include this section ONLY when the detected geography includes GCC markets as a primary or significant secondary market. Many GCC-based founders sell exclusively to US/EU/UK — detect from the braindump whether the brand actually sells into GCC markets before applying these heuristics.
+**Activation rule:** Include this section ONLY when the detected geography includes GCC markets as a primary or significant secondary market. Many GCC-based founders sell exclusively to US/EU/UK - detect from the braindump whether the brand actually sells into GCC markets before applying these heuristics.
 
 **Regulatory bodies to research:**
-- SFDA (Saudi Food and Drug Authority) — supplements, cosmetics, food
-- Emirates Authority for Standardization and Metrology (ESMA) — UAE product standards
-- Dubai Municipality / Abu Dhabi QCC — local product registration
-- Ministry of Health (varies by emirate/country) — health product classification
+- SFDA (Saudi Food and Drug Authority) - supplements, cosmetics, food
+- Emirates Authority for Standardization and Metrology (ESMA) - UAE product standards
+- Dubai Municipality / Abu Dhabi QCC - local product registration
+- Ministry of Health (varies by emirate/country) - health product classification
 
 **Health products specifically:**
 - Halal certification requirements for all ingestible products
@@ -192,13 +192,13 @@ When a brand operates across multiple markets:
 - Premium/luxury positioning outperforms value positioning in UAE
 - KSA market skews younger and more price-sensitive than UAE
 
-**Customer voice sources (prioritize in this order):**
-1. Instagram and TikTok (dominant discovery platforms in GCC)
-2. Google Reviews (local trust signal)
+**Customer voice sources.** Instagram, Reddit, Amazon, YouTube, and Twitter are harvested separately and provided outside the brief; the brief must not send Deep Research to them. Point Deep Research only at directly-fetchable GCC sources:
+1. Google Reviews (local trust signal)
+2. Public TikTok content (dominant discovery platform, honest-review and haul formats)
 3. Category-specific Facebook Groups (Arabic and English)
-4. Reddit (smaller GCC presence but English-speaking expat community — r/dubai 300K+)
-5. Local review platforms (Amazon.ae, Noon — growing)
-6. WhatsApp group culture (hard to research directly but significant behavioral factor — note as influence channel)
+4. Noon and local review platforms that permit open access
+Harvested separately, never Deep Research targets: Instagram (supplementary), Reddit (r/dubai 300K+ expat community), amazon.ae reviews.
+WhatsApp group culture: neither fetchable nor harvestable; note as a behavioral influence channel only, never a source to gather quotes from.
 
 **Data and market reports:**
 - Use AED/SAR for financial figures (dual currency context)
@@ -216,11 +216,11 @@ When a brand operates across multiple markets:
 **GCC-specific behavioral notes:**
 - Free shipping expectations differ (UAE expects free over ~100-150 AED)
 - Cash on delivery still significant in KSA (~30-40% of e-commerce)
-- Subscription models less mature than US/UK — education may be needed
+- Subscription models less mature than US/UK - education may be needed
 - Influencer marketing is disproportionately effective in GCC
 - Expat vs national consumer segments have very different behaviors and price sensitivity
 - Friday-Saturday weekend affects campaign timing vs Mon-Fri Western markets
-- Premium brand preference in UAE — value positioning may underperform vs premium positioning
+- Premium brand preference in UAE - value positioning may underperform vs premium positioning
 
 ---
 

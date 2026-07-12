@@ -2,7 +2,7 @@
 
 # ============================================================================
 # ContextArchitect Skills - Setup Script
-# Configures Claude Desktop with all skills and GitHub MCP
+# Configures Claude Desktop with all skills and three MCP servers (github, kie, mindcase)
 # Works on macOS (Terminal) and Windows (Git Bash)
 # ============================================================================
 
@@ -69,7 +69,7 @@ elif [[ "$OS" == "windows" ]]; then
     fi
 fi
 
-# Check for Node.js / npx (required for GitHub MCP)
+# Check for Node.js / npx (required for the GitHub and Kie MCPs)
 if command -v npx &> /dev/null; then
     echo -e "  ${GREEN}OK${NC} Node.js / npx available"
 else
@@ -84,6 +84,25 @@ else
         echo "  Download from https://nodejs.org (LTS version)"
         echo "  Make sure 'Add to PATH' is checked during installation."
         echo "  Then CLOSE and REOPEN Git Bash before re-running this setup."
+    fi
+    echo ""
+    exit 1
+fi
+
+# Check for uv / uvx (required for the Mindcase MCP)
+if command -v uvx &> /dev/null; then
+    echo -e "  ${GREEN}OK${NC} uv / uvx available"
+else
+    echo -e "${RED}ERROR: uv is not installed (uvx not found).${NC}"
+    echo ""
+    echo "  Install uv, then CLOSE and REOPEN this terminal and re-run setup:"
+    if [[ "$OS" == "mac" ]]; then
+        echo "    curl -LsSf https://astral.sh/uv/install.sh | sh"
+    elif [[ "$OS" == "windows" ]]; then
+        echo "    In PowerShell (not Git Bash), run:"
+        echo '    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"'
+    else
+        echo "    curl -LsSf https://astral.sh/uv/install.sh | sh"
     fi
     echo ""
     exit 1
@@ -117,22 +136,59 @@ echo -e "${GREEN}$SKILL_COUNT skills installed.${NC}"
 echo ""
 
 # -------------------------------------------------------
-# Configure GitHub MCP in Claude Desktop config
+# Configure MCP servers in Claude Desktop config
 # -------------------------------------------------------
-echo -e "${YELLOW}Configuring GitHub MCP...${NC}"
+echo -e "${YELLOW}Configuring MCP servers (github, kie, mindcase)...${NC}"
 
 mkdir -p "$CLAUDE_CONFIG_DIR"
 
 if [ -f "$CLAUDE_CONFIG_FILE" ]; then
-    if grep -q '"github"' "$CLAUDE_CONFIG_FILE" 2>/dev/null; then
-        echo -e "  ${YELLOW}!${NC} GitHub MCP already configured."
-        echo "    To update your token, edit:"
-        echo "    $CLAUDE_CONFIG_FILE"
+    # Existing config: merge in any missing server without touching existing
+    # ones (so a github block you already tokenised is preserved). Node is a
+    # prerequisite (checked above), so we use it to edit the JSON safely.
+    cp "$CLAUDE_CONFIG_FILE" "${CLAUDE_CONFIG_FILE}.backup"
+    if node - "$CLAUDE_CONFIG_FILE" << 'NODEEOF'
+const fs = require("fs");
+const file = process.argv[process.argv.length - 1];
+let cfg;
+try {
+  const text = fs.readFileSync(file, "utf8").trim();
+  cfg = text ? JSON.parse(text) : {};
+} catch (e) {
+  console.error("  Could not parse existing config (invalid JSON).");
+  process.exit(3);
+}
+if (typeof cfg !== "object" || cfg === null || Array.isArray(cfg)) { cfg = {}; }
+if (typeof cfg.mcpServers !== "object" || cfg.mcpServers === null) { cfg.mcpServers = {}; }
+const servers = {
+  github:   { command: "npx", args: ["-y", "@modelcontextprotocol/server-github"], env: { GITHUB_PERSONAL_ACCESS_TOKEN: "YOUR_GITHUB_TOKEN_HERE" } },
+  kie:      { command: "npx", args: ["-y", "@contextarchitect/kie-ai-mcp-server"], env: { KIE_AI_API_KEY: "YOUR_KIE_KEY_HERE" } },
+  mindcase: { command: "uvx", args: ["ca-mindcase-mcp"], env: { MINDCASE_API_KEY: "YOUR_MINDCASE_KEY_HERE" } }
+};
+const added = [];
+for (const [name, block] of Object.entries(servers)) {
+  if (!cfg.mcpServers[name]) { cfg.mcpServers[name] = block; added.push(name); }
+}
+// Normalize a lingering placeholder from the previous installer to the current
+// name, so the "replace the placeholders" step below covers it.
+const gh = cfg.mcpServers.github;
+if (gh && gh.env && gh.env.GITHUB_PERSONAL_ACCESS_TOKEN === "YOUR_GITHUB_PAT_HERE") {
+  gh.env.GITHUB_PERSONAL_ACCESS_TOKEN = "YOUR_GITHUB_TOKEN_HERE";
+}
+fs.writeFileSync(file, JSON.stringify(cfg, null, 2) + "\n");
+console.log(added.length ? ("  added: " + added.join(", ") + " (existing settings preserved)") : "  all three servers already present");
+NODEEOF
+    then
+        echo -e "  ${GREEN}OK${NC} MCP servers configured (backup: ${CLAUDE_CONFIG_FILE}.backup)"
     else
-        echo -e "  ${YELLOW}!${NC} Existing config found. Backing up."
-        cp "$CLAUDE_CONFIG_FILE" "${CLAUDE_CONFIG_FILE}.backup"
-        echo -e "  ${YELLOW}!${NC} Please manually add the GitHub block to your config."
-        echo "    See the installation guide for the JSON to add."
+        echo ""
+        echo -e "  ${RED}Could not update your existing config (it is not valid JSON).${NC}"
+        echo "  Your skills are installed, but the MCP servers were NOT added."
+        echo "  Add them by hand: open INSTALLATION-GUIDE.md (Section 3), then restart Claude."
+        echo "  Your original config is backed up at:"
+        echo "    ${CLAUDE_CONFIG_FILE}.backup"
+        echo ""
+        exit 1
     fi
 else
     cat > "$CLAUDE_CONFIG_FILE" << 'CONFIGEOF'
@@ -142,13 +198,27 @@ else
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT_HERE"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+      }
+    },
+    "kie": {
+      "command": "npx",
+      "args": ["-y", "@contextarchitect/kie-ai-mcp-server"],
+      "env": {
+        "KIE_AI_API_KEY": "YOUR_KIE_KEY_HERE"
+      }
+    },
+    "mindcase": {
+      "command": "uvx",
+      "args": ["ca-mindcase-mcp"],
+      "env": {
+        "MINDCASE_API_KEY": "YOUR_MINDCASE_KEY_HERE"
       }
     }
   }
 }
 CONFIGEOF
-    echo -e "  ${GREEN}OK${NC} GitHub MCP configured with placeholder token"
+    echo -e "  ${GREEN}OK${NC} github, kie, and mindcase configured with placeholder keys"
 fi
 
 echo ""
@@ -162,13 +232,16 @@ echo -e "${GREEN}============================================================${N
 echo ""
 echo -e "${YELLOW}TWO LAST STEPS:${NC}"
 echo ""
-echo -e "  ${BLUE}1. Replace the GitHub token placeholder:${NC}"
+echo -e "  ${BLUE}1. Replace the three key placeholders:${NC}"
 echo "     Open this file in any text editor:"
 echo "     $CLAUDE_CONFIG_FILE"
 echo ""
-echo '     Find:    "YOUR_GITHUB_PAT_HERE"'
-echo "     Replace with the token from your admin (keep the quotes)."
-echo "     Save and close the file."
+echo "     Replace any of these placeholders that appear in the file (keep the quotes):"
+echo '       "YOUR_GITHUB_TOKEN_HERE"    -> your GitHub token'
+echo '       "YOUR_KIE_KEY_HERE"         -> your Kie API key'
+echo '       "YOUR_MINDCASE_KEY_HERE"    -> your Mindcase key (starts with mk_live_)'
+echo "     Keys come from your ContextArchitect admin. Never share or commit them."
+echo "     Save and close the file. See INSTALLATION-GUIDE.md for details."
 echo ""
 echo -e "  ${BLUE}2. Restart Claude Desktop:${NC}"
 if [[ "$OS" == "mac" ]]; then

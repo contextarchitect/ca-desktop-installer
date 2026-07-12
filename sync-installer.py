@@ -147,6 +147,79 @@ def skill_frontmatter_version(skill_md: Path) -> str | None:
     return v.strip()
 
 
+# Claude Desktop rejects a skill upload whose SKILL.md `description` exceeds this
+# many characters. Enforced by verify_description_lengths as the last checkpoint
+# before distribution.
+MAX_DESCRIPTION_LENGTH = 1024
+
+
+def skill_frontmatter_description(skill_md: Path) -> str | None:
+    """Return the `description` field from a SKILL.md's YAML frontmatter.
+
+    Uses the same frontmatter regex + yaml.safe_load as
+    skill_frontmatter_version, so the length is measured on the RESOLVED string
+    value (what the Claude Desktop uploader counts), not on the raw quoted line.
+
+    Returns None if there is no frontmatter, it is not a mapping, or there is no
+    `description` field. Malformed YAML is not raised here (the version guard
+    already reports it); such a file simply yields None.
+    """
+    text = skill_md.read_text(encoding="utf-8")
+    m = _FRONTMATTER_RE.match(text)
+    if not m:
+        return None
+    try:
+        data = yaml.safe_load(m.group(1))
+    except yaml.YAMLError:
+        return None
+    if not isinstance(data, dict):
+        return None
+    d = data.get("description")
+    return d if isinstance(d, str) else None
+
+
+def verify_description_lengths(root: Path, label: str) -> None:
+    """Build-time guard: no skill's frontmatter `description` may exceed
+    MAX_DESCRIPTION_LENGTH characters.
+
+    Claude Desktop rejects a skill upload whose SKILL.md description is longer
+    than 1024 characters. The sync tool is the last checkpoint before
+    distribution, so an over-limit description is caught here rather than at the
+    operator's upload. `label` names the side being checked, mirroring
+    verify_versions_consistent.
+
+    Called on canonical (pre-plan) and on the installer post-apply. It is
+    deliberately NOT run on the installer pre-sync: a pre-guard installer mirror
+    may still carry an over-limit description, and gating pre-sync would block
+    the very sync that propagates the canonical fix. Canonical is the source of
+    truth, so the canonical pre-plan call is the real gate.
+    """
+    skill_dirs = sorted(
+        d for d in root.iterdir()
+        if d.is_dir() and (d / "SKILL.md").exists()
+    )
+    errors: list[str] = []
+    for d in skill_dirs:
+        desc = skill_frontmatter_description(d / "SKILL.md")
+        if desc is not None and len(desc) > MAX_DESCRIPTION_LENGTH:
+            errors.append(
+                f"{d.name}: description is {len(desc)} chars "
+                f"(limit {MAX_DESCRIPTION_LENGTH})"
+            )
+    if errors:
+        print(
+            f"ERROR: skill description too long in {label} ({root}).\n"
+            "\n"
+            "Claude Desktop rejects a skill upload whose SKILL.md description\n"
+            f"exceeds {MAX_DESCRIPTION_LENGTH} characters. Trim documentation\n"
+            "pointers from the description (never trigger phrases), then re-run.\n",
+            file=sys.stderr,
+        )
+        for e in errors:
+            print(f"  - {e}", file=sys.stderr)
+        sys.exit(6)
+
+
 def verify_versions_consistent(root: Path, label: str) -> None:
     """Build-time guard: every skill's frontmatter version must match VERSION.
 
@@ -753,6 +826,9 @@ def main(argv: list[str]) -> int:
     # sync against themselves — pre-sync call already covered it).
     if os.path.realpath(canonical_skills_dir) != os.path.realpath(installer_root):
         verify_versions_consistent(canonical_skills_dir, label="canonical")
+        # Description-length gate on the source of truth: no over-limit
+        # description reaches the installer/distribution.
+        verify_description_lengths(canonical_skills_dir, label="canonical")
 
     canonical_versions = dict(parse_version_file(canonical_skills_dir / "VERSION"))
     installer_versions = dict(parse_version_file(installer_root / "VERSION"))
@@ -808,6 +884,8 @@ def main(argv: list[str]) -> int:
     # is bug-free, but catches the edge case where a faulty apply path
     # produces a drifted installer from a previously-consistent canonical.
     verify_versions_consistent(installer_root, label="installer (post-apply)")
+    # Confirm the freshly-synced mirror carries no over-limit description.
+    verify_description_lengths(installer_root, label="installer (post-apply)")
 
     return 0
 

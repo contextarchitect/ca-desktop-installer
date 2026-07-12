@@ -1,6 +1,6 @@
 # ContextArchitect - Claude Desktop Installer
 
-Installs ContextArchitect skills and GitHub MCP integration for Claude Desktop.
+Installs ContextArchitect skills and three MCP integrations (GitHub, Kie, and Mindcase) for Claude Desktop.
 
 ## Quick Install (Mac)
 
@@ -10,7 +10,7 @@ Open Terminal and paste:
 git clone https://github.com/contextarchitect/ca-desktop-installer.git ~/.claude/skills/context-architect && cd ~/.claude/skills/context-architect && chmod +x setup && ./setup
 ```
 
-This installs all skills and configures GitHub access. After running, replace the GitHub token placeholder with your real token (the script will tell you how).
+This installs all skills and sets up the three MCP servers. After running, replace the three key placeholders with your real keys and follow the [MCP Setup Guide](INSTALLATION-GUIDE.md) (the script will tell you how).
 
 ## Quick Install (Windows)
 
@@ -27,9 +27,10 @@ Requires [Git for Windows](https://git-scm.com) (includes Git Bash).
 ## Prerequisites
 
 - **Claude Desktop** - [Download](https://claude.ai/download)
-- **Node.js** (LTS) - [Download](https://nodejs.org) (required for GitHub MCP)
+- **Node.js** (LTS) - [Download](https://nodejs.org) (required for the GitHub and Kie MCPs, via `npx`)
+- **uv** - fast Python runner (required for the Mindcase MCP, via `uvx`). Install line and verification are in the [MCP Setup Guide](INSTALLATION-GUIDE.md).
 - **Git** - Pre-installed on Mac; [Download](https://git-scm.com) for Windows
-- **GitHub token** - Provided by your ContextArchitect admin
+- **API keys** - a GitHub token, a Kie key, and a Mindcase key. Provided by your ContextArchitect admin (client installs use the client's own Mindcase account).
 
 ## What Gets Installed
 
@@ -51,13 +52,21 @@ Requires [Git for Windows](https://git-scm.com) (includes Git Bash).
 | video-script-generator | Creative | AI video scripts with beat framework |
 | product-deep-research | Strategy | Product portfolio and expansion research |
 
-### GitHub MCP
+### MCP servers
 
-Configures Claude Desktop to read and write files in your assigned GitHub repository directly from conversations.
+The setup writes three MCP servers into your `claude_desktop_config.json`. Full step-by-step setup, key sources, and troubleshooting are in the [MCP Setup Guide](INSTALLATION-GUIDE.md).
+
+| Server | Purpose | Runs via | Key |
+|--------|---------|----------|-----|
+| **github** | Read and write files in your assigned GitHub repository from conversations | `npx` (Node.js) | `GITHUB_PERSONAL_ACCESS_TOKEN` |
+| **kie** | Generate AI images and video (Kie / GPT Image 2, Veo) | `npx` (Node.js) | `KIE_AI_API_KEY` |
+| **mindcase** | CA's screened customer-voice / review research client (unofficial Mindcase client, `ca-mindcase-mcp`) | `uvx` (uv) | `MINDCASE_API_KEY` |
+
+> Migrating from SociaVault? It is retired - `mindcase` replaces it. Remove any `sociavault` / `socialvault` block from your `claude_desktop_config.json` when you add `mindcase`.
 
 ## Versioning
 
-Each skill carries its version in two places: the `version:` field in its `SKILL.md` YAML frontmatter, and a matching line in the root `VERSION` file. Both must agree — `sync-installer.py` refuses to run when they don't. See [VERSIONING.md](VERSIONING.md) for the full contract and bump procedure.
+Each skill carries its version in two places: the `version:` field in its `SKILL.md` YAML frontmatter, and a matching line in the root `VERSION` file. Both must agree -- `sync-installer.py` refuses to run when they don't. See [VERSIONING.md](VERSIONING.md) for the full contract and bump procedure.
 
 ## Updating Skills
 
@@ -76,7 +85,7 @@ Then restart Claude Desktop.
 
 ## Full Installation Guide
 
-See the [Claude Desktop Installation Guide](https://github.com/contextarchitect/ca-desktop-installer/blob/main/INSTALLATION-GUIDE.md) for detailed step-by-step instructions with screenshots, Windows setup, and troubleshooting.
+See the [MCP Setup Guide](INSTALLATION-GUIDE.md) for detailed step-by-step MCP setup - prerequisites (Node.js and uv), parallel Windows and macOS tracks, the complete config block for all three servers, key sources, restart, verification, and troubleshooting.
 
 ## Support
 

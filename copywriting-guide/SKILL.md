@@ -1,7 +1,7 @@
 ---
 name: copywriting-guide
-version: "1.4.0"
-description: "Generate a complete Human-Centered Copywriting Guide for any brand by extracting voice, tone, archetype language, and humanization rules from avatar research and brand guidelines. Use this skill whenever the user wants to create a copywriting guide, content writing standards, brand voice guide, humanization guidelines, or AI detection firewall for a brand. Trigger on phrases like: 'run Phase 4', 'copywriting guide', 'writing guide', 'brand voice guide', 'humanization rules', 'content standards', 'how should this brand write'. This skill reads Phase 2 (Avatar Research) output and Phase 3 (Brand Guidelines) as primary inputs and generates a complete, ready-to-use copywriting manual that any LLM can follow to produce human-sounding, brand-consistent copy."
+version: "1.5.1"
+description: "Generate a complete Human-Centered Copywriting Guide for any brand by extracting voice, tone, archetype language, and humanization rules from avatar research and brand guidelines. Use this skill whenever the user wants to create a copywriting guide, content writing standards, brand voice guide, humanization guidelines, or AI detection firewall for a brand. Trigger on phrases like: 'run Phase 4', 'copywriting guide', 'writing guide', 'brand voice guide', 'humanization rules', 'content standards', 'how should this brand write', 'humanize', 'de-AI', 'AI tells'. This skill reads Phase 2 (Avatar Research) output and Phase 3 (Brand Guidelines) as primary inputs and generates a complete, ready-to-use copywriting manual that any LLM can follow to produce human-sounding, brand-consistent copy."
 ---
 
 # Copywriting Guide Skill
@@ -32,6 +32,7 @@ This skill requires TWO primary inputs:
 - **Phase 1 Business Validation Report** - provides market context, regulatory claim boundaries, competitive positioning
 - **Client Braindump** - provides product mechanism, pricing, founder's voice preferences
 - **Existing copy samples** - if the brand already has content, samples help calibrate the guide to existing voice
+- **Phase 4.5 Angle Roadmap** (`angle-roadmap.md` at the brand repo root) - provides the Root Cause Narrative and the Solution Mechanism Narrative, the per-avatar angle cards, and each card's Moat Map fields. It feeds Step 0's dispositions when the Phase 1 Moat Map is unavailable, Step 6's mechanism explanation, and the rebuild of Change policy trigger 2, which names it as an input. **Its absence degrades a rebuild; it does not block one.** Build from Phases 1, 2 and 3, and record in the delivery summary that no angle roadmap was available, so the next reader knows the mechanism framing came from the guidelines rather than from a derived roadmap.
 
 ## Workflow Overview
 
@@ -54,8 +55,9 @@ Read this before extracting any messaging or writing any example. It governs whi
 Establish the LEAD / SUPPORT / AVOID disposition of each differentiator, in this source priority:
 1. The Phase 1 Positioning Guardrails / Moat Map, if the Phase 1 report is available.
 2. Otherwise, the dispositions already embedded in the Phase 3 Brand Guidelines (brand-analyzer 1.1.0 and later carry LEAD / SUPPORT / AVOID into the guidelines).
-3. Otherwise, derive each disposition inline from the available competitive and differentiation analysis using the canonical two-axis fixed order: score can_lead (STRONG and brand-world-safe) and usable_in_copy (false if untrue, unsupported, off-world, or off-strategy); then first match wins: usable_in_copy false gives AVOID, else can_lead gives LEAD, else SUPPORT. Tell the operator the dispositions were derived inline.
-4. If none of the above yields dispositions, the run is ungrounded, and the gate fails closed on differentiator-led content. Without grounding there is no basis to tell LEAD from SUPPORT or AVOID, so do not present any canonical example, core promise, voice pillar exemplar, content example, or approved message that leads on a differentiator. Generate only non-differentiator emotional/identity examples, and leave every differentiator-led slot as an explicit placeholder ("[differentiator-led example pending moat input]"). Add the loud notice in Step 9.5.
+3. Otherwise, the Moat Map fields carried on the Phase 4.5 angle cards, if `angle-roadmap.md` exists at the brand repo root. Each card records a Lead Differentiator and a Moat Disposition, and a roadmap built from a Phase 1 Moat Map carries that map's dispositions forward. Use them, and tell the operator the dispositions came from the angle roadmap rather than from Phase 1 directly, because a roadmap built WITHOUT a Phase 1 Moat Map carries dispositions that were themselves derived and are one inference further from the evidence.
+4. Otherwise, derive each disposition inline from the available competitive and differentiation analysis using the canonical two-axis fixed order: score can_lead (STRONG and brand-world-safe) and usable_in_copy (false if untrue, unsupported, off-world, or off-strategy); then first match wins: usable_in_copy false gives AVOID, else can_lead gives LEAD, else SUPPORT. Tell the operator the dispositions were derived inline.
+5. If none of the above yields dispositions, the run is ungrounded, and the gate fails closed on differentiator-led content. Without grounding there is no basis to tell LEAD from SUPPORT or AVOID, so do not present any canonical example, core promise, voice pillar exemplar, content example, or approved message that leads on a differentiator. Generate only non-differentiator emotional/identity examples, and leave every differentiator-led slot as an explicit placeholder ("[differentiator-led example pending moat input]"). Add the loud notice in Step 9.5.
 
 The invariant (stated once here; every step below reinforces it, none weakens it):
 - Canonical examples and approved primary messaging may lead only on a LEAD differentiator or on a non-differentiator emotional or identity driver. This covers archetype core promises and example paragraphs (Step 2), voice pillar "sounds like" exemplars (Step 3), content-type example copy (Step 5), the category messaging framework's approved messages and mechanism explanation (Step 6), and the worked technique examples (Step 7, when present).
@@ -158,9 +160,14 @@ Voice pillar "sounds like" exemplars must not be built around a SUPPORT or AVOID
 
 ## Step 4: Construct AI Detection Firewall
 
-Read `references/humanization-rules.md` for the universal humanization rules.
+Read `references/humanization-rules.md` for the universal humanization rules, and read `assets/output-structure.md` for the template the guide is assembled to. The template is where the firewall's shape is fixed, and generating without reading it is how Section 3 drifts.
 
-The AI Detection Firewall is the most technically specific section. It contains:
+**The firewall in the generated guide is two things, and they do not overlap.**
+
+- **The universal rule set** is Appendix C, `references/humanization-rules.md` embedded verbatim. It is NOT restated, summarized or rewritten in Section 3. It is identical in every brand's guide, which is what lets a universal change be a file copy (Step 10).
+- **Section 3** carries only what this brand adds on top: brand-specific forbidden words, brand-specific approved vocabulary, category claim rules, positioning tone rules, geography notes, and brand-voiced examples for the rules that need a voice to illustrate them.
+
+The 17 canonical rules, numbered as they are numbered in the appendix, so a reference to "Rule 12" means the same thing everywhere:
 
 1. **Forbidden vocabulary** (universal list + brand-specific additions)
 2. **Burstiness principle** (sentence length variation rules with examples)
@@ -168,10 +175,21 @@ The AI Detection Firewall is the most technically specific section. It contains:
 4. **Conjunction starts** (starting sentences with And, But, Or, So)
 5. **Strategic imperfection** (fragments, digressions, self-corrections)
 6. **Hedging elimination** (removing tentative language)
-7. **Em dash prohibition** (zero tolerance, with alternatives)
+7. **Em dash prohibition** (zero tolerance, with alternatives; covers U+2014, U+2013 and U+2015)
 8. **Formulaic pattern bans** (forbidden openings and closings)
+9. **"You" over "we"** (the 2:1 ratio, assessed over the whole piece)
+10. **Show, don't tell** (a concrete scenario for every abstract claim)
+11. **Direct-response forbidden constructions** (the RMBC Stage 4.1 set: three line-level bans enforced in the appendix, three structural bans checkable standalone)
+12. **The parallel stack** (Rule 12, highest priority: two or more consecutive lines or sentences sharing an opening word or a sentence skeleton, forced triads, the same closer after several sections)
+13. **The false contrast** (Rule 13: "It's not X. It's Y." and its variants, banned when nobody claimed X, allowed and required to be tagged as a Redefinition when X is a belief the reader actually holds)
+14. **Closers and kickers** (Rule 14: restating one-liners, "let that sink in," a quotable last line on every section, reassurance kickers)
+15. **Staging** (Rule 15: run-ups and signposting, rhetorical questions as openers or transitions, deep-sounding aphorisms, arguing with no one; an objection may be answered only if it is in the brand's objection inventory)
+16. **Inflation and cycling** (Rule 16: synonym cycling, false ranges, -ing riders, vague association, inflated significance)
+17. **Formatting and output hygiene** (Rule 17: emoji, the exclamation-mark ceiling, bold as decoration, straight quotes, zero chatbot residue)
 
-The universal rules apply to ALL brands. Brand-specific additions come from:
+**Severity tiers.** The firewall is applied by tier, not uniformly. Rules 7, 12, 13, 14, 15 and the chatbot-residue item in Rule 17 justify an edit on a single sighting. Rules 2, 3, 4, 5, 10 and 16 are weak alone and need company before you act, where company means two or more DISTINCT tier-2 rules inside one section (or inside the whole piece when it has no sections), counted by rule and not by hit: a person does any one of them on purpose, and an editor who acts on every sighting flattens the voice instead of humanizing it. The tier block and the do-not-sanitize list that follows it are stated once at the top of `references/humanization-rules.md` and travel with it into the generated guide.
+
+The universal rules apply to ALL brands and live in Appendix C. Brand-specific additions are Section 3's whole content, and they come from:
 - Avatar research Section D vocabulary patterns (what words the audience actually uses)
 - Brand guidelines tone requirements (formal brands allow fewer fragments)
 - Category conventions (health brands need different claim language than fashion brands)
@@ -196,7 +214,11 @@ Each guide should include:
 
 ## Step 6: Add Category-Specific Messaging Framework
 
-From business validation regulatory findings + brand guidelines positioning:
+From business validation regulatory findings + brand guidelines positioning, and from the Phase 4.5 angle roadmap where one exists:
+
+**Read the angle roadmap FIRST when it is present.** Its Root Cause Narrative is the named hidden cause the copy is allowed to build on, and its Solution Mechanism Narrative is the named thing built to beat it. Those two narratives are the mechanism this section explains; do not re-derive a mechanism from business validation when a roadmap has already named one, because two names for one mechanism is Rule 16 synonym cycling at the strategy level and the reader never learns either. Where the roadmap and business validation disagree on what the mechanism IS, that is a contradiction to surface to the operator, not one to resolve silently.
+
+**When no angle roadmap exists,** derive the mechanism explanation from business validation and brand guidelines as below, and record its absence in the delivery summary so the next reader knows the framing was not roadmap-grounded.
 
 1. **How to explain the core product mechanism simply** - 1 sentence, 3 sentences, 1 paragraph versions
 2. **Common objections with approved response frameworks** - for each archetype's primary objection
@@ -208,6 +230,8 @@ Approved messages and the mechanism explanation lead on LEAD differentiators or 
 ## Step 7: Add the Seven-Technique Structural Layer
 
 **Gating check (run before this section).** Look for `schwartz-applied.md` at the brand repo root (alongside `angle-roadmap.md`). If the file does not exist, skip this entire section silently and proceed to the next step in the workflow as if this section were not present. Do not mention Schwartz, sophistication scoring, awareness stages, the seven techniques, technique density, the 38 headline methods, or any related vocabulary in your output. Do not surface that a section was skipped. If the file exists, run this section normally.
+
+**The silence rule governs the GUIDE, not the operator.** When this gate closes on a guide that ALREADY HAS a Section 6A, the section is being deleted rather than skipped, and a deletion goes through the trigger-1 sequence in `assets/output-structure.md`: list what 6A held, get an item-by-item disposition, then delete. Section 6A is entirely brand-specific worked examples, so deleting it on a file-existence check alone discards brand work. Surface that to the operator and keep it out of the guide. The two are not in tension; they have different readers.
 
 Voice rules govern HOW copy sounds. The seven techniques govern WHAT MOVE the copy is making structurally. Both layers run on every piece of brand content. This step adds a structural framework section to the copywriting guide so writers (human or LLM) know which technique to deploy in which moment.
 
@@ -282,6 +306,26 @@ These rules govern HOW any piece of copy is built, regardless of brand, archetyp
 
 The seven techniques (Step 7, gated) tell you WHAT MOVE the copy is making. The Universal Structural Rules (this step) tell you HOW TO BUILD any move so it actually lands. Both layers apply when Schwartz onboarding is present; only this step applies otherwise.
 
+### 8.0 The RMBC Frame
+
+The general frame this whole guide sits inside is **RMBC: Research, Mechanism, Brief, Copy**, executed in that order, never skipped ahead. About eighty percent of the final copy's quality is decided before a single line is written, in R, M and B. The writer who rushes to Copy is the writer who rewrites five times.
+
+Where each stage lives in this pipeline:
+
+- **Research** collects the evidence: verbatim complaint and desire language, failed-solution history, identity markers, specific moments, objections, beliefs and misconceptions, proof assets. That is Phase 2 avatar research.
+- **Mechanism** names the hidden villain (Unique Mechanism of the Problem, the ContextArchitect name is Root Cause Narrative) and the one thing built to beat it (Unique Mechanism of the Solution, Solution Mechanism Narrative). That is angle-roadmap Step 1A and Step 1B.
+- **Brief** assembles the argument so writing becomes filling in bullets in order. That is funnel-builder's 17-field copy brief.
+- **Copy** is the wording, and only the wording. That is this skill: Section 8.9 (Claim-Proof Adjacency), Section 8.10 (body first, lead last), the AI Detection Firewall of Step 4, and the line-level rules.
+
+Two consequences worth stating in the generated guide:
+
+1. **A copy problem is usually not a copy problem.** Copy that is technically clean and still flat is almost always a thin Research stage or an unnamed Mechanism. Fix it upstream. A humanization pass cannot manufacture material that was never gathered.
+2. **The lead is written last.** You cannot write the opening until the argument it opens exists (Section 8.10).
+
+The macro-order of the argument, and where each format enters it, is owned by funnel-builder Core Principles ("The Persuasive Spine and Entry Point" in `../funnel-builder/SKILL.md`). Do not restate that order here or in the generated guide.
+
+For the sentence, paragraph, transition and argument-order rules of the Copy stage, see `references/line-level-rules.md`. It is a universal appendix and is embedded verbatim in the generated guide (Step 10).
+
 ### 8.1 The Bridge Principle
 
 Every transition between sections must be earned with an explicit transition sentence. The transitions that matter most:
@@ -295,7 +339,9 @@ Every transition between sections must be earned with an explicit transition sen
 
 Missing bridges are the #1 failure mode in long-form copy. The reader hits an unearned section break and disengages. A bridge can be one sentence; it must exist.
 
-**Bucket-brigade connectors** are the workhorse technique for building these bridges and keeping momentum inside a section. They are short, curiosity-carrying phrases that hand the reader from one line to the next: "Here's the thing...", "But it gets worse...", "And that's when...", "So here's what happened...", "Which is exactly why...". Use them both at section transitions (as the bridge sentence's opener) and mid-section to stop the reader from settling. They are a tool for this principle, not a separate rule.
+**Bucket-brigade connectors** are the workhorse technique for building these bridges and keeping momentum inside a section. They are short, curiosity-carrying phrases that hand the reader from one line to the next: "But it gets worse...", "And that's when...", "So here's what happened...", "Which is exactly why...". Use them both at section transitions (as the bridge sentence's opener) and mid-section to stop the reader from settling. They are a tool for this principle, not a separate rule.
+
+**The connector test.** A connector carries a fact or a stake. It never announces one. Delete the connector and read the sentence again: if the sentence lost information, it was a connector; if it only lost throat-clearing, it was a stall and the copy is better without it. The announcing connectors that fail this test are banned by name in `references/humanization-rules.md` Rule 8 (forbidden openings) and in the transition rules of `references/line-level-rules.md`; those two lists are the same list, and neither belongs in a bridge.
 
 **Self-test:** Read the copy out loud. At every section change, ask: "did the previous paragraph earn the next one?" If the answer is "the next paragraph just starts," there's a missing bridge.
 
@@ -436,12 +482,55 @@ This process is the single canonical home for the body-first-lead-last workflow.
 
 ## Step 9: Generate Humanization Checklist
 
-A 4-phase self-check that any LLM runs after writing content:
+A 5-phase self-check that any LLM runs after writing content. Phase 1 runs first and is mechanical, ordered strongest tell first.
 
-**Phase 1: AI Detection Audit** - vocabulary scan, em dash check, burstiness check, hedging removal
+**Phase 1: AI Detection Audit, strongest tells first.** Seven literal checks. Each is a scan of the finished text, not a re-read of the rules, and each is written so a person and a script produce the same answer.
+
+**Scope, fixed before any check runs.** The scanned text is the delivered copy only: headline, body, captions and CTAs. It excludes planning notes and the Redefinition register. Word counts for the length branches are counts of the scanned text.
+
+**Quotations are NOT removed from the scan.** The appendix's quotation exemption is narrow and it is not a scope rule. It covers Rules 1, 8, 12, 13, 14, 15 and 16, which is why checks (i), (iii) and (vii) skip verified direct quotations. **Checks (iv), (v) and (vi) run over the complete delivered copy including every quotation**, because Rule 7 requires the dash to be replaced wherever it appears and Rule 17's emoji and exclamation limits are properties of the delivered piece, not of its unquoted parts. A testimonial carrying an em dash or an emoji is a finding.
+
+**"Verified direct quotation" is not "anything between quote marks."** The exemption applies only to a quotation whose source is recorded, the same evidence bar Rule 13's register sets. Scare quotes, emphasis quotes and invented dialogue are ordinary copy and every check runs on them.
+
+**Candidates versus findings.** Checks report CANDIDATES. A candidate becomes a finding when the rule it belongs to says so, at the tier that rule sits in. This distinction is what keeps a mechanical scan from overruling a rule that has a legitimate case, and it is why a clean scan is not the same as a clean piece.
+
+**Every check ships with a planted control.** Before you trust a zero, plant the pattern the check looks for, confirm the check reports it, then remove the plant. A check that has never fired has not been shown to work, and a silent zero from a broken check is worse than no check at all. On a check with two configuration branches, plant the control on the branch you are actually running.
+
+| # | Literal check | Pass condition | Planted control the writer confirms fired |
+|---|---------------|----------------|-------------------------------------------|
+| (i) | Three or more consecutive sentences or lines sharing an opening word | zero runs survive adjudication | insert "No stomach. No liver. No waste." and confirm the run is reported |
+| (ii) | Three or more consecutive sentences under eight words | zero runs | insert three consecutive five-word sentences and confirm the run is reported |
+| (iii) | Every Rule 13 form: `not [word or phrase]. It's`, `isn't ... it's`, `not just X but Y`, `X rather than Y`, and the clipped tail `Not X. Y.` | every hit matches a Redefinition register entry exactly on the `line` field AND that entry passes the field check for the branch the piece is on (below) | three plants, all three confirmed reported: (a) "It's not magic. It's chemistry." with no register entry at all; (b) an entry whose `line` matches but whose evidence field is empty; (c) an entry whose evidence field is present but generic |
+| (iv) | Exclamation marks in the complete delivered copy | **one total, whatever the length**, AND zero anywhere in the body when the copy is 300 words or over. Body is everything that is not the headline or a CTA line. Under 300 words the single mark may sit anywhere; at 300 and over it may only sit in a headline or a CTA | add one exclamation mark past the applicable limit and confirm the count crosses it |
+| (v) | Emoji count in the complete delivered copy | zero by default. A platform brief may raise it only by naming a number; **a brief that asks for emoji without a number is treated as asking for at most one**, and the assumption is recorded with the deliverable | insert one emoji past the applicable limit and confirm it is reported, on whichever branch is running |
+| (vi) | Em dash (U+2014), en dash (U+2013) and horizontal bar (U+2015) count, over the complete delivered copy including quotations | zero of each | insert one of each and confirm all three are reported |
+| (vii) | Forbidden vocabulary: every entry in the Rule 1 table plus the brand-specific additions | zero unadjudicated hits | insert "leverage" and "pivotal" and confirm both are reported |
+
+**Reading the checks against the rules they serve.**
+
+- **(i) is a floor, not the rule.** Rule 12 bans a stack at TWO consecutive lines; check (i) starts at three because three is where a literal scan is right often enough to be trusted. A two-line stack passes (i) and is still a Rule 12 finding, read by eye. In the other direction, a three-line run that Rule 12 legitimately permits (the meaning has three parts and each part is new) is a candidate that adjudication clears, not an automatic fail. Run the escalation test on every run (i) reports: cover the openers, read what follows, and count the facts.
+- **(i) catches the opener stack only.** The skeleton stack (the same grammatical frame under different opening words) has no literal check. Never report a clean (i) as a clean Rule 12.
+- **(ii) enforces Rule 12, not Rule 2.** The staccato run is a named form of the parallel stack in Rule 12's own list (the stack expressed in length), which is why it is acted on at a single sighting. Rule 2 governs how short sentences are DISTRIBUTED across a piece, is assessed over the piece, and is weak alone in tier 2. Both are true at once and neither overrides the other.
+- **(iii) exempts nothing at scan time.** It flags every Rule 13 form and clears a hit only on an exact character-for-character match to an entry of the Redefinition register (see the appendix, Rule 13). A hit with no matching entry is a finding. A register entry written after the scan to clear the scan is not a register entry.
+- **(iii) reads whichever register form the length calls for (v1.5.1, ruling R7).** Establish the branch first, from the word count of the delivered copy as the appendix defines it: 300 words and over is the persisted four-field file; under 300 words is one line per allowed contrast in the planning notes. Then run the check for THAT branch. Getting the branch wrong is itself a finding, because it decides which fields are required.
+- **(iii) is a two-part check, and the second part is the one that gets skipped.** An exact `line` match alone does NOT clear a hit. The appendix rejects entries whose evidence is missing or generic, so the check has to reject them too, or the self-check certifies exactly the entries Rule 13 was written to catch. Required fields by branch:
+
+  | Branch | Fields that must be present and specific |
+  |---|---|
+  | 300 words and over | `line` (exact), `belief` (in the reader's terms), `source` (a named record AND a position inside it, not a bare document name), `excerpt` (verbatim words from that record) |
+  | Under 300 words | `line` (exact), `belief`, `source` (a named document) |
+
+  "Generic" fails the same as empty on any of them: "the reader probably thinks this" is not a belief, "customer research" with no record named is not a source, and an excerpt that does not contain the belief is not an excerpt. On the long branch a `source` with no locator is a finding even when a document is named, because the locator is what makes the excerpt checkable.
+- **(iii)'s planted control has three plants, not one.** A control that only ever plants a MISSING entry cannot detect a check that ignores the field requirements, and a check that ignores them reports a clean zero on a register full of fabrications. Plant all three: no entry, an entry with an empty evidence field, and an entry with a generic one. Plant them on the branch the piece is actually running.
+- **The short-form register is not itself scanned, and that is deliberate.** The scan scope above excludes the planning notes, so the register cannot clear itself by appearing in the copy. It is read as evidence, not scanned as text. The lighter form is a smaller entry, never an exemption, and a flagged line with no entry is a finding at every length.
+- **(vii) separates literal from semantic.** Entries with a parenthetical sense restriction ("unlock (except literal)", "key (as adjective)", "quietly (figurative sense)", "navigate (except literal)") cannot be settled by a string match. The scan reports every occurrence; the writer adjudicates the restricted ones and records which occurrences were cleared and why. Everything without a restriction is a hard hit.
+
+**What the seven do not cover.** Rule 17's chatbot residue and its straight-quote requirement are tier-1 items enforced on the read, not among the seven; a mechanical form of both is the funnel-builder scan work filed as BACKLOG #70. Do not report Phase 1 as complete evidence that Rule 17 passed.
+
 **Phase 2: Voice Alignment** - brand voice match, archetype match, confidence check
 **Phase 3: Emotional Resonance** - target emotion achieved, empathy present, aspiration without pandering
 **Phase 4: Specificity and Differentiation** - no vague statements, concrete scenarios, mechanism clear
+**Phase 5: Voice Preservation** - the do-not-sanitize check, run against the edits Phases 1 through 4 produced, not against the original draft. Confirm that no edit removed the odd specific detail, the mixed feeling, a real aside or self-correction, a first-person choice the writer can explain, or verbatim customer language including its grammar. Confirm the fact rule held: no edit added a claim, number, name, study, quote or testimonial that was not in the source material. An edit that removed a tell and a human at the same time is a failed edit. Restore the human and find another way to remove the tell.
 
 ## Step 9.5: Moat Map Scan (pre-output gate)
 
@@ -456,7 +545,7 @@ Findings:
 
 This scan checks every generated element by the property of the differentiator it actually rests on (and, for AVOID, by any mention), regardless of how vivid or proof-heavy the element is. It does not apply to the universal structural rules (Step 8) or to the universal mechanics and forbidden-vocabulary lists of the firewall (Step 4), which are brand-agnostic; it DOES apply to any brand-copy example sentence generated inside the firewall section.
 
-If the run is ungrounded (Step 0 item 4), the gate fails closed: confirm that no presented canonical example, core promise, voice pillar exemplar, content example, or approved message leads on a differentiator, and that every differentiator-led slot is an explicit placeholder. State at the head of the output: no moat grounding was available, differentiator-led canonical examples are withheld as placeholders, and a Phase 1 Moat Map or moat-graded Phase 3 Brand Guidelines should be supplied before the guide is used to anchor brand voice.
+If the run is ungrounded (Step 0 item 5), the gate fails closed: confirm that no presented canonical example, core promise, voice pillar exemplar, content example, or approved message leads on a differentiator, and that every differentiator-led slot is an explicit placeholder. State at the head of the output: no moat grounding was available, differentiator-led canonical examples are withheld as placeholders, and a Phase 1 Moat Map or moat-graded Phase 3 Brand Guidelines should be supplied before the guide is used to anchor brand voice.
 
 ## Step 10: Present and Output
 
@@ -469,20 +558,98 @@ Inputs Loaded:
   Avatar Research: [count] archetypes
   Brand Guidelines: [count] voice pillars
   Validation Report: [available/not available]
+  Angle Roadmap (Phase 4.5): [available, [count] angle cards / NOT AVAILABLE - mechanism framing derived from Phase 1 and Phase 3, not roadmap-grounded]
 
 Guide Contents:
   Voice Pillars: [count] defined
   Archetypes: [count] with full copy profiles
   Content Guides: [count] content types covered
-  Humanization Rules: [count] rules in AI Detection Firewall
-  Universal Structural Rules: 10 rules (Bridge, Open-Loop, Time-Delay, Hook Quality, Identification-Before-Mechanism, Discovery Story, Five Core Feelings, Authority Hooks, Claim-Proof Adjacency, First-Draft-to-Final Process)
+  Humanization Rules: 17 universal rules in the AI Detection Firewall + [count] brand-specific additions
+  Universal Structural Rules: the RMBC Frame (8.0) plus 10 rules (Bridge, Open-Loop, Time-Delay, Hook Quality, Identification-Before-Mechanism, Discovery Story, Five Core Feelings, Authority Hooks, Claim-Proof Adjacency, First-Draft-to-Final Process)
+  Universal Appendices: humanization-rules v1.5.1, line-level-rules v1.5.1 (embedded verbatim, digest-verified)
+  Brand Extensions: [include this line ONLY if the brand has an Appendix E; [count] sections carried verbatim]
   Structural Moves: [include this line ONLY if `schwartz-applied.md` exists at the brand repo root; 7 techniques with worked examples]
 
-Total Sections: 12 + 2 appendices (13 + 2 if `schwartz-applied.md` exists at the brand repo root)
+Total Sections: 12 + 4 appendices (13 sections if `schwartz-applied.md` exists at the brand repo root; 5 appendices if this brand carries an Appendix E of brand extensions)
 Estimated Length: [word count]
 
 Confirm or adjust:
 ```
+
+### Provenance stamp
+
+The generated guide's first lines, above the title, carry a provenance stamp:
+
+```
+generated-by: copywriting-guide v1.5.1
+appendices: humanization-rules v1.5.1 sha256:<first 16 hex>, line-level-rules v1.5.1 sha256:<first 16 hex>
+generated: [YYYY-MM-DD]
+```
+
+Read each appendix version from the `<!-- universal appendix: ... -->` comment on line 1 of the corresponding reference file, and compute each digest from the file on disk at generation time. Do not type either from memory. A version alone says which release was intended; the digest is what says the bytes actually arrived, and it is the only part of the stamp that can be falsified by a bad copy.
+
+### The appendices
+
+The guide carries two UNIVERSAL appendices, each embedded **verbatim**, byte for byte:
+
+- **Appendix C: Universal Humanization Rules** - the full text of `references/humanization-rules.md`.
+- **Appendix D: Universal Line-Level Rules** - the full text of `references/line-level-rules.md`.
+
+**Appendix E: Brand Extensions follows D when the brand has one.** It is conditional and it is NOT universal: it holds the sections this brand accumulated that the template does not produce, carried verbatim with the date each was added and where it came from. It is defined in `assets/output-structure.md` under "Appendix E: Brand Extensions". **A rebuild that drops it has failed even if every other check passes**, because Appendix E is the only thing standing between a version bump and the loss of hand-added brand work (ruling R9). Before presenting a rebuilt guide, check it explicitly: if the superseded guide carried an Appendix E, the new one carries it too, entry for entry; and if the comparison step surfaced content the template does not produce, that content is IN Appendix E and not merely noted. Appendix E is never regenerated and never paraphrased. When the brand has no extensions, Appendix E is absent and is not mentioned.
+
+Do not paraphrase, summarize, reorder, trim or brand-adapt either appendix. Brand-specific firewall additions live in the guide's AI Detection Firewall section and layer on top of Appendix C; the appendix text itself is identical in every brand's guide. That identity is the whole point: it is what makes a universal change a file copy rather than a regeneration.
+
+**What the appendices carry, and what they do not (v1.5.1, ruling R8).** Both files are embedded verbatim into brand guides and vendored into ContextOS prompts that do not carry the rest of the skill library, so every sentence in them is addressed to a brand's copywriter. Anything that instead tells ContextArchitect how to run its own process lives here, not there. Both files are self-contained: neither links out to another document, neither carries a relative path, and cross-references inside an appendix point only to other rules in the same file. Nothing in an appendix may depend on a document that might not travel with it.
+
+Moved out of the two files at v1.5.1, and kept here rather than deleted:
+
+- **Where the Rule 11 structural bans are additionally enforced when the skill library is present.** These are deeper guidance, not a precondition for applying the ban, which is why the appendix now states the three bans and stops. One mechanism per argument: the single-mechanism rule (Step 7 Concentration and Step 8 of this skill, angle-roadmap Mechanism Derivation "Singular" criterion, funnel-audit frame rule 11). One ask per CTA: the one-ask rule (funnel-builder QA, funnel-audit frame rule 13). No claim without adjacent proof: Claim-Proof Adjacency (Step 8.9 of this skill).
+- **The structural provenance of Rule 11's second line-level ban.** "No burying the product or over-educating before the reader cares" is the line-level tell of the Identification-Before-Mechanism structural rule at Step 8.5 of this skill.
+- **The Redefinition register's deferred validator.** A validator that checks field presence, locator shape and excerpt-in-source is deferred tooling, in the same family as BACKLOG #71 and to be built with it. The appendix states the limit as a limit; it does not name the tooling, the session or the backlog id.
+- **The macro-order authority.** The named attention-to-offer spine and the entry point each format takes into it are owned by funnel-builder, the single authority. Where `references/line-level-rules.md` and that spine ever appear to disagree, the spine wins and the appendix is the file to correct. The appendix keeps the writer-facing half of this: its five lines are invariants, not a section order, and they are not sufficient to lay out a long-form page.
+- **What a brand's guide adds on top of Appendix C.** Beyond the 17 rules (16 universal humanization rules plus the direct-response forbidden-constructions set at Rule 11), each brand's guide adds brand-specific forbidden words drawn from avatar research "language to avoid"; brand-specific approved vocabulary drawn from avatar "language that resonates"; category-specific claim rules from regulatory findings in business validation; positioning-specific tone rules, where premium brands restrict casual language and budget brands restrict pretentious language; and geography-specific language notes, UK versus US English and regional colloquialisms. That is Section 3's content and it is generated by Step 4 above; it is not appendix text.
+
+**Boundaries.** Each UNIVERSAL appendix body (C and D, and only C and D) starts at its `<!-- universal appendix: NAME vX.Y.Z -->` line and ends at its `<!-- end universal appendix: NAME vX.Y.Z -->` line. Both markers are part of the file and are copied with it. They exist so the body can be extracted from the finished guide without guessing where it starts and stops.
+
+**Appendix E has no markers, no reference file, no version and no digest, and that is correct.** It is brand-owned content with no canonical source to compare against, so there is nothing a digest could prove. Everything in the two paragraphs below applies to Appendices C and D ONLY. Applying the marker or digest rules to Appendix E would force a choice between failing a guide that is correct and dropping the appendix to make the gate pass, and the second of those is the data loss ruling R9 exists to prevent.
+
+**Assemble by copy, not by generation.** Do not retype, re-emit or reflow either appendix. Concatenate the file. An LLM asked to reproduce 25 kB byte for byte inside a longer document will normalize something, and the failure is silent: the version stamp still reads correctly while the body has quietly changed.
+
+**Verification gate, before the guide is presented. Appendices C and D.** For each of the two universal appendices: extract the text between its two markers from the assembled guide, compute its sha256, and compare that digest to the digest of the reference file on disk. Equal digests, or the guide is not delivered. A mismatch is not a formatting nit; it means the propagation contract this whole structure rests on has already failed on its first use. Record both digests in the stamp so the next reader can re-run the comparison without access to this skill.
+
+**Verification gate, Appendix E: preservation, not digest.** Appendix E is checked entry for entry against the superseded guide, because that is the only source it has. If the superseded guide carried an Appendix E, every entry in it appears in the new one, with its date and origin intact. If the comparison step of Change policy trigger 2 surfaced content the current template does not produce, that content IS an Appendix E entry in the delivered guide, not a note in a report. A missing entry fails delivery exactly as a digest mismatch does. When the brand has no extensions and the superseded guide had no Appendix E, this gate passes trivially and Appendix E is absent from the output.
+
+### Anti-drift rule
+
+Brand sections are regenerated only when brand inputs change: avatar research, brand guidelines, business validation, moat dispositions, positioning.
+
+**A universal change is not a regeneration.** When `humanization-rules.md` or `line-level-rules.md` changes upstream, propagate it by replacing the appendix body with the new file and updating the `appendices:` line of the provenance stamp. No LLM re-runs the brand sections, and no brand copy is rewritten as a side effect. Regenerating a whole guide to pick up a universal change is the drift mechanism this structure exists to remove.
+
+**But "nothing else is touched" is only true for a change that stays inside the appendix.** Some surfaces of the guide restate appendix semantics rather than merely referring to them, and a change to those semantics leaves them contradicting the appendix that was just copied in. Classify the change before propagating it:
+
+Classify the change by one question: **could a guide surface that restates this rule now be wrong?**
+
+| Class | Change to an appendix | What it touches |
+|---|---|---|
+| **Editorial** | Rewording that leaves every rule's meaning, scope and thresholds where they were | Appendix body and the `appendices:` stamp line. Nothing else. |
+| **Semantic** | Anything that changes what a rule requires, permits or is called. Includes but is not limited to a threshold, ratio or ceiling, rule numbering, tier assignment, the Rule 1 vocabulary table, the Redefinition register format, adding or removing a banned form, and changing a carve-out's conditions | Appendix body and stamp, PLUS every surface in the dependency manifest below. |
+
+When you cannot tell which it is, it is semantic.
+
+**Dependency manifest.** These surfaces restate appendix semantics and go stale when the semantics move:
+
+- **Section 3**, for its brand-voiced examples of Rules 2, 5, 12 and 13, and for any brand vocabulary row that mirrors a Rule 1 category.
+- **Section 5**, the humanization checklist, for the seven checks' thresholds and pass conditions.
+- **Section 6**, for the connector test and any structural rule that restates a line-level or humanization rule.
+- **Section 11 and Section 12**, for any rule count, rule number or non-negotiable they name.
+- **Appendix A**, for the per-pair annotations naming which rules each before/after example applies.
+- **Appendix B**, the quick reference card, for its non-negotiables table.
+
+Refresh those named surfaces, and only those, in the same pass as the appendix copy. That is still not a regeneration: the brand's voice, archetypes, messaging framework and before/after examples are untouched.
+
+**On the skill's own version (ruling R10, 2026-09-09).** A copywriting-guide version bump does NOT regenerate sections by number. Wholesale section regeneration is retired: it was measured on 2026-09-09 that every section this template calls universal carries brand-specific content in every existing guide, so regenerating one by number destroys brand work. A skill version change is propagated by REBUILDING the guide from the brand's Phase 1, 2, 3 and 4.5 inputs using the current skill, then comparing the rebuilt guide against the superseded one and surfacing to the operator anything present in the old and absent from the new. The full policy, including Appendix E, is in `assets/output-structure.md` under Change policy. That is a different event from an appendix change and does not imply one.
+
+**On a guide written against an older layout.** There is no migration step and no by-title remap. Existing guides carry four different section orders across four generator dates, and one was extended by hand past anything this template produces, so a mechanical remap has no layout to remap to. Rebuild the guide from inputs, compare it against the superseded one, and carry anything the template does not produce into Appendix E. The superseded guide is preserved in git history.
 
 Deliver the complete guide as a single markdown document the user can add to any Claude Project as a knowledge base file.
 
@@ -492,15 +659,20 @@ GUIDE GENERATED
 Sections populated:
   - Brand identity and voice foundation
   - [count] voice pillars with examples
-  - AI Detection Firewall ([count] rules)
+  - AI Detection Firewall (17 universal rules + [count] brand-specific additions)
   - [count] archetype copy profiles with sample paragraphs
-  - Universal Structural Rules (The Bridge Principle, The Open-Loop Principle, The Time-Delay Introduction Rule, Hook Quality Checklist, Identification-Before-Mechanism Rule, The Discovery Story Format, The Five Core Feelings Library, Authority Hook Patterns, Claim-Proof Adjacency, The First-Draft-to-Final Process)
+  - Universal Structural Rules (The RMBC Frame, The Bridge Principle, The Open-Loop Principle, The Time-Delay Introduction Rule, Hook Quality Checklist, Identification-Before-Mechanism Rule, The Discovery Story Format, The Five Core Feelings Library, Authority Hook Patterns, Claim-Proof Adjacency, The First-Draft-to-Final Process)
   - Structural moves: [include this line ONLY if `schwartz-applied.md` exists at the brand repo root; 7 techniques with worked examples]
-  - Humanization checklist (4 phases)
+  - Humanization checklist (5 phases, Phase 1 is seven literal checks)
   - [count] content type quick guides
   - Category messaging framework with claim boundaries
   - Before/after examples
   - Quick reference card
+  - Appendix C: Universal Humanization Rules v1.5.1 (embedded verbatim, sha256 matched)
+  - Appendix D: Universal Line-Level Rules v1.5.1 (embedded verbatim, sha256 matched)
+  - Appendix E: Brand Extensions [include this line ONLY if the brand has extensions; [count] sections carried verbatim, each dated and attributed]
+
+Provenance stamp: generated-by copywriting-guide v1.5.1; appendices humanization-rules v1.5.1 + line-level-rules v1.5.1, both digest-verified against the reference files
 
 Moat Map scan (Step 9.5): [PASSED - all canonical examples and approved messaging lead on LEAD or non-differentiator drivers, no AVOID differentiator appears anywhere | UNGROUNDED - no moat grounding; differentiator-led examples withheld as placeholders, notice emitted at head of guide]
 

@@ -25,7 +25,7 @@ The universal rule sets do not live inline any more. `../references/humanization
 The guide's first lines, above the title:
 
 ```
-generated-by: copywriting-guide v1.5.1
+generated-by: copywriting-guide v1.5.2
 appendices: humanization-rules v1.5.1 sha256:<first 16 hex>, line-level-rules v1.5.1 sha256:<first 16 hex>
 generated: [YYYY-MM-DD]
 ```

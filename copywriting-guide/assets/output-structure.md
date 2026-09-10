@@ -25,7 +25,7 @@ The universal rule sets do not live inline any more. `../references/humanization
 The guide's first lines, above the title:
 
 ```
-generated-by: copywriting-guide v1.5.2
+generated-by: copywriting-guide v1.6.0
 appendices: humanization-rules v1.5.1 sha256:<first 16 hex>, line-level-rules v1.5.1 sha256:<first 16 hex>
 generated: [YYYY-MM-DD]
 ```
@@ -59,9 +59,31 @@ This block is the same schema SKILL.md Step 10 states, and the two must stay ide
   - 3.3: Category-specific claim rules (business validation regulatory findings)
   - 3.4: Positioning-specific tone rules (premium/mid/budget calibration)
   - 3.5: Geography-specific language notes (UK vs US English, regional colloquialisms)
-  - 3.6: Brand-calibrated examples for the rules that need a voice to illustrate them
-         (Rule 2 burstiness, Rule 5 strategic imperfection, Rule 12 escalation instead
-         of stacking, and this brand's tagged Redefinition lines under Rule 13)
+  - 3.6: Brand-calibrated examples for the rules that need a voice to illustrate them.
+         Selection principle (v1.6.0, see `_frameworks/template-growth-measurement-2026-09-09.md`):
+         a rule earns a slot here when correctly following it depends on the brand's voice,
+         products, claims or audience; a rule that is the same operation for every brand is
+         served by Appendix C's own shared fixture example instead, with no brand-voiced slot.
+         Eight slots:
+         - Rule 2 (burstiness): a rhythm example built from this brand's own product claim
+         - Rule 5 (strategic imperfection): fragment, parenthetical, self-correction and
+           one-word forms demonstrated with this brand's own product facts
+         - Rule 6 (eliminate hedging): a hedge-to-direct-claim rewrite sized to what this
+           brand's evidence and regulatory boundary actually support
+         - Rule 8 (formulaic pattern bans): an open/close pair built from this brand's own
+           CTA language and product facts, not a generic instruction
+         - Rule 9 ("you" over "we"): a we-claim reframed into a you-benefit grounded in
+           this brand's actual promise
+         - Rule 10 (show, don't tell): a concrete scenario built from this brand's actual
+           mechanism and onset timeline
+         - Rule 13 (the false contrast): a labelled POINTER, not a static example, to this
+           brand's Redefinition register (the persisted file Appendix C's Rule 13 already
+           mandates). The register is the content's one home; copying an example into this
+           slot would create a second home for the same lines and let the two drift, so the
+           slot stays a pointer by design and is labelled as one so a later reader does not
+           mistake a short entry for an unfilled slot
+         - Rule 15 (staging): an example showing a rhetorical question or answered objection
+           judged against this brand's own objection inventory
 
 ## SECTION 4: The Customer Archetypes [CUSTOMIZED]
   - Archetype 1: [Name] (who, emotions, tone, resonant language, avoid, structure, example, promise)
@@ -204,6 +226,12 @@ Ruling R9 of 2026-09-09. A brand accumulates sections the template does not prod
 
 Appendix E is where they go. It is not the template growing to fit one brand.
 
+**No longer the landing spot for orphaned humanization-rule examples (v1.6.0, ruling 2026-09-09/2026-09-10).** Three brands (himfresh, peptiques, everease) independently orphaned brand-voiced examples for the same six humanization rules into their own Appendix E, because Section 3.6 had no slot for them. That gap is closed: Section 3.6 now seats eight slots (Rules 2, 5, 6, 8, 9, 10, 13, 15; see Section 3.6 above and `_frameworks/template-growth-measurement-2026-09-09.md`). A brand-voiced example for any of those eight rules is generated directly into Section 3.6 on the next rebuild, not carried to Appendix E. Appendix E remains, unchanged, for content the template has no SECTION for at all, brand extensions with no humanization-rule shape (Regrowth's five hand-added sections are the live case), not for a rule that now has a body slot.
+
+**Rule 12 is the one slot this change removes, by explicit operator override of the measurement report's own recommendation, not by the report's conclusion; SKILL.md Step 4 states the full rationale.** An existing guide's Rule 12 example is present in the old guide and absent from the new one on the next rebuild, the ordinary shape the trigger-2 comparison below already handles: fold it into Appendix E only if the operator elects to keep it, since it has no other current template-produced home, or drop it, by decision. It is not silently lost and it is not automatically preserved.
+
+**Rules 2 and 5 are retained, not newly grounded.** The measurement report's own evidence (Q2 content judgment, Q3 direct guide evidence) calls both SHARED EXAMPLE SUFFICES and finds their existing examples restate what Appendix C's shared fixture already teaches. This change does not revisit them; they stay as pre-existing slots. Pruning them on that finding is a separate, not-yet-made operator decision (SKILL.md Step 4 states the full rationale).
+
 **What goes in.** Any section a brand accumulated that the current template does not produce. Carried VERBATIM across a rebuild, never regenerated, never paraphrased.
 
 **What each entry carries.** The section body as it stood, the date it was added, and where it came from (the session, the operator instruction, or "unknown, present in the superseded guide at rebuild time" when the origin cannot be established). An entry with no origin is still carried; an entry with no date is dated to the rebuild that found it.
@@ -287,7 +315,7 @@ These surfaces RESTATE appendix semantics rather than referring to them, so a se
 
 | Surface | What it restates |
 |---------|------------------|
-| Section 3 | brand-voiced examples of Rules 2, 5, 12 and 13; brand vocabulary rows that mirror a Rule 1 category |
+| Section 3 | brand-voiced examples of Rules 2, 5, 6, 8, 9, 10, 13 and 15; brand vocabulary rows that mirror a Rule 1 category |
 | Section 5 | the seven literal checks, their thresholds and their pass conditions |
 | Section 6 | the connector test and any structural rule that restates a line-level or humanization rule |
 | Section 11 | golden-rules summary and the priority order for conflicting guidance |

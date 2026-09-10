@@ -1,6 +1,6 @@
 ---
 name: copywriting-guide
-version: "1.5.2"
+version: "1.6.0"
 description: "Generate a complete Human-Centered Copywriting Guide for any brand by extracting voice, tone, archetype language, and humanization rules from avatar research and brand guidelines. Use this skill whenever the user wants to create a copywriting guide, content writing standards, brand voice guide, humanization guidelines, or AI detection firewall for a brand. Trigger on phrases like: 'run Phase 4', 'copywriting guide', 'writing guide', 'brand voice guide', 'humanization rules', 'content standards', 'how should this brand write', 'humanize', 'de-AI', 'AI tells'. This skill reads Phase 2 (Avatar Research) output and Phase 3 (Brand Guidelines) as primary inputs and generates a complete, ready-to-use copywriting manual that any LLM can follow to produce human-sounding, brand-consistent copy."
 ---
 
@@ -166,6 +166,12 @@ Read `references/humanization-rules.md` for the universal humanization rules, an
 
 - **The universal rule set** is Appendix C, `references/humanization-rules.md` embedded verbatim. It is NOT restated, summarized or rewritten in Section 3. It is identical in every brand's guide, which is what lets a universal change be a file copy (Step 10).
 - **Section 3** carries only what this brand adds on top: brand-specific forbidden words, brand-specific approved vocabulary, category claim rules, positioning tone rules, geography notes, and brand-voiced examples for the rules that need a voice to illustrate them.
+
+**Section 3.6's selection principle (v1.6.0).** A rule earns a brand-voiced example slot when correctly following it depends on the brand's specific voice, products, claims or audience; a rule that is the same operation for every brand is served by Appendix C's own shared fixture example, with no brand-voiced slot needed. This is the test, stated once here so the next person to touch this skill does not re-derive it or re-expand it toward all seventeen rules. Measured against all 17 rules in `_frameworks/template-growth-measurement-2026-09-09.md`, the test cleanly grounds five of the eight slots listed in `assets/output-structure.md` Section 3.6: Rules 6, 8, 9 and 10 (NEEDS BRAND EXAMPLE by content, confirmed by direct evidence that all three rebuilt guides did real brand-specific work there) and Rule 13 (NEEDS BRAND EXAMPLE by content; its Section 3.6 form is a labelled pointer rather than a static example, because the brand's Redefinition register is that content's one home and a duplicate copy would drift from it). Rule 15 is grounded by content only, not by cross-brand evidence (it never orphaned, so there is no existing example to check it against); it is in the eight by operator ruling, stated below, not by the report's own recommendation.
+
+**Rules 2 and 5 do not clear this test on the evidence, and are retained rather than newly grounded.** The report's own Q2 content judgment calls both SHARED EXAMPLE SUFFICES, and its Q3 direct evidence finds all three guides' existing Rule 2 and Rule 5 examples are restatement of what Appendix C's shared fixture already teaches, not brand-dependent work the fixture could not do. This v1.6.0 change did not revisit them: they are pre-existing slots this ruling grows the set from, not slots this ruling's own selection test justifies. A future session that wants to prune the template on that finding, which the report names as a live secondary question it explicitly declines to act on, needs its own operator ruling to do it, the same way this one was needed to grow it.
+
+**Operator override on Rule 12 and Rule 15, stated so it is not mistaken for the report's own conclusion.** The measurement report's own RECOMMENDATION section names a different eight: the current four (Rules 2, 5, 12, 13) plus Rules 6, 8, 9, 10, keeping Rule 12's slot and explicitly declining to add Rule 15 without more evidence ("a plausible but unevidenced fifth candidate"). The operator ruled otherwise on 2026-09-09/2026-09-10, dropping Rule 12's slot and adding Rule 15's: the report's own Q2/Q3 sections found Rule 12's existing brand-voiced examples read as restatement of what Appendix C's own fixture example already teaches (a finding the report did not act on in its recommendation, the same finding that applies to Rules 2 and 5 above), and Rule 15's objection-inventory dependency is real by content even though unevidenced by orphaning. **Rule 12's existing brand-voiced examples are not carried forward automatically.** On this brand's next rebuild, an existing Rule 12 example is present in the old guide and absent from the new one, which the ordinary Change policy trigger-2 comparison (`assets/output-structure.md`, "Change policy") already disposes of like any other such item: folded into Appendix E only if the operator elects to keep it, since it has no other current template-produced home, or dropped, by decision. No new mechanism is needed for this; it is the standard trigger-2 path.
 
 The 17 canonical rules, numbered as they are numbered in the appendix, so a reference to "Rule 12" means the same thing everywhere:
 
@@ -591,7 +597,7 @@ Confirm or adjust:
 The generated guide's first lines, above the title, carry a provenance stamp:
 
 ```
-generated-by: copywriting-guide v1.5.2
+generated-by: copywriting-guide v1.6.0
 appendices: humanization-rules v1.5.1 sha256:<first 16 hex>, line-level-rules v1.5.1 sha256:<first 16 hex>
 generated: [YYYY-MM-DD]
 ```
@@ -629,6 +635,8 @@ Moved out of the two files at v1.5.1, and kept here rather than deleted:
 
 **Verification gate, Appendix E: preservation, not digest.** Appendix E is checked entry for entry against the superseded guide, because that is the only source it has. If the superseded guide carried an Appendix E, every entry in it appears in the new one, with its date and origin intact. If the comparison step of Change policy trigger 2 surfaced content the current template does not produce, that content IS an Appendix E entry in the delivered guide, not a note in a report. A missing entry fails delivery exactly as a digest mismatch does. When the brand has no extensions and the superseded guide had no Appendix E, this gate passes trivially and Appendix E is absent from the output.
 
+**The one exception, and it is not really an exception: content the template has since grown a slot for.** This gate checks the superseded guide's Appendix E against what it has always checked it against, the CURRENT template. When the current template has grown a Section 3.6 slot for content an existing Appendix E entry holds (v1.6.0 grew slots for Rules 6, 8, 9 and 10), that entry is no longer "content the current template does not produce," so it is disposed of through the ordinary Change policy trigger-2 comparison exactly like any other item present in the old guide and absent from the new one: folded into the rebuilt Section 3.6 slot as a candidate, or dropped, by operator decision. Relocating it into the body slot the template now provides satisfies this gate; it is not the loss this gate exists to catch, and it does not re-enter the new Appendix E as well as the body, which would duplicate it.
+
 ### Anti-drift rule
 
 Brand sections are regenerated only when brand inputs change: avatar research, brand guidelines, business validation, moat dispositions, positioning.
@@ -648,7 +656,7 @@ When you cannot tell which it is, it is semantic.
 
 **Dependency manifest.** These surfaces restate appendix semantics and go stale when the semantics move:
 
-- **Section 3**, for its brand-voiced examples of Rules 2, 5, 12 and 13, and for any brand vocabulary row that mirrors a Rule 1 category.
+- **Section 3**, for its brand-voiced examples of Rules 2, 5, 6, 8, 9, 10, 13 and 15, and for any brand vocabulary row that mirrors a Rule 1 category.
 - **Section 5**, the humanization checklist, for the seven checks' thresholds and pass conditions.
 - **Section 6**, for the connector test and any structural rule that restates a line-level or humanization rule.
 - **Section 11 and Section 12**, for any rule count, rule number or non-negotiable they name.
@@ -682,7 +690,7 @@ Sections populated:
   - Appendix D: Universal Line-Level Rules v1.5.1 (embedded verbatim, sha256 matched)
   - Appendix E: Brand Extensions [include this line ONLY if the brand has extensions; [count] sections carried verbatim, each dated and attributed]
 
-Provenance stamp: generated-by copywriting-guide v1.5.2; appendices humanization-rules v1.5.1 + line-level-rules v1.5.1, both digest-verified against the reference files
+Provenance stamp: generated-by copywriting-guide v1.6.0; appendices humanization-rules v1.5.1 + line-level-rules v1.5.1, both digest-verified against the reference files
 
 Moat Map scan (Step 9.5): [PASSED - all canonical examples and approved messaging lead on LEAD or non-differentiator drivers, no AVOID differentiator appears anywhere | UNGROUNDED - no moat grounding; differentiator-led examples withheld as placeholders, notice emitted at head of guide]
 

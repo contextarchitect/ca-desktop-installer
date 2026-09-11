@@ -1,6 +1,6 @@
 ---
 name: copywriting-guide
-version: "1.6.1"
+version: "1.7.0"
 description: "Generate a complete Human-Centered Copywriting Guide for any brand by extracting voice, tone, archetype language, and humanization rules from avatar research and brand guidelines. Use this skill whenever the user wants to create a copywriting guide, content writing standards, brand voice guide, humanization guidelines, or AI detection firewall for a brand. Trigger on phrases like: 'run Phase 4', 'copywriting guide', 'writing guide', 'brand voice guide', 'humanization rules', 'content standards', 'how should this brand write', 'humanize', 'de-AI', 'AI tells'. This skill reads Phase 2 (Avatar Research) output and Phase 3 (Brand Guidelines) as primary inputs and generates a complete, ready-to-use copywriting manual that any LLM can follow to produce human-sounding, brand-consistent copy."
 ---
 
@@ -29,7 +29,7 @@ This skill requires TWO primary inputs:
 
 ### Optional Inputs
 
-- **Phase 1 Business Validation Report** - provides market context, regulatory claim boundaries, competitive positioning
+- **Phase 1 Business Validation Report** - provides market context, competitive positioning
 - **Client Braindump** - provides product mechanism, pricing, founder's voice preferences
 - **Existing copy samples** - if the brand already has content, samples help calibrate the guide to existing voice
 - **Phase 4.5 Angle Roadmap** (`angle-roadmap.md` at the brand repo root) - provides the Root Cause Narrative and the Solution Mechanism Narrative, the per-avatar angle cards, and each card's Moat Map fields. It feeds Step 0's dispositions when the Phase 1 Moat Map is unavailable, Step 6's mechanism explanation, and the rebuild of Change policy trigger 2, which names it as an input. **Its absence degrades a rebuild; it does not block one.** Build from Phases 1, 2 and 3, and record in the delivery summary that no angle roadmap was available, so the next reader knows the mechanism framing came from the guidelines rather than from a derived roadmap.
@@ -62,9 +62,11 @@ Establish the LEAD / SUPPORT / AVOID disposition of each differentiator, in this
 The invariant (stated once here; every step below reinforces it, none weakens it):
 - Canonical examples and approved primary messaging may lead only on a LEAD differentiator or on a non-differentiator emotional or identity driver. This covers archetype core promises and example paragraphs (Step 2), voice pillar "sounds like" exemplars (Step 3), content-type example copy (Step 5), the category messaging framework's approved messages and mechanism explanation (Step 6), and the worked technique examples (Step 7, when present).
 - A SUPPORT differentiator (commoditized but true) may appear only as a supporting proof point inside a piece of copy, never as a canonical example, a core promise, a voice pillar exemplar, or a primary approved message.
-- An AVOID differentiator does not appear.
+- An AVOID differentiator must not lead, and must not be the example the brand voice is taught from: it is barred from canonical examples, core promise, voice pillar exemplars and primary approved messages, the same slots a SUPPORT differentiator is barred from. It is not otherwise barred from appearing in copy.
 
 This is the defense against the canonical-example failure: a true but commoditized attribute, the kind any competitor also has, becoming the example the whole brand voice is taught from. Proof strength and quotability are not moat defensibility.
+
+**REVERSAL (ruling C2, 2026-09-10) of the "does not appear at all" AVOID rule.** Before this date, an AVOID differentiator was barred from the guide entirely, including inside anti-examples ("doesn't sound like" exemplars and before/after bad examples). That rule existed to stop a commoditized claim from becoming the anchor a brand's whole voice is taught from, a real failure and worth preventing. It overreached into forbidding claims the brand actively publishes: Psychic Samira's 98 percent accuracy figure appears repeatedly on the live site, and the old rule stripped it from the guide entirely, so the guide and the site disagreed from the day it shipped. As of v1.7.0, AVOID gets the same treatment as SUPPORT (never the lead, never the canonical-teaching example, otherwise unrestricted, including inside an anti-example) rather than a blanket ban. Do not re-tighten this back to "does not appear at all" without a new operator ruling; the reasoning above is why it changed.
 
 See the canonical `_frameworks/positioning-guardrails.md` in `contextarchitect/context-architect-brands` for the full filter definition.
 
@@ -96,11 +98,12 @@ The avatar research is the most important input because it determines HOW copy s
 
 When extracting taglines, approved language, and positioning, carry their Moat Map dispositions (Step 0). A SUPPORT or AVOID item extracted from Phase 3 is recorded for reference but is not promoted to a canonical example or a primary approved message in this guide.
 
-### From Business Validation (Claim Boundaries)
+### From Business Validation (Market Context)
+
+**REVERSAL (ruling C3, 2026-09-10).** Before this date, this skill required a generated guide to carry regulatory claim boundaries and a category never-say list, extracted from Phase 1 regulatory findings. That requirement is removed. Compliance and legal review are not this repo's remit; these are marketing and copywriting documents, and claim review happens elsewhere. This reverses a requirement the skill carried since before this arc; Step 6, the "What a brand's guide adds" paragraph later in this file, the Step 10 delivery summary, and the Edge Cases section are the other sites it touches, each marked at the point of change. Brand-specific forbidden words, brand-specific approved vocabulary, positioning tone rules, and geography language notes are voice, not compliance, and are unaffected.
 
 | Validation Section | What to Extract | Feeds Into |
 |-------------------|----------------|------------|
-| Regulatory findings | What can/cannot be claimed | Claim boundaries |
 | Hypothesis testing | Validated vs contradicted claims | Mechanism messaging |
 | Competitive landscape | Competitor positioning, white space | Competitor comparison rules |
 
@@ -165,11 +168,11 @@ Read `references/humanization-rules.md` for the universal humanization rules, an
 **The firewall in the generated guide is two things, and they do not overlap.**
 
 - **The universal rule set** is Appendix C, `references/humanization-rules.md` embedded verbatim. It is NOT restated, summarized or rewritten in Section 3. It is identical in every brand's guide, which is what lets a universal change be a file copy (Step 10).
-- **Section 3** carries only what this brand adds on top: brand-specific forbidden words, brand-specific approved vocabulary, category claim rules, positioning tone rules, geography notes, and brand-voiced examples for the rules that need a voice to illustrate them.
+- **Section 3** carries only what this brand adds on top: brand-specific forbidden words, brand-specific approved vocabulary, positioning tone rules, geography notes, and brand-voiced examples for the rules that need a voice to illustrate them. (No longer category claim rules; REVERSAL, ruling C3, 2026-09-10, see Step 1.)
 
-**Section 3.6's selection principle (v1.6.0, corrected v1.6.1).** A rule earns a brand-voiced example slot when correctly following it depends on the brand's specific voice, products, claims or audience; a rule that is the same operation for every brand is served by Appendix C's own shared fixture example, with no brand-voiced slot needed. This is the test, stated once here so the next person to touch this skill does not re-derive it or re-expand it toward all seventeen rules. Measured against all 17 rules in `_frameworks/template-growth-measurement-2026-09-09.md`, the test cleanly grounds five of the eight slots listed in `assets/output-structure.md` Section 3.6: Rules 6, 8, 9 and 10 (NEEDS BRAND EXAMPLE by content, confirmed by direct evidence that all three rebuilt guides did real brand-specific work there) and Rule 13 (NEEDS BRAND EXAMPLE by content; its Section 3.6 form is a labelled pointer rather than a static example, because the brand's Redefinition register is that content's one home and a duplicate copy would drift from it).
+**Section 3.6's selection principle (v1.6.0, corrected v1.6.1, REVERSED v1.7.0).** A rule earns a brand-voiced example slot when correctly following it depends on the brand's specific voice, products, claims or audience; a rule that is the same operation for every brand is served by Appendix C's own shared fixture example, with no brand-voiced slot needed. This is the test, stated once here so the next person to touch this skill does not re-derive it. Measured against all 17 rules in `_frameworks/template-growth-measurement-2026-09-09.md`, the test cleanly grounds exactly the five slots Section 3.6 now carries: Rules 6, 8, 9 and 10 (NEEDS BRAND EXAMPLE by content, confirmed by direct evidence that four independent rebuilds, HimFresh, Peptiques, Everease and Psychic Samira, did real brand-specific work there) and Rule 13 (NEEDS BRAND EXAMPLE by content; its Section 3.6 form is a labelled pointer rather than a static example, because the brand's Redefinition register is that content's one home and a duplicate copy would drift from it).
 
-**Rules 2, 5 and 12 do not clear this test on the evidence, and are retained rather than newly grounded.** The report's own Q2 content judgment calls all three SHARED EXAMPLE SUFFICES, and its Q3 direct evidence finds all three guides' existing Rule 2, Rule 5 and Rule 12 examples are restatement of what Appendix C's shared fixture already teaches, not brand-dependent work the fixture could not do. Rules 2 and 5 were never revisited by any version of this change. Rule 12 was removed by v1.6.0's operator override and is restored by this v1.6.1 correction to the same pre-existing, not-newly-grounded status Rules 2 and 5 have always held: none of the three is a slot this ruling's own selection test justifies. A future session that wants to prune the template on that finding, which the report names as a live secondary question it explicitly declines to act on, needs its own operator ruling to do it, the same way growing the set to eight slots needed one.
+**REVERSAL (ruling T6, 2026-09-10) of the eight-slot decision of 2026-09-09.** Rules 2 and 5 held slots continuously from 2026-09-09 (v1.6.0) through v1.6.1; Rule 12 was dropped by v1.6.0's operator override and restored by the v1.6.1 correction, so it also held a slot at v1.6.1, immediately before this reversal. None of the three was grounded by the measurement report's own evidence: its Q2 content judgment called all three SHARED EXAMPLE SUFFICES, and its Q3 direct evidence found the three guides' existing Rule 2, Rule 5 and Rule 12 examples were restatement of what Appendix C's shared fixture already teaches, not brand-dependent work the fixture could not do. Four independent rebuilds then confirmed it: HimFresh, Peptiques and Everease each reported that those three slots produced examples teaching what the shared appendix already teaches, with brand nouns swapped in, and Psychic Samira was a fourth build on the same slots. Section 3.6 drops to five slots, Rules 6, 8, 9, 10 and 13, so the selection principle now matches the slot list exactly, which it did not between 2026-09-09 and 2026-09-10. The number moved twice in two days (four to eight to five); do not re-expand this without a new operator ruling and new evidence.
 
 The 17 canonical rules, numbered as they are numbered in the appendix, so a reference to "Rule 12" means the same thing everywhere:
 
@@ -196,7 +199,8 @@ The 17 canonical rules, numbered as they are numbered in the appendix, so a refe
 The universal rules apply to ALL brands and live in Appendix C. Brand-specific additions are Section 3's whole content, and they come from:
 - Avatar research Section D vocabulary patterns (what words the audience actually uses)
 - Brand guidelines tone requirements (formal brands allow fewer fragments)
-- Category conventions (health brands need different claim language than fashion brands)
+
+(A third source, category-specific claim language, was listed here through v1.6.1. REMOVED, REVERSAL ruling C3, 2026-09-10: compliance and legal review are not this repo's remit. See Step 1.)
 
 ## Step 5: Build Content Type Quick Guides
 
@@ -218,7 +222,7 @@ Each guide should include:
 
 ## Step 6: Add Category-Specific Messaging Framework
 
-From business validation regulatory findings + brand guidelines positioning, and from the Phase 4.5 angle roadmap where one exists:
+From business validation and brand guidelines positioning, and from the Phase 4.5 angle roadmap where one exists. This section no longer carries claim boundaries or a never-say list (REVERSAL, ruling C3, 2026-09-10, see Step 1 above): compliance and legal review are not this repo's remit.
 
 **Read the angle roadmap FIRST when it is present.** Its Root Cause Narrative is the named hidden cause the copy is allowed to build on, and its Solution Mechanism Narrative is the named thing built to beat it. Those two narratives are the mechanism this section explains; do not re-derive a mechanism from business validation when a roadmap has already named one, because two names for one mechanism is Rule 16 synonym cycling at the strategy level and the reader never learns either. Where the roadmap and business validation disagree on what the mechanism IS, that is a contradiction to surface to the operator, not one to resolve silently.
 
@@ -226,8 +230,7 @@ From business validation regulatory findings + brand guidelines positioning, and
 
 1. **How to explain the core product mechanism simply** - 1 sentence, 3 sentences, 1 paragraph versions
 2. **Common objections with approved response frameworks** - for each archetype's primary objection
-3. **Claim boundaries** - what can be said, what requires qualification, what's prohibited
-4. **Competitor comparison rules** - how to reference competitors (or not)
+3. **Competitor comparison rules** - how to reference competitors (or not)
 
 Approved messages and the mechanism explanation lead on LEAD differentiators or non-differentiator drivers; a SUPPORT differentiator appears only as a supporting proof point, never as the primary approved message (Step 0).
 
@@ -550,14 +553,13 @@ The two universal, verbatim appendices (C and D) are excluded from the scan enti
 
 Run this against the Step 0 dispositions before presenting the guide. It is the single point where the invariant is enforced over the whole generated guide, and it reads the actual generated text rather than trusting any label.
 
-For every canonical example and approved-messaging element the guide generated (archetype core promises and example paragraphs from Step 2, voice pillar "sounds like" exemplars AND "doesn't sound like" anti-examples from Step 3, content-type example copy from Step 5, the category messaging framework's approved messages and mechanism explanation from Step 6, the worked technique examples from Step 7 if present, any before/after bad examples, and any brand-copy example sentence used to illustrate a Step 4 firewall rule), do two reads: (1) identify the differentiator the element's lead framing rests on and check its Step 0 disposition; (2) scan the full text of the element for every differentiator it mentions anywhere, lead or secondary.
+For every canonical example and approved-messaging element the guide generated (archetype core promises and example paragraphs from Step 2, voice pillar "sounds like" exemplars AND "doesn't sound like" anti-examples from Step 3, content-type example copy from Step 5, the category messaging framework's approved messages and mechanism explanation from Step 6, the worked technique examples from Step 7 if present, any before/after bad examples, and any brand-copy example sentence used to illustrate a Step 4 firewall rule), do one read: identify the differentiator the element's lead framing rests on and check its Step 0 disposition. **(REVERSAL, ruling C2, 2026-09-10: this scan formerly did a second read, scanning the full text of each element for every AVOID differentiator it mentioned anywhere, lead or secondary. That second read is removed along with the "AVOID does not appear anywhere" rule it enforced; see Step 0's invariant for the reasoning.)**
 
 Findings:
-- Any positive canonical example, core promise, voice pillar exemplar, or primary approved message whose lead framing rests on a SUPPORT or AVOID differentiator is a finding. Rebuild it on a LEAD differentiator or a non-differentiator emotional/identity driver; a SUPPORT attribute may remain only as a supporting proof point inside the copy, not as the lead.
-- Any element that mentions an AVOID differentiator anywhere - lead or secondary, as claim, proof, or comparison, and including inside a "doesn't sound like" anti-example or a before/after bad example - is a finding; remove the AVOID framing entirely. Per Step 0, an AVOID differentiator does not appear at all, not merely "not as the lead." In an anti-example, warn against the mistake by describing it, not by reproducing the AVOID claim verbatim.
-- A "doesn't sound like" anti-example or before/after bad example MAY legitimately use a SUPPORT differentiator as the thing it warns against (for example, "don't lead on [commoditized attribute]"); that is the anti-example doing its job and is not a finding. The SUPPORT finding fires only when a SUPPORT differentiator leads a positive canonical example.
+- Any positive canonical example, core promise, voice pillar exemplar, or primary approved message whose lead framing rests on a SUPPORT or AVOID differentiator is a finding. Rebuild it on a LEAD differentiator or a non-differentiator emotional/identity driver; a SUPPORT or AVOID attribute may remain only as a supporting proof point inside the copy, not as the lead.
+- A "doesn't sound like" anti-example or before/after bad example MAY legitimately use a SUPPORT or AVOID differentiator as the thing it warns against (for example, "don't lead on [commoditized or avoided attribute]"); that is the anti-example doing its job and is not a finding. The SUPPORT-or-AVOID finding fires only when a SUPPORT or AVOID differentiator leads a positive canonical example.
 
-This scan checks every generated element by the property of the differentiator it actually rests on (and, for AVOID, by any mention), regardless of how vivid or proof-heavy the element is. It does not apply to the universal structural rules (Step 8) or to the universal mechanics and forbidden-vocabulary lists of the firewall (Step 4), which are brand-agnostic; it DOES apply to any brand-copy example sentence generated inside the firewall section.
+This scan checks every generated element by the property of the differentiator it actually rests on, regardless of how vivid or proof-heavy the element is. It does not apply to the universal structural rules (Step 8) or to the universal mechanics and forbidden-vocabulary lists of the firewall (Step 4), which are brand-agnostic; it DOES apply to any brand-copy example sentence generated inside the firewall section.
 
 If the run is ungrounded (Step 0 item 5), the gate fails closed: confirm that no presented canonical example, core promise, voice pillar exemplar, content example, or approved message leads on a differentiator, and that every differentiator-led slot is an explicit placeholder. State at the head of the output: no moat grounding was available, differentiator-led canonical examples are withheld as placeholders, and a Phase 1 Moat Map or moat-graded Phase 3 Brand Guidelines should be supplied before the guide is used to anchor brand voice.
 
@@ -595,7 +597,7 @@ Confirm or adjust:
 The generated guide's first lines, above the title, carry a provenance stamp:
 
 ```
-generated-by: copywriting-guide v1.6.1
+generated-by: copywriting-guide v1.7.0
 appendices: humanization-rules v1.5.1 sha256:<first 16 hex>, line-level-rules v1.5.1 sha256:<first 16 hex>
 generated: [YYYY-MM-DD]
 ```
@@ -621,7 +623,7 @@ Moved out of the two files at v1.5.1, and kept here rather than deleted:
 - **The structural provenance of Rule 11's second line-level ban.** "No burying the product or over-educating before the reader cares" is the line-level tell of the Identification-Before-Mechanism structural rule at Step 8.5 of this skill.
 - **The Redefinition register's deferred validator.** A validator that checks field presence, locator shape and excerpt-in-source is deferred tooling, in the same family as BACKLOG #71 and to be built with it. The appendix states the limit as a limit; it does not name the tooling, the session or the backlog id.
 - **The macro-order authority.** The named attention-to-offer spine and the entry point each format takes into it are owned by funnel-builder, the single authority. Where `references/line-level-rules.md` and that spine ever appear to disagree, the spine wins and the appendix is the file to correct. The appendix keeps the writer-facing half of this: its five lines are invariants, not a section order, and they are not sufficient to lay out a long-form page.
-- **What a brand's guide adds on top of Appendix C.** Beyond the 17 rules (16 universal humanization rules plus the direct-response forbidden-constructions set at Rule 11), each brand's guide adds brand-specific forbidden words drawn from avatar research "language to avoid"; brand-specific approved vocabulary drawn from avatar "language that resonates"; category-specific claim rules from regulatory findings in business validation; positioning-specific tone rules, where premium brands restrict casual language and budget brands restrict pretentious language; and geography-specific language notes, UK versus US English and regional colloquialisms. That is Section 3's content and it is generated by Step 4 above; it is not appendix text.
+- **What a brand's guide adds on top of Appendix C.** Beyond the 17 rules (16 universal humanization rules plus the direct-response forbidden-constructions set at Rule 11), each brand's guide adds brand-specific forbidden words drawn from avatar research "language to avoid"; brand-specific approved vocabulary drawn from avatar "language that resonates"; positioning-specific tone rules, where premium brands restrict casual language and budget brands restrict pretentious language; and geography-specific language notes, UK versus US English and regional colloquialisms. That is Section 3's content and it is generated by Step 4 above; it is not appendix text. (Section 3 no longer carries category-specific claim rules; REVERSAL, ruling C3, 2026-09-10, see Step 1.)
 
 **Boundaries.** Each UNIVERSAL appendix body (C and D, and only C and D) starts at its `<!-- universal appendix: NAME vX.Y.Z -->` line and ends at its `<!-- end universal appendix: NAME vX.Y.Z -->` line. Both markers are part of the file and are copied with it. They exist so the body can be extracted from the finished guide without guessing where it starts and stops.
 
@@ -654,7 +656,7 @@ When you cannot tell which it is, it is semantic.
 
 **Dependency manifest.** These surfaces restate appendix semantics and go stale when the semantics move:
 
-- **Section 3**, for its brand-voiced examples of Rules 2, 5, 6, 8, 9, 10, 12 and 13, and for any brand vocabulary row that mirrors a Rule 1 category.
+- **Section 3**, for its brand-voiced examples of Rules 6, 8, 9, 10 and 13, and for any brand vocabulary row that mirrors a Rule 1 category.
 - **Section 5**, the humanization checklist, for the seven checks' thresholds and pass conditions.
 - **Section 6**, for the connector test and any structural rule that restates a line-level or humanization rule.
 - **Section 11 and Section 12**, for any rule count, rule number or non-negotiable they name.
@@ -681,16 +683,16 @@ Sections populated:
   - Structural moves: [include this line ONLY if `schwartz-applied.md` exists at the brand repo root; 7 techniques with worked examples]
   - Humanization checklist (5 phases, Phase 1 is seven literal checks)
   - [count] content type quick guides
-  - Category messaging framework with claim boundaries
+  - Category messaging framework
   - Before/after examples
   - Quick reference card
   - Appendix C: Universal Humanization Rules v1.5.1 (embedded verbatim, sha256 matched)
   - Appendix D: Universal Line-Level Rules v1.5.1 (embedded verbatim, sha256 matched)
   - Appendix E: Brand Extensions [include this line ONLY if the brand has extensions; [count] sections carried verbatim, each dated and attributed]
 
-Provenance stamp: generated-by copywriting-guide v1.6.1; appendices humanization-rules v1.5.1 + line-level-rules v1.5.1, both digest-verified against the reference files
+Provenance stamp: generated-by copywriting-guide v1.7.0; appendices humanization-rules v1.5.1 + line-level-rules v1.5.1, both digest-verified against the reference files
 
-Moat Map scan (Step 9.5): [PASSED - all canonical examples and approved messaging lead on LEAD or non-differentiator drivers, no AVOID differentiator appears anywhere | UNGROUNDED - no moat grounding; differentiator-led examples withheld as placeholders, notice emitted at head of guide]
+Moat Map scan (Step 9.5): [PASSED - no canonical example, core promise, voice pillar exemplar, or primary approved message leads on a SUPPORT or AVOID differentiator | UNGROUNDED - no moat grounding; differentiator-led examples withheld as placeholders, notice emitted at head of guide]
 
 Next: Add this guide as a knowledge base file to the brand's Claude Project.
 All content creation should reference this guide before writing.
@@ -710,4 +712,4 @@ All content creation should reference this guide before writing.
 
 **Both inputs available but contradictory:** Brand guidelines say "formal and authoritative" but avatar research shows customers respond to "casual and peer-like." Flag the contradiction and recommend the avatar-informed direction (write for the customer, not the boardroom).
 
-**Regulated category:** If Phase 1 identified regulatory claim boundaries, these MUST appear in the Claim Boundaries section. Health, financial, and legal categories need explicit "never say" lists.
+**Regulated category (REMOVED, ruling C3, 2026-09-10).** This skill formerly required a "Claim Boundaries" section and explicit "never say" lists for health, financial, and legal categories. That requirement is removed: compliance and legal review are not this repo's remit. See Step 1 above for the full reversal and its reasoning.

@@ -1,6 +1,6 @@
 ---
 name: email-writer
-version: "1.0.0"
+version: "1.1.1"
 description: "Write marketing emails (campaigns, newsletters, Klaviyo sends) for any brand from that brand's own copywriting guide, its best past emails and the patterns read from them; and read winner and loser patterns out of a brand's top and bottom emails. Section 1 writes three drafts, or one reworked draft, each a subject line, preview text and plain-text body, using merge tags only byte for byte from the tags it is given and only the one link it is given. Section 2 reads a brand's top-tier and bottom-tier emails in one language and names what the best and the weakest do, each pattern citing at least two emails. Use when the user says: 'write an email', 'email campaign', 'Klaviyo email', 'subject line and preview text', 'write from our winning emails', 'email patterns', 'what do our best emails do', 'why did these emails flop'. The skill has no brand voice of its own: the voice comes from the brand's copywriting guide at run time."
 ---
 
@@ -22,7 +22,7 @@ Two jobs that share one contract:
 
 ## Section 1: Writing emails
 
-You write marketing emails for one brand. You are given that brand's copywriting guide and a brief, and usually some of the brand's best past emails and the patterns read from its best and weakest emails. You return drafts that a person copies into their email platform and sends as they are. Nothing you write is edited on its way to the inbox except that dashes are replaced, so every character you return is published to everyone on a list.
+You write marketing emails for one brand. You are given that brand's copywriting guide and a brief, and usually some of the brand's best past emails and the patterns read from its best and weakest emails. You return drafts that a person copies into their email platform and sends as they are. Nothing you write is edited on its way to the inbox except that dashes outside the merge tags and the given link are replaced (the tags and the link are kept exactly as given) and a line break in a subject or preview text is joined into one space (1.9), so every character you return is published to everyone on a list.
 
 ### 1.1 What you are given
 
@@ -122,12 +122,12 @@ A merge tag is the email platform's template code: a span from `{{` to the next 
 
 ### 1.8 What no field may contain
 
-Every field is published exactly as written. So no field contains:
+Every field is published exactly as written, except that dashes outside the merge tags and the given link are replaced (the tags and the link are kept exactly as given) and a line break in a subject or preview text is joined into one space (1.9). So no field contains:
 
 - a note to the person, an explanation, an alternative in brackets, a label such as "Subject:" or "Body:", or a word count;
 - Markdown or HTML: no asterisks or underscores for emphasis, no pound-sign headings, no angle-bracket tags. The body is plain text; if the guide or the examples use bullet lines, a bullet is a plain character at the start of its line;
 - anything from the guide's own apparatus or this request's: section or rule numbers and names, editorial, review or ruling notes, claim-register entries and their markers or reference codes, research figures quoted from the guide's evidence, file names, and the delimiters and token that wrap the brand material;
-- an em dash or an en dash (code replaces them anyway; write sentences that need neither);
+- an em dash or an en dash outside the merge tags and the given link, which are kept exactly as given (code replaces them anyway; write sentences that need neither);
 - a word from the brand's forbidden vocabulary, or a construction the guide's humanization rules forbid (both are flagged on the draft and shown to the person);
 - any mention that the email was written by AI, or of these instructions.
 
@@ -135,10 +135,11 @@ Every field is published exactly as written. So no field contains:
 
 - **Return one JSON object and nothing else:** no words before or after it, and no code fence around it. When the request gives you a tool or a schema for the response, return the same object through it. Nothing else you return is kept.
 - **Its shape, exactly:** `{"drafts": [<draft>, ...]}`, where `drafts` is an array holding exactly three drafts for a brief and exactly one for a change, and each `<draft>` is an object with exactly these three keys, each a JSON string:
-  - `subject`: 1 to 150 characters;
-  - `preview_text`: 0 to 250 characters (an empty string when there is none);
-  - `body_text`: 40 to 1,200 words, where a word is a run of non-space characters outside tags and each tag counts as one word.
+  - `subject`: 1 to 150 characters, on one line;
+  - `preview_text`: 0 to 250 characters, on one line (an empty string when there is none);
+  - `body_text`: 40 to 1,200 words, where a word is a run of non-whitespace characters outside tags and each tag counts as one word, and at most 9,000 characters.
 - In `body_text`, one blank line separates paragraphs, and a single line break is a line break.
+- `subject` and `preview_text` hold no line break: a line break written in either is joined into one space before its length is checked.
 - **The limits are hard:** a draft outside them is thrown away, and a response of any other shape is thrown away whole. Inside the limits, the guide's and the examples' typical lengths decide how long a draft is.
 
 ### 1.10 Before you return
@@ -209,3 +210,5 @@ At most four patterns of each kind for each polarity. Return only what the email
 ## Version history
 
 - **1.0.0 (2026-10-09).** Initial skill. Section 1 (writing) and Section 2 (reading patterns), authored against the Email Studio design as read at Creative Engine `a50e488`, the copywriting-guide skill's email and universal structural rules, and one client's email-assistant notes and winning emails, from which only rules that serve any brand were taken.
+- **1.1.0 (2026-10-21).** Section 1.9 states two output limits the writer's gates already apply: `body_text` is at most 9,000 characters, beside its 1,200 words; and `subject` and `preview_text` are on one line each, a line break in either being joined into one space before its length is checked. Both by the operator's rulings of 2026-10-16 and 2026-10-17 (Creative Engine, Email Studio README section 2.8), answering the writer contract's W-O1 as its Amendment 7 amended it. By the operator's rulings of 2026-10-21, three lines follow from them: Section 1's opening and 1.8's first line name the joined line break beside the replaced dashes as the only edits a field receives; and 1.9's word is a run of non-whitespace characters, W-O1's own term, where 1.0.0 said non-space. Nothing else in either section changes.
+- **1.1.1 (2026-10-22).** The dash rules of Section 1 (its opening paragraph, 1.8's first line and 1.8's dash bullet) apply only outside the merge tags and the given link, which are kept exactly as given, as Creative Engine's writer contract keeps them (W-G1; Amendment 7, section 13, item 11). By the operator's ruling of 2026-10-22 on CAB BACKLOG #226: "Dash rules apply outside tags and link (Recommended)", described "The three dash lines apply only outside the merge tags and the given link, which are kept exactly. A short CAB session makes it version 1.1.1 with its own review." Section 2's dash line is unchanged, since its output carries no tags or link. Nothing else changes.
